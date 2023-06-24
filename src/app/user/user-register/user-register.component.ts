@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { DatePipe } from '@angular/common';
 import { iRegisterUser } from 'src/app/model/iRegisterUser';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { ErrorService } from 'src/app/error/error.service';
 
 
 @Component({
@@ -14,25 +16,28 @@ import { MatDialogRef } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRegisterComponent {
+  dataPipe = inject(DatePipe);
+  dialogRef= inject(MatDialogRef<UserRegisterComponent>);
+  errorHandle= inject(ErrorService);
   userForm: FormGroup;
   showPassword: boolean = false;
+  regSig$ = new Observable();
 
-
-  constructor(private readonly userService: UserService, private readonly fb: FormBuilder, private readonly dataPipe: DatePipe, private dialogRef: MatDialogRef<UserRegisterComponent>) {
+  constructor(private readonly userService: UserService, private readonly fb: FormBuilder) {
     this.userForm = this.fb.group({
       vorname: ['', Validators.required],
       nachname: ['', Validators.required],
-      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)]],
+      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)]],
       email: ['', [Validators.required, Validators.email]],
-      telefon: ['', [Validators.required, Validators.pattern(/^\+[0-9]{9,}$/)]],
+      telefon: ['', [Validators.required, Validators.pattern(/^(\+)?[0-9]{9,}$/)]],
       role: ['user'],
       registrierungsdatum: [''],
       treuepunkte: [0],
-      l_strasse: [''],
-      l_hausnummer: [''],
-      l_stadt: [''],
-      l_postleitzahl: [''],
-      l_land: [''],
+      l_strasse:  ['null'],
+      l_hausnummer: ['null'],
+      l_stadt: ['null'],
+      l_postleitzahl: ['null'],
+      l_land: ['null'],
       adresseStrasse: ['', Validators.required],
       adresseHausnummer: ['', Validators.required],
       adresseStadt: ['', Validators.required],
@@ -50,11 +55,9 @@ export class UserRegisterComponent {
   }
   sendDataToServer(data: iRegisterUser) {
     const transformedDate = this.dataPipe.transform(Date.now(), 'shortDate');
-    const tmp = transformedDate ? new Date(transformedDate) : null;
-    if(tmp !== null)
-    data.registrierungsdatum =  tmp;
-    console.log(data);
-    this.userService.createUser(data);
+      if(transformedDate)
+    data.registrierungsdatum =  transformedDate;
+    this.regSig$ =  this.userService.createUser(data);
   }
   abbrechen() {
     this.dialogRef.close();

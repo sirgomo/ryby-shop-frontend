@@ -1,6 +1,6 @@
 <div class="container">
   <h2>Anmeldung</h2>
-  <form (ngSubmit)="login()">
+  <form >
     <div>
       <mat-form-field>
         <mat-label>E-Mail:</mat-label>
@@ -15,8 +15,12 @@
         <mat-icon matSuffix>lock</mat-icon>
       </mat-form-field>
     </div>
-    <button mat-button type="submit" color="primary">Einloggen</button>
+    <div class="log">
+      <button mat-button (click)="login()" color="primary">Einloggen</button>
+      <button mat-button  color="warn" (click)="close()" >Abbrechen</button>
+    </div>
     Noch kein Konto?
     <button mat-button (click)="registerUser()" color="accent">Registrieren</button>
   </form>
 </div>
+<div *ngIf="login$ | async"></div>

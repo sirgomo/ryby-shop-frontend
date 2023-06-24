@@ -5,7 +5,7 @@ export interface iRegisterUser {
   email: string;
   telefon: string;
   role: string;
-  registrierungsdatum: Date;
+  registrierungsdatum: string;
   treuepunkte: number;
   l_strasse?: string;
   l_hausnummer?: string;

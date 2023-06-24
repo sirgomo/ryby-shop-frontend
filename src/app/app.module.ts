@@ -18,6 +18,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ErrorComponent } from './error/error.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     FooterComponent,
     SearchComponent,
     UserLoginComponent,
-    UserRegisterComponent
+    UserRegisterComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatDialogModule,
     MatInputModule,
     MatCheckboxModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

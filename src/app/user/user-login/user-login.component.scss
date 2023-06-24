@@ -22,11 +22,8 @@ mat-form-field {
   margin-bottom: 20px;
 }
 
-button {
-  width: 150px;
-}
 
-button:nth-child(2) {
-  background-color: #007bff;
-  color: #fff;
+.log {
+  display: flex;
+  gap: .4rem;
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HelperService } from 'src/app/helper/helper.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -6,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent {
-
+  constructor (private readonly helper: HelperService) {}
+  showLoginPanel() {
+    this.helper.getLoginWindow();
+  }
 }

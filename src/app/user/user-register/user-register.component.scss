@@ -1,0 +1,52 @@
+.reg {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 0.1rem;
+}
+
+.reg form {
+  width: 100%;
+}
+
+.reg .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.reg .item {
+  flex: 1;
+  margin-right: 0.4rem;
+}
+
+.reg mat-form-field {
+  width: 100%;
+}
+
+.reg mat-checkbox {
+  margin-bottom: 0.4rem;
+}
+
+.reg .rowacction {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.reg button[disabled] {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.reg mat-error {
+  color: red;
+  font-size: 0.7rem;
+  margin-top: 0.2rem;
+}
+
+

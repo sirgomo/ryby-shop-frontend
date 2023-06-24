@@ -1,0 +1,169 @@
+<div class="reg">
+
+  <form [formGroup]="userForm" (submit)="sendDataToServer(userForm.value)">
+    <div class="row">
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Vorname</mat-label>
+          <input matInput formControlName="vorname" required>
+          <mat-error *ngIf="userForm.get('vorname')?.invalid && userForm.get('vorname')?.touched">
+            Vorname ist ein Pflichtfeld.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="item" >
+        <mat-form-field>
+          <mat-label>Nachname</mat-label>
+          <input matInput formControlName="nachname" required>
+          <mat-error *ngIf="userForm.get('nachname')?.invalid && userForm.get('nachname')?.touched">
+            Nachname ist ein Pflichtfeld.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="item" >
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" required>
+          <mat-error *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+            E-Mail muss ein gültiges E-Mail-Format haben.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" [type]="showPassword ? 'text' : 'password'" autocomplete="off" required minlength="8">
+          <mat-icon matSuffix (click)="togglePasswordVisibility()"></mat-icon>
+          <mat-error *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+            Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Buchstaben, eine Zahl und ein Sonderzeichen enthalten.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Telefon</mat-label>
+          <input matInput formControlName="telefon" required>
+          <mat-error *ngIf="userForm.get('telefon')?.invalid && userForm.get('telefon')?.touched">
+            Telefon muss aus minens 9 Ziffern bestehen.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Adresse Strasse</mat-label>
+          <input matInput formControlName="adresseStrasse" required>
+          <mat-error *ngIf="userForm.get('adresseStrasse')?.invalid && userForm.get('adresseStrasse')?.touched">
+            Adresse Strasse ist ein Pflichtfeld.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Adresse Hausnummer</mat-label>
+          <input matInput formControlName="adresseHausnummer" required>
+          <mat-error *ngIf="userForm.get('adresseHausnummer')?.invalid && userForm.get('adresseHausnummer')?.touched">
+            Adresse Hausnummer ist ein Pflichtfeld.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Adresse Stadt</mat-label>
+          <input matInput formControlName="adresseStadt" required>
+          <mat-error *ngIf="userForm.get('adresseStadt')?.invalid && userForm.get('adresseStadt')?.touched">
+            Adresse Stadt ist ein Pflichtfeld.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Adresse Postleitzahl</mat-label>
+          <input matInput formControlName="adressePostleitzahl" required>
+          <mat-error *ngIf="userForm.get('adressePostleitzahl')?.invalid && userForm.get('adressePostleitzahl')?.touched">
+            Adresse Postleitzahl ist ein Pflichtfeld.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Adresse Land</mat-label>
+          <input matInput formControlName="adresseLand" required>
+          <mat-error *ngIf="userForm.get('adresseLand')?.invalid && userForm.get('adresseLand')?.touched">
+            Adresse Land ist ein Pflichtfeld.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <mat-checkbox formControlName="isDifferentAddress">Ist die Lieferadresse anders als die Rechnungsadresse?</mat-checkbox>
+    </div>
+
+    <div class="row" *ngIf="userForm.get('isDifferentAddress')?.value">
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Liefer Strasse</mat-label>
+          <input matInput formControlName="l_strasse" required>
+          <mat-error *ngIf="userForm.get('l_strasse')?.invalid && userForm.get('l_strasse')?.touched">
+            Lieferadresse Strasse ist ein Pflichtfeld.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Lieferadresse Hausnummer</mat-label>
+          <input matInput formControlName="l_hausnummer" required>
+          <mat-error *ngIf="userForm.get('l_hausnummer')?.invalid && userForm.get('l_hausnummer')?.touched">
+            Lieferadresse Hausnummer ist ein Pflichtfeld.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Lieferadresse Stadt</mat-label>
+          <input matInput formControlName="l_stadt" required>
+          <mat-error *ngIf="userForm.get('l_stadt')?.invalid && userForm.get('l_stadt')?.touched">
+            Lieferadresse Stadt ist ein Pflichtfeld.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="userForm.get('isDifferentAddress')?.value">
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Lieferadresse Postleitzahl</mat-label>
+          <input matInput formControlName="l_postleitzahl" required>
+          <mat-error *ngIf="userForm.get('l_postleitzahl')?.invalid && userForm.get('l_postleitzahl')?.touched">
+            Lieferadresse Postleitzahl ist ein Pflichtfeld.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-form-field>
+          <mat-label>Lieferadresse Land</mat-label>
+          <input matInput formControlName="l_land" required>
+          <mat-error *ngIf="userForm.get('l_land')?.invalid && userForm.get('l_land')?.touched">
+            Lieferadresse Land ist ein Pflichtfeld.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="rowacction">
+
+        <button mat-button color="primary" type="submit" [disabled]="userForm.invalid">Submit</button>
+        <button mat-button color="warn" (click)="abbrechen()" >Abbrechen</button>
+
+    </div>
+  </form>
+  </div>

@@ -1,0 +1,22 @@
+<div class="container">
+  <h2>Anmeldung</h2>
+  <form (ngSubmit)="login()">
+    <div>
+      <mat-form-field>
+        <mat-label>E-Mail:</mat-label>
+        <input matInput type="email" [(ngModel)]="loginData.email" name="email" required>
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Passwort:</mat-label>
+        <input matInput type="password" [(ngModel)]="loginData.password" name="password" required autocomplete="off">
+        <mat-icon matSuffix>lock</mat-icon>
+      </mat-form-field>
+    </div>
+    <button mat-button type="submit" color="primary">Einloggen</button>
+    Noch kein Konto?
+    <button mat-button (click)="registerUser()" color="accent">Registrieren</button>
+  </form>
+</div>

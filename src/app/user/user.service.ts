@@ -6,6 +6,7 @@ import { iRegisterUser } from '../model/iRegisterUser';
 import { EMPTY, catchError, map, tap } from 'rxjs';
 import { ErrorService } from '../error/error.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../auth/auth.service';
 
 
 @Injectable({
@@ -14,12 +15,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class UserService {
   errorHandle = inject(ErrorService);
   #API = environment.api + 'auth'
-  constructor(private readonly http: HttpClient, private readonly snackBar: MatSnackBar) { }
+  constructor(private readonly http: HttpClient, private readonly snackBar: MatSnackBar, private readonly authService: AuthService) { }
   login(data: iLogin) {
     console.log('login')
-    return this.http.post(this.#API, data).pipe(
-    map(res => {
-      console.log(res);
+    return this.http.post<string>(this.#API, data).pipe(
+    tap(res => {
+      this.authService.setToken(res);
       return res;
     }),
     catchError((error) => {

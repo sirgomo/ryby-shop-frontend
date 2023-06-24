@@ -20,7 +20,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ErrorComponent } from './error/error.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { JwtModule } from '@auth0/angular-jwt';
 
+export function jwtOptionsFactory() {
+  return {
+
+  };
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,8 +53,14 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatInputModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {return localStorage.getItem('token')}
+      }
+    }),
   ],
   providers: [],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

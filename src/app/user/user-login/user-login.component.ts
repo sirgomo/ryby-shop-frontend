@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { UserRegisterComponent } from '../user-register/user-register.component';
 import { Observable } from 'rxjs';
+import { ErrorService } from 'src/app/error/error.service';
 
 @Component({
   selector: 'app-user-login',
@@ -17,11 +18,12 @@ export class UserLoginComponent {
     email: '',
     password: ''
   };
+  errorHandle = this.errServi;
   login$ = new Observable();
-  constructor(private readonly userService: UserService, private readonly authService: AuthService, private readonly dialog: MatDialog,private readonly dialReg: MatDialogRef<UserLoginComponent>) {}
+  constructor(private readonly userService: UserService, private readonly authService: AuthService, private readonly dialog: MatDialog,private readonly dialReg: MatDialogRef<UserLoginComponent>, private errServi: ErrorService) {}
 login() {
   if (this.loginData.email.length > 5 && this.loginData.password.length > 5) {
-   this.login$ = this.userService.login(this.loginData);
+   this.login$ = this.userService.login(this.loginData, this.dialReg);
   }
 }
 registerUser() {

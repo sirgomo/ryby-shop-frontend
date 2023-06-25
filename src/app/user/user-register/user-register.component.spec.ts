@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { marbles } from 'rxjs-marbles/jest';
+import { JwtModule } from '@auth0/angular-jwt';
 
 
 
@@ -26,7 +27,7 @@ describe('UserRegisterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [BrowserModule, BrowserAnimationsModule,FormsModule, ReactiveFormsModule, HttpClientTestingModule, MatIconModule, MatInputModule,
-        MatCheckboxModule, MatFormFieldModule, MatSnackBarModule],
+        MatCheckboxModule, MatFormFieldModule, MatSnackBarModule, JwtModule.forRoot({})],
       declarations: [UserRegisterComponent],
       providers: [
         UserService,

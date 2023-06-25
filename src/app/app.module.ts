@@ -21,12 +21,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ErrorComponent } from './error/error.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { JwtModule } from '@auth0/angular-jwt';
+import { AdminComponent } from './admin/admin.component';
+import { LiferantsComponent } from './admin/liferants/liferants.component';
+import { AddEditLiferantComponent } from './admin/add-edit-liferant/add-edit-liferant.component';
+import { AddEditKategorieComponent } from './admin/add-edit-kategorie/add-edit-kategorie.component';
+import { KategoriesComponent } from './admin/kategories/kategories.component';
 
-export function jwtOptionsFactory() {
-  return {
-
-  };
-}
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +35,12 @@ export function jwtOptionsFactory() {
     SearchComponent,
     UserLoginComponent,
     UserRegisterComponent,
-    ErrorComponent
+    ErrorComponent,
+    AdminComponent,
+    LiferantsComponent,
+    AddEditLiferantComponent,
+    AddEditKategorieComponent,
+    KategoriesComponent
   ],
   imports: [
     BrowserModule,

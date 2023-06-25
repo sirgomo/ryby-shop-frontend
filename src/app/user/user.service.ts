@@ -7,6 +7,9 @@ import { EMPTY, catchError, map, tap } from 'rxjs';
 import { ErrorService } from '../error/error.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth/auth.service';
+import { DialogRef } from '@angular/cdk/dialog';
+import { UserLoginComponent } from './user-login/user-login.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 
 @Injectable({
@@ -16,15 +19,15 @@ export class UserService {
   errorHandle = inject(ErrorService);
   #API = environment.api + 'auth'
   constructor(private readonly http: HttpClient, private readonly snackBar: MatSnackBar, private readonly authService: AuthService) { }
-  login(data: iLogin) {
-    console.log('login')
+  login(data: iLogin, dialRef: MatDialogRef<UserLoginComponent>) {
     return this.http.post<string>(this.#API, data).pipe(
     tap(res => {
       this.authService.setToken(res);
+      dialRef.close();
       return res;
     }),
     catchError((error) => {
-      this.errorHandle.newMessage(error.error.message[0])
+      this.errorHandle.newMessage(error.error.message)
     return EMPTY;
     })
     );

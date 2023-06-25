@@ -22,14 +22,18 @@ export class AuthService {
     this.#email = decoded.username;
     this.#role = decoded.role;
     this.helper.isLogged.set(true);
+    this.helper.setMenu(this.#role);
+    localStorage.setItem('role', this.#role);
   }
   logout() {
     this.#token.next('');
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
     this.#userid = 0;
     this.#email = '';
     this.#role = '';
     this.helper.isLogged.set(false);
+    this.helper.setMenu('');
   }
   getToken() {
     return this.#token.value;

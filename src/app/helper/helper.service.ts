@@ -22,4 +22,15 @@ export class HelperService {
 
     return this.appComponenet.login();
   }
+  setMenu(role: string) {
+    const menu: iMenuItem[] = [];
+    if(role === 'ADMIN') {
+      menu[0] = { name: 'Admin Panel', link: 'admin' };
+      menu[1] = { name: 'Liferants', link: 'liferant' }
+      menu[2] = { name: 'Kategories', link: 'kategory' }
+    } else {
+
+    }
+    this.menuSub.next(menu);
+  }
 }

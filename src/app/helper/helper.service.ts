@@ -26,10 +26,11 @@ export class HelperService {
     const menu: iMenuItem[] = [];
     if(role === 'ADMIN') {
       menu[0] = { name: 'Admin Panel', link: 'admin' };
-      menu[1] = { name: 'Liferants', link: 'liferant' }
-      menu[2] = { name: 'Kategories', link: 'kategory' }
-    } else {
-
+      menu[1] = { name: 'Liferants', link: 'liferant' };
+      menu[2] = { name: 'Kategories', link: 'kategory'};
+      menu[3] = { name: 'User Panel', link: 'user' };
+    } else if (role === 'USER') {
+      menu[0] = { name: 'User Panel', link: 'user' };
     }
     this.menuSub.next(menu);
   }

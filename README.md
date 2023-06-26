@@ -1,4 +1,4 @@
 # RybyShopFrontend
- Ziel:
-Fortsetzung der RxJS-Praxis,
-Testen mit Einsatz "Jest".
+ Goal:
+Continuation of RxJS practice,
+Testing using "Jest" framework

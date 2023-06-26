@@ -3,6 +3,7 @@ import { HelperService } from './helper/helper.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UserLoginComponent } from './user/user-login/user-login.component';
+import { iMenuItem } from './model/iMenuItem';
 
 @Component({
   selector: 'app-root',
@@ -22,5 +23,8 @@ export class AppComponent {
     conf.height = '400px';
 
     this.dialog.open(UserLoginComponent, conf);
+  }
+  buttonActive(index: number) {
+
   }
 }

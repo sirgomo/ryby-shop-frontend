@@ -26,6 +26,7 @@ import { LiferantsComponent } from './admin/liferants/liferants.component';
 import { AddEditLiferantComponent } from './admin/add-edit-liferant/add-edit-liferant.component';
 import { AddEditKategorieComponent } from './admin/add-edit-kategorie/add-edit-kategorie.component';
 import { KategoriesComponent } from './admin/kategories/kategories.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { KategoriesComponent } from './admin/kategories/kategories.component';
     LiferantsComponent,
     AddEditLiferantComponent,
     AddEditKategorieComponent,
-    KategoriesComponent
+    KategoriesComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

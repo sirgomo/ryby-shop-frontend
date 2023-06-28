@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
 import { FooterComponent } from './footer/footer/footer.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -27,6 +27,7 @@ import { AddEditLiferantComponent } from './admin/add-edit-liferant/add-edit-lif
 import { AddEditKategorieComponent } from './admin/add-edit-kategorie/add-edit-kategorie.component';
 import { KategoriesComponent } from './admin/kategories/kategories.component';
 import { UserComponent } from './user/user.component';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -61,12 +62,14 @@ import { UserComponent } from './user/user.component';
     MatCheckboxModule,
     MatSnackBarModule,
     JwtModule.forRoot({
-      config: {
-        tokenGetter: () => {return localStorage.getItem('token')}
-      }
+      config: {}
     }),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
+    },
+  ],
   exports: [],
   bootstrap: [AppComponent]
 })

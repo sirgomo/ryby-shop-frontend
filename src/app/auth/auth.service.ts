@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { HelperService } from '../helper/helper.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class AuthService {
   #userid: number = 0;
   #email: string = '';
   #role: string = '';
-  constructor(private jwtService: JwtHelperService, private readonly helper: HelperService) { }
+  constructor(private jwtService: JwtHelperService, private readonly helper: HelperService, private readonly router: Router) { }
   setToken(tok: string) {
     this.#token.next(tok);
 
@@ -34,6 +35,7 @@ export class AuthService {
     this.#role = '';
     this.helper.isLogged.set(false);
     this.helper.setMenu('');
+    this.router.navigateByUrl('/');
   }
   getToken() {
     return this.#token.value;

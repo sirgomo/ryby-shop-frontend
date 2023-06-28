@@ -15,6 +15,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { marbles } from 'rxjs-marbles/jest';
 import { JwtModule } from '@auth0/angular-jwt';
+import { iUserData } from 'src/app/model/iUserData';
 
 
 
@@ -76,13 +77,31 @@ describe('UserRegisterComponent', () => {
       adresseLand: 'Example Country',
       isDifferentAddress: false,
     };
+    const resp: iUserData = {
+      id: 1,
+      vorname: 'John',
+      nachname: 'Doe',
+      email: 'john.doe@example.com',
+      telefon: '123456789',
+      role: 'user',
+      treuepunkte: 0,
+      l_strasse: 'null',
+      l_hausnummer: 'null',
+      l_stadt: 'null',
+      l_postleitzahl: 'null',
+      l_land: 'null',
+      adresseStrasse: 'Example Street',
+      adresseHausnummer: '123',
+      adresseStadt: 'Example City',
+      adressePostleitzahl: '12345',
+      adresseLand: 'Example Country',
+    }
 
-
-    const userServiceSpy = jest.spyOn(userService, 'createUser').mockReturnValue(of(1));
+    const userServiceSpy = jest.spyOn(userService, 'createUser').mockReturnValue(of(resp));
     component.sendDataToServer(data);
     expect(component.regSig$).toBeTruthy();
     expect(userServiceSpy).toHaveBeenCalled();
-    m.expect(component.regSig$).toBeObservable(m.cold('(a|)', { a: 1 }));
+    m.expect(component.regSig$).toBeObservable(m.cold('(a|)', { a: resp }));
     m.flush();
   }));
 

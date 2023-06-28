@@ -11,6 +11,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import { iUserData } from '../model/iUserData';
 import { iNewPassword } from '../model/iNewPassword';
+import { UserRegisterComponent } from './user-register/user-register.component';
 
 
 @Injectable({
@@ -55,11 +56,17 @@ export class UserService {
     })
     );
   }
-  createUser(data: iRegisterUser) {
-    return this.http.post<number>(this.#API+'/reg', data).pipe(
+  createUser(data: iRegisterUser, ref: MatDialogRef<UserRegisterComponent>) {
+    return this.http.post<iUserData>(this.#API+'/reg', data).pipe(
       map(res => {
-        this.snackBar.open('Jetzt kannst du dich einlogen!', 'Ok', { duration: 3000 });
-        return res;
+        if(res.id !== null && isFinite(res.id)) {
+          this.snackBar.open('Jetzt kannst du dich einlogen!', 'Ok', { duration: 3000 });
+          ref.close();
+          return res;
+        }
+        Object(res).message
+        this.errorHandle.newMessage(Object(res).message)
+        return EMPTY;
       }),
       catchError((error) => {
         this.errorHandle.newMessage(error.error.message[0])

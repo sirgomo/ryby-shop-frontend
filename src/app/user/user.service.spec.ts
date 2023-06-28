@@ -10,6 +10,8 @@ import { UserService } from './user.service';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { environment } from 'src/environments/environment';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { UserRegisterComponent } from './user-register/user-register.component';
+import { iUserData } from '../model/iUserData';
 
 
 describe('UserService', () => {
@@ -19,6 +21,7 @@ describe('UserService', () => {
   let snackBar: MatSnackBar;
   let authService: AuthService;
   let dialogRef: MatDialogRef<UserLoginComponent>;
+  let dialogRefRegi: MatDialogRef<UserRegisterComponent>;
   let jwtService: JwtHelperService;
 
   beforeEach(() => {
@@ -28,7 +31,8 @@ describe('UserService', () => {
           tokenGetter: () => {return localStorage.getItem('token')}
         }
       })],
-      providers: [ErrorService, AuthService, MatSnackBar, { provide:  MatDialogRef<UserLoginComponent>, useValue: {}}, JwtHelperService]
+      providers: [ErrorService, AuthService, MatSnackBar, { provide:  MatDialogRef<UserLoginComponent>, useValue: {}},
+        { provide:  MatDialogRef<UserRegisterComponent>, useValue: {}}, JwtHelperService]
     });
     service = TestBed.inject(UserService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -37,6 +41,7 @@ describe('UserService', () => {
     authService = TestBed.inject(AuthService);
     jwtService = TestBed.inject(JwtHelperService);
     dialogRef = TestBed.inject(MatDialogRef<UserLoginComponent>);
+    dialogRefRegi = TestBed.inject(MatDialogRef<UserRegisterComponent>);
   });
 
   afterEach(() => {
@@ -106,11 +111,25 @@ describe('UserService', () => {
       adresseLand: ''
     };
 
-    const mockResponse = 1;
+    const mockResponse: iUserData = {
+      id: null,
+      vorname: 'test',
+      nachname: 'a',
+      email: 'test@test.com',
+      telefon: '',
+      role: '',
+      treuepunkte: 0,
+      adresseStrasse: '',
+      adresseHausnummer: '',
+      adresseStadt: '',
+      adressePostleitzahl: '',
+      adresseLand: ''
+    };
 
     jest.spyOn(snackBar, 'open');
 
-    service.createUser(data).subscribe(res => {
+    service.createUser(data, dialogRefRegi).subscribe(res => {
+
       expect(res).toEqual(mockResponse);
       expect(snackBar.open).toHaveBeenCalledWith('Jetzt kannst du dich einlogen!', 'Ok', { duration: 3000 });
     });
@@ -141,7 +160,7 @@ describe('UserService', () => {
 
     jest.spyOn(errorService, 'newMessage');
 
-    service.createUser(data).subscribe({
+    service.createUser(data, dialogRefRegi).subscribe({
       error: () => {
         expect(errorService.newMessage).toHaveBeenCalledWith(mockError.error.message[0]);
       }

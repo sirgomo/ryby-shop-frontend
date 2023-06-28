@@ -57,7 +57,7 @@ export class UserRegisterComponent {
     const transformedDate = this.dataPipe.transform(Date.now(), 'shortDate');
       if(transformedDate)
     data.registrierungsdatum =  transformedDate;
-    this.regSig$ =  this.userService.createUser(data);
+    this.regSig$ =  this.userService.createUser(data, this.dialogRef);
   }
   abbrechen() {
     this.dialogRef.close();

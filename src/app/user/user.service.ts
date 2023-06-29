@@ -22,17 +22,27 @@ export class UserService {
   userData: BehaviorSubject<iUserData> = new BehaviorSubject<iUserData>({
     id: null,
     vorname: '',
-    nachname: '',
-    email: '',
-    telefon: '',
-    role: '',
-    registrierungsdatum: undefined,
-    treuepunkte: 0,
-    adresseStrasse: '',
-    adresseHausnummer: '',
-    adresseStadt: '',
-    adressePostleitzahl: '',
-    adresseLand: ''
+  nachname: '',
+  email: '',
+  telefon: '',
+  registrierungsdatum: '',
+  treuepunkte: 0,
+
+  adresse: {
+    strasse: '',
+    hausnummer: '',
+    stadt: '',
+    postleitzahl: '',
+    land: '',
+  },
+  lieferadresse: {
+    l_strasse: '',
+    l_hausnummer: '',
+    l_stadt: '',
+    l_postleitzahl: '',
+    l_land: '',
+  },
+
   });
   user$ = this.userData.asObservable().pipe(tap((res) => {
     if(res.id === null)

@@ -15,8 +15,12 @@ $my-theme: mat.define-light-theme((
  density: 0,
 ));
 @include mat.all-component-themes($my-theme);
-html, body { height: 100%; width: 100%; }
+html, body { height: 100%; width: 100%; min-height: 100%; min-width: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+mat-sidenav-container {
+  height: calc(100% - 150px);
+  width: 100%;
+}
 mat-toolbar {
   display: flex;
   justify-content: space-between;
@@ -25,7 +29,6 @@ mat-toolbar {
   z-index: 2;
   gap: .4rem;
   height: 60px;
-  min-height: 60px;
   .logujkoszyk {
 
     display: flex;
@@ -46,6 +49,7 @@ mat-toolbar {
   .logo{
     display: flex;
     width: 30%;
+    height: 120px;
     scale: auto;
   }
 }
@@ -57,16 +61,11 @@ mat-toolbar {
 
 }
 
-.container {
-  display: flex;
-  min-height: 100%;
-}
 mat-sidenav {
-  min-height: 100%;
-  height: 100%;
   width: 10rem;
-  padding-top: .5rem;
+  margin-top: .5rem;
 }
+
 .menu {
   display: flex;
   flex-direction: column;
@@ -78,11 +77,10 @@ mat-sidenav {
   margin-left: 2rem;
 }
 
-mat-sidenav-content {
-  display: flex;
-  width: 100%;
-  min-width: 100%;
- padding-top: .5rem;
+mat-sidenav-content  {
+  width: calc(100% - 10.5rem);
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .error {
   display: flex;

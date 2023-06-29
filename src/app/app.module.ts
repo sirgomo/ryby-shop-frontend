@@ -28,6 +28,7 @@ import { AddEditKategorieComponent } from './admin/add-edit-kategorie/add-edit-k
 import { KategoriesComponent } from './admin/kategories/kategories.component';
 import { UserComponent } from './user/user.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
     JwtModule.forRoot({
       config: {}
     }),
+    MatCardModule,
   ],
   providers: [
     {

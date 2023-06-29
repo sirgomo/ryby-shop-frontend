@@ -5,6 +5,7 @@ import { KategoriesComponent } from './admin/kategories/kategories.component';
 import { LiferantsComponent } from './admin/liferants/liferants.component';
 import { routeGuard } from './auth/route.guard';
 import { UserComponent } from './user/user.component';
+import { userGuard } from './auth/user.guard';
 
 const routes: Routes = [
 {
@@ -25,6 +26,7 @@ const routes: Routes = [
 {
   component: UserComponent,
   path: 'user',
+  canActivate: [userGuard],
 },
 {
   path: '**',

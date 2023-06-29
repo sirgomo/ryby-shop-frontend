@@ -1,4 +1,84 @@
-<p *ngIf="user$ | async as user">user works!,
-  {{user.email}}
-</p>
+<div *ngIf="user$ | async">
+  <mat-card class="card">
+  <mat-card-title>User Details</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="userForm">
+      <div class="row">
+        <mat-form-field>
+          <mat-label>Vorname</mat-label>
+          <input matInput formControlName="vorname">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Nachname</mat-label>
+          <input matInput formControlName="nachname">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email">
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field>
+          <mat-label>Telefon</mat-label>
+          <input matInput formControlName="telefon">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Treuepunkte</mat-label>
+          <input matInput formControlName="treuepunkte" >
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Adresse - Strasse</mat-label>
+          <input matInput formControlName="adresseStrasse">
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field>
+          <mat-label>Adresse - Hausnummer</mat-label>
+          <input matInput formControlName="adresseHausnummer">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Adresse - Stadt</mat-label>
+          <input matInput formControlName="adresseStadt">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Adresse - Postleitzahl</mat-label>
+          <input matInput formControlName="adressePostleitzahl">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Adresse - Land</mat-label>
+          <input matInput formControlName="adresseLand">
+        </mat-form-field>
+      </div>
 
+      <mat-checkbox formControlName="adresseCheckbox">Shipping Address</mat-checkbox>
+      <div *ngIf="userForm.get('adresseCheckbox')?.value">
+        <div class="row">
+          <mat-form-field>
+            <mat-label>Strasse</mat-label>
+            <input matInput formControlName="l_strasse">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Hausnummer</mat-label>
+            <input matInput formControlName="l_hausnummer">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Stadt</mat-label>
+            <input matInput formControlName="l_stadt">
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field>
+            <mat-label>Postleitzahl</mat-label>
+            <input matInput formControlName="l_postleitzahl">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Land</mat-label>
+            <input matInput formControlName="l_land">
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    <button mat-button color="primary">Speichern</button>
+  </mat-card-content>
+</mat-card>
+</div>

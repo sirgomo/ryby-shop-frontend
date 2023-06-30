@@ -54,7 +54,7 @@ export class UserRegisterComponent {
     }
   }
   sendDataToServer(data: iRegisterUser) {
-    const transformedDate = this.dataPipe.transform(Date.now(), 'shortDate');
+    const transformedDate = this.dataPipe.transform(Date.now(), 'mediumDate');
       if(transformedDate)
     data.registrierungsdatum =  transformedDate;
     this.regSig$ =  this.userService.createUser(data, this.dialogRef);

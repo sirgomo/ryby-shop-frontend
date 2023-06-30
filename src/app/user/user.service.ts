@@ -85,21 +85,21 @@ export class UserService {
     );
   }
   getUserDetails() {
-    console.log('id ' + this.authService.getUserId())
+
 
     return this.http.get<iUserData>(this.#API_USER+`/${this.authService.getUserId()}`).pipe(map((res) => {
-      console.log(res);
+
       this.userData.next(res)
       return res;
     }));
 
   }
   updateUser(data: iUserData) {
-    return this.http.patch(this.#API_USER, data).pipe(tap(res => {
-      console.log(res);
+    return this.http.patch(this.#API_USER, data).pipe(map(res => {
       if(res === 1) {
         this.userData.next(data)
       }
+      return this.userData.value;
     }))
   }
   changePassword(pass: iNewPassword) {

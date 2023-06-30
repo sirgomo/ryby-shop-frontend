@@ -29,6 +29,7 @@ import { KategoriesComponent } from './admin/kategories/kategories.component';
 import { UserComponent } from './user/user.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import {MatCardModule} from '@angular/material/card';
+import { ChangePasswordComponent } from './user/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {MatCardModule} from '@angular/material/card';
     AddEditLiferantComponent,
     AddEditKategorieComponent,
     KategoriesComponent,
-    UserComponent
+    UserComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

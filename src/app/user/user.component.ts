@@ -1,19 +1,24 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UserService } from './user.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Observable, tap } from 'rxjs';
+import { Observable, combineLatest, concatMap, map, of, tap } from 'rxjs';
 import { iUserData } from '../model/iUserData';
+import { DatePipe } from '@angular/common';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DatePipe],
 })
 export class UserComponent implements OnInit{
   user$ = new Observable<iUserData>();
+  userid: number | null = 0;
   userForm: FormGroup;
-  constructor (private readonly userService: UserService, private readonly formBuilder: FormBuilder) {
+  constructor (private readonly userService: UserService, private readonly formBuilder: FormBuilder, private readonly datePi: DatePipe,
+    private readonly dialog: MatDialog) {
     this.userForm = this.formBuilder.group({
       vorname: ['', Validators.required],
       nachname: ['', Validators.required],
@@ -25,7 +30,8 @@ export class UserComponent implements OnInit{
       l_stadt: [''],
       l_postleitzahl: [''],
       l_land: [''],
-      treuepunkte: [0, Validators.min(0)],
+      registrierungsdatum: [ { value: '', disabled: true }],
+      treuepunkte: [ {value: 0, disabled: true}],
       adresseStrasse: ['', Validators.required],
       adresseHausnummer: ['', Validators.required],
       adresseStadt: ['', Validators.required],
@@ -35,28 +41,80 @@ export class UserComponent implements OnInit{
   }
   ngOnInit(): void {
    this.user$ = this.userService.getUserDetails().pipe(tap(res => {
-    this.userForm = this.formBuilder.group({
-      vorname: [res.vorname || '', Validators.required],
-      nachname: [res.nachname || '', Validators.required],
-      email: [res.email || '', [Validators.required, Validators.email]],
-      telefon: [res.telefon || '', Validators.required],
-      adresseCheckbox: [false],
-      l_strasse: [ res.lieferadresse?.l_strasse ||''],
-      l_hausnummer: [res.lieferadresse?.l_hausnummer || ''],
-      l_stadt: [res.lieferadresse?.l_stadt || ''],
-      l_postleitzahl: [res.lieferadresse?.l_postleitzahl || ''],
-      l_land: [ res.lieferadresse?.l_land || ''],
-      treuepunkte: [0, Validators.min(0)],
-      adresseStrasse: [res.adresse.strasse || '', Validators.required],
-      adresseHausnummer: [res.adresse.hausnummer || '', Validators.required],
-      adresseStadt: [res.adresse.stadt || '', Validators.required],
-      adressePostleitzahl: [res.adresse.postleitzahl || '', Validators.required],
-      adresseLand: [res.adresse.land || '', Validators.required]
-    });
+    if(res === null)
+      return;
+    this.refreshForm(res);
     }));
   }
+  private refreshForm(res: iUserData) {
+    this.userid = res.id;
+
+    const regDate = res?.registrierungsdatum ? this.datePi.transform(new Date(res?.registrierungsdatum), 'mediumDate') : '';
 
 
+    this.userForm = this.formBuilder.group({
+      vorname: [res?.vorname || '', Validators.required],
+      nachname: [res?.nachname || '', Validators.required],
+      email: [res?.email || '', [Validators.required, Validators.email]],
+      telefon: [res?.telefon || '', Validators.required],
+      adresseCheckbox: [false],
+      l_strasse: [res?.lieferadresse?.l_strasse || ''],
+      l_hausnummer: [res?.lieferadresse?.l_hausnummer || ''],
+      l_stadt: [res?.lieferadresse?.l_stadt || ''],
+      l_postleitzahl: [res?.lieferadresse?.l_postleitzahl || ''],
+      l_land: [res?.lieferadresse?.l_land || ''],
+      registrierungsdatum: [{ value: regDate, disabled: true }],
+      treuepunkte: [{ value: res?.treuepunkte, disabled: true }],
+      adresseStrasse: [res?.adresse.strasse || '', Validators.required],
+      adresseHausnummer: [res?.adresse.hausnummer || '', Validators.required],
+      adresseStadt: [res?.adresse.stadt || '', Validators.required],
+      adressePostleitzahl: [res?.adresse.postleitzahl || '', Validators.required],
+      adresseLand: [res?.adresse.land || '', Validators.required]
+    });
+  }
+
+  updateUser() {
+    if (this.userid === null) {
+      return ;
+    }
+    const item : iUserData = {
+      id: this.userid,
+      vorname: this.userForm.get('vorname')?.getRawValue(),
+      nachname: this.userForm.get('nachname')?.getRawValue(),
+      email: this.userForm.get('email')?.getRawValue(),
+      telefon: this.userForm.get('telefon')?.getRawValue(),
+      adresse: {
+        strasse: this.userForm.get('adresseStrasse')?.getRawValue(),
+        hausnummer: this.userForm.get('adresseHausnummer')?.getRawValue(),
+        stadt: this.userForm.get('adresseStadt')?.getRawValue(),
+        postleitzahl: this.userForm.get('adressePostleitzahl')?.getRawValue(),
+        land: this.userForm.get('adresseLand')?.getRawValue(),
+      },
+      lieferadresse: {
+        l_strasse: this.userForm.get('l_strasse')?.getRawValue(),
+        l_hausnummer: this.userForm.get('l_hausnummer')?.getRawValue(),
+        l_stadt: this.userForm.get('l_stadt')?.getRawValue(),
+        l_postleitzahl: this.userForm.get('l_postleitzahl')?.getRawValue(),
+        l_land: this.userForm.get('l_land')?.getRawValue(),
+      },
+    };
+    if(item.lieferadresse?.l_strasse !== undefined && item.lieferadresse?.l_strasse?.length < 3)
+      item.lieferadresse = undefined;
+
+    const tmp$ = of(item);
+    this.user$ = combineLatest([this.user$, tmp$]).pipe(
+      concatMap(() => this.userService.updateUser(item)),
+      map(res => {
+        console.log(res)
+       this.refreshForm(res);
+        return res as iUserData;
+      })
+    )
+  }
+  changePassword() {
+    const conf: MatDialogConfig = new MatDialogConfig();
+
+  }
 
 }
 

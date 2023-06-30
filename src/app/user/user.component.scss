@@ -28,23 +28,7 @@ mat-checkbox {
   margin-bottom: 20px;
 }
 
-button.mat-button {
-  display: block;
-  margin: 0 auto;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button.mat-button:hover {
-  background-color: #0056b3;
-}
-
-button.mat-button:active {
-  background-color: #004080;
+.user-button {
+  display: flex;
+  justify-content: center;
 }

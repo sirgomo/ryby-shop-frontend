@@ -5,8 +5,7 @@ export interface iUserData {
   email: string;
   telefon: string;
   registrierungsdatum?: string;
-  treuepunkte: number;
-
+  treuepunkte?: number | undefined;
   adresse: {
     strasse: string;
     hausnummer: string;

@@ -1,5 +1,5 @@
 export interface iNewPassword{
   userid: number,
-  password: string,
+  altPassword: string,
   newPassword: string,
 }

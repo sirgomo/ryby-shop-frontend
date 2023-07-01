@@ -74,7 +74,7 @@ export class UserService {
           ref.close();
           return res;
         }
-        Object(res).message
+
         this.errorHandle.newMessage(Object(res).message)
         return EMPTY;
       }),
@@ -91,7 +91,12 @@ export class UserService {
 
       this.userData.next(res)
       return res;
-    }));
+    }),
+    catchError((err) => {
+      this.errorHandle.newMessage(err.message)
+      return EMPTY;
+    })
+    );
 
   }
   updateUser(data: iUserData) {
@@ -103,8 +108,19 @@ export class UserService {
     }))
   }
   changePassword(pass: iNewPassword) {
-    return this.http.patch(this.#API_USER+'pass', pass).pipe(tap(res => {
-      console.log(res)
+    return this.http.patch(this.#API_USER+'/pass', pass).pipe(tap(res => {
+      if(res !== 1) {
+        this.errorHandle.newMessage(Object(res).message);
+        return EMPTY;
+      }
+
+      this.snackBar.open('Password wurde geändert', 'Ok', { duration: 2000 })
+      return res;
+    }),
+    catchError((err) => {
+      console.log(err)
+      this.errorHandle.newMessage(err.error.message[0]);
+      return EMPTY;
     }))
   }
 }

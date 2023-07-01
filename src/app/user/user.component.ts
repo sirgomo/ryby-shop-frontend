@@ -5,6 +5,7 @@ import { Observable, combineLatest, concatMap, map, of, tap } from 'rxjs';
 import { iUserData } from '../model/iUserData';
 import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @Component({
   selector: 'app-user',
@@ -113,7 +114,10 @@ export class UserComponent implements OnInit{
   }
   changePassword() {
     const conf: MatDialogConfig = new MatDialogConfig();
+    conf.height = '400px';
+    conf.width = '400px';
 
+    this.dialog.open(ChangePasswordComponent, conf);
   }
 
 }

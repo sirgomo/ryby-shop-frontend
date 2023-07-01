@@ -1,10 +1,49 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControlOptions } from '@angular/forms';
+import { UserService } from '../user.service';
+import { AuthService } from 'src/app/auth/auth.service';
+import { iNewPassword } from 'src/app/model/iNewPassword';
+import { Observable, tap } from 'rxjs';
+import { ErrorService } from 'src/app/error/error.service';
+import { MatDialogRef } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss']
+  styleUrls: ['./change-password.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangePasswordComponent {
+  changePasswordForm: FormGroup;
+  active$ = new Observable();
+  constructor(private formBuilder: FormBuilder, private readonly userSer: UserService, private readonly authSer: AuthService, public err: ErrorService, private readonly diaRef: MatDialogRef<ChangePasswordComponent>) {
+    this.changePasswordForm = this.formBuilder.group({
+      oldPassword: ['', Validators.required],
+      newPassword: ['', [Validators.required, Validators.pattern(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)]],
+      confirmPassword: ['', Validators.required]
+    }, { validator: this.passwordMatchValidator } as AbstractControlOptions);
+  }
+
+  passwordMatchValidator(group: FormGroup) {
+    const newPassword = group.get('newPassword')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+
+    return newPassword === confirmPassword ? null : { mismatch: true };
+  }
+
+  onSubmit() {
+    if (this.changePasswordForm.valid) {
+      const pass: iNewPassword = {
+        userid: this.authSer.getUserId(),
+        altPassword: this.changePasswordForm.get('oldPassword')?.value,
+        newPassword: this.changePasswordForm.get('confirmPassword')?.value
+      }
+      this.active$ = this.userSer.changePassword(pass).pipe(tap((res) => {
+        if(res === 1)
+          this.diaRef.close()
+      }));
+    }
+  }
 
 }

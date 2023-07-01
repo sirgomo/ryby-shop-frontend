@@ -13,6 +13,10 @@ export class AuthService {
   #email: string = '';
   #role: string = '';
   constructor(private jwtService: JwtHelperService, private readonly helper: HelperService, private readonly router: Router) { }
+  /**
+   * Sets the authentication token and extracts the user ID, email, and role from the token.
+   * @param tok The authentication token.
+   */
   setToken(tok: string) {
     this.#token.next(tok);
 
@@ -26,6 +30,10 @@ export class AuthService {
     this.helper.setMenu(this.#role);
     localStorage.setItem('role', this.#role);
   }
+
+  /**
+   * Logs out the user by resetting the token, removing it from local storage, and clearing the user ID, email, and role.
+   */
   logout() {
     this.#token.next('');
     localStorage.removeItem('token');
@@ -37,15 +45,34 @@ export class AuthService {
     this.helper.setMenu('');
     this.router.navigateByUrl('/');
   }
+
+  /**
+   * Returns the authentication token.
+   * @returns The authentication token.
+   */
   getToken() {
     return this.#token.value;
   }
+
+  /* Returns the user's email.
+   * @returns The user's email.
+   */
   getEmail() {
     return this.#email;
   }
+
+  /**
+   * the user's role.
+   * @returns The user's role.
+   */
   getRole() {
     return this.#role;
   }
+
+  /**
+   * Returns the user's ID.
+   * @returns The user's ID.
+   */
   getUserId(){
     return this.#userid;
   }

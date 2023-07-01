@@ -106,7 +106,9 @@ export class UserComponent implements OnInit{
     this.user$ = combineLatest([this.user$, tmp$]).pipe(
       concatMap(() => this.userService.updateUser(item)),
       map(res => {
-        console.log(res)
+        res.registrierungsdatum = this.userForm.get('registrierungsdatum')?.getRawValue();
+        res.treuepunkte = this.userForm.get('treuepunkte')?.getRawValue();
+
        this.refreshForm(res);
         return res as iUserData;
       })

@@ -1,1 +1,50 @@
-<p>kategories works!</p>
+<div *ngIf="errrorSer.message().length > 2">
+  <app-error></app-error>
+</div>
+<div>
+  <button mat-raised-button color="primary" (click)="addKategorie()">Neue Kategorie</button>
+
+<div *ngIf="kategorie$ | async as kategories">
+  <table mat-table [dataSource]="kategories" class="table">
+    <ng-container matColumnDef="kategoriaid">
+      <th mat-header-cell *matHeaderCellDef>Kategoria ID</th>
+      <td mat-cell *matCellDef="let kategoria">{{ kategoria.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="kategorian">
+      <th mat-header-cell *matHeaderCellDef>Kategoria Name</th>
+      <td mat-cell *matCellDef="let kategoria">{{ kategoria.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="iloscitemow">
+      <th mat-header-cell *matHeaderCellDef>Ilość Itemów w Kategorii</th>
+      <td mat-cell *matCellDef="let kategoria" >
+        <span *ngIf="kategoria.products">{{ kategoria.products.length }} </span>
+        <span *ngIf="!kategoria.products"> 0 </span>
+      </td>
+
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef>Edit</th>
+      <td mat-cell *matCellDef="let kategoria">
+        <button mat-icon-button color="primary" (click)="editKategoria(kategoria)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <th mat-header *matHeaderCellDef>Delete</th>
+      <td mat-cell *matCellDef="let kategoria">
+        <button mat-icon-button color="warn" (click)="deleteKategoria(kategoria.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+</div>

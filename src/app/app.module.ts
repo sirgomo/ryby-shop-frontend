@@ -30,6 +30,8 @@ import { UserComponent } from './user/user.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import {MatCardModule} from '@angular/material/card';
 import { ChangePasswordComponent } from './user/change-password/change-password.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,7 @@ import { ChangePasswordComponent } from './user/change-password/change-password.
     AddEditKategorieComponent,
     KategoriesComponent,
     UserComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +70,8 @@ import { ChangePasswordComponent } from './user/change-password/change-password.
       config: {}
     }),
     MatCardModule,
+    MatTableModule,
+    MatSelectModule,
   ],
   providers: [
     {

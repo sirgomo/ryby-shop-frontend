@@ -1,1 +1,25 @@
-<p>add-edit-kategorie works!</p>
+<h2 mat-dialog-title>Neue Kategorie</h2>
+<div mat-dialog-content>
+  <form [formGroup]="kategorieForm" class="form">
+
+      <input formControlName="id" type="hidden">
+
+    <mat-form-field>
+      <mat-label>Parent ID</mat-label>
+      <mat-select formControlName="parent_id">
+        <mat-option [value]="null" >Select Parrent</mat-option>
+        <mat-option *ngFor="let kategorie of (kategorie$ | async)" [value]="kategorie.id">
+          {{ kategorie.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" type="text" required>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">Abbrechen</button>
+  <button mat-button (click)="onSaveClick()">Speichern</button>
+</div>

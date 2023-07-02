@@ -1,0 +1,29 @@
+.table {
+  width: 100%;
+}
+
+.mat-column-kategoriaid,
+.mat-column-kategorian,
+.mat-column-iloscitemow,
+.mat-column-edit,
+.mat-column-delete {
+  display: table-cell;
+}
+
+@media (max-width: 600px) {
+  .mat-column-kategoriaid,
+  .mat-column-edit,
+  .mat-column-delete {
+    display: none;
+  }
+
+  .mat-column-kategorian,
+  .mat-column-iloscitemow {
+    display: flex;
+    align-items: center;
+  }
+
+  .mat-column-kategorian {
+    flex: 1;
+  }
+}

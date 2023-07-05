@@ -4,6 +4,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UserLoginComponent } from './user/user-login/user-login.component';
 import { iMenuItem } from './model/iMenuItem';
+import { KategorieService } from './admin/kategories/kategorie.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,8 @@ import { iMenuItem } from './model/iMenuItem';
 export class AppComponent {
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;
   title = 'ryby-shop-frontend';
-  constructor(private readonly helper: HelperService, private readonly dialog: MatDialog) {
+  kategorie$ = this.katService.kategorie$;
+  constructor(private readonly helper: HelperService, private readonly dialog: MatDialog, private readonly katService: KategorieService) {
     this.helper.setApp(this);
   }
   menu$ = this.helper.menu$;

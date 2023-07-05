@@ -3,9 +3,7 @@
       <mat-sidenav mode="side" align="start" opened #sidenav>
           <div class="menu" *ngIf="menu$ | async as menus">
             <div class="menuItem" *ngFor="let item of menus;let i = index;" ><button mat-button color="accent" routerLink="{{item.link}}" (click)="buttonActive(i)" >{{item.name}}</button></div>
-            <div class="menuItem"><button mat-raised-button color="accent">Action 1</button></div>
-            <div class="menuItem"><button mat-button color="accent">Action 2</button></div>
-            <div class="menuItem"><button mat-button color="accent">Action 3</button></div>
+            <div class="menuItem" *ngFor="let item of (kategorie$ | async)"><button mat-button color="accent">{{item.name}}</button></div>
           </div>
       </mat-sidenav>
       <mat-sidenav-content >

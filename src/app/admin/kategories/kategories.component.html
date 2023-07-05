@@ -1,9 +1,10 @@
-<div *ngIf="errrorSer.message().length > 2">
+<div *ngIf="errrorSer.message && errrorSer.message().length > 2">
   <app-error></app-error>
 </div>
 <div>
-  <button mat-raised-button color="primary" (click)="addKategorie()">Neue Kategorie</button>
-
+  <div class="button">
+    <button mat-raised-button color="primary" (click)="addKategorie()">Neue Kategorie</button>
+  </div>
 <div *ngIf="kategorie$ | async as kategories">
   <table mat-table [dataSource]="kategories" class="table">
     <ng-container matColumnDef="kategoriaid">

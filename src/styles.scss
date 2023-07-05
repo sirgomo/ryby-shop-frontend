@@ -76,6 +76,13 @@ mat-sidenav {
   transition-duration: 500ms;
   margin-left: 2rem;
 }
+.menuItem {
+  display: block;
+  width: 80%;
+  button {
+    width: 80%;
+  }
+}
 
 mat-sidenav-content  {
   width: calc(100% - 10.5rem);

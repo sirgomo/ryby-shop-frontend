@@ -30,12 +30,11 @@ export class KategorieService {
 
   return this.http.post<iKategorie>(this.apiUrl, categoryData).pipe(map((res) => {
     if(!isFinite(res.id)) {
-      console.log(res)
       this.errService.newMessage(Object(res).message)
       return this.#kategorie.value;
     }
 
-
+      this.snackBar.open('Kategorie erstellt', 'ok', { duration: 1000 })
       const curr = this.#kategorie.value;
       curr.push(res);
       const newCat = curr.splice(0);
@@ -80,6 +79,7 @@ export class KategorieService {
         const newKat = kat.slice(0);
         newKat[index] = res;
         this.#kategorie.next(newKat);
+        this.snackBar.open('Kategorie wurde geändert', 'ok', { duration: 1000 })
       }
       return this.#kategorie.value;
     }),
@@ -91,8 +91,23 @@ export class KategorieService {
     ) as Observable<iKategorie[]>;
   }
 
-  deleteCategory(id: number): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.apiUrl}/${id}`);
+  deleteCategory(id: number): Observable<iKategorie[]> {
+    return this.http.delete<boolean>(`${this.apiUrl}/${id}`).pipe(map((res) => {
+      if(res === true) {
+        const tmp = this.#kategorie.value;
+        const tmpNew = tmp.filter((item) => item.id !== id);
+        this.#kategorie.next(tmpNew);
+        this.snackBar.open('Kategorie wurde gelöscht', 'ok', {duration: 1000 });
+      }
+
+
+      return this.#kategorie.value;
+    }),
+    catchError((err) => {
+      this.errService.newMessage(err.message);
+      return of(this.#kategorie.value);
+    })
+    );
   }
 
   addProductToCategory(categoryId: number, productId: number): Observable<iKategorie | undefined> {

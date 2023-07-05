@@ -4,6 +4,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddEditKategorieComponent } from '../add-edit-kategorie/add-edit-kategorie.component';
 import { ErrorService } from 'src/app/error/error.service';
 import { iKategorie } from 'src/app/model/iKategorie';
+import { combineLatest, map } from 'rxjs';
 
 @Component({
   selector: 'app-kategories',
@@ -17,7 +18,7 @@ export class KategoriesComponent {
   displayedColumns: string[] = ['kategoriaid', 'kategorian', 'iloscitemow', 'edit', 'delete'];
 
   deleteKategoria(id: number): void {
-
+    this.kategorie$ = this.catService.deleteCategory(id);
   }
 
   editKategoria(item: iKategorie): void {

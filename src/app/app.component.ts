@@ -13,7 +13,7 @@ import { KategorieService } from './admin/kategories/kategorie.service';
 })
 export class AppComponent {
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;
-  title = 'ryby-shop-frontend';
+  title = 'Fischfang-Profi.de';
   kategorie$ = this.katService.kategorie$;
   constructor(private readonly helper: HelperService, private readonly dialog: MatDialog, private readonly katService: KategorieService) {
     this.helper.setApp(this);

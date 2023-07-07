@@ -2,12 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule, MatDialogModule
+        RouterTestingModule, MatDialogModule, HttpClientTestingModule, MatSnackBarModule
       ],
       declarations: [
         AppComponent
@@ -24,13 +26,12 @@ describe('AppComponent', () => {
   it(`should have as title 'Fischfang-Profi.de'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('ryby-shop-frontend');
+    expect(app.title).toEqual('Fischfang-Profi.de');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-   // expect(compiled.querySelector('.content span')?.textContent).toContain('ryby-shop-frontend app is running!');
   });
 });

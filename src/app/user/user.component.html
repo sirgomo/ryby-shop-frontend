@@ -1,7 +1,7 @@
-<div *ngIf="user$ | async">
+<div >
   <mat-card class="card">
   <mat-card-title>User Details</mat-card-title>
-  <mat-card-content>
+  <mat-card-content *ngIf="user$ | async">
     <form [formGroup]="userForm">
       <div class="row">
         <mat-form-field>
@@ -82,10 +82,9 @@
         </div>
       </div>
     </form>
-    <div class="user-button">
-      <button mat-button color="primary" id="upuser" (click)="updateUser()">Die Änderungen speichern</button> <button mat-button color="primary" id="cpass" (click)="changePassword()">Passwort ändern</button>
-    </div>
-
   </mat-card-content>
+  <div class="user-button">
+    <button mat-button color="primary" id="upuser" (click)="updateUser()">Die Änderungen speichern</button> <button mat-button color="primary" id="cpass" (click)="changePassword()">Passwort ändern</button>
+  </div>
 </mat-card>
 </div>

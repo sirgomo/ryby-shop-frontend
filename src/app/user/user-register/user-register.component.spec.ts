@@ -83,18 +83,14 @@ describe('UserRegisterComponent', () => {
       nachname: 'Doe',
       email: 'john.doe@example.com',
       telefon: '123456789',
-      role: 'user',
       treuepunkte: 0,
-      l_strasse: 'null',
-      l_hausnummer: 'null',
-      l_stadt: 'null',
-      l_postleitzahl: 'null',
-      l_land: 'null',
-      adresseStrasse: 'Example Street',
-      adresseHausnummer: '123',
-      adresseStadt: 'Example City',
-      adressePostleitzahl: '12345',
-      adresseLand: 'Example Country',
+      adresse: {
+        strasse: 'Example Street',
+        hausnummer: '123',
+        stadt: 'Example City',
+        postleitzahl: '12345',
+        land: 'Example Country',
+      },
     }
 
     const userServiceSpy = jest.spyOn(userService, 'createUser').mockReturnValue(of(resp));

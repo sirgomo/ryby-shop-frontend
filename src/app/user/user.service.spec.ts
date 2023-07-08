@@ -96,34 +96,49 @@ describe('UserService', () => {
 
   it('should make a POST request to create a new user', () => {
     const data: iRegisterUser = {
-      vorname: 'test',
-      email: 'test@test.com',
-      password: 'test123',
-      nachname: '',
-      telefon: '',
-      role: '',
-      registrierungsdatum: '',
-      treuepunkte: 0,
-      adresseStrasse: '',
-      adresseHausnummer: '',
-      adresseStadt: '',
-      adressePostleitzahl: '',
-      adresseLand: ''
+
+      vorname: "John",
+      nachname: "Doe",
+      password: "password123",
+      email: "johndoe@example.com",
+      telefon: "1234567890",
+      role: "user",
+      registrierungsdatum: "2023-07-08",
+      treuepunkte: 100,
+      l_strasse: "Delivery Street",
+      l_hausnummer: "456",
+      l_stadt: "Delivery City",
+      l_postleitzahl: "54321",
+      l_land: "Delivery Country",
+      adresseStrasse: "Main Street",
+      adresseHausnummer: "123",
+      adresseStadt: "Cityville",
+      adressePostleitzahl: "12345",
+      adresseLand: "Countryland"
     };
 
     const mockResponse: iUserData = {
       id: null,
-      vorname: 'test',
-      nachname: 'a',
-      email: 'test@test.com',
-      telefon: '',
-      role: '',
-      treuepunkte: 0,
-      adresseStrasse: '',
-      adresseHausnummer: '',
-      adresseStadt: '',
-      adressePostleitzahl: '',
-      adresseLand: ''
+      vorname: "John",
+      nachname: "Doe",
+      email: "johndoe@example.com",
+      telefon: "1234567890",
+      registrierungsdatum: "2023-07-08",
+      treuepunkte: 100,
+      adresse: {
+        strasse: "Main Street",
+        hausnummer: "123",
+        stadt: "Cityville",
+        postleitzahl: "12345",
+        land: "Countryland"
+      },
+      lieferadresse: {
+        l_strasse: "Delivery Street",
+        l_hausnummer: "456",
+        l_stadt: "Delivery City",
+        l_postleitzahl: "54321",
+        l_land: "Delivery Country"
+      }
     };
 
     jest.spyOn(snackBar, 'open');

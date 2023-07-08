@@ -10,9 +10,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KategorieService } from '../kategories/kategorie.service';
-import { Observable, of } from 'rxjs';
+import { Observable, delay, of } from 'rxjs';
 import { iKategorie } from 'src/app/model/iKategorie';
-import { TransitionCheckState } from '@angular/material/checkbox';
+
 
 describe('AddEditKategorieComponent', () => {
   let component: AddEditKategorieComponent;
@@ -65,24 +65,14 @@ describe('AddEditKategorieComponent', () => {
     const data = {
       id: 1, parent_id: 2, name: 'Category Name',
     };
+    component.data = null;
     jest.spyOn(dialogRef, 'close');
-    jest.spyOn(kategorieService, 'createCategory').mockReturnValue(of([data as iKategorie]));
+    jest.spyOn(kategorieService, 'createCategory').mockReturnValue(of([data as iKategorie] as iKategorie[]));
 
     component.kategorieForm.setValue(data);
+
     component.onSaveClick();
-  /*  let kategorie$: Observable<any> | undefined;
-    Object.defineProperty(component,  'kategorie$', {
-      get :() => kategorie$,
-      set: (value) => {
-          kategorie$ = value;
-          if(kategorie$) {
-            kategorie$.subscribe(() => {
-              fixture.detectChanges();
-              tick();
-            })
-          }
-      }
-    })*/
+
     tick();
     fixture.detectChanges();
     console.log(component.kategorieForm)
@@ -90,7 +80,7 @@ describe('AddEditKategorieComponent', () => {
     expect(dialogRef.close).toHaveBeenCalled();
   }));
 
-  it('should update the category and close the dialog on save click for existing category', () => {
+  it('should update the category and close the dialog on save click for existing category', fakeAsync( () => {
     const formData = {
       id: 1, parent_id: 2, name: 'Category Name',
 
@@ -100,14 +90,16 @@ describe('AddEditKategorieComponent', () => {
 
     };
     jest.spyOn(dialogRef, 'close');
-    jest.spyOn(kategorieService, 'updateCategory').mockReturnValue(of([formData,existingData] as iKategorie[]));
+   const tmp =  jest.spyOn(kategorieService, 'updateCategory').mockReturnValue(of([formData,existingData] as iKategorie[]));
     component.data = existingData as iKategorie;
 
     component.kategorieForm.setValue(formData);
     component.onSaveClick();
+    tick();
+    fixture.detectChanges();
     expect(kategorieService.updateCategory).toHaveBeenCalledWith(formData.id, formData as iKategorie);
     expect(dialogRef.close).toHaveBeenCalled();
-  });
+  }));
 });
 class MatDialogRefMock {
   close() {}

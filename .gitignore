@@ -8,7 +8,7 @@
 
 #env
 /src/environments/*
-/src/environments
+/environments
 # Node
 /node_modules
 npm-debug.log

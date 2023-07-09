@@ -10,13 +10,14 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class KategorieService {
-
+  trytoGetData = false;
   #kategorie : BehaviorSubject<iKategorie[]> =  new BehaviorSubject<iKategorie[]>([]);
   kategorie$ = this.#kategorie.asObservable().pipe(switchMap(res => {
     if(res === null || res === undefined)
       return [];
 
-      if(res.length < 1) {
+      if(res.length < 1 && !this.trytoGetData) {
+        this.trytoGetData = true;
         return this.getAllCategories();
       }
       return of(res);
@@ -61,6 +62,7 @@ export class KategorieService {
         return [];
       }
       this.#kategorie.next(res);
+      this.trytoGetData = false;
       return res;
     }),
    catchError((err) => {

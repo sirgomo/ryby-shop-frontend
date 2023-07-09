@@ -1,1 +1,83 @@
-<p>add-edit-liferant works!</p>
+<div *ngIf="error.message() && error.message().length > 2">
+  <app-error></app-error>
+</div>
+<div class="add-edit-lieferant-container">
+  <h2>Lieferant {{ data ? 'Bearbeiten' : 'Hinzufügen' }}</h2>
+  <form [formGroup]="lieferantForm" (ngSubmit)="saveLieferant()" class="lieferant-form">
+    <div class="form-group">
+      <mat-form-field>
+        <input matInput formControlName="name" placeholder="Name" required>
+        <mat-error *ngIf="lieferantForm.get('name')?.hasError('required')">Name ist erforderlich</mat-error>
+        <mat-error *ngIf="lieferantForm.get('name')?.hasError('pattern')">Name muss aus 5-40 Buchstaben bestehen</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName="email" placeholder="E-Mail" required>
+        <mat-error *ngIf="lieferantForm.get('email')?.hasError('required')">E-Mail ist erforderlich</mat-error>
+        <mat-error *ngIf="lieferantForm.get('email')?.hasError('email')">E-Mail ist ungültig</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName="telefon" placeholder="Telefon" required>
+        <mat-error *ngIf="lieferantForm.get('telefon')?.hasError('required')">Telefon ist erforderlich</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="addresse">
+      <div><h4>Adresse</h4></div>
+
+      <div class="form-group" formGroupName="adresse">
+        <mat-form-field>
+          <input matInput formControlName="strasse" placeholder="Straße" required>
+          <mat-error *ngIf="lieferantForm.get('adresse.strasse')?.hasError('required')">Straße ist erforderlich</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="hausnummer" placeholder="Hausnummer" required>
+          <mat-error *ngIf="lieferantForm.get('adresse.hausnummer')?.hasError('required')">Hausnummer ist erforderlich</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="stadt" placeholder="Stadt" required>
+          <mat-error *ngIf="lieferantForm.get('adresse.stadt')?.hasError('required')">Stadt ist erforderlich</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="postleitzahl" placeholder="Postleitzahl" required>
+          <mat-error *ngIf="lieferantForm.get('adresse.postleitzahl')?.hasError('required')">Postleitzahl ist erforderlich</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="land" placeholder="Land" required>
+          <mat-error *ngIf="lieferantForm.get('adresse.land')?.hasError('required')">Land ist erforderlich</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="form-group">
+      <mat-form-field>
+        <input matInput formControlName="steuernummer" placeholder="Steuernummer" required>
+        <mat-error *ngIf="lieferantForm.get('steuernummer')?.hasError('required')">Steuernummer ist erforderlich</mat-error>
+        <mat-error *ngIf="lieferantForm.get('steuernummer')?.hasError('pattern')">Steuernummer muss aus 6-14 alphanumerischen Zeichen bestehen</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName="bankkontonummer" placeholder="Bankkontonummer" required>
+        <mat-error *ngIf="lieferantForm.get('bankkontonummer')?.hasError('required')">Bankkontonummer ist erforderlich</mat-error>
+        <mat-error *ngIf="lieferantForm.get('bankkontonummer')?.hasError('pattern')">Bankkontonummer muss aus 10-30 alphanumerischen Zeichen bestehen</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName="ansprechpartner" placeholder="Ansprechpartner" required>
+        <mat-error *ngIf="lieferantForm.get('ansprechpartner')?.hasError('required')">Ansprechpartner ist erforderlich</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field>
+        <input matInput formControlName="zahlart" placeholder="Zahlart" required>
+        <mat-error *ngIf="lieferantForm.get('zahlart')?.hasError('required')">Zahlart ist erforderlich</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName="umsatzsteuerIdentifikationsnummer" placeholder="Umsatzsteuer-Identifikationsnummer" required>
+        <mat-error *ngIf="lieferantForm.get('umsatzsteuerIdentifikationsnummer')?.hasError('required')">Umsatzsteuer-Identifikationsnummer ist erforderlich</mat-error>
+        <mat-error *ngIf="lieferantForm.get('umsatzsteuerIdentifikationsnummer')?.hasError('pattern')">Umsatzsteuer-Identifikationsnummer muss aus 8-15 alphanumerischen Zeichen bestehen</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="button-group">
+      <button mat-raised-button color="primary" *ngIf="lieferantForm.valid" type="submit">Speichern</button>
+      <button mat-raised-button *ngIf="!lieferantForm.valid" type="submit" disabled>Speichern</button>
+      <button mat-raised-button color="accent" (click)="closeDialog()">Abbrechen</button>
+    </div>
+  </form>
+  <span *ngIf="actt$ | async"></span>
+</div>

@@ -1,0 +1,32 @@
+.add-edit-lieferant-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  .lieferant-form {
+    width: 100%;
+    .addresse {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .form-group {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: .4rem;
+      margin-bottom: 20px;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+  }
+}

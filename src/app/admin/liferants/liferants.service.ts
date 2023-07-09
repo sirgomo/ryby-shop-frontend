@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, map, of, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of, shareReplay, switchMap, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iLieferant } from 'src/app/model/iLieferant';
 import { environment } from 'src/environments/environment';
@@ -9,10 +9,10 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class LiferantsService {
-  private api = environment.api +  'liferant';
+   api = environment.api +  'liferant';
   trytoGetData = false;
   #liferants : BehaviorSubject<iLieferant[]> =  new BehaviorSubject<iLieferant[]>([]);
-  liferants$ = this.#liferants.asObservable().pipe(map((res) => {
+  liferants$ = this.#liferants.asObservable().pipe(switchMap((res) => {
     if(res.length < 1 && !this.trytoGetData) {
       this.trytoGetData = true;
       return this.getAllLieferanten();

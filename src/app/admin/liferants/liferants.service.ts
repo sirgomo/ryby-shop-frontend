@@ -26,13 +26,15 @@ export class LiferantsService {
 
   getAllLieferanten(): Observable<iLieferant[]> {
     return this.http.get<iLieferant[]>(this.api).pipe(map(res => {
+      this.trytoGetData = false;
+
      this.#liferants.next(res);
-     this.trytoGetData = false;
-      return res;
+     return res;
     }),
     catchError((err) => {
+      this.trytoGetData = false;
       this.error.newMessage(err.message)
-      return of({} as iLieferant[]);
+      return of([] as iLieferant[]);
     })
     );
   }

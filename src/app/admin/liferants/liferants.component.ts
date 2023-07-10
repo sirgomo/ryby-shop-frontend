@@ -4,6 +4,7 @@ import { Observable, combineLatest, map } from 'rxjs';
 import { iLieferant } from 'src/app/model/iLieferant';
 import { AddEditLiferantComponent } from '../add-edit-liferant/add-edit-liferant.component';
 import { LiferantsService } from './liferants.service';
+import { ErrorService } from 'src/app/error/error.service';
 
 @Component({
   selector: 'app-liferants',
@@ -15,7 +16,7 @@ export class LiferantsComponent {
 
   lieferanten$ = this.liferantsService.liferants$;
   tabColumns: string[] = ['id', 'name', 'email', 'edit', 'delete'];
-  constructor(private liferantsService: LiferantsService, private dialog: MatDialog) { }
+  constructor(private liferantsService: LiferantsService, private dialog: MatDialog, public error: ErrorService ) { }
 
 
   addEditLiferant(lieferant?: iLieferant): void {

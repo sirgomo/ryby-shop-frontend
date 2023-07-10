@@ -1,3 +1,6 @@
+<div *ngIf="error.message() && error.message().length > 2">
+  <app-error></app-error>
+</div>
 <mat-card>
   <mat-card-header>
     <div class="center-button">

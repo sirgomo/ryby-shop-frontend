@@ -10,6 +10,7 @@ import { of } from 'rxjs';
 import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClient } from '@angular/common/http';
 
 describe('AddEditLiferantComponent', () => {
   let component: AddEditLiferantComponent;
@@ -26,7 +27,7 @@ describe('AddEditLiferantComponent', () => {
         LiferantsService,
         ErrorService,
         { provide: MatDialogRef, useValue: { close: jest.fn() } },
-        { provide: MAT_DIALOG_DATA, useValue: {} }
+        { provide: MAT_DIALOG_DATA, useValue: null }
       ]
     }).compileComponents();
   });
@@ -44,7 +45,7 @@ describe('AddEditLiferantComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize form with data', () => {
+  it('should initialize form with data', fakeAsync( () => {
     const data: iLieferant = {
       id: 1,
       name: 'Test Lieferant',
@@ -63,14 +64,16 @@ describe('AddEditLiferantComponent', () => {
       zahlart: 'Test Zahlart',
       umsatzsteuerIdentifikationsnummer: '12345678'
     };
-
+    jest.spyOn(liferantsService, 'getLieferantById').mockReturnValue(of(data));
     component.data = data;
     component.ngOnInit();
-
+    component.actt$.subscribe(() => {});
+    tick();
+    fixture.detectChanges();
     expect(component.lieferantForm.value).toEqual(data);
-  });
+  }));
 
-  it('should call liferantsService.createLieferant when form is valid and data is not provided', () => {
+  it('should call liferantsService.createLieferant when form is valid and data is not provided', fakeAsync( () => {
     const item: iLieferant = {
       name: 'Test Lieferant',
       email: 'test@test.com',
@@ -93,11 +96,16 @@ describe('AddEditLiferantComponent', () => {
 
 
 
-    component.lieferantForm.setValue({item});
+    component.lieferantForm.patchValue(item);
+    fixture.detectChanges();
     component.saveLieferant();
+    component.actt$.subscribe(() => {})
+    fixture.detectChanges();
+    tick();
+
 
     expect(spy).toHaveBeenCalled();
-  });
+  }));
 
   it('should call liferantsService.updateLieferant when form is valid and data is provided', () => {
     const data: iLieferant = {

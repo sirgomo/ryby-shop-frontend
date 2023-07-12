@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Observable, combineLatest, map } from 'rxjs';
+import { combineLatest, map, tap } from 'rxjs';
 import { iLieferant } from 'src/app/model/iLieferant';
 import { AddEditLiferantComponent } from '../add-edit-liferant/add-edit-liferant.component';
 import { LiferantsService } from './liferants.service';
 import { ErrorService } from 'src/app/error/error.service';
+import { HelperService } from 'src/app/helper/helper.service';
 
 @Component({
   selector: 'app-liferants',
@@ -12,11 +13,17 @@ import { ErrorService } from 'src/app/error/error.service';
   styleUrls: ['./liferants.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LiferantsComponent {
-
-  lieferanten$ = this.liferantsService.liferants$;
+export class LiferantsComponent implements OnDestroy {
+  #title = '';
+  lieferanten$ = this.liferantsService.liferants$.pipe(tap((res) => {
+    this.#title = this.helper.titelSig();
+    this.helper.titelSig.set(this.#title + ' Liferanten')
+  }));
   tabColumns: string[] = ['id', 'name', 'email', 'edit', 'delete'];
-  constructor(private liferantsService: LiferantsService, private dialog: MatDialog, public error: ErrorService ) { }
+  constructor(private liferantsService: LiferantsService, private dialog: MatDialog, public error: ErrorService, private helper: HelperService ) { }
+  ngOnDestroy(): void {
+    this.helper.titelSig.set(this.#title );
+  }
 
 
   addEditLiferant(lieferant?: iLieferant): void {

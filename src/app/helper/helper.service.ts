@@ -10,6 +10,7 @@ import { AppComponent } from '../app.component';
 export class HelperService {
   menuSub: BehaviorSubject<iMenuItem[]> = new BehaviorSubject<iMenuItem[]>([]);
   menu$ = this.menuSub.asObservable();
+  titelSig = signal('Ryby');
   isLogged = signal(false);
   appComponenet!: AppComponent;
   constructor() { }

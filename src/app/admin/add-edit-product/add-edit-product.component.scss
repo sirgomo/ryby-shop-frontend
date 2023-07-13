@@ -1,0 +1,37 @@
+.add-edit-product {
+  display: flex;
+  padding: 1rem 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
+}
+
+.product-image {
+  width: 500px;
+  height: 500px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+.image-right {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.row {
+  display: flex;
+  gap: .4rem;
+}
+.button {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: .5rem;
+}

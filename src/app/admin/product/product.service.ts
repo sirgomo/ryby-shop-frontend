@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, of, throwError } from 'rxjs';
+import { catchError, of, tap, throwError } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { toSignal } from '@angular/core/rxjs-interop'
@@ -52,6 +52,9 @@ export class ProductService {
       catchError((error) => {
         this.error.newMessage('Failed to get all products.');
         return throwError(()=> error);
+      }),
+      tap((res) => {
+        console.log(res)
       })
     );
   }

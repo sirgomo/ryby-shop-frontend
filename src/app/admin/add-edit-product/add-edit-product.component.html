@@ -48,7 +48,9 @@
       <div class="row">
         <mat-form-field>
           <mat-label>Datum Hinzugefügt</mat-label>
-          <input matInput type="text" id="datumHinzugefuegt" formControlName="datumHinzugefuegt" required>
+          <input matInput [matDatepicker]="picker" formControlName="datumHinzugefuegt" type="date" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
         <mat-checkbox id="verfgbarkeit" formControlName="verfgbarkeit">Verfügbarkeit</mat-checkbox>

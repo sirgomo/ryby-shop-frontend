@@ -30,7 +30,7 @@ export class AddEditProductComponent {
       lieferant: [this.data ? this.data.lieferant : null, Validators.required],
       lagerorte: [this.data ? this.data.lagerorte : [], Validators.required],
       bestellungen: [this.data ? this.data.bestellungen : []],
-      datumHinzugefuegt: [this.data ? this.data.datumHinzugefuegt : ''],
+      datumHinzugefuegt: [this.data ? this.data.datumHinzugefuegt : Date.now()],
       kategorie: [this.data ? this.data.kategorie : [], Validators.required],
       verfgbarkeit: [this.data ? this.data.verfgbarkeit : false],
       mindestmenge: [this.data ? this.data.mindestmenge : '', Validators.required],

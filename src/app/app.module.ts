@@ -34,6 +34,11 @@ import {MatTableModule} from '@angular/material/table';
 import {MatSelectModule} from '@angular/material/select';
 import { ProductComponent } from './admin/product/product.component';
 import { AddEditProductComponent } from './admin/add-edit-product/add-edit-product.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MY_FORMATS } from './const';
+
 
 @NgModule({
   declarations: [
@@ -76,10 +81,15 @@ import { AddEditProductComponent } from './admin/add-edit-product/add-edit-produ
     MatCardModule,
     MatTableModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
+    },
+    {
+      provide: MAT_DATE_FORMATS, useValue: MY_FORMATS
     },
   ],
   exports: [],

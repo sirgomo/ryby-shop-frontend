@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { iMenuItem } from '../model/iMenuItem';
 import { ToolbarComponent } from '../toolbar/toolbar/toolbar.component';
 import { AppComponent } from '../app.component';
+import { iKategorie } from '../model/iKategorie';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,9 @@ export class HelperService {
   menuSub: BehaviorSubject<iMenuItem[]> = new BehaviorSubject<iMenuItem[]>([]);
   menu$ = this.menuSub.asObservable();
   titelSig = signal('Ryby');
+  searchSig = signal<string | undefined>(undefined);
+  kategorySig = signal<iKategorie | undefined>(undefined);
+  artikelProSiteSig = signal<number> (20);
   isLogged = signal(false);
   appComponenet!: AppComponent;
   constructor() { }

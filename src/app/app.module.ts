@@ -32,6 +32,8 @@ import {MatCardModule} from '@angular/material/card';
 import { ChangePasswordComponent } from './user/change-password/change-password.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatSelectModule} from '@angular/material/select';
+import { ProductComponent } from './admin/product/product.component';
+import { AddEditProductComponent } from './admin/add-edit-product/add-edit-product.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import {MatSelectModule} from '@angular/material/select';
     KategoriesComponent,
     UserComponent,
     ChangePasswordComponent,
+    ProductComponent,
+    AddEditProductComponent,
   ],
   imports: [
     BrowserModule,

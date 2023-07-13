@@ -6,8 +6,14 @@ import { LiferantsComponent } from './admin/liferants/liferants.component';
 import { routeGuard } from './auth/route.guard';
 import { UserComponent } from './user/user.component';
 import { userGuard } from './auth/user.guard';
+import { ProductComponent } from './admin/product/product.component';
 
 const routes: Routes = [
+{
+  component: ProductComponent,
+  path: 'product',
+  canActivate: [routeGuard],
+},
 {
   component: AdminComponent,
   path: 'admin',

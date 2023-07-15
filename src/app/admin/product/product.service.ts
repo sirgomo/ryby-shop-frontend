@@ -1,7 +1,7 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Injectable, computed } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, finalize, map, of, tap, throwError } from 'rxjs';
+import { BehaviorSubject, EMPTY, Subject, catchError, finalize, map, of, takeUntil, tap, throwError } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { toSignal } from '@angular/core/rxjs-interop'
@@ -16,7 +16,7 @@ export class ProductService {
   API = environment.api + 'product';
   productsGetSig = toSignal<iProduct[], iProduct[]>(this.getAllProducts(this.helper.searchSig(), this.helper.kategorySig()?.id, this.helper.artikelProSiteSig()), { initialValue: []});
   productsSig = computed (() => (this.productsGetSig()))
-
+  break: Subject<any> = new Subject();
 
 
   constructor(private readonly httpClinet: HttpClient, private readonly error: ErrorService, private readonly snackbar: MatSnackBar,
@@ -73,7 +73,7 @@ export class ProductService {
   uploadPhoto(file: File) {
     const formData = new FormData();
     formData.append('photo', file);
-    console.log(formData.get('photo'))
+
 
     return this.httpClinet.post(`${this.API}/upload`, formData, { reportProgress: true, observe: 'events' }).pipe(
       catchError((error) => {
@@ -81,15 +81,45 @@ export class ProductService {
         return throwError(()=> error);
       }),
       finalize(() => this.resetFotoUpload()),
-      map((event) => {
-        if(event.type == HttpEventType.UploadProgress && event.total)
-          this.helper.uploadProgersSig.set(Math.round(100 * (event.loaded / event.total)));
-      })
+      tap((event) => {
+        if(event.type == HttpEventType.UploadProgress && event.total) {
+           this.helper.uploadProgersSig.set(Math.round(100 * (event.loaded / event.total)));
 
+        }
+      }),
+      map(res => {
+        if(res.type == HttpEventType.Response)
+          return res.body
+
+          return null;
+      })
+      ,takeUntil(this.break.asObservable())
     );
   }
   resetFotoUpload() {
     this.helper.uploadProgersSig.set(0);
-
+    this.break.next(EMPTY);
+  }
+  getImage(id: string) {
+    console.log('getImage ' +id)
+    return this.httpClinet.get(`${this.API}/uploads/${id}`, { responseType: 'blob' }).pipe(
+      catchError((err) => {
+        this.error.newMessage(err.message);
+        return throwError(()=> err);
+      }),
+      map((res) => {
+        return res;
+      } ));
+  }
+  getThumbnails(id: string) {
+    console.log('getImage ' +id)
+    return this.httpClinet.get(`${this.API}/thumbnails/${id}`, { responseType: 'blob' }).pipe(
+      catchError((err) => {
+        this.error.newMessage(err.message);
+        return throwError(()=> err);
+      }),
+      map((res) => {
+        return res;
+      } ));
   }
 }

@@ -8,9 +8,11 @@
     <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
       <div class="product-details">
           <div class="product-image">
-            <img [src]="" alt="Product Image">
-            <div class="images" *ngIf="images.length > 0">
-
+            <div class="image" *ngIf="images.length > 0">
+              <img [src]="getSafeImageData()" alt="Product Image" *ngIf="act$ | async else loader">
+              <div class="images">
+                <button mat-icon-button color="accent" *ngFor="let item of images; let i = index" (click)="getImage(item)">{{i + 1}}</button>
+              </div>
             </div>
           </div>
           <div class="image-right">
@@ -114,3 +116,6 @@
 </form>
 <span *ngIf="act$ | async"></span>
 </div>
+<ng-template #loader>
+  <mat-spinner></mat-spinner>
+</ng-template>

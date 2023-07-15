@@ -11,7 +11,8 @@ import { iLieferant } from 'src/app/model/iLieferant';
 import { iKategorie } from 'src/app/model/iKategorie';
 import { HelperService } from 'src/app/helper/helper.service';
 import { ErrorService } from 'src/app/error/error.service';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-edit-product',
@@ -23,6 +24,7 @@ export class AddEditProductComponent implements OnInit {
 
 
   productForm: FormGroup;
+  currentImage!: Blob;
   photoFile!: File;
   images: string[] = [];
   color: iColor[] = [];
@@ -37,7 +39,8 @@ export class AddEditProductComponent implements OnInit {
     private liferantService: LiferantsService,
     private katService: KategorieService,
     public helperService: HelperService,
-    public err: ErrorService
+    public err: ErrorService,
+    private sanitizer: DomSanitizer
   ) {
     this.productForm = this.formBuilder.group({
       id: [this.data ? this.data.id : null],
@@ -45,7 +48,7 @@ export class AddEditProductComponent implements OnInit {
       preis: [this.data ? this.data.preis : '', Validators.required],
       artid: [this.data ? this.data.artid : '', Validators.required],
       beschreibung: [this.data ? this.data.beschreibung : '', Validators.required],
-      foto: [this.data ? this.data.foto[0] : ''],
+      foto: [this.data ? this.data.foto[0] : this.images],
       thumbnail: [this.data ? this.data.thumbnail : ''],
       lieferant: [this.data ? this.data.lieferant : null, Validators.required],
       lagerorte: [this.data ? this.data.lagerorte : [], Validators.required],
@@ -76,27 +79,28 @@ export class AddEditProductComponent implements OnInit {
   onFileChange(event: any) {
 
     if (event.target.files && event.target.files.length) {
-
-
-/*
-        const reader = new FileReader();
-
-        reader.onload = (e: any) => {
-        //  console.log(e.target.result);
-          this.photoFile = e.target.result;
-        };
-
-        reader.readAsDataURL(event.target.files[0]);*/
         this.photoFile = event.target.files[0];
     }
   }
 
   uploadPhoto() {
     if (this.photoFile) {
-     this.act$ = this.prodService.uploadPhoto(this.photoFile);
+     this.act$ = this.prodService.uploadPhoto(this.photoFile).pipe(tap((res) => {
+      if(res) {
+        const tmp = res as unknown as { imageid: string };
+        this.images.push(tmp.imageid);
+        this.productForm.get('foto')?.patchValue(this.images);
+        this.getImage(tmp.imageid);
+        console.log(tmp.imageid);
+      }
+     }));
     }
   }
   cancelUpload() {
+    if(this.images.length > 0)
+    this.getImage(this.images[this.images.length -1]);
+
+
     this.prodService.resetFotoUpload();
     }
 
@@ -126,5 +130,18 @@ export class AddEditProductComponent implements OnInit {
   removeColor(){
     if(this.color.length > 0)
       this.color.splice(this.color.length -1, 1);
+  }
+  getImage(id: string) {
+
+    this.act$ = this.prodService.getImage(id).pipe(tap((res) => {
+     this.currentImage = res;
+      console.log(res);
+    }));
+  }
+  getSafeImageData() {
+    if (this.currentImage) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.currentImage));
+    }
+    return '';
   }
 }

@@ -16,6 +16,7 @@ export class HelperService {
   kategorySig = signal<iKategorie | undefined>(undefined);
   artikelProSiteSig = signal<number> (20);
   isLogged = signal(false);
+  uploadProgersSig = signal<number>(0);
   appComponenet!: AppComponent;
   constructor() { }
   setApp(app: AppComponent) {

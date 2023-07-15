@@ -1,4 +1,7 @@
-<div>
+<div *ngIf="err.message().length > 2">
+  <app-error></app-error>
+</div>
+<div class="h2">
   <h2>{{ data ? 'Produkt bearbeiten' : 'Produkt hinzufügen' }}</h2>
 </div>
 <div class="add-edit-product">
@@ -6,8 +9,16 @@
       <div class="product-details">
           <div class="product-image">
             <img [src]="" alt="Product Image">
+            <div class="images" *ngIf="images.length > 0">
+
+            </div>
           </div>
           <div class="image-right">
+            <mat-form-field>
+              <mat-label>Artikel Nr:</mat-label>
+              <input matInput type="number" id="artid" formControlName="artid" required>
+            </mat-form-field>
+
             <mat-form-field>
               <mat-label>Name</mat-label>
               <input matInput type="text" id="name" formControlName="name" required>
@@ -18,32 +29,43 @@
               <textarea matInput id="beschreibung" formControlName="beschreibung" required></textarea>
             </mat-form-field>
 
-          <mat-form-field>
+            <mat-form-field>
               <mat-label>Kategorie</mat-label>
-              <input matInput type="text" id="kategorie" formControlName="kategorie" required>
+              <mat-select id="kategorie" formControlName="kategorie" required>
+                <mat-option *ngFor="let item of kategorySignal()" [value]="item">{{item.name}}</mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
         </div>
       <div class="row" >
         <mat-form-field>
-          <mat-label>Preis</mat-label>
+          <mat-label>Verkaufpreis</mat-label>
           <input matInput type="number" id="preis" formControlName="preis" required>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Lieferant</mat-label>
-          <input matInput type="text" id="lieferant" formControlName="lieferant" required>
+          <mat-select required formControlName="lieferant" id="lieferant">
+            <mat-option *ngFor="let supplier of liferantSignal()" [value]="supplier">{{supplier.name}}</mat-option>
+          </mat-select>
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Lagerorte</mat-label>
-          <input matInput type="text" id="lagerorte" formControlName="lagerorte" required>
-        </mat-form-field>
+        <div class="imginput">
+          <input type="file" name="img" id="img"   (change)="onFileChange($event)">
 
-        <mat-form-field>
-          <mat-label>Bestellungen</mat-label>
-          <input matInput type="text" id="bestellungen" formControlName="bestellungen" required>
-        </mat-form-field>
+            <button mat-mini-fab color="primary" class="upload-btn"
+            (click)="uploadPhoto()">
+              <mat-icon>attach_file</mat-icon>
+            </button>
+
+            <mat-progress-bar class="progress-bar" mode="determinate"
+            [value]="helperService.uploadProgersSig()" *ngIf="helperService.uploadProgersSig() > 0 && helperService.uploadProgersSig() < 100">
+            </mat-progress-bar>
+
+            <mat-icon class="cancel-upload" (click)="cancelUpload()"
+            *ngIf="helperService.uploadProgersSig() > 0">delete_forever</mat-icon>
+        </div>
+
       </div>
       <div class="row">
         <mat-form-field>
@@ -52,6 +74,7 @@
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
+
 
         <mat-checkbox id="verfgbarkeit" formControlName="verfgbarkeit">Verfügbarkeit</mat-checkbox>
 
@@ -67,41 +90,27 @@
           <mat-label>Verkaufte Anzahl</mat-label>
           <input matInput type="number" id="verkaufteAnzahl" formControlName="verkaufteAnzahl">
         </mat-form-field>
+        <div class="color">
+          <div class="colors">
+            <div  *ngFor="let item of color"> {{item.id }} : {{item.menge}}</div>
+          </div>
 
-        <mat-form-field>
-          <mat-label>Wareneingang</mat-label>
-          <input matInput type="text" id="wareneingang" formControlName="wareneingang" required>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Warenausgang</mat-label>
-          <input matInput type="text" id="warenausgang" formControlName="warenausgang" required>
-        </mat-form-field>
+          <div class="colbutt">
+            <button mat-button (click)="addColor()">Farbe hinzufugen</button>
+            <button mat-button (click)="removeColor()">Farbe entfernen</button>
+          </div>
+        </div>
 
         <mat-form-field>
           <mat-label>Mehrwertsteuer</mat-label>
           <input matInput type="number" id="mehrwehrsteuer" formControlName="mehrwehrsteuer" required>
         </mat-form-field>
       </div>
-      <div class="row" >
-        <mat-form-field>
-          <mat-label>Promocje</mat-label>
-          <input matInput type="text" id="promocje" formControlName="promocje" required>
-        </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Reservation</mat-label>
-          <input matInput type="text" id="reservation" formControlName="reservation" required>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Bewertung</mat-label>
-          <input matInput type="text" id="bewertung" formControlName="bewertung" required>
-        </mat-form-field>
-      </div>
       <div class="button" >
         <button mat-button type="submit">Speichern</button>
         <button mat-button type="button" (click)="cancel()">Abbrechen</button>
       </div>
 </form>
+<span *ngIf="act$ | async"></span>
 </div>

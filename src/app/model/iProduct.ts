@@ -12,7 +12,9 @@ export interface iProduct {
   id: number | undefined;
   name: string;
   preis: number;
+  artid: number;
   beschreibung: string;
+  color: string;
   foto: string;
   thumbnail: string;
   lieferant: iLieferant;

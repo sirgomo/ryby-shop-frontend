@@ -35,3 +35,19 @@
   justify-content: center;
   margin-bottom: .5rem;
 }
+.color {
+  display: flex;
+  flex-direction: column;
+
+
+  .colors {
+    display: flex;
+    flex-wrap:wrap;
+    width: 20rem;
+
+    gap: .2rem;
+  }
+}
+.h2 {
+  text-align: center;
+}

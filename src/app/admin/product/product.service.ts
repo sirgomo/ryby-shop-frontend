@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Injectable, computed } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, of, tap, throwError } from 'rxjs';
+import { catchError, finalize, map, of, tap, throwError } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { toSignal } from '@angular/core/rxjs-interop'
@@ -16,6 +16,8 @@ export class ProductService {
   API = environment.api + 'product';
   productsGetSig = toSignal<iProduct[], iProduct[]>(this.getAllProducts(this.helper.searchSig(), this.helper.kategorySig()?.id, this.helper.artikelProSiteSig()), { initialValue: []});
   productsSig = computed (() => (this.productsGetSig()))
+
+
 
   constructor(private readonly httpClinet: HttpClient, private readonly error: ErrorService, private readonly snackbar: MatSnackBar,
     private readonly helper: HelperService) { }
@@ -71,12 +73,23 @@ export class ProductService {
   uploadPhoto(file: File) {
     const formData = new FormData();
     formData.append('photo', file);
+    console.log(formData.get('photo'))
 
-    return this.httpClinet.post<string>(`${this.API}/upload`, formData).pipe(
+    return this.httpClinet.post(`${this.API}/upload`, formData, { reportProgress: true, observe: 'events' }).pipe(
       catchError((error) => {
         this.error.newMessage('Failed to upload photo.');
         return throwError(()=> error);
+      }),
+      finalize(() => this.resetFotoUpload()),
+      map((event) => {
+        if(event.type == HttpEventType.UploadProgress && event.total)
+          this.helper.uploadProgersSig.set(Math.round(100 * (event.loaded / event.total)));
       })
+
     );
+  }
+  resetFotoUpload() {
+    this.helper.uploadProgersSig.set(0);
+
   }
 }

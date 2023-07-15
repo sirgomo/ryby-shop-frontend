@@ -44,7 +44,6 @@ export class AddEditLiferantComponent implements OnInit{
   ngOnInit(): void {
     if(this.data && this.data.id)
     this.actt$ = this.liferantsService.getLieferantById(this.data.id).pipe(tap((res) => {
-      console.log(res);
       this.lieferantForm.patchValue(res);
     }))
   }

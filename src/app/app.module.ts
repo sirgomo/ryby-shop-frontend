@@ -38,6 +38,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MY_FORMATS } from './const';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -83,6 +84,7 @@ import { MY_FORMATS } from './const';
     MatSelectModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    MatProgressBarModule
   ],
   providers: [
     {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, Optional, signal } from '@angular/core';
 import { ProductService } from '../product/product.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -11,14 +11,17 @@ import { iLieferant } from 'src/app/model/iLieferant';
 import { iKategorie } from 'src/app/model/iKategorie';
 import { HelperService } from 'src/app/helper/helper.service';
 import { ErrorService } from 'src/app/error/error.service';
-import { Observable, tap } from 'rxjs';
+import { Observable, combineLatest, map, shareReplay, startWith, tap } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
+import { iAktion } from 'src/app/model/iAktion';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-product',
   templateUrl: './add-edit-product.component.html',
   styleUrls: ['./add-edit-product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DatePipe]
 })
 export class AddEditProductComponent implements OnInit {
 
@@ -28,19 +31,22 @@ export class AddEditProductComponent implements OnInit {
   photoFile!: File;
   images: string[] = [];
   color: iColor[] = [];
+  actionsSig = signal<iAktion[]>([]);
   liferantSignal = toSignal<iLieferant[], iLieferant[]>(this.liferantService.liferants$, { initialValue: [] });
   kategorySignal = toSignal<iKategorie[], iKategorie[]>(this.katService.kategorie$, { initialValue: []});
-  act$ = new Observable();
+  act$ = new Observable().pipe(shareReplay());
+  create$ = new Observable().pipe(shareReplay());
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<AddEditProductComponent>,
     private readonly prodService: ProductService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: iProduct,
-    private liferantService: LiferantsService,
-    private katService: KategorieService,
-    public helperService: HelperService,
-    public err: ErrorService,
-    private sanitizer: DomSanitizer
+    private readonly liferantService: LiferantsService,
+    private readonly katService: KategorieService,
+    public readonly helperService: HelperService,
+    public readonly err: ErrorService,
+    private readonly sanitizer: DomSanitizer,
+    private readonly dpipe: DatePipe,
   ) {
     this.productForm = this.formBuilder.group({
       id: [this.data ? this.data.id : null],
@@ -51,14 +57,13 @@ export class AddEditProductComponent implements OnInit {
       foto: [this.data ? this.data.foto[0] : this.images],
       thumbnail: [this.data ? this.data.thumbnail : ''],
       lieferant: [this.data ? this.data.lieferant : null, Validators.required],
-      lagerorte: [this.data ? this.data.lagerorte : [], Validators.required],
+      lagerorte: [this.data ? this.data.lagerorte : []],
       bestellungen: [this.data ? this.data.bestellungen : []],
       datumHinzugefuegt: [this.data ? this.data.datumHinzugefuegt : Date.now()],
       kategorie: [this.data ? this.data.kategorie : [], Validators.required],
       verfgbarkeit: [this.data ? this.data.verfgbarkeit : false],
       mindestmenge: [this.data ? this.data.mindestmenge : '', Validators.required],
-      aktion: [this.data ? this.data.aktion : false],
-      verkaufteAnzahl: [{ value:  this.data ? this.data.verkaufteAnzahl : '',  disabled: true } ],
+      verkaufteAnzahl: [{ value:  this.data ? this.data.verkaufteAnzahl : 0,  disabled: true } ],
       wareneingang: [this.data ? this.data.wareneingang : []],
       warenausgang: [this.data ? this.data.warenausgang : []],
       mehrwehrsteuer: [this.data ? this.data.mehrwehrsteuer : '', Validators.required],
@@ -69,9 +74,18 @@ export class AddEditProductComponent implements OnInit {
   }
   ngOnInit(): void {
     if(this.data) {
+      this.data.preis = Number(this.data.preis)
       this.productForm.patchValue(this.data);
       this.images = JSON.parse( this.data.foto);
       this.color = JSON.parse(this.data.color);
+
+      if(this.data.id)
+      this.create$ = this.prodService.getProductById(this.data.id).pipe(map((res) => {
+       this.productForm.patchValue(res);
+       console.log(this.productForm.value)
+      }));
+
+
     }
   }
 
@@ -84,16 +98,18 @@ export class AddEditProductComponent implements OnInit {
   }
 
   uploadPhoto() {
+
     if (this.photoFile) {
-     this.act$ = this.prodService.uploadPhoto(this.photoFile).pipe(tap((res) => {
-      if(res) {
-        const tmp = res as unknown as { imageid: string };
+     this.act$ = this.prodService.uploadPhoto(this.photoFile);
+     this.create$ = combineLatest([this.create$.pipe(startWith(null)), this.act$]).pipe(map(([cr, act]) => {
+      if(act) {
+        const tmp = act as unknown as { imageid: string };
         this.images.push(tmp.imageid);
         this.productForm.get('foto')?.patchValue(this.images);
         this.getImage(tmp.imageid);
         console.log(tmp.imageid);
       }
-     }));
+     }))
     }
   }
   cancelUpload() {
@@ -106,13 +122,27 @@ export class AddEditProductComponent implements OnInit {
 
   saveProduct() {
     if (this.productForm.valid) {
-      const product: iProduct = this.productForm.value;
+      const product: iProduct = {} as iProduct;
+      Object.assign(product, this.productForm.value)
       product.foto = JSON.stringify(this.images);
       product.color = JSON.stringify(this.color);
+      product.verkaufteAnzahl = this.data ?  this.data.verkaufteAnzahl : 0;
+      product.preis = Number(this.productForm.get('preis')?.getRawValue());
+
+
+      const curDate =  this.dpipe.transform(this.productForm.get('datumHinzugefuegt')?.getRawValue(), 'yyyy-MM-dd');
+      console.log(product)
+      if(curDate)
+      product.datumHinzugefuegt = curDate;
       if (!product.id) {
-      this.act$ = this.prodService.createProduct(product);
+      this.create$ = this.prodService.createProduct(product).pipe(tap((res) => {
+        if(res.id) {
+          this.dialogRef.close();
+        }
+      }));
       } else {
-      this.act$ = this.prodService.updateProduct(product.id, product);
+        product.verfgbarkeit = this.productForm.get('verfgbarkeit')?.getRawValue() == 1 ? true : false;
+      this.create$ = this.prodService.updateProduct(product.id, product);
       }
     }
   }

@@ -5,7 +5,7 @@
   <h2>{{ data ? 'Produkt bearbeiten' : 'Produkt hinzufügen' }}</h2>
 </div>
 <div class="add-edit-product">
-    <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+    <form [formGroup]="productForm">
       <div class="product-details">
           <div class="product-image">
             <div class="image" *ngIf="images.length > 0">
@@ -33,7 +33,7 @@
 
             <mat-form-field>
               <mat-label>Kategorie</mat-label>
-              <mat-select id="kategorie" formControlName="kategorie" required>
+              <mat-select id="kategorie" formControlName="kategorie" multiple required>
                 <mat-option *ngFor="let item of kategorySignal()" [value]="item">{{item.name}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -47,25 +47,28 @@
 
         <mat-form-field>
           <mat-label>Lieferant</mat-label>
-          <mat-select required formControlName="lieferant" id="lieferant">
-            <mat-option *ngFor="let supplier of liferantSignal()" [value]="supplier">{{supplier.name}}</mat-option>
+          <mat-select required formControlName="lieferant">
+            <mat-option *ngFor="let supplier of liferantSignal()" [value]="supplier" >{{supplier.name}}</mat-option>
           </mat-select>
         </mat-form-field>
 
         <div class="imginput">
-          <input type="file" name="img" id="img"   (change)="onFileChange($event)">
-
-            <button mat-mini-fab color="primary" class="upload-btn"
+          <div class="upload">
+            <input type="file" id="img" (change)="onFileChange($event)" accept="image/*"  />
+            <button mat-mini-fab color="primary" class="upload-btn" *ngIf="helperService.uploadProgersSig() === 0"
             (click)="uploadPhoto()">
               <mat-icon>attach_file</mat-icon>
             </button>
+            <button mat-mini-fab color="warn" class="upload-btn" *ngIf="helperService.uploadProgersSig() > 0"
+            (click)="cancelUpload()">
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+          </div>
+
 
             <mat-progress-bar class="progress-bar" mode="determinate"
             [value]="helperService.uploadProgersSig()" *ngIf="helperService.uploadProgersSig() > 0 && helperService.uploadProgersSig() < 100">
             </mat-progress-bar>
-
-            <mat-icon class="cancel-upload" (click)="cancelUpload()"
-            *ngIf="helperService.uploadProgersSig() > 0">delete_forever</mat-icon>
         </div>
 
       </div>
@@ -84,8 +87,13 @@
           <mat-label>Mindestmenge</mat-label>
           <input matInput type="number" id="mindestmenge" formControlName="mindestmenge" required>
         </mat-form-field>
+        <mat-form-field>
+          <mat-label>Aktions</mat-label>
+          <mat-select formControlName="promocje" id="promocje">
+            <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-        <mat-checkbox id="aktion" formControlName="aktion">Aktion</mat-checkbox>
       </div>
       <div class="row">
         <mat-form-field>
@@ -110,11 +118,11 @@
       </div>
 
       <div class="button" >
-        <button mat-button type="submit">Speichern</button>
+        <button mat-button (click)="saveProduct()" >Speichern</button>
         <button mat-button type="button" (click)="cancel()">Abbrechen</button>
       </div>
 </form>
-<span *ngIf="act$ | async"></span>
+<span *ngIf="create$ | async"></span>
 </div>
 <ng-template #loader>
   <mat-spinner></mat-spinner>

@@ -1,13 +1,13 @@
 <div>
   <h1>Produkte</h1>
   <div class="button">
-    <button mat-raised-button color="primary" (click)="addEditProduct()" >Diese Produkt hinzufügen</button>
+    <button mat-raised-button color="primary" (click)="addEditProduct()" >Produkt hinzufügen</button>
   </div>
 
   <table mat-table [dataSource]="productsSig()" class="mat-elevation-z8">
     <ng-container matColumnDef="prodid">
       <th mat-header-cell *matHeaderCellDef>Produkt-ID</th>
-      <td mat-cell *matCellDef="let product">{{ product.prodid }}</td>
+      <td mat-cell *matCellDef="let product">{{ product.id }}</td>
     </ng-container>
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
@@ -19,7 +19,7 @@
     </ng-container>
     <ng-container matColumnDef="verfugbar">
       <th mat-header-cell *matHeaderCellDef>Verfügbar</th>
-      <td mat-cell *matCellDef="let product">{{ product.verfugbar }}</td>
+      <td mat-cell *matCellDef="let product">{{ product.verfgbarkeit == 0 ? 'Nein' : 'Ja' }}</td>
     </ng-container>
     <ng-container matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef>Bearbeiten</th>

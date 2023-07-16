@@ -31,6 +31,28 @@
   }
 }
 
+input[type=file] {
+  width: 80%;
+  color: #444;
+  padding: 5px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #555;
+}
+input[type=file]::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  background: #095824;
+  height: 95%;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+
+input[type=file]::file-selector-button:hover {
+  background: #095824;
+}
 .form-group {
   margin-bottom: 20px;
 }
@@ -42,6 +64,24 @@
 .row {
   display: flex;
   gap: .4rem;
+  mat-form-field {
+    flex: 1;
+  }
+  .imginput {
+    flex: 1;
+    .upload {
+      display: flex;
+      gap: .1rem;
+      height: inherit;
+    }
+
+    .upload-btn {
+      margin-top: .2rem;
+    }
+    .progress-bar {
+      margin-top: .1rem;
+    }
+  }
 }
 .button {
   display: flex;

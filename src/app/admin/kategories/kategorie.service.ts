@@ -60,6 +60,7 @@ export class KategorieService {
     return this.http.get<iKategorie[]>(this.apiUrl).pipe(map((res) => {
       if(!res.length) {
         this.errService.newMessage('Es gibt ein error aufgetreten');
+        this.#kategorie.next([]);
         return [];
       }
       this.#kategorie.next(res);

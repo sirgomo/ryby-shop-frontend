@@ -34,8 +34,9 @@ export class AddEditProductComponent implements OnInit {
   actionsSig = signal<iAktion[]>([]);
   liferantSignal = toSignal<iLieferant[], iLieferant[]>(this.liferantService.liferants$, { initialValue: [] });
   kategorySignal = toSignal<iKategorie[], iKategorie[]>(this.katService.kategorie$, { initialValue: []});
-  act$ = new Observable().pipe(shareReplay());
-  create$ = new Observable().pipe(shareReplay());
+  act$ = new Observable().pipe(shareReplay(1));
+  create$ = new Observable().pipe(shareReplay(1));
+  getFoto$ = new Observable();
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<AddEditProductComponent>,
@@ -73,25 +74,26 @@ export class AddEditProductComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    if(this.data) {
-      this.data.preis = Number(this.data.preis)
-      this.productForm.patchValue(this.data);
-      this.images = JSON.parse( this.data.foto);
-      this.color = JSON.parse(this.data.color);
+    if(this.data && this.data.id) {
 
-      if(this.data.id)
       this.create$ = this.prodService.getProductById(this.data.id).pipe(map((res) => {
-       this.productForm.patchValue(res);
-       console.log(this.productForm.value)
-      }));
-
+        this.data.preis = Number(res.preis)
+        this.images = JSON.parse( res.foto);
+        this.color = JSON.parse(res.color);
+        this.productForm.patchValue(res);
+        console.log(this.productForm.value)
+        if(this.images.length > 0)
+        this.getImage(this.images[0])
+        return res;
+       }));
 
     }
   }
+async getData() {
 
+}
 
   onFileChange(event: any) {
-
     if (event.target.files && event.target.files.length) {
         this.photoFile = event.target.files[0];
     }
@@ -100,15 +102,15 @@ export class AddEditProductComponent implements OnInit {
   uploadPhoto() {
 
     if (this.photoFile) {
-     this.act$ = this.prodService.uploadPhoto(this.photoFile);
-     this.create$ = combineLatest([this.create$.pipe(startWith(null)), this.act$]).pipe(map(([cr, act]) => {
+     this.act$ = this.prodService.uploadPhoto(this.photoFile).pipe(tap((act) => {
       if(act) {
         const tmp = act as unknown as { imageid: string };
         this.images.push(tmp.imageid);
         this.productForm.get('foto')?.patchValue(this.images);
         this.getImage(tmp.imageid);
-        console.log(tmp.imageid);
+        console.log(this.images);
       }
+      return act;
      }))
     }
   }
@@ -139,10 +141,13 @@ export class AddEditProductComponent implements OnInit {
         if(res.id) {
           this.dialogRef.close();
         }
+        return res;
       }));
       } else {
         product.verfgbarkeit = this.productForm.get('verfgbarkeit')?.getRawValue() == 1 ? true : false;
-      this.create$ = this.prodService.updateProduct(product.id, product);
+      this.create$ = this.prodService.updateProduct(product.id, product).pipe(tap((res) => {
+        return res;
+      }));
       }
     }
   }
@@ -163,7 +168,7 @@ export class AddEditProductComponent implements OnInit {
   }
   getImage(id: string) {
 
-    this.act$ = this.prodService.getImage(id).pipe(tap((res) => {
+    this.getFoto$ = this.prodService.getImage(id).pipe(tap((res) => {
      this.currentImage = res;
       console.log(res);
     }));

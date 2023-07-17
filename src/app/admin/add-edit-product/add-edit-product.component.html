@@ -9,7 +9,7 @@
       <div class="product-details">
           <div class="product-image">
             <div class="image" *ngIf="images.length > 0">
-              <img [src]="getSafeImageData()" alt="Product Image" *ngIf="act$ | async else loader">
+              <img [src]="getSafeImageData()" alt="Product Image" *ngIf="(getFoto$ | async) else loader">
               <div class="images">
                 <button mat-icon-button color="accent" *ngFor="let item of images; let i = index" (click)="getImage(item)">{{i + 1}}</button>
               </div>
@@ -64,11 +64,10 @@
               <mat-icon>delete_forever</mat-icon>
             </button>
           </div>
-
-
             <mat-progress-bar class="progress-bar" mode="determinate"
             [value]="helperService.uploadProgersSig()" *ngIf="helperService.uploadProgersSig() > 0 && helperService.uploadProgersSig() < 100">
             </mat-progress-bar>
+            <span *ngIf="act$ | async"></span>
         </div>
 
       </div>
@@ -122,8 +121,8 @@
         <button mat-button type="button" (click)="cancel()">Abbrechen</button>
       </div>
 </form>
-<span *ngIf="create$ | async"></span>
 </div>
+<span *ngIf="create$ | async"></span>
 <ng-template #loader>
   <mat-spinner></mat-spinner>
 </ng-template>

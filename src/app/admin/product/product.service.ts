@@ -19,6 +19,15 @@ export class ProductService {
   productsSig = computed (() => {
     const items = this.productsGetSig();
     if(this.item().id) {
+      if( this.item().id! < 0) {
+        const id = Math.abs(this.item().id!);
+        const index = items.findIndex((item) => item.id === id);
+        items.splice(index, 1);
+        const nit = items.slice(0);
+        return nit;
+      }
+    }
+    if(this.item().id) {
       const nit = items.slice(0);
       nit.push(this.item());
       return nit;
@@ -60,6 +69,13 @@ export class ProductService {
       catchError((error) => {
         this.error.newMessage('Fehler beim Löschen des Produkts.');
         return throwError(()=> error);
+      }),
+      tap((res) => {
+        if(Object(res).affected === 1) {
+          this.snackbar.open('Produkt wurde gelöscht', '', { duration: 2000 });
+          const item = { id : -id } as iProduct;
+          this.item.set(item);
+        }
       })
     );
   }

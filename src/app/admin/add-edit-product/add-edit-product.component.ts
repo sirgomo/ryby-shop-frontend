@@ -15,6 +15,7 @@ import { Observable, combineLatest, map, shareReplay, startWith, tap } from 'rxj
 import { DomSanitizer } from '@angular/platform-browser';
 import { iAktion } from 'src/app/model/iAktion';
 import { DatePipe } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-edit-product',
@@ -48,6 +49,7 @@ export class AddEditProductComponent implements OnInit {
     public readonly err: ErrorService,
     private readonly sanitizer: DomSanitizer,
     private readonly dpipe: DatePipe,
+    private readonly snackBar: MatSnackBar
   ) {
     this.productForm = this.formBuilder.group({
       id: [this.data ? this.data.id : null],
@@ -81,7 +83,7 @@ export class AddEditProductComponent implements OnInit {
         this.images = JSON.parse( res.foto);
         this.color = JSON.parse(res.color);
         this.productForm.patchValue(res);
-        console.log(this.productForm.value)
+
         if(this.images.length > 0)
         this.getImage(this.images[0])
         return res;
@@ -108,7 +110,7 @@ async getData() {
         this.images.push(tmp.imageid);
         this.productForm.get('foto')?.patchValue(this.images);
         this.getImage(tmp.imageid);
-        console.log(this.images);
+        this.snackBar.open('Du musst das Produkt speichern oder die Bilder werden nicht gespeichert mit Produkt...', '', { duration: 2000})
       }
       return act;
      }))
@@ -131,21 +133,32 @@ async getData() {
       product.verkaufteAnzahl = this.data ?  this.data.verkaufteAnzahl : 0;
       product.preis = Number(this.productForm.get('preis')?.getRawValue());
 
-
       const curDate =  this.dpipe.transform(this.productForm.get('datumHinzugefuegt')?.getRawValue(), 'yyyy-MM-dd');
-      console.log(product)
+
       if(curDate)
-      product.datumHinzugefuegt = curDate;
+        product.datumHinzugefuegt = curDate;
+      if(this.data)
+        product.id = this.data.id;
       if (!product.id) {
       this.create$ = this.prodService.createProduct(product).pipe(tap((res) => {
         if(res.id) {
+          this.snackBar.open('Das Produkt wurde hinzugefügt', '', {duration: 1500 });
           this.dialogRef.close();
+          return res;
         }
+
+        this.snackBar.open('Etwas ist falschgelaufen, Produkt wurde nicht hinzugefügt', '', {duration: 3000 });
         return res;
       }));
       } else {
         product.verfgbarkeit = this.productForm.get('verfgbarkeit')?.getRawValue() == 1 ? true : false;
       this.create$ = this.prodService.updateProduct(product.id, product).pipe(tap((res) => {
+        if(res && res.id && isFinite(res.id)) {
+          this.snackBar.open('Die Änderungen wurden gespeichert', '', {duration: 1500 });
+          return res;
+        }
+
+        this.snackBar.open('Etwas ist scheifgelaufen, die änderungen wurden nicht gespeichert', '', {duration: 3000 });
         return res;
       }));
       }
@@ -170,7 +183,6 @@ async getData() {
 
     this.getFoto$ = this.prodService.getImage(id).pipe(tap((res) => {
      this.currentImage = res;
-      console.log(res);
     }));
   }
   getSafeImageData() {

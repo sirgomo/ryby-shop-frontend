@@ -33,7 +33,7 @@
 
             <mat-form-field>
               <mat-label>Kategorie</mat-label>
-              <mat-select id="kategorie" formControlName="kategorie" multiple required>
+              <mat-select id="kategorie" formControlName="kategorie" multiple required [compareWith]="getSelected">
                 <mat-option *ngFor="let item of kategorySignal()" [value]="item">{{item.name}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -47,7 +47,7 @@
 
         <mat-form-field>
           <mat-label>Lieferant</mat-label>
-          <mat-select required formControlName="lieferant">
+          <mat-select required formControlName="lieferant" [compareWith]="getSelected">
             <mat-option *ngFor="let supplier of liferantSignal()" [value]="supplier" >{{supplier.name}}</mat-option>
           </mat-select>
         </mat-form-field>

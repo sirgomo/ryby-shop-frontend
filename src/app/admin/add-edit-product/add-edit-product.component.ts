@@ -57,7 +57,7 @@ export class AddEditProductComponent implements OnInit {
       beschreibung: [this.data ? this.data.beschreibung : '', Validators.required],
       foto: [this.data ? this.data.foto[0] : this.images],
       thumbnail: [this.data ? this.data.thumbnail : ''],
-      lieferant: [this.data ? this.data.lieferant : null, Validators.required],
+      lieferant: [this.data ? this.data.lieferant : {} as iLieferant, Validators.required],
       lagerorte: [this.data ? this.data.lagerorte : []],
       bestellungen: [this.data ? this.data.bestellungen : []],
       datumHinzugefuegt: [this.data ? this.data.datumHinzugefuegt : Date.now()],
@@ -178,5 +178,8 @@ async getData() {
       return this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.currentImage));
     }
     return '';
+  }
+  getSelected(o1: any, o2: any) {
+    return (o1.id == o2.id);
   }
 }

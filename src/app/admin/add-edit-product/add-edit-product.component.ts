@@ -139,6 +139,8 @@ async getData() {
         product.datumHinzugefuegt = curDate;
       if(this.data)
         product.id = this.data.id;
+
+        console.log(product);
       if (!product.id) {
       this.create$ = this.prodService.createProduct(product).pipe(tap((res) => {
         if(res.id) {

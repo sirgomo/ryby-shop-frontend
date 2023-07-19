@@ -1,10 +1,10 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Injectable, Signal, computed, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY, Subject, catchError, finalize, map, takeUntil, tap, throwError } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, combineLatest, finalize, map, switchMap, takeUntil, tap, throwError } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iProduct } from 'src/app/model/iProduct';
-import { toSignal } from '@angular/core/rxjs-interop'
+import { toObservable, toSignal } from '@angular/core/rxjs-interop'
 import { environment } from 'src/environments/environment';
 import { HelperService } from 'src/app/helper/helper.service';
 
@@ -15,9 +15,18 @@ import { HelperService } from 'src/app/helper/helper.service';
 export class ProductService {
   API = environment.api + 'product';
   item  = signal<iProduct>({} as iProduct);
-  productsGetSig = toSignal<iProduct[], iProduct[]>(this.getAllProducts(this.helper.searchSig(), this.helper.kategorySig()?.id, this.helper.artikelProSiteSig()), { initialValue: []});
+  items = combineLatest([toObservable(this.helper.searchSig), toObservable(this.helper.kategorySig), toObservable(this.helper.artikelProSiteSig), toObservable(this.helper.pageNrSig)]).pipe(
+    switchMap(([search, kat, artpro, pagenr]) => this.getAllProducts(search, kat.id, artpro, pagenr)),
+    map((res) => {
+      return res;
+    })
+  );
+
+  productsGetSig = toSignal<iProduct[], iProduct[]>(this.items, { initialValue:  []});
   productsSig = computed (() => {
-    const items = this.productsGetSig();
+
+  const items = this.productsGetSig();
+
     if(this.item().id) {
       if( this.item().id! < 0) {
         const id = Math.abs(this.item().id!);
@@ -28,8 +37,14 @@ export class ProductService {
       }
     }
     if(this.item().id) {
+      const index = items.findIndex((item) => item.id === this.item().id)
+      if(index === -1) {
+        const nit = items.slice(0);
+        nit.push(this.item());
+        return nit;
+      }
       const nit = items.slice(0);
-      nit.push(this.item());
+      nit[index] = this.item();
       return nit;
     }
 
@@ -42,7 +57,6 @@ export class ProductService {
     private readonly helper: HelperService) { }
 
   createProduct(product: iProduct) {
-    console.log(product)
     return this.http.post<iProduct>(`${this.API}`, product).pipe(
       catchError((error) => {
         this.error.newMessage('Fehler beim Erstellen des Produkts.');
@@ -60,6 +74,9 @@ export class ProductService {
       catchError((error) => {
         this.error.newMessage('Fehler beim Aktualisieren des Produkts.');
         return throwError(()=> error);
+      }),
+      tap((res) => {
+        this.item.set(res);
       })
     );
   }
@@ -80,14 +97,19 @@ export class ProductService {
     );
   }
 
-  getAllProducts(search: string | undefined, id: number | undefined, items: number) {
-    return this.http.get<iProduct[]>(`${this.API}`).pipe(
+  getAllProducts(search: string, katid: number, itemscount: number, pagenr: number) {
+    if(katid === undefined)
+      katid = 0;
+    if(search.length < 1)
+    search = 'null';
+
+    return this.http.get<iProduct[]>(`${this.API}/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
       catchError((error) => {
         this.error.newMessage('Fehler beim Abrufen aller Produkte.');
         return throwError(()=> error);
       }),
       tap((res) => {
-        console.log(res)
+        return res;
       })
     );
   }

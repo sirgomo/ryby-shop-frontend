@@ -12,8 +12,9 @@ export class HelperService {
   menuSub: BehaviorSubject<iMenuItem[]> = new BehaviorSubject<iMenuItem[]>([]);
   menu$ = this.menuSub.asObservable();
   titelSig = signal('Ryby');
-  searchSig = signal<string | undefined>(undefined);
-  kategorySig = signal<iKategorie | undefined>(undefined);
+  searchSig = signal<string>('');
+  pageNrSig = signal<number>(1);
+  kategorySig = signal<iKategorie>({} as iKategorie);
   artikelProSiteSig = signal<number> (20);
   isLogged = signal(false);
   uploadProgersSig = signal<number>(0);

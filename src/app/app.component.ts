@@ -4,6 +4,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UserLoginComponent } from './user/user-login/user-login.component';
 import { KategorieService } from './admin/kategories/kategorie.service';
+import { iKategorie } from './model/iKategorie';
 
 @Component({
   selector: 'app-root',
@@ -31,5 +32,8 @@ export class AppComponent implements AfterContentChecked{
   }
   buttonActive(index: number) {
 
+  }
+  changeCategorie(item: iKategorie) {
+    this.helper.kategorySig.set(item);
   }
 }

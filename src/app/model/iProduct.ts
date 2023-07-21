@@ -24,6 +24,7 @@ export interface iProduct {
   kategorie: iKategorie[];
   verfgbarkeit: boolean;
   mindestmenge: number;
+  currentmenge: number;
   verkaufteAnzahl: number;
   wareneingang: iWareneingangProduct[];
   warenausgang: iWarenausgangProduct[];

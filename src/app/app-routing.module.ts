@@ -7,6 +7,7 @@ import { routeGuard } from './auth/route.guard';
 import { UserComponent } from './user/user.component';
 import { userGuard } from './auth/user.guard';
 import { ProductComponent } from './admin/product/product.component';
+import { ProductsComponent } from './products/products.component';
 
 const routes: Routes = [
 {
@@ -33,6 +34,10 @@ const routes: Routes = [
   component: UserComponent,
   path: 'user',
   canActivate: [userGuard],
+},
+{
+  component: ProductsComponent,
+  path: ''
 },
 {
   path: '**',

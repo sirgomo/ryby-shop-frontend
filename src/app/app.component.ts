@@ -15,6 +15,7 @@ import { iKategorie } from './model/iKategorie';
 export class AppComponent implements AfterContentChecked{
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;
   title = this.helper.titelSig;
+  currentCategory = 0;
   kategorie$ = this.katService.kategorie$;
   constructor(private readonly helper: HelperService, private readonly dialog: MatDialog, private readonly katService: KategorieService, private changeRef: ChangeDetectorRef) {
     this.helper.setApp(this);
@@ -35,5 +36,10 @@ export class AppComponent implements AfterContentChecked{
   }
   changeCategorie(item: iKategorie) {
     this.helper.kategorySig.set(item);
+    this.currentCategory = item.id;
+  }
+  showAll() {
+    this.helper.kategorySig.set({} as iKategorie);
+    this.currentCategory = 0;
   }
 }

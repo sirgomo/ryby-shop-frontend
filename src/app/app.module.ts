@@ -40,6 +40,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MY_FORMATS } from './const';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { ProductsComponent } from './products/products.component';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ChangePasswordComponent,
     ProductComponent,
     AddEditProductComponent,
+    ProductsComponent,
   ],
   imports: [
     BrowserModule,

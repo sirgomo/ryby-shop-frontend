@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { HelperService } from 'src/app/helper/helper.service';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -102,8 +103,21 @@ export class ProductService {
       katid = 0;
     if(search.length < 1)
     search = 'null';
+    const role = localStorage.getItem('role')
 
-    return this.http.get<iProduct[]>(`${this.API}/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
+    if( role && role === 'ADMIN') {
+      return this.http.get<iProduct[]>(`${this.API}/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
+        catchError((error) => {
+          this.error.newMessage('Fehler beim Abrufen aller Produkte.');
+          return throwError(()=> error);
+        }),
+        tap((res) => {
+          return res;
+        })
+      );
+    }
+
+    return this.http.get<iProduct[]>(`${this.API}/kunde/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
       catchError((error) => {
         this.error.newMessage('Fehler beim Abrufen aller Produkte.');
         return throwError(()=> error);

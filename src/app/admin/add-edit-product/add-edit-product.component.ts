@@ -66,6 +66,7 @@ export class AddEditProductComponent implements OnInit {
       kategorie: [this.data ? this.data.kategorie : [], Validators.required],
       verfgbarkeit: [this.data ? this.data.verfgbarkeit : false],
       mindestmenge: [this.data ? this.data.mindestmenge : '', Validators.required],
+      currentmenge: [{ value: this.data ? this.data.mindestmenge : 0, disabled: true }],
       verkaufteAnzahl: [{ value:  this.data ? this.data.verkaufteAnzahl : 0,  disabled: true } ],
       wareneingang: [this.data ? this.data.wareneingang : []],
       warenausgang: [this.data ? this.data.warenausgang : []],
@@ -132,6 +133,7 @@ async getData() {
       product.color = JSON.stringify(this.color);
       product.verkaufteAnzahl = this.data ?  this.data.verkaufteAnzahl : 0;
       product.preis = Number(this.productForm.get('preis')?.getRawValue());
+      product.currentmenge = this.data.currentmenge;
 
       const curDate =  this.dpipe.transform(this.productForm.get('datumHinzugefuegt')?.getRawValue(), 'yyyy-MM-dd');
 
@@ -194,6 +196,7 @@ async getData() {
     return '';
   }
   getSelected(o1: any, o2: any) {
+    if(!o1 || !o2) return false;
     return (o1.id == o2.id);
   }
 }

@@ -87,6 +87,16 @@
           <input matInput type="number" id="mindestmenge" formControlName="mindestmenge" required>
         </mat-form-field>
         <mat-form-field>
+          <mat-label>Current Menge</mat-label>
+          <input matInput type="number" id="currentmenge" formControlName="currentmenge" >
+        </mat-form-field>
+        <mat-form-field *ngIf="actionsSig().length < 1">
+          <mat-label>Keine Angebots verfügbar</mat-label>
+          <mat-select formControlName="promocje" id="promocje">
+            <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field  *ngIf="actionsSig().length > 1">
           <mat-label>Aktions</mat-label>
           <mat-select formControlName="promocje" id="promocje">
             <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>

@@ -28,7 +28,7 @@ export class AppComponent implements AfterContentChecked{
     const conf : MatDialogConfig = new MatDialogConfig();
     conf.width = '400px';
     conf.height = '400px';
-
+  localStorage.removeItem('role');
     this.dialog.open(UserLoginComponent, conf);
   }
   buttonActive(index: number) {

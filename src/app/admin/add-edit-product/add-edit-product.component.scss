@@ -14,20 +14,22 @@
 }
 
 .product-image {
+  display: flex;
+  flex-direction: column;
+align-items: center;
   width: 50%;
   height: 400px;
   .image {
-    height: 80%;
-    flex: 1;
+    height: 75%;
+
     img {
-      flex: 1;
       height: 100%;
     }
   }
 
   .images {
+    height: 25%;
     display: flex;
-
   }
 }
 
@@ -104,4 +106,9 @@ input[type=file]::file-selector-button:hover {
 }
 .h2 {
   text-align: center;
+}
+.imageItem {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: .5rem;
 }

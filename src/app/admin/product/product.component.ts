@@ -1,20 +1,25 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ProductService } from './product.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { iProduct } from 'src/app/model/iProduct';
 import { AddEditProductComponent } from '../add-edit-product/add-edit-product.component';
 import { Observable } from 'rxjs';
+import { HelperService } from 'src/app/helper/helper.service';
+import { iKategorie } from 'src/app/model/iKategorie';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  styleUrls: ['./product.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductComponent {
   displayedColumns: string[] = ['prodid', 'name', 'preis', 'verfugbar', 'edit', 'delete'];
   productsSig = this.prodService.productsSig;
   del$ = new Observable();
-  constructor( private readonly prodService: ProductService, private readonly dialog: MatDialog) {}
+  constructor( private readonly prodService: ProductService, private readonly dialog: MatDialog, private helperService: HelperService) {
+    this.helperService.kategorySig.set({id: 0} as iKategorie);
+  }
 
   addEditProduct(item?: iProduct) {
     const conf : MatDialogConfig = new MatDialogConfig();

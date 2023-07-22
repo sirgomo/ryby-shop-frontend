@@ -7,6 +7,8 @@ import { iProduct } from 'src/app/model/iProduct';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'
 import { environment } from 'src/environments/environment';
 import { HelperService } from 'src/app/helper/helper.service';
+import { iDelete } from 'src/app/model/iDelete';
+
 
 
 
@@ -16,16 +18,16 @@ import { HelperService } from 'src/app/helper/helper.service';
 export class ProductService {
   API = environment.api + 'product';
   item  = signal<iProduct>({} as iProduct);
-  items = combineLatest([toObservable(this.helper.searchSig), toObservable(this.helper.kategorySig), toObservable(this.helper.artikelProSiteSig), toObservable(this.helper.pageNrSig)]).pipe(
+  items$ = combineLatest([toObservable(this.helper.searchSig), toObservable(this.helper.kategorySig), toObservable(this.helper.artikelProSiteSig), toObservable(this.helper.pageNrSig)]).pipe(
     switchMap(([search, kat, artpro, pagenr]) => this.getAllProducts(search, kat.id, artpro, pagenr)),
     map((res) => {
       return res;
     })
   );
 
-  productsGetSig = toSignal<iProduct[], iProduct[]>(this.items, { initialValue:  []});
-  productsSig = computed (() => {
+  productsGetSig = toSignal<iProduct[], iProduct[]>(this.items$, { initialValue:  []});
 
+  productsSig = computed (() => {
   const items = this.productsGetSig();
 
     if(this.item().id) {
@@ -55,7 +57,7 @@ export class ProductService {
 
 
   constructor(private readonly http: HttpClient, private readonly error: ErrorService, private readonly snackbar: MatSnackBar,
-    private readonly helper: HelperService) { }
+    private readonly helper: HelperService) {}
 
   createProduct(product: iProduct) {
     return this.http.post<iProduct>(`${this.API}`, product).pipe(
@@ -137,11 +139,11 @@ export class ProductService {
     );
   }
   // upload image
-  uploadPhoto(file: File) {
+  uploadPhoto(file: File, productid: number) {
     const formData = new FormData();
     formData.append('photo', file);
 
-    return this.http.post(`${this.API}/upload`, formData, { reportProgress: true, observe: 'events' }).pipe(
+    return this.http.post(`${this.API}/upload/${productid}`, formData, { reportProgress: true, observe: 'events' }).pipe(
       catchError((error) => {
         this.error.newMessage('Fehler beim Hochladen des Fotos.');
         return throwError(()=> error);
@@ -169,7 +171,6 @@ export class ProductService {
   }
   //get image
   getImage(id: string) {
-    console.log('getImage ' +id)
     return this.http.get(`${this.API}/uploads/${id}`, { responseType: 'blob' }).pipe(
       catchError((err) => {
         this.error.newMessage(err.message);
@@ -190,5 +191,16 @@ export class ProductService {
       map((res) => {
         return res;
       } ));
+  }
+  deleteImage(image: iDelete) {
+    return this.http.post(`${this.API}/file-delete`, image).pipe(
+      catchError((err) => {
+        this.error.newMessage(err.message);
+        return err;
+      }),
+      map((res) => {
+        return res;
+      })
+    )
   }
 }

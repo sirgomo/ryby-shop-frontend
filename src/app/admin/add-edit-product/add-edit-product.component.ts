@@ -16,6 +16,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { iAktion } from 'src/app/model/iAktion';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { iDelete } from 'src/app/model/iDelete';
 
 @Component({
   selector: 'app-add-edit-product',
@@ -67,6 +68,7 @@ export class AddEditProductComponent implements OnInit {
       verfgbarkeit: [this.data ? this.data.verfgbarkeit : false],
       mindestmenge: [this.data ? this.data.mindestmenge : '', Validators.required],
       currentmenge: [{ value: this.data ? this.data.mindestmenge : 0, disabled: true }],
+      product_sup_id: [this.data ? this.data.product_sup_id: ''],
       verkaufteAnzahl: [{ value:  this.data ? this.data.verkaufteAnzahl : 0,  disabled: true } ],
       wareneingang: [this.data ? this.data.wareneingang : []],
       warenausgang: [this.data ? this.data.warenausgang : []],
@@ -103,9 +105,11 @@ async getData() {
   }
 
   uploadPhoto() {
-
+    if(!this.data)
+      return;
     if (this.photoFile) {
-     this.act$ = this.prodService.uploadPhoto(this.photoFile).pipe(tap((act) => {
+    if(this.data.id)
+     this.act$ = this.prodService.uploadPhoto(this.photoFile, this.data.id).pipe(tap((act) => {
       if(act) {
         const tmp = act as unknown as { imageid: string };
         this.images.push(tmp.imageid);
@@ -142,7 +146,7 @@ async getData() {
       if(this.data)
         product.id = this.data.id;
 
-        console.log(product);
+
       if (!product.id) {
       this.create$ = this.prodService.createProduct(product).pipe(tap((res) => {
         if(res.id) {
@@ -198,5 +202,19 @@ async getData() {
   getSelected(o1: any, o2: any) {
     if(!o1 || !o2) return false;
     return (o1.id == o2.id);
+  }
+  deleteImage(id: string) {
+    if(this.data && this.data.id !== undefined) {
+      const item: iDelete =  { produktid: this.data.id, fileid: id};
+      this.act$ = this.prodService.deleteImage(item).pipe(tap((res) => {
+        if(res === 1) {
+          const index = this.images.findIndex((tmp) => tmp === item.fileid);
+          this.images.splice(index, 1);
+          this.productForm.get('foto')?.patchValue(this.images);
+        }
+      }))
+    }
+
+
   }
 }

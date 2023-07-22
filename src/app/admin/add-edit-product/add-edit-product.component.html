@@ -10,8 +10,13 @@
           <div class="product-image">
             <div class="image" *ngIf="images.length > 0">
               <img [src]="getSafeImageData()" alt="Product Image" *ngIf="(getFoto$ | async) else loader">
-              <div class="images">
-                <button mat-icon-button color="accent" *ngFor="let item of images; let i = index" (click)="getImage(item)">{{i + 1}}</button>
+            </div>
+            <div class="images">
+              <div class="imageItem" *ngFor="let item of images; let i = index" >
+                <button mat-icon-button color="accent" (click)="getImage(item)">{{i + 1}}</button>
+                <button mat-icon-button color="warn" (click)="deleteImage(item)">
+                  <mat-icon>delete</mat-icon>
+                </button>
               </div>
             </div>
           </div>
@@ -19,6 +24,10 @@
             <mat-form-field>
               <mat-label>Artikel Nr:</mat-label>
               <input matInput type="number" id="artid" formControlName="artid" required>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Lieferant Artikel Nr:</mat-label>
+              <input matInput type="text" id="product_sup_id" formControlName="product_sup_id">
             </mat-form-field>
 
             <mat-form-field>

@@ -6,6 +6,7 @@ import { HelperService } from 'src/app/helper/helper.service';
 import { ProductService } from './product.service';
 import { iLieferant } from 'src/app/model/iLieferant';
 import { iProduct } from 'src/app/model/iProduct';
+import { iDelete } from 'src/app/model/iDelete';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -31,7 +32,7 @@ describe('ProductService', () => {
   describe('createProduct', () => {
     it('should send a POST request to create a product', () => {
 
-      const product = {
+      const product: iProduct = {
         id: 1,
         name: 'Test Product',
         preis: 10,
@@ -72,7 +73,8 @@ describe('ProductService', () => {
         ],
         bewertung: [
           // bewertung properties
-        ]
+        ],
+        product_sup_id: ''
       };
 
       service.createProduct(product).subscribe(response => {
@@ -126,7 +128,8 @@ describe('ProductService', () => {
         ],
         bewertung: [
           // bewertung properties
-        ]
+        ],
+        product_sup_id: ''
       };
 
       service.createProduct(product).subscribe({
@@ -187,7 +190,8 @@ describe('ProductService', () => {
         ],
         bewertung: [
           // bewertung properties
-        ]
+        ],
+        product_sup_id: ''
       };
 
       service.updateProduct(id, product).subscribe(response => {
@@ -242,7 +246,8 @@ describe('ProductService', () => {
         ],
         bewertung: [
           // bewertung properties
-        ]
+        ],
+        product_sup_id: ''
       };
 
       service.updateProduct(id, product).subscribe({
@@ -356,11 +361,11 @@ describe('ProductService', () => {
     it('should send a POST request to upload a photo', () => {
       const file = new File([], 'test.jpg');
 
-      service.uploadPhoto(file).subscribe(response => {
+      service.uploadPhoto(file, 1).subscribe(response => {
         expect(response).toBeNull();
       });
 
-      const req = httpMock.expectOne(`${service.API}/upload`);
+      const req = httpMock.expectOne(`${service.API}/upload/1`);
       expect(req.request.method).toBe('POST');
       req.flush(null);
     });
@@ -368,7 +373,7 @@ describe('ProductService', () => {
     it('should handle error when uploading a photo', () => {
       const file = new File([], 'test.jpg');
 
-      service.uploadPhoto(file).subscribe({
+      service.uploadPhoto(file, 1).subscribe({
 
         error: error => {
           expect(error).toBeTruthy();
@@ -376,7 +381,7 @@ describe('ProductService', () => {
         }
     });
 
-      const req = httpMock.expectOne(`${service.API}/upload`);
+      const req = httpMock.expectOne(`${service.API}/upload/1`);
       expect(req.request.method).toBe('POST');
       req.flush(null, { status: 500, statusText: 'Internal Server Error' });
     });
@@ -437,6 +442,41 @@ describe('ProductService', () => {
       const req = httpMock.expectOne(`${service.API}/thumbnails/${id}`);
       expect(req.request.method).toBe('GET');
       req.flush(null, { status: 500, statusText: 'Internal Server Error' });
+    });
+    describe('deleteImage', () => {
+      it('should send a POST request to delete an image', () => {
+        const image: iDelete = {
+          produktid: 0,
+          fileid: 'kosi'
+        };
+
+        service.deleteImage(image).subscribe(response => {
+          expect(response).toBeTruthy();
+        });
+
+        const req = httpMock.expectOne(`${service.API}/file-delete`);
+        expect(req.request.method).toBe('POST');
+        expect(req.request.body).toBe(image)
+        req.flush({});
+      });
+
+      it('should handle error when deleting an image', () => {
+        const image: iDelete = {
+          produktid: 0,
+          fileid: 'kosi'
+        };
+
+        service.deleteImage(image).subscribe({
+          error: error => {
+            expect(error).toBeTruthy();
+            expect(error.message).toBe('Fehler beim Löschen des Bildes.');
+          }
+      });
+
+        const req = httpMock.expectOne(`${service.API}/file-delete`);
+        expect(req.request.method).toBe('POST');
+        req.flush(null, { status: 500, statusText: 'Internal Server Error' });
+      });
     });
   });
 });

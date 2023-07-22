@@ -1,4 +1,4 @@
-<div *ngIf="err.message().length > 2">
+<div *ngIf="err?.message && err.message().length > 2">
   <app-error></app-error>
 </div>
 <div class="h2">

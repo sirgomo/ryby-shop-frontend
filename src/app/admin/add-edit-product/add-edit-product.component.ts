@@ -67,7 +67,7 @@ export class AddEditProductComponent implements OnInit {
       kategorie: [this.data ? this.data.kategorie : [], Validators.required],
       verfgbarkeit: [this.data ? this.data.verfgbarkeit : false],
       mindestmenge: [this.data ? this.data.mindestmenge : '', Validators.required],
-      currentmenge: [{ value: this.data ? this.data.mindestmenge : 0, disabled: true }],
+      currentmenge: [{ value: this.data ? this.data.currentmenge : 0, disabled: true }],
       product_sup_id: [this.data ? this.data.product_sup_id: ''],
       verkaufteAnzahl: [{ value:  this.data ? this.data.verkaufteAnzahl : 0,  disabled: true } ],
       wareneingang: [this.data ? this.data.wareneingang : []],
@@ -108,17 +108,17 @@ async getData() {
     if(!this.data)
       return;
     if (this.photoFile) {
-    if(this.data.id)
-     this.act$ = this.prodService.uploadPhoto(this.photoFile, this.data.id).pipe(tap((act) => {
-      if(act) {
-        const tmp = act as unknown as { imageid: string };
-        this.images.push(tmp.imageid);
-        this.productForm.get('foto')?.patchValue(this.images);
-        this.getImage(tmp.imageid);
-        this.snackBar.open('Du musst das Produkt speichern oder die Bilder werden nicht gespeichert mit Produkt...', '', { duration: 2000})
-      }
-      return act;
-     }))
+      if(this.data.id)
+      this.act$ = this.prodService.uploadPhoto(this.photoFile, this.data.id).pipe(tap((act) => {
+        if(act) {
+          const tmp = act as unknown as { imageid: string };
+          this.images.push(tmp.imageid);
+          this.productForm.get('foto')?.patchValue(this.images);
+          this.getImage(tmp.imageid);
+          this.snackBar.open('Du musst das Produkt speichern oder die Bilder werden nicht gespeichert mit Produkt...', '', { duration: 2000})
+        }
+        return act;
+      }))
     }
   }
 

@@ -41,6 +41,10 @@ import { MY_FORMATS } from './const';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ProductsComponent } from './products/products.component';
+import { WareneingangComponent } from './admin/wareneingang/wareneingang.component';
+import { ArtikelListComponent } from './admin/wareneingang/artikel-list/artikel-list.component';
+import { ArtikelGebuchtComponent } from './admin/wareneingang/artikel-gebucht/artikel-gebucht.component';
+import { AddEditBuchungComponent } from './admin/wareneingang/add-edit-buchung/add-edit-buchung.component';
 
 
 @NgModule({
@@ -62,6 +66,10 @@ import { ProductsComponent } from './products/products.component';
     ProductComponent,
     AddEditProductComponent,
     ProductsComponent,
+    WareneingangComponent,
+    ArtikelListComponent,
+    ArtikelGebuchtComponent,
+    AddEditBuchungComponent,
   ],
   imports: [
     BrowserModule,

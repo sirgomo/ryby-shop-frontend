@@ -1,1 +1,49 @@
-<p>add-edit-buchung works!</p>
+<div class="content">
+  <form [formGroup]="warenEingangForm" >
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Lieferant</mat-label>
+        <mat-select formControlName="lieferant">
+          <mat-option *ngFor="let lieferant of liferants$ | async" [value]="lieferant.id">{{ lieferant.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Empfangsdatum</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="empfangsdatum">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Rechnung</mat-label>
+        <input matInput formControlName="rechnung">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Lieferschein Nr</mat-label>
+        <input matInput formControlName="lieferscheinNr">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Buchungs Datum</mat-label>
+        <input matInput [matDatepicker]="pickero" formControlName="datenEingabe">
+        <mat-datepicker-toggle matSuffix [for]="pickero"></mat-datepicker-toggle>
+        <mat-datepicker #pickero></mat-datepicker>
+      </mat-form-field>
+      <div>
+        <mat-checkbox formControlName="gebucht" labelPosition='before' (change)="SaveReceiptCompletely()" >Gebucht ?</mat-checkbox>
+        <p class="small">(Es kann nichts mehr geändert werden) </p>
+      </div>
+
+      <mat-checkbox formControlName="eingelagert">Eingelagert</mat-checkbox>
+    </div>
+  </form>
+</div>
+<div class="action">
+  <button mat-button (click)="closeGoodsReceipt()">Cancel</button>
+  <button mat-button (click)="saveGoodsReceipt()" [disabled]="!warenEingangForm.valid">Save</button>
+</div>
+
+

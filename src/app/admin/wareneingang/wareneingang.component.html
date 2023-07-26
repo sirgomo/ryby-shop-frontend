@@ -1,5 +1,5 @@
 <div class="button">
-  <button mat-raised-button color="primary" (click)="newOrEditGoodsReceipt()" >Produkt hinzufügen</button>
+  <button mat-raised-button color="primary" (click)="newOrEditGoodsReceipt()" >Neue Waren Buchung</button>
 </div>
 <div>
   <mat-table [dataSource]="weingangSig()">
@@ -46,7 +46,7 @@
 
     <ng-container matColumnDef="delete">
       <mat-header-cell *matHeaderCellDef>Entfernen</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.gebucht}}</mat-cell>
+      <mat-cell *matCellDef="let element"><button mat-button color="warn" (click)="deleteGoodsReceipt(element.id)">Entfernen</button></mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

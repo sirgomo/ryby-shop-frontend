@@ -8,6 +8,7 @@ export interface iWarenEingang {
   empfangsdatum: Date,
   rechnung: string,
   lieferscheinNr: string,
+  //buchung date
   datenEingabe: Date,
   gebucht: boolean,
   eingelagert: boolean,

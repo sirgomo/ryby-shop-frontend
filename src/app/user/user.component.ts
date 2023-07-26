@@ -50,7 +50,7 @@ export class UserComponent implements OnInit{
   private refreshForm(res: iUserData) {
     this.userid = res.id;
 
-    const regDate = res?.registrierungsdatum ? this.datePi.transform(new Date(res?.registrierungsdatum), 'mediumDate') : '';
+    const regDate = res?.registrierungsdatum ? this.datePi.transform(new Date(res?.registrierungsdatum), 'dd-MM-yyyy') : '';
 
 
     this.userForm = this.formBuilder.group({

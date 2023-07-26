@@ -1,1 +1,56 @@
-<p>wareneingang works!</p>
+<div class="button">
+  <button mat-raised-button color="primary" (click)="newOrEditGoodsReceipt()" >Produkt hinzufügen</button>
+</div>
+<div>
+  <mat-table [dataSource]="weingangSig()">
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="liferant">
+      <mat-header-cell *matHeaderCellDef>Liferant</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.liferant}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="rechnung">
+      <mat-header-cell *matHeaderCellDef>Rechnung</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.rechnung}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lieferscheinNr">
+      <mat-header-cell *matHeaderCellDef>Lieferschein Nr.</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.lieferscheinNr}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="empfangsdatum">
+      <mat-header-cell *matHeaderCellDef>Empfangsdatum</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.empfangsdatum}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="datenEingabe">
+      <mat-header-cell *matHeaderCellDef>Daten Eingabe</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.datenEingabe}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="gebucht">
+      <mat-header-cell *matHeaderCellDef>Gebucht</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.gebucht}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="bearbeiten">
+      <mat-header-cell *matHeaderCellDef>Bearbeiten</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.gebucht}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <mat-header-cell *matHeaderCellDef>Entfernen</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.gebucht}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>
+

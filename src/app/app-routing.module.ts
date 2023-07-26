@@ -8,8 +8,14 @@ import { UserComponent } from './user/user.component';
 import { userGuard } from './auth/user.guard';
 import { ProductComponent } from './admin/product/product.component';
 import { ProductsComponent } from './products/products.component';
+import { WareneingangComponent } from './admin/wareneingang/wareneingang.component';
 
 const routes: Routes = [
+{
+  component: WareneingangComponent,
+  path: 'waren-eingang',
+  canActivate: [routeGuard],
+},
 {
   component: ProductComponent,
   path: 'product',

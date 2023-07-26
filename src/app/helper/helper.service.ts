@@ -37,6 +37,7 @@ export class HelperService {
       menu[2] = { name: 'Kategories', link: 'kategory'};
       menu[3] = { name: 'User Panel', link: 'user' };
       menu[4] = { name: 'Products', link: 'product' };
+      menu[4] = { name: 'Waren Eingang', link: 'waren-eingang' };
     } else if (role === 'USER') {
       menu[0] = { name: 'User Panel', link: 'user' };
     }

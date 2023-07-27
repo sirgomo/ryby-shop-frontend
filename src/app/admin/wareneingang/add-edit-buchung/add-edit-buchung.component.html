@@ -40,6 +40,18 @@
       <mat-checkbox formControlName="eingelagert">Eingelagert</mat-checkbox>
     </div>
   </form>
+  <mat-tab-group dynamicHeight class="tabs">
+    <mat-tab label="Products">
+      <ng-template matTabContent >
+       <app-artikel-list></app-artikel-list>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Products in Bestellung">
+      <ng-template matTabContent>
+        Content 1 - Loaded:
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
 </div>
 <div class="action">
   <button mat-button (click)="closeGoodsReceipt()">Cancel</button>

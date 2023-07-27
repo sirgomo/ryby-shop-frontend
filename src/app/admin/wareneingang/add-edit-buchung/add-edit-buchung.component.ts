@@ -23,7 +23,7 @@ export class AddEditBuchungComponent implements OnInit{
   liferants$ = this.lieferants.liferants$;
   constructor (private readonly dialRef: MatDialogRef<AddEditBuchungComponent>,
     private readonly warenService: WareneingangService,
-    @Optional() @Inject(MAT_DIALOG_DATA) private data: iWarenEingang,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: iWarenEingang,
     private readonly fb: FormBuilder,
     private readonly err: ErrorService,
     private readonly lieferants: LiferantsService,

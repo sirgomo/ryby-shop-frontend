@@ -76,4 +76,16 @@ export class AuthService {
   getUserId(){
     return this.#userid;
   }
+  isTokenExpired() {
+    const token = localStorage.getItem('token');
+    if(token) {
+      const decoded = this.jwtService.decodeToken(token);
+      if(decoded.exp  * 1000 < Date.now())
+        {
+
+          this.logout();
+        }
+    }
+
+  }
 }

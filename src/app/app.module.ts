@@ -45,6 +45,7 @@ import { WareneingangComponent } from './admin/wareneingang/wareneingang.compone
 import { ArtikelListComponent } from './admin/wareneingang/artikel-list/artikel-list.component';
 import { ArtikelGebuchtComponent } from './admin/wareneingang/artikel-gebucht/artikel-gebucht.component';
 import { AddEditBuchungComponent } from './admin/wareneingang/add-edit-buchung/add-edit-buchung.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 @NgModule({
@@ -96,7 +97,8 @@ import { AddEditBuchungComponent } from './admin/wareneingang/add-edit-buchung/a
     MatDatepickerModule,
     MatMomentDateModule,
     MatProgressBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTabsModule
   ],
   providers: [
     {

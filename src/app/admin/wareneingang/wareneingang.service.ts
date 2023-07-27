@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class WareneingangService {
+  API_P = environment.api + 'product';
   API = environment.api + 'waren-eingang-buchen';
   warenEingangItem = signal<iWarenEingang>({} as iWarenEingang);
   warenEingangItems = toSignal<iWarenEingang[], iWarenEingang[]>(this.getAllWareneingangBuchungen(), { initialValue: []});

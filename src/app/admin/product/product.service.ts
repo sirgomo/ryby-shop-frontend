@@ -8,6 +8,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop'
 import { environment } from 'src/environments/environment';
 import { HelperService } from 'src/app/helper/helper.service';
 import { iDelete } from 'src/app/model/iDelete';
+import { AuthService } from 'src/app/auth/auth.service';
 
 
 
@@ -57,7 +58,7 @@ export class ProductService {
 
 
   constructor(private readonly http: HttpClient, private readonly error: ErrorService, private readonly snackbar: MatSnackBar,
-    private readonly helper: HelperService) {}
+    private readonly helper: HelperService, private readonly authServ: AuthService) {}
 
   createProduct(product: iProduct) {
     return this.http.post<iProduct>(`${this.API}`, product).pipe(
@@ -105,6 +106,7 @@ export class ProductService {
       katid = 0;
     if(search.length < 1)
     search = 'null';
+    this.authServ.isTokenExpired();
     const role = localStorage.getItem('role')
 
     if( role && role === 'ADMIN') {

@@ -11,7 +11,7 @@
 
     <ng-container matColumnDef="liferant">
       <mat-header-cell *matHeaderCellDef>Liferant</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.liferant}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{element.lieferant.name}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="rechnung">
@@ -41,7 +41,7 @@
 
     <ng-container matColumnDef="bearbeiten">
       <mat-header-cell *matHeaderCellDef>Bearbeiten</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.gebucht}}</mat-cell>
+      <mat-cell *matCellDef="let element"><button mat-button color="accent" (click)="newOrEditGoodsReceipt(element)">Bearbeiten</button></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="delete">

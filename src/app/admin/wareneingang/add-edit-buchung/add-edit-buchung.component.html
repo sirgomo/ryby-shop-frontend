@@ -3,7 +3,7 @@
     <div class="row">
       <mat-form-field>
         <mat-label>Lieferant</mat-label>
-        <mat-select formControlName="lieferant">
+        <mat-select formControlName="lieferant" (selectionChange)="onSelectionChange($event.value)">
           <mat-option *ngFor="let lieferant of liferants$ | async" [value]="lieferant.id">{{ lieferant.name }}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -55,7 +55,7 @@
 </div>
 <div class="action">
   <button mat-button (click)="closeGoodsReceipt()">Cancel</button>
-  <button mat-button (click)="saveGoodsReceipt()" [disabled]="!warenEingangForm.valid">Save</button>
+  <button mat-button (click)="saveGoodsReceipt()" [disabled]="!warenEingangForm.valid">Save<span *ngIf="act$ | async"></span></button>
 </div>
 
 

@@ -1,7 +1,7 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { Injectable, Signal, computed, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY, Observable, Subject, catchError, combineLatest, finalize, map, switchMap, takeUntil, tap, throwError } from 'rxjs';
+import { EMPTY, Subject, catchError, combineLatest, finalize, map, switchMap, takeUntil, tap, throwError } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'

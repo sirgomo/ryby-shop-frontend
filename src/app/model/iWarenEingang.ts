@@ -5,11 +5,11 @@ export interface iWarenEingang {
   id?: number,
   products: iWareneingangProduct[],
   lieferant: iLieferant,
-  empfangsdatum: Date,
+  empfangsdatum: string,
   rechnung: string,
   lieferscheinNr: string,
   //buchung date
-  datenEingabe: Date,
+  datenEingabe: string,
   gebucht: boolean,
   eingelagert: boolean,
 }

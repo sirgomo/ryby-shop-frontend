@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
 export class WareneingangService {
   API_P = environment.api + 'product';
   API = environment.api + 'waren-eingang-buchen';
+  lieferantIdSig = signal(0);
   warenEingangItem = signal<iWarenEingang>({} as iWarenEingang);
   warenEingangItems = toSignal<iWarenEingang[], iWarenEingang[]>(this.getAllWareneingangBuchungen(), { initialValue: []});
   warenEingangSig = computed(() => {
@@ -35,6 +36,10 @@ export class WareneingangService {
       }
       return [];
     }))
+  }
+  getProduktsForWarenEingang(lieferantId: number) {
+    console.log(this.lieferantIdSig())
+    return this.http.get<iProduct[]>(`${this.API_P}/lieferant/${lieferantId}`);
   }
   getWareneingangBuchungbeiId(id: number): Observable<iWarenEingang> {
     return this.http.get<iWarenEingang>(`${this.API}/${id}`);

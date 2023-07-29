@@ -9,6 +9,10 @@
       <th mat-header-cell *matHeaderCellDef>Produkt-ID</th>
       <td mat-cell *matCellDef="let product">{{ product.id }}</td>
     </ng-container>
+    <ng-container matColumnDef="artid">
+      <th mat-header-cell *matHeaderCellDef>Artikel-ID</th>
+      <td mat-cell *matCellDef="let product">{{ product.artid }}</td>
+    </ng-container>
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
       <td mat-cell *matCellDef="let product">{{ product.name }}</td>

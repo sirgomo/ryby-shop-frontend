@@ -6,6 +6,7 @@ import { iProduct } from 'src/app/model/iProduct';
 import { iWarenEingang } from 'src/app/model/iWarenEingang';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
 import { environment } from 'src/environments/environment';
+import { AddEditBuchungComponent } from './add-edit-buchung/add-edit-buchung.component';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ import { environment } from 'src/environments/environment';
 export class WareneingangService {
   API_P = environment.api + 'product';
   API = environment.api + 'waren-eingang-buchen';
+  currentWarenEingangSig = signal<AddEditBuchungComponent | null>(null);
   lieferantIdSig = signal(0);
   warenEingangItem = signal<iWarenEingang>({} as iWarenEingang);
   warenEingangItems = toSignal<iWarenEingang[], iWarenEingang[]>(this.getAllWareneingangBuchungen(), { initialValue: []});
@@ -20,8 +22,11 @@ export class WareneingangService {
     const items = this.warenEingangItems();
     const item = this.warenEingangItem();
     if(item.id) {
-      items.push(item);
-      return items;
+      const index = items.findIndex((tmp) => tmp.id === item.id);
+
+       const newItems = items.slice(0);
+       newItems[index] = item;
+      return newItems;
     }
 
     return items;
@@ -46,11 +51,17 @@ export class WareneingangService {
   }
 
   createWareneingangBuchung(wareneingang: any): Observable<iWarenEingang> {
-    return this.http.post<iWarenEingang>(this.API, wareneingang);
+    return this.http.post<iWarenEingang>(this.API, wareneingang).pipe(tap((res) => {
+      if(res.id)
+        this.warenEingangItem.set(res);
+    }));
   }
 
   updateWareneingangBuchung(wareneingang: any): Observable<iWarenEingang> {
-    return this.http.put<iWarenEingang>(this.API, wareneingang);
+    return this.http.put<iWarenEingang>(this.API, wareneingang).pipe(tap((res) => {
+      if(res.id)
+      this.warenEingangItem.set(res);
+    }));
   }
 
   deleteWareneingangBuchung(id: number): Observable<number> {

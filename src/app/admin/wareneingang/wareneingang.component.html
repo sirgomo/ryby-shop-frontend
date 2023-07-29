@@ -36,7 +36,7 @@
 
     <ng-container matColumnDef="gebucht">
       <mat-header-cell *matHeaderCellDef>Gebucht</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.gebucht}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{element.gebucht === 0 ? 'nein' : 'ja'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="bearbeiten">

@@ -14,7 +14,7 @@ import { iKategorie } from 'src/app/model/iKategorie';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductComponent {
-  displayedColumns: string[] = ['prodid', 'name', 'preis', 'verfugbar', 'edit', 'delete'];
+  displayedColumns: string[] = ['prodid','artid', 'name', 'preis', 'verfugbar', 'edit', 'delete'];
   productsSig = this.prodService.productsSig;
   del$ = new Observable();
   constructor( private readonly prodService: ProductService, private readonly dialog: MatDialog, private helperService: HelperService) {

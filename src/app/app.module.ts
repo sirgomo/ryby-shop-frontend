@@ -46,6 +46,7 @@ import { ArtikelListComponent } from './admin/wareneingang/artikel-list/artikel-
 import { ArtikelGebuchtComponent } from './admin/wareneingang/artikel-gebucht/artikel-gebucht.component';
 import { AddEditBuchungComponent } from './admin/wareneingang/add-edit-buchung/add-edit-buchung.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import { AddEditProductToBuchungComponent } from './admin/wareneingang/add-edit-product-to-buchung/add-edit-product-to-buchung.component';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     ArtikelListComponent,
     ArtikelGebuchtComponent,
     AddEditBuchungComponent,
+    AddEditProductToBuchungComponent,
   ],
   imports: [
     BrowserModule,

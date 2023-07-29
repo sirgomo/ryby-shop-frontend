@@ -1,0 +1,46 @@
+<div class="content">
+  <div *ngIf="errMessage?.message && errMessage.message().length > 2">
+    <app-error></app-error>
+  </div>
+  <div class="h2">
+    <h2>{{ data ? 'Produkt bearbeiten' : 'Produkt hinzufügen' }}</h2>
+  </div>
+  <form [formGroup]="wEingangProduct" >
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Produkt</mat-label>
+        <input matInput formControlName="produkt" placeholder="Produkt">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Menge</mat-label>
+        <input matInput formControlName="menge" placeholder="Menge" type="number">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Preis</mat-label>
+        <input matInput formControlName="preis" placeholder="Preis" type="number">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>MwSt</mat-label>
+        <input matInput formControlName="mwst" placeholder="MwSt" type="number">
+      </mat-form-field>
+    </div>
+    <div formArrayName="color">
+      <div class="row" *ngFor="let item of getColor().controls; let i = index">
+        <mat-form-field [formGroup]="getItem(item)">
+          <mat-label>{{item.get('id')?.getRawValue()}}</mat-label>
+          <input matInput type="number" formControlName="menge"   (change)="onChangeFarbeMenge()">
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="action">
+  <button mat-button (click)="close()" >Cancel</button>
+  <button mat-button [disabled]="!wEingangProduct.valid" (click)="save()">Save<span *ngIf="act$ | async"></span></button>
+</div>
+
+

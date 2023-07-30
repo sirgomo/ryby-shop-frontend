@@ -49,6 +49,8 @@ export class AddEditBuchungComponent implements OnInit{
             this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
             if(res.lieferant.id)
             this.warenService.lieferantIdSig.set(res.lieferant.id)
+
+           this.warenService.currentProductsInBuchungSig.set(res.products);
           }
       }))
   }

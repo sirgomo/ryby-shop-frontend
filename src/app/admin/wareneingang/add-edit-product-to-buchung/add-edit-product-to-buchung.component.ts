@@ -19,7 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AddEditProductToBuchungComponent {
   wareneingang = this.wEingService.currentWarenEingangSig();
   wEingangProduct: FormGroup;
-  colors: iColor[] = JSON.parse( this.data.produkt.color);
+  colors: iColor[] =  JSON.parse(this.data.produkt[0].color);
   act$ = new Observable();
   constructor (private wEingService: WareneingangService, @Optional() @Inject(MAT_DIALOG_DATA) public data: iWareneingangProduct, private fb: FormBuilder,
   private dialRef: MatDialogRef<AddEditProductToBuchungComponent>,
@@ -29,14 +29,16 @@ export class AddEditProductToBuchungComponent {
     this.wEingangProduct =  this.fb.group({
         id: [ this.data && this.data.id ? this.data.id : null],
         wareneingang: [ this.wareneingang],
-        produkt: [ this.data && this.data.produkt ? this.data.produkt.name : null],
+        produkt: [ this.data && this.data.produkt ? this.data.produkt[0].name : null],
         menge: [{ value: this.data && this.data.menge ? this.data.menge : 0, disabled: true}],
-        preis: [ this.data && this.data.preis ? this.data.preis : 0],
+        preis: [ this.data && this.data.preis ? Number(this.data.preis) : 0],
         mwst: [ this.data && this.data.mwst ? this.data.mwst : 0],
         mengeEingelagert: [ { value: this.data && this.data.mengeEingelagert ? this.data.mengeEingelagert : 0, disabled: true} ],
-        color: this.fb.array([]),
+        color:  this.fb.array([]),
     });
-    //add colors to form
+    if(data.color)
+      this.colors = JSON.parse(this.data.color);
+
    for (let i = 0; i < this.colors.length; i++) {
     const item = this.colorForm();
     item.patchValue(this.colors[i]);
@@ -65,7 +67,7 @@ export class AddEditProductToBuchungComponent {
     return item as FormGroup;
   }
   save() {
-    if (!this.data.produkt.id || !this.wareneingang?.data.id || this.wEingangProduct.get('menge')?.getRawValue() <= 0 || this.wEingangProduct.get('preis')?.getRawValue() <= 0 ) {
+    if (!this.data.produkt[0].id || !this.wareneingang?.data.id || this.wEingangProduct.get('menge')?.getRawValue() <= 0 || this.wEingangProduct.get('preis')?.getRawValue() <= 0 ) {
       this.snackBar.open('Etwas stimmit nicht', 'Ok', { duration: 2000 })
       return;
     }
@@ -73,22 +75,39 @@ export class AddEditProductToBuchungComponent {
     const prod: iProduct = {} as iProduct;
     const wEingang: iWarenEingang = {} as iWarenEingang;
     wEingang.id = this.wareneingang?.data.id;
-    prod.id = this.data.produkt.id;
+    prod.id = this.data.produkt[0].id;
+
     Object.assign(wEinprod, this.wEingangProduct.value);
-    wEinprod.produkt = prod;
+    wEinprod.produkt = [prod];
     wEinprod.wareneingang = wEingang;
     wEinprod.mengeEingelagert = 0;
     wEinprod.menge = this.wEingangProduct.get('menge')?.getRawValue();
-    console.log(wEinprod)
+    wEinprod.color = JSON.stringify(this.wEingangProduct.get('color')?.getRawValue());
+    //new product in buchung
     if(wEingang.id && this.data.id === undefined)
       this.act$ = this.wEingService.addProductToWarenEingang(wEingang.id, wEinprod).pipe(tap(res => {
-       this.wEingangProduct.patchValue(res);
-       this.data.id = res.id;
+        if(res.id) {
+          this.data.id = res.id;
+          res.produkt = this.data.produkt;
+          this.wEingService.currentProductsInBuchungSig().push(res);
+          this.snackBar.open('Gespichert', 'Ok', { duration: 1500 })
+        }
+
       }))
+      //edited product in buchung
       if(wEingang.id && this.data.id && wEinprod.id)
       this.act$ = this.wEingService.updateProductInWarenEingang(wEingang.id, wEinprod.id, wEinprod).pipe(tap(res => {
-        this.wEingangProduct.patchValue(res);
-        this.data.id = res.id;
+        if(res.id) {
+        const items =  this.wEingService.currentProductsInBuchungSig();
+        const index = items.findIndex((tmp) => tmp.id === res.id);
+        const newItems = items.slice(0);
+        newItems[index] = res;
+        newItems[index].produkt = items[index].produkt;
+        this.wEingService.currentProductsInBuchungSig.set(newItems);
+          this.data.id = res.id;
+          this.snackBar.open('Gespichert und updated', 'Ok', { duration: 1500 })
+        }
+
        }))
   }
   onChangeFarbeMenge() {

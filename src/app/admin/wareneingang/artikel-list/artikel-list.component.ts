@@ -22,7 +22,6 @@ export class ArtikelListComponent {
   products$ = combineLatest([of(this.items), toObservable(this.wEingService.lieferantIdSig)]).pipe(
     switchMap(([items, lifid]) => this.wEingService.getProduktsForWarenEingang(lifid)),
     map((res) => {
-      console.log(res)
       return res;
     })
   )
@@ -32,7 +31,7 @@ export class ArtikelListComponent {
 
     const item: iWareneingangProduct = {
       wareneingang: null,
-      produkt: product,
+      produkt: [product],
       menge: 0,
       preis: 0,
       mwst: 0,

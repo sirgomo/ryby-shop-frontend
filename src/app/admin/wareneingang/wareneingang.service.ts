@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, computed, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { iProduct } from 'src/app/model/iProduct';
 import { iWarenEingang } from 'src/app/model/iWarenEingang';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
@@ -15,6 +15,7 @@ export class WareneingangService {
   API_P = environment.api + 'product';
   API = environment.api + 'waren-eingang-buchen';
   currentWarenEingangSig = signal<AddEditBuchungComponent | null>(null);
+  currentProductsInBuchungSig = signal<iWareneingangProduct[]>([]);
   lieferantIdSig = signal(0);
   warenEingangItem = signal<iWarenEingang>({} as iWarenEingang);
   warenEingangItems = toSignal<iWarenEingang[], iWarenEingang[]>(this.getAllWareneingangBuchungen(), { initialValue: []});

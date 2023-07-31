@@ -1,3 +1,6 @@
+<div *ngIf="err.message() && err.message().length > 2">
+  <app-error></app-error>
+</div>
 <div class="content">
   <form [formGroup]="warenEingangForm" >
     <div class="row">
@@ -40,6 +43,9 @@
       <mat-checkbox formControlName="eingelagert">Eingelagert</mat-checkbox>
     </div>
   </form>
+  <div *ngIf="!data">
+    <span class="info-warn">Du solltest zuerst die Buchung speichern!</span>
+  </div>
   <mat-tab-group dynamicHeight class="tabs">
     <mat-tab label="Products">
       <ng-template matTabContent >
@@ -54,7 +60,7 @@
   </mat-tab-group>
 </div>
 <div class="action">
-  <button mat-button (click)="closeGoodsReceipt()">Cancel</button>
+  <button mat-button (click)="closeGoodsReceipt()">Schließen</button>
   <button mat-button (click)="saveGoodsReceipt()" [disabled]="!warenEingangForm.valid">Save<span *ngIf="act$ | async"></span></button>
 </div>
 

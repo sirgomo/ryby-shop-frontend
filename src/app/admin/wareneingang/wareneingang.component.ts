@@ -4,6 +4,7 @@ import { iWarenEingang } from 'src/app/model/iWarenEingang';
 import { ErrorService } from 'src/app/error/error.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddEditBuchungComponent } from './add-edit-buchung/add-edit-buchung.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-wareneingang',
@@ -13,6 +14,7 @@ import { AddEditBuchungComponent } from './add-edit-buchung/add-edit-buchung.com
 })
 export class WareneingangComponent {
     weingangSig = this.wEingangService.warenEingangSig;
+    act$ = new Observable();
     displayedColumns: string[] = ['id', 'liferant', 'rechnung', 'lieferscheinNr', 'empfangsdatum', 'datenEingabe', 'gebucht', 'bearbeiten', 'delete'];
     constructor( private readonly wEingangService: WareneingangService, public errService: ErrorService, private dialog: MatDialog) {}
     newOrEditGoodsReceipt(item? : iWarenEingang) {
@@ -24,6 +26,8 @@ export class WareneingangComponent {
 
         this.dialog.open(AddEditBuchungComponent, conf);
     }
-    deleteGoodsReceipt(itemid: number) {}
+    deleteGoodsReceipt(itemid: number) {
+     this.act$ = this.wEingangService.deleteWareneingangBuchung(itemid);
+    }
 
 }

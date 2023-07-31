@@ -91,6 +91,7 @@ export class AddEditProductToBuchungComponent {
           res.produkt = this.data.produkt;
           this.wEingService.currentProductsInBuchungSig().push(res);
           this.snackBar.open('Gespichert', 'Ok', { duration: 1500 })
+          this.dialRef.close();
         }
 
       }))
@@ -106,6 +107,7 @@ export class AddEditProductToBuchungComponent {
         this.wEingService.currentProductsInBuchungSig.set(newItems);
           this.data.id = res.id;
           this.snackBar.open('Gespichert und updated', 'Ok', { duration: 1500 })
+          this.dialRef.close();
         }
 
        }))

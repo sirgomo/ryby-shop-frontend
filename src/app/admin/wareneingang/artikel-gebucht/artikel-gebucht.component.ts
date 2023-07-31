@@ -25,7 +25,6 @@ export class ArtikelGebuchtComponent {
     this.dialog.open(AddEditProductToBuchungComponent, conf);
   }
   deleteProductFromBuchung(product: iWareneingangProduct) {
-    console.log(product)
     const wareneingangId = this.wEingService.currentWarenEingangSig()?.data.id;
     if( wareneingangId !== undefined && product.id) {
       this.act$ = this.wEingService.deleteProductFromWarenEingang(wareneingangId, product.id).pipe(tap(res => {

@@ -8,6 +8,7 @@ import { Observable, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { LiferantsService } from '../../liferants/liferants.service';
 import { DatePipe } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-edit-buchung',
@@ -25,9 +26,11 @@ export class AddEditBuchungComponent implements OnInit{
     private readonly warenService: WareneingangService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: iWarenEingang,
     private readonly fb: FormBuilder,
-    private readonly err: ErrorService,
+    public err: ErrorService,
     private readonly lieferants: LiferantsService,
-    private datePipe: DatePipe) {
+    private datePipe: DatePipe,
+    private snackBar: MatSnackBar,
+    ) {
       this.warenEingangForm =  this.fb.group({
         id: [data?.id || null],
         lieferant: [data?.lieferant.id || null, Validators.required],
@@ -65,12 +68,17 @@ export class AddEditBuchungComponent implements OnInit{
         if(eD)
         buchung.empfangsdatum =  eD;
 
+        const buchungs_Datum = this.datePipe.transform(new Date(Date.now()).toISOString(), 'yyyy-MM-dd');;
+        if(this.warenEingangForm.get('gebucht')?.getRawValue() == true && buchungs_Datum)
+        buchung.datenEingabe = buchungs_Datum;
+
         if(!this.data) {
         this.act$ = this.warenService.createWareneingangBuchung(buchung).pipe(
           tap((res) => {
             this.warenEingangForm.patchValue(res);
             this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
             this.data = res;
+            this.snackBar.open('Die buchung wurde gespeichert');
           })
         )
       } else {
@@ -79,6 +87,7 @@ export class AddEditBuchungComponent implements OnInit{
             this.warenEingangForm.patchValue(res);
             this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
             this.data = res;
+            this.snackBar.open('Die buchung wurde gespeichert');
           })
         )
       }
@@ -90,8 +99,7 @@ export class AddEditBuchungComponent implements OnInit{
   SaveReceiptCompletely() {
     if(window.confirm('Buchen ?')) {
       this.warenEingangForm.get('datenEingabe')?.patchValue(this.datePipe.transform(new Date( Date.now()).toISOString(), 'yyyy-MM-dd'));
-      console.log('saved')
-      return;
+      this.saveGoodsReceipt();
     }
     this.warenEingangForm.get('gebucht')?.setValue(false);
   }

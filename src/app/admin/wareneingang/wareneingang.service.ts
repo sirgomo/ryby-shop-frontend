@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, computed, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Observable, of, tap } from 'rxjs';
+import { EMPTY, Observable, catchError, of, tap } from 'rxjs';
 import { iProduct } from 'src/app/model/iProduct';
 import { iWarenEingang } from 'src/app/model/iWarenEingang';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
 import { environment } from 'src/environments/environment';
 import { AddEditBuchungComponent } from './add-edit-buchung/add-edit-buchung.component';
+import { ErrorService } from 'src/app/error/error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class WareneingangService {
   warenEingangSig = computed(() => {
     const items = this.warenEingangItems();
     const item = this.warenEingangItem();
-    if(item.id) {
+    if(item.id && item.id > 0) {
       const index = items.findIndex((tmp) => tmp.id === item.id);
 
        const newItems = items.slice(0);
@@ -30,9 +31,17 @@ export class WareneingangService {
       return newItems;
     }
 
+    if(item.id && item.id < 0) {
+      const id = item.id;
+      const index = items.findIndex((tmp) => tmp.id == Math.abs(id));
+      items.splice(index, 1);
+      const newItms = items.slice(0);
+
+      return newItms;
+    }
     return items;
   })
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private err: ErrorService) { }
 
   getAllWareneingangBuchungen(): Observable<iWarenEingang[]> {
     return this.http.get<iWarenEingang[]>(this.API).pipe(tap(res => {
@@ -55,6 +64,9 @@ export class WareneingangService {
     return this.http.post<iWarenEingang>(this.API, wareneingang).pipe(tap((res) => {
       if(res.id)
         this.warenEingangItem.set(res);
+    }), catchError((err) => {
+      this.err.newMessage(err.message);
+      return of({} as iWarenEingang);
     }));
   }
 
@@ -62,11 +74,23 @@ export class WareneingangService {
     return this.http.put<iWarenEingang>(this.API, wareneingang).pipe(tap((res) => {
       if(res.id)
       this.warenEingangItem.set(res);
+    }), catchError((err) => {
+      this.err.newMessage(err.message);
+      return of({} as iWarenEingang);
     }));
   }
 
   deleteWareneingangBuchung(id: number): Observable<number> {
-    return this.http.delete<number>(`${this.API}/${id}`);
+    return this.http.delete<number>(`${this.API}/${id}`).pipe(tap((res) => {
+      if(res === 1) {
+        const item : iWarenEingang = {} as iWarenEingang;
+        item.id = -id;
+        this.warenEingangItem.set(item);
+      }
+    }), catchError((err) => {
+      this.err.newMessage('Du kannst nur Buchung löschen wenn die leer ist!');
+      return of(0);
+    }));
   }
 
   addProductToWarenEingang(wareneingangId: number, product: iWareneingangProduct): Observable<iWareneingangProduct> {

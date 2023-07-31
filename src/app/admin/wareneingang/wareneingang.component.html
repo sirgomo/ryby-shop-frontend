@@ -1,3 +1,6 @@
+<div *ngIf="errService.message() && errService.message().length > 2">
+  <app-error></app-error>
+</div>
 <div class="button">
   <button mat-raised-button color="primary" (click)="newOrEditGoodsReceipt()" >Neue Waren Buchung</button>
 </div>
@@ -41,16 +44,17 @@
 
     <ng-container matColumnDef="bearbeiten">
       <mat-header-cell *matHeaderCellDef>Bearbeiten</mat-header-cell>
-      <mat-cell *matCellDef="let element"><button mat-button color="accent" (click)="newOrEditGoodsReceipt(element)">Bearbeiten</button></mat-cell>
+      <mat-cell *matCellDef="let element"><button mat-icon-button color="accent" (click)="newOrEditGoodsReceipt(element)"><mat-icon>edit</mat-icon></button></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="delete">
       <mat-header-cell *matHeaderCellDef>Entfernen</mat-header-cell>
-      <mat-cell *matCellDef="let element"><button mat-button color="warn" (click)="deleteGoodsReceipt(element.id)">Entfernen</button></mat-cell>
+      <mat-cell *matCellDef="let element"><button mat-button color="warn" (click)="deleteGoodsReceipt(element.id)"><mat-icon>delete</mat-icon></button></mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+  <span *ngIf="act$ | async"></span>
 </div>
 

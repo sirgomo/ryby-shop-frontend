@@ -26,6 +26,8 @@ export interface iProduct {
   mindestmenge: number;
   currentmenge: number;
   product_sup_id: string;
+  lange: number;
+  gewicht: number;
   verkaufteAnzahl: number;
   wareneingang: iWareneingangProduct[];
   warenausgang: iWarenausgangProduct[];

@@ -78,7 +78,7 @@ export class AddEditBuchungComponent implements OnInit{
             this.warenEingangForm.patchValue(res);
             this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
             this.data = res;
-            this.snackBar.open('Die buchung wurde gespeichert');
+            this.snackBar.open('Die buchung wurde gespeichert', ' Ok', { duration: 3000 });
           })
         )
       } else {
@@ -87,7 +87,7 @@ export class AddEditBuchungComponent implements OnInit{
             this.warenEingangForm.patchValue(res);
             this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
             this.data = res;
-            this.snackBar.open('Die buchung wurde gespeichert');
+            this.snackBar.open('Die buchung wurde gespeichert', ' Ok', { duration: 3000 });
           })
         )
       }

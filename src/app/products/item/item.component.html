@@ -1,0 +1,16 @@
+<div class="product-item">
+  <div class="product-image">
+    <img [src]="getImage(item)" alt="Product Image" class="image" ><span *ngIf="act$ | async as item else loader"></span>
+
+  </div>
+  <div class="product-details">
+    <h3>{{item.name}}</h3>
+    <p>{{item.beschreibung}}</p>
+    <p>Preis: {{item.preis}}</p>
+    <p>Lange: {{item.lange}} (mm)</p>
+    <p>Gewicht: {{item.gewicht}} (g)</p>
+  </div>
+</div>
+<ng-template #loader>
+  <mat-spinner></mat-spinner>
+</ng-template>

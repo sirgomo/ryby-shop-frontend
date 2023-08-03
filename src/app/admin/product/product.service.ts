@@ -1,7 +1,7 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Injectable, computed, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY, Subject, catchError, combineLatest, finalize, map, switchMap, takeUntil, tap, throwError } from 'rxjs';
+import { EMPTY, Subject, catchError, combineLatest, finalize, map, retry, share, shareReplay, switchMap, takeUntil, tap, throwError } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'
@@ -23,7 +23,8 @@ export class ProductService {
     switchMap(([search, kat, artpro, pagenr]) => this.getAllProducts(search, kat.id, artpro, pagenr)),
     map((res) => {
       return res;
-    })
+    }),
+    shareReplay(1)
   );
 
   productsGetSig = toSignal<iProduct[], iProduct[]>(this.items$, { initialValue:  []});
@@ -180,7 +181,8 @@ export class ProductService {
       }),
       map((res) => {
         return res;
-      } ));
+      } )
+      );
   }
   //get thumbnails
   getThumbnails(id: string) {
@@ -192,7 +194,8 @@ export class ProductService {
       }),
       map((res) => {
         return res;
-      } ));
+      })
+      );
   }
   deleteImage(image: iDelete) {
     return this.http.post(`${this.API}/file-delete`, image).pipe(

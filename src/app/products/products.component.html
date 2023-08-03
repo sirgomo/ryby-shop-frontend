@@ -1,17 +1,6 @@
 <div class="product-list">
-  <div *ngFor="let item of products()">
-    <div class="product-item">
-      <div class="product-image" *ngIf="act$ | async else loader">
-        <img [src]="getImage(item)" alt="Product Image">
-      </div>
-      <div class="product-details">
-        <h3>{{item.name}}</h3>
-        <p>{{item.beschreibung}}</p>
-        <p>Preis: {{item.preis}}</p>
-      </div>
-    </div>
+  <div *ngFor="let item of products(); let i = index">
+    <app-item [item]="item"></app-item>
   </div>
 </div>
-<ng-template #loader>
-  <mat-spinner></mat-spinner>
-</ng-template>
+

@@ -7,8 +7,14 @@
     <h3>{{item.name}}</h3>
     <p>{{item.beschreibung}}</p>
     <p>Preis: {{item.preis}}</p>
-    <p>Lange: {{item.lange}} (mm)</p>
-    <p>Gewicht: {{item.gewicht}} (g)</p>
+    <div class="prop">
+      <p>Lange: {{item.lange}} (mm)</p>
+      <p>Gewicht: {{item.gewicht}} (g)</p>
+    </div>
+    <div class="act">
+      <button mat-raised-button color="primary">In den Warenkorb</button>
+      <button mat-button color="accent" >Details</button>
+    </div>
   </div>
 </div>
 <ng-template #loader>

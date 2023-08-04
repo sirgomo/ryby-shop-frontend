@@ -1,1 +1,23 @@
-<p>item-details works!</p>
+<h1 matDialogTitle>{{item.name}}</h1>
+
+<mat-dialog-content>
+  <div class="desc">
+    {{item.beschreibung}}
+  </div>
+  <div class="farbe">
+    <div class="row">
+      <div class="item" *ngFor="let item of color">
+        <button mat-button > {{item.id }}</button>
+      </div>
+    </div>
+    <div class="image">
+        <img [src]="currentImage" alt="">
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button matDialogClose>Close dialog</button>
+    <button mat-button>Action</button>
+</mat-dialog-actions>
+<span *ngIf="act$ | async"></span>

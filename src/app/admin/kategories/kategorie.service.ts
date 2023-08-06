@@ -70,6 +70,7 @@ export class KategorieService {
    catchError((err) => {
     console.log(err)
     this.errService.newMessage('Es gibt ein error aufgetreten');
+    this.#kategorie.next([]);
     return [];
    })
     );

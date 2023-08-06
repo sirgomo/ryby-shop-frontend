@@ -69,8 +69,8 @@ export class AddEditProductComponent implements OnInit {
       mindestmenge: [this.data ? this.data.mindestmenge : '', Validators.required],
       currentmenge: [{ value: this.data ? this.data.currentmenge : 0, disabled: true }],
       product_sup_id: [this.data ? this.data.product_sup_id: ''],
-      lange: [this.data ? this.data.lange: ''],
-      gewicht: [this.data ? this.data.gewicht: ''],
+      lange: [this.data ? this.data.lange: 0, Validators.required],
+      gewicht: [this.data ? this.data.gewicht: 0, Validators.required],
       verkaufteAnzahl: [{ value:  this.data ? this.data.verkaufteAnzahl : 0,  disabled: true } ],
       wareneingang: [this.data ? this.data.wareneingang : []],
       warenausgang: [this.data ? this.data.warenausgang : []],
@@ -140,7 +140,16 @@ async getData() {
       product.color = JSON.stringify(this.color);
       product.verkaufteAnzahl = this.data ?  this.data.verkaufteAnzahl : 0;
       product.preis = Number(this.productForm.get('preis')?.getRawValue());
-      product.currentmenge = this.data.currentmenge;
+      product.currentmenge = 0;
+      if(this.data) {
+        product.currentmenge = this.data.currentmenge;
+      }
+
+      if(this.productForm.get('gewicht') === null) {
+        this.snackBar.open('Gewicht muss eingegeben werden', 'Ok', { duration: 3000 } );
+        return;
+      }
+
 
       const curDate =  this.dpipe.transform(this.productForm.get('datumHinzugefuegt')?.getRawValue(), 'yyyy-MM-dd');
 

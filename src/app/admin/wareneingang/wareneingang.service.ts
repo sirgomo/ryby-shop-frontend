@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, computed, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { EMPTY, Observable, catchError, of, tap } from 'rxjs';
+import { EMPTY, Observable, catchError, map, of, tap } from 'rxjs';
 import { iProduct } from 'src/app/model/iProduct';
 import { iWarenEingang } from 'src/app/model/iWarenEingang';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
@@ -27,8 +27,13 @@ export class WareneingangService {
       const index = items.findIndex((tmp) => tmp.id === item.id);
 
        const newItems = items.slice(0);
-       newItems[index] = item;
-      return newItems;
+       if(index !== -1) {
+        newItems[index] = item;
+        return newItems;
+       }
+
+         newItems.push(item);
+         return newItems;
     }
 
     if(item.id && item.id < 0) {
@@ -45,7 +50,6 @@ export class WareneingangService {
 
   getAllWareneingangBuchungen(): Observable<iWarenEingang[]> {
     return this.http.get<iWarenEingang[]>(this.API).pipe(tap(res => {
-      console.log(res);
       if(res.length > 0) {
         return res;
       }
@@ -53,7 +57,6 @@ export class WareneingangService {
     }))
   }
   getProduktsForWarenEingang(lieferantId: number) {
-    console.log(this.lieferantIdSig())
     return this.http.get<iProduct[]>(`${this.API_P}/lieferant/${lieferantId}`);
   }
   getWareneingangBuchungbeiId(id: number): Observable<iWarenEingang> {
@@ -61,9 +64,9 @@ export class WareneingangService {
   }
 
   createWareneingangBuchung(wareneingang: any): Observable<iWarenEingang> {
-    return this.http.post<iWarenEingang>(this.API, wareneingang).pipe(tap((res) => {
-      if(res.id)
-        this.warenEingangItem.set(res);
+    return this.http.post<iWarenEingang>(this.API, wareneingang).pipe(map((res) => {
+      this.warenEingangItem.set(res);
+      return res;
     }), catchError((err) => {
       this.err.newMessage(err.message);
       return of({} as iWarenEingang);
@@ -94,14 +97,31 @@ export class WareneingangService {
   }
 
   addProductToWarenEingang(wareneingangId: number, product: iWareneingangProduct): Observable<iWareneingangProduct> {
-    return this.http.post<iWareneingangProduct>(`${this.API}/${wareneingangId}/products`, product);
+    return this.http.post<iWareneingangProduct>(`${this.API}/${wareneingangId}/products`, product)
+    .pipe(
+      catchError((err) => {
+        this.err.newMessage(err.error.message);
+        return of({} as iWareneingangProduct);
+      })
+    );
   }
 
   updateProductInWarenEingang(wareneingangId: number, productId: number, product: iWareneingangProduct): Observable<iWareneingangProduct> {
-    return this.http.patch<iWareneingangProduct>(`${this.API}/${wareneingangId}/products/${productId}`, product);
+    return this.http.patch<iWareneingangProduct>(`${this.API}/${wareneingangId}/products/${productId}`, product)
+    .pipe(
+      catchError((err) => {
+        this.err.newMessage(err.error.message);
+        return of({} as iWareneingangProduct);
+      })
+    );
   }
 
   deleteProductFromWarenEingang(wareneingangId: number, productId: number): Observable<number> {
-    return this.http.delete<number>(`${this.API}/${wareneingangId}/products/${productId}`);
+    return this.http.delete<number>(`${this.API}/${wareneingangId}/products/${productId}`).pipe(
+      catchError((err) => {
+        this.err.newMessage(err.error.message);
+        return of(0);
+      })
+    );
   }
 }

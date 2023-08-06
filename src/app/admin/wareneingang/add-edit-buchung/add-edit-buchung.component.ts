@@ -45,6 +45,7 @@ export class AddEditBuchungComponent implements OnInit{
   ngOnInit(): void {
     this.warenService.lieferantIdSig.set(0);
     this.warenService.currentWarenEingangSig.set(this);
+    this.warenService.currentProductsInBuchungSig.set([]);
     if(this.data && this.data.id)
       this.act$ = this.warenService.getWareneingangBuchungbeiId(this.data.id).pipe(tap((res) => {
           if(res.id) {
@@ -72,13 +73,18 @@ export class AddEditBuchungComponent implements OnInit{
         if(this.warenEingangForm.get('gebucht')?.getRawValue() == true && buchungs_Datum)
         buchung.datenEingabe = buchungs_Datum;
 
+
         if(!this.data) {
         this.act$ = this.warenService.createWareneingangBuchung(buchung).pipe(
           tap((res) => {
             this.warenEingangForm.patchValue(res);
-            this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
+            this.warenEingangForm.get('id')?.patchValue(res.id);
             this.data = res;
+            if(res.lieferant.id)
+            this.warenService.lieferantIdSig.set(res.lieferant.id)
+
             this.snackBar.open('Die buchung wurde gespeichert', ' Ok', { duration: 3000 });
+            return res;
           })
         )
       } else {
@@ -88,6 +94,10 @@ export class AddEditBuchungComponent implements OnInit{
             this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
             this.data = res;
             this.snackBar.open('Die buchung wurde gespeichert', ' Ok', { duration: 3000 });
+            if(res.lieferant.id)
+            this.warenService.lieferantIdSig.set(res.lieferant.id);
+
+            return res;
           })
         )
       }

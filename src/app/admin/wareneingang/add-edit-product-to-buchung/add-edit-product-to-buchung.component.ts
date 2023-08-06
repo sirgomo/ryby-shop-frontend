@@ -41,6 +41,7 @@ export class AddEditProductToBuchungComponent {
 
    for (let i = 0; i < this.colors.length; i++) {
     const item = this.colorForm();
+    this.colors[i].menge = 0;
     item.patchValue(this.colors[i]);
       this.getColor().push(item)
    }

@@ -135,6 +135,9 @@ export class ProductService {
 
   getProductById(id: number) {
     return this.http.get<iProduct>(`${this.API}/${id}`).pipe(
+      tap(res => {
+        console.log(res)
+      }),
       catchError((error) => {
         this.error.newMessage('Fehler beim Abrufen des Produkts nach der ID.');
         return throwError(()=> error);

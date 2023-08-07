@@ -1,23 +1,81 @@
-<h1 matDialogTitle>{{item.name}}</h1>
+<div class="header">
+  <div class="h1">
+    <h1>{{item.name}}</h1>
+  </div>
+  <div class="act">
+    <button mat-button color="primary" (click)="sendItemsToCard()">
+        <mat-icon>add_shopping_cart</mat-icon>
+        In den Warenkorb
+    </button>
+    <button mat-button matDialogClose color="accent">
+        <mat-icon>close</mat-icon>
+        Schließen
+    </button>
+  </div>
+</div>
 
-<mat-dialog-content>
-  <div class="desc">
-    {{item.beschreibung}}
+<div class="con">
+  <div class="itemdesc">
+    <div class="itempro">
+      <div class="left">
+        <div class="item">
+          <div class="desc-title">Item Id:</div>
+          <div class="desc-value">{{item.artid}}</div>
+        </div>
+        <div class="item">
+          <div *ngIf="item.mehrwehrsteuer === 0" class="desc-title">
+            Preis (Netto):
+          </div>
+          <div *ngIf="item.mehrwehrsteuer === 0" class="desc-value">
+            {{getPriceNetto(item)}} &euro;
+          </div>
+          <div *ngIf="item.mehrwehrsteuer !== 0" class="desc-title">
+            Preis (Brutto):
+          </div>
+          <div *ngIf="item.mehrwehrsteuer !== 0" class="desc-value">
+            {{getPriceBrutto(item)}} &euro;
+          </div>
+        </div>
+      <div class="item">
+        <div class="desc-title">Min Menge:</div>
+        <div class="desc-value">{{item.mindestmenge}} (st.)</div>
+      </div>
+
+      </div>
+      <div class="right">
+        <div class="item">
+          <div class="desc-title">Länge:</div>
+          <div class="desc-value">{{item.lange}} (mm)</div>
+        </div>
+      <div class="item">
+        <div class="desc-title">Gewicht:</div>
+        <div class="desc-value">{{item.gewicht}} (g)</div>
+      </div>
+      <div class="item" *ngFor="let item of colorToBuy">
+        <mat-label >{{item.id}}</mat-label>
+        <mat-form-field class="input">
+          <input type="number" matInput [(ngModel)]="item.menge">
+        </mat-form-field>
+      </div>
+      </div>
+    </div>
+    <div class="desc">
+      {{item.beschreibung}}
+    </div>
   </div>
   <div class="farbe">
     <div class="row">
-      <div class="item" *ngFor="let item of color">
-        <button mat-button > {{item.id }}</button>
+      <div class="item" *ngFor="let item of color; let i = index">
+        <button mat-raised-button color="primary" (click)="changeImage(i)">
+          <mat-checkbox *ngIf="fotos.length > 1 && i !== 0" (change)="addColor(color[i].id, $event)"></mat-checkbox>
+          <span>{{item.id}}</span>
+          </button>
       </div>
     </div>
     <div class="image">
-        <img [src]="currentImage" alt="">
+      <img [src]="currentImage" alt="">
     </div>
   </div>
-</mat-dialog-content>
+</div>
 
-<mat-dialog-actions align="end">
-    <button mat-button matDialogClose>Close dialog</button>
-    <button mat-button>Action</button>
-</mat-dialog-actions>
 <span *ngIf="act$ | async"></span>

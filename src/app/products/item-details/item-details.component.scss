@@ -1,0 +1,93 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f1f1f1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.h1 {
+  font-size: 1.5rem;
+}
+
+.act {
+  display: flex;
+  gap: 1rem;
+}
+
+.con {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.itemdesc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid rgb(128, 77, 30);
+  border-radius: 1rem;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.itempro {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.left,
+.right {
+  display: flex;
+  width: 45%;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.desc-title {
+  font-weight: bold;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.farbe {
+ margin-top: .5rem;
+ margin-left: .5rem;
+}
+.input {
+  line-height: 1rem;
+  font-size: .9rem;
+
+}
+mat-form-field {
+  height: 4rem;
+
+}

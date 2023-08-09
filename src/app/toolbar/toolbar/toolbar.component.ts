@@ -10,11 +10,14 @@ import { HelperService } from 'src/app/helper/helper.service';
 })
 export class ToolbarComponent {
   isLogged = this.helper.isLogged;
-  constructor (private readonly helper: HelperService, private readonly authService: AuthService) {}
+  constructor (public helper: HelperService, private readonly authService: AuthService) {}
   showLoginPanel() {
     this.helper.getLoginWindow();
   }
   logout() {
     this.authService.logout();
+  }
+  go() {
+    this.helper.appComponenet.currentCategory = -1;
   }
 }

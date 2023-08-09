@@ -5,6 +5,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UserLoginComponent } from './user/user-login/user-login.component';
 import { KategorieService } from './admin/kategories/kategorie.service';
 import { iKategorie } from './model/iKategorie';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ export class AppComponent implements AfterContentChecked{
   title = this.helper.titelSig;
   currentCategory = 0;
   kategorie$ = this.katService.kategorie$;
-  constructor(private readonly helper: HelperService, private readonly dialog: MatDialog, private readonly katService: KategorieService, private changeRef: ChangeDetectorRef) {
+  constructor(private readonly helper: HelperService, private readonly dialog: MatDialog, private readonly katService: KategorieService, private changeRef: ChangeDetectorRef,
+  private readonly router: Router) {
     this.helper.setApp(this);
   }
   ngAfterContentChecked(): void {
@@ -37,9 +39,11 @@ export class AppComponent implements AfterContentChecked{
   changeCategorie(item: iKategorie) {
     this.helper.kategorySig.set(item);
     this.currentCategory = item.id;
+    this.router.navigateByUrl('');
   }
   showAll() {
     this.helper.kategorySig.set({} as iKategorie);
     this.currentCategory = 0;
+    this.router.navigateByUrl('');
   }
 }

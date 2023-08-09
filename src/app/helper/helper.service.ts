@@ -5,13 +5,14 @@ import { ToolbarComponent } from '../toolbar/toolbar/toolbar.component';
 import { AppComponent } from '../app.component';
 import { iKategorie } from '../model/iKategorie';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { iProduct } from '../model/iProduct';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HelperService {
   menuSub: BehaviorSubject<iMenuItem[]> = new BehaviorSubject<iMenuItem[]>([]);
-
+  cardSig = signal<iProduct[]>([]);
   menu$ = this.menuSub.asObservable();
   titelSig = signal('Ryby');
   searchSig = signal<string>('');

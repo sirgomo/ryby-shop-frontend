@@ -6,6 +6,7 @@ import { ProductService } from 'src/app/admin/product/product.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { ItemDetailsComponent } from '../item-details/item-details.component';
 import { iColor } from 'src/app/model/iColor';
+import { HelperService } from 'src/app/helper/helper.service';
 
 @Component({
   selector: 'app-item',
@@ -21,7 +22,8 @@ export class ItemComponent implements OnInit {
   images: string[] = [];
   selectedColor: iColor = {} as iColor;
   constructor( private readonly productService: ProductService, private santizier: DomSanitizer,
-    private readonly dialog: MatDialog) {
+    private readonly dialog: MatDialog,
+    private helper: HelperService) {
 
 
     }
@@ -61,10 +63,17 @@ export class ItemComponent implements OnInit {
   const index = this.color.findIndex((item) => item.id === val.value);
   this.getImage(this.images[index]);
   this.selectedColor = this.color[index];
-  console.log(this.selectedColor)
+
  }
  getPriceBrutto(item: iProduct) {
   const mwst = Number(item.preis) * item.mehrwehrsteuer / 100;
   return (Number(item.preis) + mwst).toFixed(2);
-}
+  }
+  addItem(item: iProduct) {
+    item.color = JSON.stringify(this.selectedColor);
+    const items = this.helper.cardSig();
+    const newItems = items.slice(0);
+    newItems.push(item);
+    this.helper.cardSig.set(newItems);
+  }
 }

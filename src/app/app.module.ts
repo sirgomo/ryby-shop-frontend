@@ -49,6 +49,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { AddEditProductToBuchungComponent } from './admin/wareneingang/add-edit-product-to-buchung/add-edit-product-to-buchung.component';
 import { ItemComponent } from './products/item/item.component';
 import { ItemDetailsComponent } from './products/item-details/item-details.component';
+import { CardComponent } from './card/card.component';
 
 
 @NgModule({
@@ -77,6 +78,7 @@ import { ItemDetailsComponent } from './products/item-details/item-details.compo
     AddEditProductToBuchungComponent,
     ItemComponent,
     ItemDetailsComponent,
+    CardComponent,
   ],
   imports: [
     BrowserModule,

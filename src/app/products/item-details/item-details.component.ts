@@ -45,7 +45,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
       if(res.id) {
         this.item = res;
         this.fotos = JSON.parse(res.foto);
-        console.log(this.fotos)
+
         if(this.fotos.length > 0) {
           let tmpClolor: iColor[] = JSON.parse(res.color);
           let tmpClolor1 = tmpClolor.filter((item) => item.menge > 0);
@@ -93,8 +93,13 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
 
       }
   }
-  sendItemsToCard() {
-    console.log(this.colorToBuy)
+
+  addItem(item: iProduct) {
+    item.color = JSON.stringify(this.colorToBuy);
+    const items = this.helperService.cardSig();
+    const newItems = items.slice(0);
+    newItems.push(item);
+    this.helperService.cardSig.set(newItems);
   }
 }
 1

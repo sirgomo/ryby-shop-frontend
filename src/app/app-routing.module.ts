@@ -9,8 +9,13 @@ import { userGuard } from './auth/user.guard';
 import { ProductComponent } from './admin/product/product.component';
 import { ProductsComponent } from './products/products.component';
 import { WareneingangComponent } from './admin/wareneingang/wareneingang.component';
+import { CardComponent } from './card/card.component';
 
 const routes: Routes = [
+{
+  component: CardComponent,
+  path: 'card',
+},
 {
   component: WareneingangComponent,
   path: 'waren-eingang',

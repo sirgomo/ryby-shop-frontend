@@ -47,9 +47,12 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
         this.fotos = JSON.parse(res.foto);
         console.log(this.fotos)
         if(this.fotos.length > 0) {
-          this.getImage(this.fotos[0]);
-          this.color = JSON.parse(res.color);
+          let tmpClolor: iColor[] = JSON.parse(res.color);
+          let tmpClolor1 = tmpClolor.filter((item) => item.menge > 0);
+          this.color = tmpClolor1;
           this.colorToBuy.push({id: this.color[0].id, menge: 0});
+          const index = tmpClolor.findIndex((item) => item.id === tmpClolor1[0].id);
+          this.getImage(this.fotos[index]);
         }
 
       }
@@ -71,8 +74,8 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     return this.item.preis.toString();
   }
   getPriceBrutto(item: iProduct) {
-    const mwst = item.preis * item.mehrwehrsteuer / 100;
-    return (item.preis + mwst).toFixed(2);
+    const mwst = Number(item.preis) * item.mehrwehrsteuer / 100;
+    return (Number(item.preis) + mwst).toFixed(2);
   }
   changeImage(index: number) {
     this.getImage(this.fotos[index]);
@@ -83,8 +86,11 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
       if(event.checked === true) {
         this.colorToBuy.push({id: index, menge: 0});
       } else {
-        if(this.colorToBuy.length > 1)
-        this.colorToBuy = this.colorToBuy.filter((item) => item.id !== index)
+        if(this.colorToBuy.length > 1) {
+          const removeIndex = this.colorToBuy.findIndex(item => item.id === index);
+          this.colorToBuy.splice(removeIndex, 1);
+        }
+
       }
   }
   sendItemsToCard() {

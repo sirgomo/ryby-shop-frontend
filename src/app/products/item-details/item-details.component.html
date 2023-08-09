@@ -40,7 +40,10 @@
         <div class="desc-title">Min Menge:</div>
         <div class="desc-value">{{item.mindestmenge}} (st.)</div>
       </div>
-
+      <div class="item">
+        <div class="desc-title">Verfugbare Menge:</div>
+        <div class="desc-value">{{item.currentmenge}} (st.)</div>
+      </div>
       </div>
       <div class="right">
         <div class="item">
@@ -52,10 +55,11 @@
         <div class="desc-value">{{item.gewicht}} (g)</div>
       </div>
       <div class="item" *ngFor="let item of colorToBuy">
-        <mat-label >{{item.id}}</mat-label>
-        <mat-form-field class="input">
-          <input type="number" matInput [(ngModel)]="item.menge">
-        </mat-form-field>
+          <mat-label >Farbe: </mat-label>
+          <mat-form-field class="input" >
+            <mat-label >{{item.id}}</mat-label>
+            <input type="number" matInput [(ngModel)]="item.menge">
+          </mat-form-field>
       </div>
       </div>
     </div>
@@ -67,15 +71,17 @@
     <div class="row">
       <div class="item" *ngFor="let item of color; let i = index">
         <button mat-raised-button color="primary" (click)="changeImage(i)">
-          <mat-checkbox *ngIf="fotos.length > 1 && i !== 0" (change)="addColor(color[i].id, $event)"></mat-checkbox>
-          <span>{{item.id}}</span>
+          <mat-checkbox *ngIf="fotos.length > 1 " (change)="addColor(color[i].id, $event)"></mat-checkbox>
+          <span>{{item.id}} ({{item.menge}})</span>
           </button>
       </div>
     </div>
     <div class="image">
-      <img [src]="currentImage" alt="">
+      <img [src]="currentImage" alt="" *ngIf="act$ | async else loader">
     </div>
   </div>
 </div>
+<ng-template #loader>
+  <mat-spinner></mat-spinner>
+</ng-template>
 
-<span *ngIf="act$ | async"></span>

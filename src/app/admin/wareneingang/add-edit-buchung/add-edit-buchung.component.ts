@@ -80,8 +80,11 @@ export class AddEditBuchungComponent implements OnInit{
             this.warenEingangForm.patchValue(res);
             this.warenEingangForm.get('id')?.patchValue(res.id);
             this.data = res;
-            if(res.lieferant.id)
-            this.warenService.lieferantIdSig.set(res.lieferant.id)
+            if(res.lieferant.id) {
+              this.warenService.lieferantIdSig.set(res.lieferant.id)
+              this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
+            }
+
 
             this.snackBar.open('Die buchung wurde gespeichert', ' Ok', { duration: 3000 });
             return res;

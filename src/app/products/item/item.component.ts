@@ -1,33 +1,53 @@
-import { Component, Input, Sanitizer } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, Sanitizer } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable, concatMap, map, of, shareReplay, tap } from 'rxjs';
 import { ProductService } from 'src/app/admin/product/product.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { ItemDetailsComponent } from '../item-details/item-details.component';
+import { iColor } from 'src/app/model/iColor';
 
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
-  styleUrls: ['./item.component.scss']
+  styleUrls: ['./item.component.scss'],
+  changeDetection:ChangeDetectionStrategy.OnPush,
 })
-export class ItemComponent {
+export class ItemComponent implements OnInit {
   @Input() item!: iProduct;
   act$ = new Observable();
-  image!: SafeResourceUrl;
+  image!: SafeResourceUrl | undefined;
+  color: iColor[] = [];
+  images: string[] = [];
+  selectedColor: iColor = {} as iColor;
   constructor( private readonly productService: ProductService, private santizier: DomSanitizer,
-    private readonly dialog: MatDialog) {}
-  getImage(item: iProduct)  {
-    const images = JSON.parse(item.foto);
+    private readonly dialog: MatDialog) {
 
-    if(images.length > 0 && !this.image) {
-       this.act$ =  this.productService.getThumbnails(images[0]).pipe(map(res => {
+
+    }
+  ngOnInit(): void {
+    if(this.item) {
+      let tmpColor : iColor[] = JSON.parse(this.item.color);
+      let tmpClolor1 = tmpColor.filter((item) => item.menge > 0)
+      this.images = JSON.parse(this.item.foto);
+      this.color = tmpClolor1;
+      const index = tmpColor.findIndex((item) => item.id === tmpClolor1[0].id);
+      this.getImage(this.images[index])
+      this.selectedColor = this.color[0];
+    }
+
+
+  }
+
+  getImage(item: string)  {
+    this.image = undefined;
+       this.act$ =  this.productService.getThumbnails(item).pipe(map(res => {
         if (res instanceof Blob) {
           this.image = this.santizier.bypassSecurityTrustResourceUrl(URL.createObjectURL(res));
         }
         return of(undefined);
       }))
-    }
+
     return this.image;
   }
   openDetails() {
@@ -37,4 +57,14 @@ export class ItemComponent {
   conf.data = this.item;
     this.dialog.open(ItemDetailsComponent, conf);
  }
+ colorChange(val: any) {
+  const index = this.color.findIndex((item) => item.id === val.value);
+  this.getImage(this.images[index]);
+  this.selectedColor = this.color[index];
+  console.log(this.selectedColor)
+ }
+ getPriceBrutto(item: iProduct) {
+  const mwst = Number(item.preis) * item.mehrwehrsteuer / 100;
+  return (Number(item.preis) + mwst).toFixed(2);
+}
 }

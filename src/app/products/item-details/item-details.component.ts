@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable, map } from 'rxjs';
 import { ProductService } from 'src/app/admin/product/product.service';
@@ -24,7 +25,9 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
   constructor (@Inject(MAT_DIALOG_DATA) public readonly data: iProduct,
   private readonly service: ProductService,
   private helperService: HelperService,
-  private santizier: DomSanitizer) {
+  private santizier: DomSanitizer,
+  private snackBar: MatSnackBar
+  ) {
 
     this.titleSig.update((title) => {
       this.title = title;
@@ -100,6 +103,10 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     const newItems = items.slice(0);
     newItems.push(item);
     this.helperService.cardSig.set(newItems);
+
+     this.snackBar.open(item.name + ' wurde zum Warenkorb hinzugefügt!', 'Ok', { duration: 1500 });
+
+
   }
 }
 1

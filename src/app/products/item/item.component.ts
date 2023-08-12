@@ -7,6 +7,7 @@ import { iProduct } from 'src/app/model/iProduct';
 import { ItemDetailsComponent } from '../item-details/item-details.component';
 import { iColor } from 'src/app/model/iColor';
 import { HelperService } from 'src/app/helper/helper.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-item',
@@ -23,7 +24,8 @@ export class ItemComponent implements OnInit {
   selectedColor: iColor = {} as iColor;
   constructor( private readonly productService: ProductService, private santizier: DomSanitizer,
     private readonly dialog: MatDialog,
-    private helper: HelperService) {
+    private helper: HelperService,
+    private snackBar: MatSnackBar) {
 
 
     }
@@ -81,5 +83,6 @@ export class ItemComponent implements OnInit {
     const newItems = items.slice(0);
     newItems.push(tmpItem);
     this.helper.cardSig.set(newItems);
+    this.snackBar.open(item.name + ' wurde zum Warenkorb hinzugefügt!', 'Ok', { duration: 1500 });
   }
 }

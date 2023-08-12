@@ -1,1 +1,71 @@
-<p>card works!</p>
+<div class="container">
+  <!-- card.component.html -->
+<mat-table [dataSource]="products()" class="mat-elevation-z8">
+  <!-- ID Column -->
+  <ng-container matColumnDef="artid">
+    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+    <mat-cell *matCellDef="let product">{{ product.artid }}</mat-cell>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+    <mat-cell *matCellDef="let product">{{ product.name }}</mat-cell>
+  </ng-container>
+
+  <!-- Color Column -->
+  <ng-container matColumnDef="color">
+    <mat-header-cell *matHeaderCellDef>Color</mat-header-cell>
+    <mat-cell *matCellDef="let product; let i = index">
+      <div class="colorItem" >
+        <div class="item"  *ngFor="let color of colors[i]; let y = index">
+          <span class="span">ID: {{ color.id }}, Menge: {{ color.menge }}</span>
+          <button mat-icon-button class="mat-icon-button" color="primary" (click)="decreaseQuantity(i, y)">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-icon-button class="mat-icon-button" color="primary" (click)="increaseQuantity(i, y)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Total Menge Column -->
+  <ng-container matColumnDef="toTmenge">
+    <mat-header-cell *matHeaderCellDef>Total Menge</mat-header-cell>
+    <mat-cell *matCellDef="let product; let i = index">{{ getTotalMenge(i) }}</mat-cell>
+  </ng-container>
+
+  <!-- Price per St Column -->
+  <ng-container matColumnDef="priceSt">
+    <mat-header-cell *matHeaderCellDef>Price per St</mat-header-cell>
+    <mat-cell *matCellDef="let product; let i = index">{{ getPricePerSt(i) }}</mat-cell>
+  </ng-container>
+
+  <!-- MWST Column -->
+  <ng-container matColumnDef="mwst">
+    <mat-header-cell *matHeaderCellDef>MwSt</mat-header-cell>
+    <mat-cell *matCellDef="let product; let i = index">{{ getProduktMwst(i) }}</mat-cell>
+  </ng-container>
+
+  <!-- Total Price Column -->
+  <ng-container matColumnDef="totalPrice">
+    <mat-header-cell *matHeaderCellDef>Total Price</mat-header-cell>
+    <mat-cell *matCellDef="let product; let i = index">{{ getTotalPrice(i) }}</mat-cell>
+  </ng-container>
+
+  <!-- Remove Column -->
+  <ng-container matColumnDef="remove">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let product; let i = index">
+      <button mat-icon-button (click)="removeItem(i)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+  <mat-row *matRowDef="let product; columns: columns"></mat-row>
+</mat-table>
+</div>

@@ -1,0 +1,29 @@
+.mat-table {
+  width: 100%;
+}
+
+.mat-column-name,
+.mat-column-color {
+  flex: 1 1 25%;
+}
+.mat-column-artid {
+  flex: 1 1 10%;
+}
+.colorItem {
+  display: flex;
+  flex-direction: column;
+ .item {
+  display: flex;
+  align-items: center;
+  font-size: .8rem;
+  height: 2rem;
+  gap: .1rem
+ }
+ .span {
+  width: 60%;
+
+ }
+ .mat-icon-button {
+  scale: .7;
+ }
+}

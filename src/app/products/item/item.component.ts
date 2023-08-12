@@ -36,6 +36,7 @@ export class ItemComponent implements OnInit {
       const index = tmpColor.findIndex((item) => item.id === tmpClolor1[0].id);
       this.getImage(this.images[index])
       this.selectedColor = this.color[0];
+
     }
 
 
@@ -64,16 +65,21 @@ export class ItemComponent implements OnInit {
   this.getImage(this.images[index]);
   this.selectedColor = this.color[index];
 
+
  }
  getPriceBrutto(item: iProduct) {
   const mwst = Number(item.preis) * item.mehrwehrsteuer / 100;
   return (Number(item.preis) + mwst).toFixed(2);
   }
   addItem(item: iProduct) {
-    item.color = JSON.stringify(this.selectedColor);
+    this.selectedColor.menge = 1;
+    let tmpItem: iProduct = {} as iProduct;
+    Object.assign(tmpItem, item);
+    tmpItem.color = JSON.stringify([this.selectedColor]);
+
     const items = this.helper.cardSig();
     const newItems = items.slice(0);
-    newItems.push(item);
+    newItems.push(tmpItem);
     this.helper.cardSig.set(newItems);
   }
 }

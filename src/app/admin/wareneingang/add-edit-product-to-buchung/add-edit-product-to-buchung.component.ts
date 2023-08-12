@@ -36,12 +36,14 @@ export class AddEditProductToBuchungComponent {
         mengeEingelagert: [ { value: this.data && this.data.mengeEingelagert ? this.data.mengeEingelagert : 0, disabled: true} ],
         color:  this.fb.array([]),
     });
+console.log(data)
     if(data.color)
       this.colors = JSON.parse(this.data.color);
 
    for (let i = 0; i < this.colors.length; i++) {
     const item = this.colorForm();
-    this.colors[i].menge = 0;
+    if(!data.id)
+      this.colors[i].menge = 0;
     item.patchValue(this.colors[i]);
       this.getColor().push(item)
    }

@@ -50,6 +50,7 @@ import { AddEditProductToBuchungComponent } from './admin/wareneingang/add-edit-
 import { ItemComponent } from './products/item/item.component';
 import { ItemDetailsComponent } from './products/item-details/item-details.component';
 import { CardComponent } from './card/card.component';
+import { CompanyComponent } from './admin/company/company.component';
 
 
 @NgModule({
@@ -79,6 +80,7 @@ import { CardComponent } from './card/card.component';
     ItemComponent,
     ItemDetailsComponent,
     CardComponent,
+    CompanyComponent,
   ],
   imports: [
     BrowserModule,

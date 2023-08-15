@@ -1,14 +1,34 @@
-.mat-table {
-  width: 100%;
+mat-footer-cell {
+  font-size: .8rem;
 }
-
+mat-header-cell {
+  font-size: .9rem;
+}
+mat-cell {
+  font-size: .8rem;
+}
 .mat-column-name,
 .mat-column-color {
   flex: 1 1 25%;
 }
+
+.mat-column-totalPrice,
 .mat-column-toTmenge,
+.mat-column-mwst,
+.mat-column-priceSt,
 .mat-column-artid {
-  flex: 1 1 10%;
+  flex: 1 1 8%;
+}
+@media only screen and (max-width: 600px) {
+  .mat-column-toTmenge,
+  .mat-column-mwst,
+  .mat-column-priceSt {
+    display: none;
+  }
+
+  .mat-column-name {
+    flex: 1 1 15%;
+  }
 }
 .colorItem {
   display: flex;
@@ -16,7 +36,6 @@
  .item {
   display: flex;
   align-items: center;
-  font-size: .8rem;
   height: 2rem;
   gap: .1rem
  }
@@ -26,5 +45,9 @@
  }
  .mat-icon-button {
   scale: .7;
+ }
+ .mat-column-remove {
+  display: flex;
+  justify-content: flex-start;
  }
 }

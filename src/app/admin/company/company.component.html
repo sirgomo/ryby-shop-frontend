@@ -1,0 +1,52 @@
+<div *ngIf="errorServeice.message() && errorServeice.message().length > 2">
+  <app-error></app-error>
+</div>
+<div class="content">
+  <form [formGroup]="companyForm" *ngIf="act$ | async">
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Company Name</mat-label>
+        <input matInput formControlName="company_name">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input matInput formControlName="address">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>City</mat-label>
+        <input matInput formControlName="city">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Country</mat-label>
+        <input matInput formControlName="country">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+      </mat-form-field>
+
+      <div class="mat-form-field">
+        <mat-label>Is Klein Unternehmen</mat-label>
+        <mat-checkbox formControlName="isKleinUnternehmen"></mat-checkbox>
+      </div>
+    </div>
+    <div class="act">
+      <button mat-raised-button color="primary" (click)="save()">Speichern</button>
+    </div>
+  </form>
+</div>

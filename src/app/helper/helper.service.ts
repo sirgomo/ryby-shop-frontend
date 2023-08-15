@@ -41,6 +41,7 @@
         menu[3] = { name: 'User Panel', link: 'user' };
         menu[4] = { name: 'Products', link: 'product' };
         menu[5] = { name: 'Waren Eingang', link: 'waren-eingang' };
+        menu[6] = { name: 'Company', link: 'company' };
       } else if (role === 'USER') {
         menu[0] = { name: 'User Panel', link: 'user' };
       }

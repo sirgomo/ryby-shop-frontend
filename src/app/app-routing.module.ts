@@ -10,11 +10,17 @@ import { ProductComponent } from './admin/product/product.component';
 import { ProductsComponent } from './products/products.component';
 import { WareneingangComponent } from './admin/wareneingang/wareneingang.component';
 import { CardComponent } from './card/card.component';
+import { CompanyComponent } from './admin/company/company.component';
 
 const routes: Routes = [
 {
   component: CardComponent,
   path: 'card',
+},
+{
+  component: CompanyComponent,
+  path: 'company',
+  canActivate: [routeGuard],
 },
 {
   component: WareneingangComponent,

@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container" *ngIf="act$ | async else loader">
   <!-- card.component.html -->
-<mat-table [dataSource]="products()" class="mat-elevation-z8">
+<mat-table [dataSource]="products()">
   <!-- ID Column -->
   <ng-container matColumnDef="artid">
     <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
@@ -38,28 +38,28 @@
   <ng-container matColumnDef="toTmenge">
     <mat-header-cell *matHeaderCellDef>Total Menge</mat-header-cell>
     <mat-cell *matCellDef="let product; let i = index">{{ getProductMenge(i) }}</mat-cell>
-    <mat-footer-cell *matFooterCellDef>Total Menge: {{getTotalCount()}}</mat-footer-cell>
+    <mat-footer-cell *matFooterCellDef><span class="footer">Total Menge: {{getTotalCount()}}</span> </mat-footer-cell>
   </ng-container>
 
   <!-- Price per St Column -->
   <ng-container matColumnDef="priceSt">
     <mat-header-cell *matHeaderCellDef>Price per St</mat-header-cell>
     <mat-cell *matCellDef="let product; let i = index">{{ getPricePerSt(i) }}</mat-cell>
-    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    <mat-footer-cell *matFooterCellDef><span>Netto: {{getTotalPriceNetto()}}</span></mat-footer-cell>
   </ng-container>
 
   <!-- MWST Column -->
-  <ng-container matColumnDef="mwst">
-    <mat-header-cell *matHeaderCellDef>MwSt</mat-header-cell>
+  <ng-container matColumnDef="mwst" *ngIf="company.isKleinUnternehmen !== 1">
+    <mat-header-cell *matHeaderCellDef>MwSt.</mat-header-cell>
     <mat-cell *matCellDef="let product; let i = index">{{ getProduktMwst(i) }}</mat-cell>
-    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    <mat-footer-cell *matFooterCellDef><span>Total MwSt.: {{getTotalMwst()}} </span></mat-footer-cell>
   </ng-container>
 
   <!-- Total Price Column -->
   <ng-container matColumnDef="totalPrice">
     <mat-header-cell *matHeaderCellDef>Total Price</mat-header-cell>
     <mat-cell *matCellDef="let product; let i = index">{{ getTotalPrice(i) }}</mat-cell>
-    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    <mat-footer-cell *matFooterCellDef><span>Brutto: {{getTotalBrutto()}}</span></mat-footer-cell>
   </ng-container>
 
   <!-- Remove Column -->
@@ -78,3 +78,6 @@
   <mat-footer-row *matFooterRowDef="columns"></mat-footer-row>
 </mat-table>
 </div>
+<ng-template #loader>
+  <mat-spinner></mat-spinner>
+</ng-template>

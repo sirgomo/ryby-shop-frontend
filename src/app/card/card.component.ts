@@ -2,6 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { HelperService } from '../helper/helper.service';
 import { iProduct } from '../model/iProduct';
 import { iColor } from '../model/iColor';
+import { CompanyService } from '../admin/company/company.service';
+import { iCompany } from '../model/iCompany';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-card',
@@ -13,10 +16,17 @@ export class CardComponent implements OnInit {
 
   products = this.helper.cardSig;
   colors: iColor[][] = [];
+  company = {} as iCompany;
+  act$ = new Observable();
   columns: string[] = ['artid', 'name', 'color', 'toTmenge', 'priceSt', 'mwst', 'totalPrice', 'remove'];
-    constructor (private readonly helper: HelperService) {}
+    constructor (private readonly helper: HelperService, private companyService: CompanyService) {}
   ngOnInit(): void {
     this.reloadColors(this.products());
+    this.act$ = this.companyService.getCompanyById(1).pipe(tap((res) => {
+      this.company = res;
+      if(res.isKleinUnternehmen === 1)
+      this.columns = ['artid', 'name', 'color', 'toTmenge', 'priceSt', 'totalPrice', 'remove'];
+    }))
   }
 
 
@@ -109,15 +119,38 @@ export class CardComponent implements OnInit {
     return;
 
     let count = 0;
-    console.log(this.colors)
     for (let i = 0; i < this.colors.length; i++ ) {
       if(this.colors[i].length > 0)
       for (let y = 0; y < this.colors[i].length; y++) {
-        console.log(this.colors[i]);
         if(this.colors[i][y])
           count += this.colors[i][y].menge;
       }
     }
     return count;
+  }
+  getTotalPriceNetto() {
+    let price = 0;
+    const items = this.products();
+    for (let i = 0; i < items.length; i++) {
+      const color: iColor[] = JSON.parse(items[i].color);
+      for (let y = 0; y < color.length; y++ ) {
+        price += color[y].menge * Number(items[i].preis);
+      }
+    }
+    return price.toFixed(2);
+  }
+  getTotalMwst() {
+    let mwst = 0;
+    const items = this.products();
+    for (let i = 0; i < items.length; i++) {
+      const color: iColor[] = JSON.parse(items[i].color);
+      for (let y = 0; y < color.length; y++ ) {
+        mwst += (Number(items[i].preis) * items[i].mehrwehrsteuer / 100) * color[y].menge;
+      }
+    }
+    return mwst.toFixed(2);
+  }
+  getTotalBrutto() {
+    return (Number(this.getTotalPriceNetto()) + Number(this.getTotalMwst())).toFixed(2);
   }
 }

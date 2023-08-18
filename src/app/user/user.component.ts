@@ -26,6 +26,7 @@ export class UserComponent implements OnInit{
       email: ['', [Validators.required, Validators.email]],
       telefon: ['', Validators.required],
       adresseCheckbox: [false],
+      shipping_name: [''],
       l_strasse: [''],
       l_hausnummer: [''],
       l_stadt: [''],
@@ -59,6 +60,7 @@ export class UserComponent implements OnInit{
       email: [res?.email || '', [Validators.required, Validators.email]],
       telefon: [res?.telefon || '', Validators.required],
       adresseCheckbox: [false],
+      shipping_name: [res?.lieferadresse?.shipping_name || ''],
       l_strasse: [res?.lieferadresse?.strasse || ''],
       l_hausnummer: [res?.lieferadresse?.hausnummer || ''],
       l_stadt: [res?.lieferadresse?.stadt || ''],
@@ -92,6 +94,7 @@ export class UserComponent implements OnInit{
         land: this.userForm.get('adresseLand')?.getRawValue(),
       },
       lieferadresse: {
+        shipping_name: this.userForm.get('shipping_name')?.getRawValue(),
         strasse: this.userForm.get('l_strasse')?.getRawValue(),
         hausnummer: this.userForm.get('l_hausnummer')?.getRawValue(),
         stadt: this.userForm.get('l_stadt')?.getRawValue(),

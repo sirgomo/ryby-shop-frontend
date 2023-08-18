@@ -143,6 +143,19 @@
       </div>
       <div class="item">
         <mat-form-field>
+          <mat-label>Versandname</mat-label>
+          <input matInput formControlName="shipping_name" required>
+          <mat-error *ngIf="userForm.get('shipping_name')?.invalid && userForm.get('shipping_name')?.touched">
+            Versandname ist ein Pflichtfeld.
+          </mat-error>
+          <mat-icon matSuffix>shipping_name</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="userForm.get('isDifferentAddress')?.value">
+      <div class="item">
+        <mat-form-field>
           <mat-label>Lieferadresse Stadt</mat-label>
           <input matInput formControlName="l_stadt" required>
           <mat-error *ngIf="userForm.get('l_stadt')?.invalid && userForm.get('l_stadt')?.touched">
@@ -151,9 +164,6 @@
           <mat-icon matSuffix>location_city</mat-icon>
         </mat-form-field>
       </div>
-    </div>
-
-    <div class="row" *ngIf="userForm.get('isDifferentAddress')?.value">
       <div class="item">
         <mat-form-field>
           <mat-label>Lieferadresse Postleitzahl</mat-label>

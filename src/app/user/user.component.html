@@ -58,6 +58,10 @@
       <div *ngIf="userForm.get('adresseCheckbox')?.value">
         <div class="row">
           <mat-form-field>
+            <mat-label>Versandname</mat-label>
+            <input matInput formControlName="shipping_name">
+          </mat-form-field>
+          <mat-form-field>
             <mat-label>Strasse</mat-label>
             <input matInput formControlName="l_strasse">
           </mat-form-field>
@@ -65,12 +69,12 @@
             <mat-label>Hausnummer</mat-label>
             <input matInput formControlName="l_hausnummer">
           </mat-form-field>
+        </div>
+        <div class="row">
           <mat-form-field>
             <mat-label>Stadt</mat-label>
             <input matInput formControlName="l_stadt">
           </mat-form-field>
-        </div>
-        <div class="row">
           <mat-form-field>
             <mat-label>Postleitzahl</mat-label>
             <input matInput formControlName="l_postleitzahl">

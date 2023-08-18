@@ -63,6 +63,7 @@ export class UserService {
       land: '',
     },
     lieferadresse: {
+      shipping_name: '',
       strasse: '',
       hausnummer: '',
       stadt: '',

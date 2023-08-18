@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, combineLatest, concatMap, map, of, startWith } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { HelperService } from 'src/app/helper/helper.service';
@@ -17,12 +18,21 @@ export class ShippingAddressComponent {
   act$ = combineLatest([ toObservable(this.helperService.isLogged), this.data$.pipe(startWith(null))]).pipe(concatMap(([log, res]) => this.getShippingAddress(log)),
   map((resp) => {
     this.data$ = of(resp);
+    this.shippingAddres.patchValue(resp);
     return resp;
   }))
-  constructor (private helperService: HelperService, private readonly userService: UserService) {}
+  shippingAddres : FormGroup;
+  constructor (private helperService: HelperService, private readonly userService: UserService, private readonly fb: FormBuilder) {
+    this.shippingAddres = this.fb.group({
+      strasse: [''],
+      hausnummer: [''],
+      stadt: [''],
+      postleitzahl: [''],
+      land: [''],
+    });
+  }
 
   getShippingAddress(log: boolean): Observable<iShippingAddress> {
-    console.log('przed if')
     if(!log) return of({} as iShippingAddress);
 
     return  this.userService.getUserDetails().pipe(map(res => {

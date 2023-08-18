@@ -33,6 +33,7 @@ export class UserRegisterComponent {
       role: ['user'],
       registrierungsdatum: [''],
       treuepunkte: [0],
+      shipping_name: ['null'],
       l_strasse:  ['null'],
       l_hausnummer: ['null'],
       l_stadt: ['null'],

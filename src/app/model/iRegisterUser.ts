@@ -7,6 +7,7 @@ export interface iRegisterUser {
   role: string;
   registrierungsdatum: string;
   treuepunkte: number;
+  shipping_name: string;
   l_strasse?: string;
   l_hausnummer?: string;
   l_stadt?: string;

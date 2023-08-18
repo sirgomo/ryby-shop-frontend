@@ -51,6 +51,7 @@ import { ItemComponent } from './products/item/item.component';
 import { ItemDetailsComponent } from './products/item-details/item-details.component';
 import { CardComponent } from './card/card.component';
 import { CompanyComponent } from './admin/company/company.component';
+import { ShippingAddressComponent } from './card/shipping-address/shipping-address.component';
 
 
 @NgModule({
@@ -81,6 +82,8 @@ import { CompanyComponent } from './admin/company/company.component';
     ItemDetailsComponent,
     CardComponent,
     CompanyComponent,
+    ShippingAddressComponent,
+
   ],
   imports: [
     BrowserModule,

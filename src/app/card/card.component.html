@@ -45,7 +45,7 @@
   <ng-container matColumnDef="priceSt">
     <mat-header-cell *matHeaderCellDef>Price per St</mat-header-cell>
     <mat-cell *matCellDef="let product; let i = index">{{ getPricePerSt(i) }}</mat-cell>
-    <mat-footer-cell *matFooterCellDef><span>Netto: {{getTotalPriceNetto()}}</span></mat-footer-cell>
+    <mat-footer-cell *matFooterCellDef><span *ngIf="company.isKleinUnternehmen !== 1">Netto: {{getTotalPriceNetto()}}</span></mat-footer-cell>
   </ng-container>
 
   <!-- MWST Column -->
@@ -59,7 +59,7 @@
   <ng-container matColumnDef="totalPrice">
     <mat-header-cell *matHeaderCellDef>Total Price</mat-header-cell>
     <mat-cell *matCellDef="let product; let i = index">{{ getTotalPrice(i) }}</mat-cell>
-    <mat-footer-cell *matFooterCellDef><span>Brutto: {{getTotalBrutto()}}</span></mat-footer-cell>
+    <mat-footer-cell *matFooterCellDef><span>Total: {{getTotalBrutto()}}</span></mat-footer-cell>
   </ng-container>
 
   <!-- Remove Column -->
@@ -77,6 +77,12 @@
   <mat-row *matRowDef="let product; columns: columns"></mat-row>
   <mat-footer-row *matFooterRowDef="columns"></mat-footer-row>
 </mat-table>
+</div>
+<div class="butAct">
+  <button mat-raised-button color="primary" (click)="getLoginWindow()">Anmelden</button><button mat-raised-button class="primatry">Kaufen ohne Anmeldung</button>
+</div>
+<div *ngIf="showShippingAddress">
+  <app-shipping-address></app-shipping-address>
 </div>
 <ng-template #loader>
   <mat-spinner></mat-spinner>

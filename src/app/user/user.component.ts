@@ -50,7 +50,7 @@ export class UserComponent implements OnInit{
   private refreshForm(res: iUserData) {
     this.userid = res.id;
 
-    const regDate = res?.registrierungsdatum ? this.datePi.transform(new Date(res?.registrierungsdatum), 'dd-MM-yyyy') : '';
+    const regDate = res?.registrierungsdatum?.split('T')[1] ? this.datePi.transform(new Date(res?.registrierungsdatum), 'dd-MM-yyyy') : res?.registrierungsdatum;
 
 
     this.userForm = this.formBuilder.group({
@@ -59,11 +59,11 @@ export class UserComponent implements OnInit{
       email: [res?.email || '', [Validators.required, Validators.email]],
       telefon: [res?.telefon || '', Validators.required],
       adresseCheckbox: [false],
-      l_strasse: [res?.lieferadresse?.l_strasse || ''],
-      l_hausnummer: [res?.lieferadresse?.l_hausnummer || ''],
-      l_stadt: [res?.lieferadresse?.l_stadt || ''],
-      l_postleitzahl: [res?.lieferadresse?.l_postleitzahl || ''],
-      l_land: [res?.lieferadresse?.l_land || ''],
+      l_strasse: [res?.lieferadresse?.strasse || ''],
+      l_hausnummer: [res?.lieferadresse?.hausnummer || ''],
+      l_stadt: [res?.lieferadresse?.stadt || ''],
+      l_postleitzahl: [res?.lieferadresse?.postleitzahl || ''],
+      l_land: [res?.lieferadresse?.land || ''],
       registrierungsdatum: [{ value: regDate, disabled: true }],
       treuepunkte: [{ value: res?.treuepunkte, disabled: true }],
       adresseStrasse: [res?.adresse.strasse || '', Validators.required],
@@ -92,14 +92,14 @@ export class UserComponent implements OnInit{
         land: this.userForm.get('adresseLand')?.getRawValue(),
       },
       lieferadresse: {
-        l_strasse: this.userForm.get('l_strasse')?.getRawValue(),
-        l_hausnummer: this.userForm.get('l_hausnummer')?.getRawValue(),
-        l_stadt: this.userForm.get('l_stadt')?.getRawValue(),
-        l_postleitzahl: this.userForm.get('l_postleitzahl')?.getRawValue(),
-        l_land: this.userForm.get('l_land')?.getRawValue(),
+        strasse: this.userForm.get('l_strasse')?.getRawValue(),
+        hausnummer: this.userForm.get('l_hausnummer')?.getRawValue(),
+        stadt: this.userForm.get('l_stadt')?.getRawValue(),
+        postleitzahl: this.userForm.get('l_postleitzahl')?.getRawValue(),
+        land: this.userForm.get('l_land')?.getRawValue(),
       },
     };
-    if(item.lieferadresse?.l_strasse !== undefined && item.lieferadresse?.l_strasse?.length < 3)
+    if(item.lieferadresse?.strasse !== undefined && item.lieferadresse?.strasse?.length < 3)
       item.lieferadresse = undefined;
 
     const tmp$ = of(item);

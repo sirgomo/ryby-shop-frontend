@@ -63,12 +63,12 @@ export class UserService {
       land: '',
     },
     lieferadresse: {
-      l_strasse: '',
-      l_hausnummer: '',
-      l_stadt: '',
-      l_postleitzahl: '',
-      l_land: '',
-    },
+      strasse: '',
+      hausnummer: '',
+      stadt: '',
+      postleitzahl: '',
+      land: '',
+    }
   });
 
   /**

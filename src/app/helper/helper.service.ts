@@ -1,11 +1,10 @@
   import { Injectable, signal } from '@angular/core';
   import { BehaviorSubject } from 'rxjs';
   import { iMenuItem } from '../model/iMenuItem';
-  import { ToolbarComponent } from '../toolbar/toolbar/toolbar.component';
   import { AppComponent } from '../app.component';
   import { iKategorie } from '../model/iKategorie';
-  import { SafeResourceUrl } from '@angular/platform-browser';
   import { iProduct } from '../model/iProduct';
+import { iShippingAddress } from '../model/iShippingAddress';
 
   @Injectable({
     providedIn: 'root'
@@ -22,6 +21,7 @@
     isLogged = signal(false);
     uploadProgersSig = signal<number>(0);
     appComponenet!: AppComponent;
+    shipping_address = signal<iShippingAddress | null>(null);
     constructor() { }
     setApp(app: AppComponent) {
       this.appComponenet = app;
@@ -47,4 +47,5 @@
       }
       this.menuSub.next(menu);
     }
+
   }

@@ -4,7 +4,7 @@ import { iProduct } from '../model/iProduct';
 import { iColor } from '../model/iColor';
 import { CompanyService } from '../admin/company/company.service';
 import { iCompany } from '../model/iCompany';
-import { Observable, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 
 @Component({
   selector: 'app-card',
@@ -23,10 +23,15 @@ export class CardComponent implements OnInit {
     constructor (private readonly helper: HelperService, private companyService: CompanyService) {}
   ngOnInit(): void {
     this.reloadColors(this.products());
-    this.act$ = this.companyService.getCompanyById(1).pipe(tap((res) => {
+    this.act$ = this.companyService.getCompanyById(1).pipe(map((res) => {
       this.company = res;
-      if(res.isKleinUnternehmen === 1)
+      if(res && res.isKleinUnternehmen === 1)
       this.columns = ['artid', 'name', 'color', 'toTmenge', 'priceSt', 'totalPrice', 'remove'];
+
+      if(!res)
+        this.company = { isKleinUnternehmen: 0 } as iCompany;
+
+        return this.company;
     }))
   }
 

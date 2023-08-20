@@ -40,12 +40,12 @@ export class ProductService {
         const nit = items.slice(0);
         return nit;
       }
-    }
-    if(this.item().id) {
+
       const index = items.findIndex((item) => item.id === this.item().id)
       if(index === -1) {
         const nit = items.slice(0);
         nit.push(this.item());
+        console.log(nit)
         return nit;
       }
       const nit = items.slice(0);
@@ -67,9 +67,10 @@ export class ProductService {
         this.error.newMessage('Fehler beim Erstellen des Produkts.');
         return throwError(() => error);
       }),
-      tap((res) => {
+      map((res) => {
         if(res && res.id)
           this.item.set(res);
+        return res;
       })
     );
   }

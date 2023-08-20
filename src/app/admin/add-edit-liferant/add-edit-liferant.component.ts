@@ -58,7 +58,6 @@ export class AddEditLiferantComponent implements OnInit{
        }));
       } else {
         this.actt$ = this.liferantsService.createLieferant(lieferant).pipe(tap((res) => {
-          console.log(res)
           if(res.id)
              this.closeDialog();
         }));

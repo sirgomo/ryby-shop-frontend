@@ -18,7 +18,6 @@ export class CardComponent implements OnInit {
   colors: iColor[][] = [];
   company = {} as iCompany;
   act$ = new Observable();
-  showShippingAddress = false;
   columns: string[] = ['artid', 'name', 'color', 'toTmenge', 'priceSt', 'mwst', 'totalPrice', 'remove'];
     constructor (private readonly helper: HelperService, private companyService: CompanyService) {}
   ngOnInit(): void {
@@ -158,9 +157,5 @@ export class CardComponent implements OnInit {
   }
   getTotalBrutto() {
     return (Number(this.getTotalPriceNetto()) + Number(this.getTotalMwst())).toFixed(2);
-  }
-  getLoginWindow() {
-    this.helper.getLoginWindow();
-    this.showShippingAddress = true;
   }
 }

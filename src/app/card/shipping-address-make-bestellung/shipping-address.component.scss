@@ -1,0 +1,30 @@
+.row {
+  display: flex;
+  gap: .4rem;
+  margin-top: .5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+
+}
+.content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+@media only screen and (min-width: 600px) {
+  .content {
+    width: 80%;
+    margin-left: 5rem;
+  }
+  .rest {
+    flex: 2;
+  }
+  .hnum {
+    flex: 1;
+  }
+}
+.head {
+  display: flex;
+  justify-content: center;
+}

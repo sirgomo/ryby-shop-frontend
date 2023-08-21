@@ -5,6 +5,7 @@
   import { iKategorie } from '../model/iKategorie';
   import { iProduct } from '../model/iProduct';
 import { iShippingAddress } from '../model/iShippingAddress';
+import { iUserData } from '../model/iUserData';
 
   @Injectable({
     providedIn: 'root'
@@ -21,7 +22,7 @@ import { iShippingAddress } from '../model/iShippingAddress';
     isLogged = signal(false);
     uploadProgersSig = signal<number>(0);
     appComponenet!: AppComponent;
-    shipping_address = signal<iShippingAddress | null>(null);
+    buyerAcc: iUserData = {} as iUserData;
     constructor() { }
     setApp(app: AppComponent) {
       this.appComponenet = app;

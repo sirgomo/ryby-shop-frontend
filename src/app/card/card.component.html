@@ -44,22 +44,22 @@
   <!-- Price per St Column -->
   <ng-container matColumnDef="priceSt">
     <mat-header-cell *matHeaderCellDef>Price per St</mat-header-cell>
-    <mat-cell *matCellDef="let product; let i = index">{{ getPricePerSt(i) }}</mat-cell>
-    <mat-footer-cell *matFooterCellDef><span *ngIf="company.isKleinUnternehmen !== 1">Netto: {{getTotalPriceNetto()}}</span></mat-footer-cell>
+    <mat-cell *matCellDef="let product; let i = index">{{ getPricePerSt(i) }} &euro;</mat-cell>
+    <mat-footer-cell *matFooterCellDef><span *ngIf="company.isKleinUnternehmen !== 1">Netto: {{getTotalPriceNetto()}} &euro; </span></mat-footer-cell>
   </ng-container>
 
   <!-- MWST Column -->
   <ng-container matColumnDef="mwst" *ngIf="company.isKleinUnternehmen !== 1">
     <mat-header-cell *matHeaderCellDef>MwSt.</mat-header-cell>
-    <mat-cell *matCellDef="let product; let i = index">{{ getProduktMwst(i) }}</mat-cell>
-    <mat-footer-cell *matFooterCellDef><span>Total MwSt.: {{getTotalMwst()}} </span></mat-footer-cell>
+    <mat-cell *matCellDef="let product; let i = index">{{ getProduktMwst(i) }} &euro;</mat-cell>
+    <mat-footer-cell *matFooterCellDef><span>Total MwSt.: {{getTotalMwst()}}  &euro;</span></mat-footer-cell>
   </ng-container>
 
   <!-- Total Price Column -->
   <ng-container matColumnDef="totalPrice">
     <mat-header-cell *matHeaderCellDef>Total Price</mat-header-cell>
-    <mat-cell *matCellDef="let product; let i = index">{{ getTotalPrice(i) }}</mat-cell>
-    <mat-footer-cell *matFooterCellDef><span>Total: {{getTotalBrutto()}}</span></mat-footer-cell>
+    <mat-cell *matCellDef="let product; let i = index">{{ getTotalPrice(i) }}  &euro;</mat-cell>
+    <mat-footer-cell *matFooterCellDef><span>Total: {{getTotalBrutto()}} &euro;</span></mat-footer-cell>
   </ng-container>
 
   <!-- Remove Column -->
@@ -78,10 +78,8 @@
   <mat-footer-row *matFooterRowDef="columns"></mat-footer-row>
 </mat-table>
 </div>
-<div class="butAct">
-  <button mat-raised-button color="primary" (click)="getLoginWindow()">Anmelden</button><button mat-raised-button class="primatry">Kaufen ohne Anmeldung</button>
-</div>
-<div *ngIf="showShippingAddress">
+
+<div>
   <app-shipping-address></app-shipping-address>
 </div>
 <ng-template #loader>

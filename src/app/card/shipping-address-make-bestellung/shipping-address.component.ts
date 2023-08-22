@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, combineLatest, concatMap, map, of, startWith } from 'rxjs';
 import { HelperService } from 'src/app/helper/helper.service';
 import { iBestellung } from 'src/app/model/iBestellung';
+import { iProductBestellung } from 'src/app/model/iProductBestellung';
 import { iShippingAddress } from 'src/app/model/iShippingAddress';
 import { iUserData } from 'src/app/model/iUserData';
 import { UserService } from 'src/app/user/user.service';
@@ -94,6 +95,16 @@ export class ShippingAddressComponent {
 
     const newBestellung = {} as iBestellung;
       newBestellung.kunde = user;
+
+    const products: iProductBestellung[] = [];
+
+    for (let i = 0; i < this.helperService.cardSig().length; i++) {
+      const item = {} as iProductBestellung;
+      item.color = this.helperService.cardSig()[i].color;
+      item.produkt = [this.helperService.cardSig()[i]];
+      products.push(item);
+    }
+    newBestellung.produkte = products;
       console.log(newBestellung)
   }
 }

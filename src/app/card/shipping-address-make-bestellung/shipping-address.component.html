@@ -88,6 +88,6 @@
       </div>
     </form>
   </div>
-  <div class="row" *ngIf="shippingAddres.valid && rechnungAddress.valid || shippingAddres.valid && rechnungAddress.invalid && !isRechnungAddress " ><button mat-raised-button color="primary" (click)="makeBestellung()">Action</button></div>
-  <div class="row" *ngIf="shippingAddres.invalid || rechnungAddress.invalid && isRechnungAddress" ><button mat-raised-button (click)="makeBestellung()" disabled>Action</button></div>
+  <div class="row" *ngIf="shippingAddres.valid && rechnungAddress.valid || shippingAddres.valid && rechnungAddress.invalid && !isRechnungAddress " ><button mat-raised-button color="primary" (click)="makeBestellung()">Bestellen</button></div>
+  <div class="row" *ngIf="shippingAddres.invalid || rechnungAddress.invalid && isRechnungAddress" ><button mat-raised-button (click)="makeBestellung()" disabled>Bestellen</button></div>
 </div>

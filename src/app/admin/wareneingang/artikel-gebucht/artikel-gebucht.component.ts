@@ -28,7 +28,7 @@ export class ArtikelGebuchtComponent {
     const wareneingangId = this.wEingService.currentWarenEingangSig()?.data.id;
     if( wareneingangId !== undefined && product.id) {
       this.act$ = this.wEingService.deleteProductFromWarenEingang(wareneingangId, product.id).pipe(tap(res => {
-        if(res === 1) {
+        if(res.affected === 1) {
           const items = this.wEingService.currentProductsInBuchungSig();
           const index = items.findIndex((tmp) => tmp.id === product.id);
           items.splice(index, 1);

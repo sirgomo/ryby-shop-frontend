@@ -83,16 +83,17 @@ export class WareneingangService {
     }));
   }
 
-  deleteWareneingangBuchung(id: number): Observable<number> {
-    return this.http.delete<number>(`${this.API}/${id}`).pipe(tap((res) => {
-      if(res === 1) {
+  deleteWareneingangBuchung(id: number): Observable<{affected: number, raw: string}> {
+    return this.http.delete<{affected: number, raw: string}>(`${this.API}/${id}`).pipe(tap((res) => {
+      if(res.affected === 1) {
         const item : iWarenEingang = {} as iWarenEingang;
         item.id = -id;
         this.warenEingangItem.set(item);
       }
+      return res;
     }), catchError((err) => {
       this.err.newMessage('Du kannst nur Buchung löschen wenn die leer ist!');
-      return of(0);
+      return of({affected: 0, raw: ''});
     }));
   }
 
@@ -116,11 +117,11 @@ export class WareneingangService {
     );
   }
 
-  deleteProductFromWarenEingang(wareneingangId: number, productId: number): Observable<number> {
-    return this.http.delete<number>(`${this.API}/${wareneingangId}/products/${productId}`).pipe(
+  deleteProductFromWarenEingang(wareneingangId: number, productId: number): Observable<{ affected: number, raw: string }> {
+    return this.http.delete<{ affected: number, raw: string } >(`${this.API}/${wareneingangId}/products/${productId}`).pipe(
       catchError((err) => {
         this.err.newMessage(err.error.message);
-        return of(0);
+        return of({ affected: 0, raw: '' } );
       })
     );
   }

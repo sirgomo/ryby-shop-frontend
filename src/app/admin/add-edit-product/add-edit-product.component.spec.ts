@@ -158,6 +158,8 @@ describe('AddEditProductComponent', () => {
         reservation: [],
         bewertung: [],
         color: JSON.stringify(['hjgasghd']),
+        lange: 0,
+        gewicht: 0
       };
       const itemForm = {
         id: 1,

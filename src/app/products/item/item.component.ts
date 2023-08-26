@@ -74,6 +74,7 @@ export class ItemComponent implements OnInit {
   return (Number(item.preis) + mwst).toFixed(2);
   }
   addItem(item: iProduct) {
+
     this.selectedColor.menge = 1;
     let tmpItem: iProduct = {} as iProduct;
     Object.assign(tmpItem, item);
@@ -84,5 +85,6 @@ export class ItemComponent implements OnInit {
     newItems.push(tmpItem);
     this.helper.cardSig.set(newItems);
     this.snackBar.open(item.name + ' wurde zum Warenkorb hinzugefügt!', 'Ok', { duration: 1500 });
+
   }
 }

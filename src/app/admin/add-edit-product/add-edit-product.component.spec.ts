@@ -185,7 +185,8 @@ describe('AddEditProductComponent', () => {
         promocje: [],
         reservation: [],
         bewertung: [],
-
+        lange: 0,
+        gewicht: 0
       };
       jest.spyOn(productServiceMock, 'getProductById').mockReturnValue(of(item));
       component.data = {id: 1} as iProduct;

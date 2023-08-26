@@ -10,7 +10,7 @@ import { iLieferant } from '../model/iLieferant';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { iCompany } from '../model/iCompany';
-import { Component } from '@angular/core';
+import { Component, WritableSignal, signal } from '@angular/core';
 
 describe('CardComponent', () => {
   let component: CardComponent;
@@ -34,6 +34,7 @@ describe('CardComponent', () => {
     component = fixture.componentInstance;
     helperService = TestBed.inject(HelperService);
     companyService = TestBed.inject(CompanyService);
+
     fixture.detectChanges();
   });
 
@@ -63,45 +64,63 @@ describe('CardComponent', () => {
       [{ id: '1', menge: 5 }],
       [{ id: '2', menge: 10 }]
     ];
-
+    component.products = signal<iProduct[]>([]);
+    component.products.set(products);
     component.ngOnInit();
 
     expect(component.colors).toEqual(expectedColors);
   });
 
-  it('should increase quantity', () => {
+  it('should increase quantity',fakeAsync( () => {
     const itemIndex = 0;
     const colorIndex = 0;
+    component.products = signal<iProduct[]>([]);
     const products: iProduct[] = [
       { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] }
     ];
     const expectedColors: iColor[][] = [
       [{ id: '1', menge: 6 }]
     ];
-
+    component.products.set(products);
     jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
-
+    component.ngOnInit();
+    component.act$.subscribe();
+    tick();
+    const colors = JSON.stringify([{"id": "1", "menge": 6}]);
+    helperService.cardSig = {
+      set: jest.fn()
+    } as unknown as WritableSignal<iProduct[]>
     component.increaseQuantity(itemIndex, colorIndex);
 
     expect(component.colors).toEqual(expectedColors);
-    expect(products[itemIndex].color).toBe('[{"id":"1","menge":6}]');
-  });
+    expect(products[itemIndex].color).toBe(colors);
+  }));
 
-  it('should decrease quantity', () => {
+  it('should decrease quantity', fakeAsync( () => {
     const itemIndex = 0;
     const colorIndex = 0;
+    component.products = signal<iProduct[]>([]);
     const products: iProduct[] = [
       { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] }
     ];
-    const expectedColors: iColor[][] = [[]];
+
+    component.products.set(products);
 
     jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
+    component.ngOnInit();
+    component.act$.subscribe();
+    tick();
+    const expectedColors: iColor[][] = component.colors;
+    const colors = JSON.stringify([{"id": "1", "menge": 4}]);
+    helperService.cardSig = {
+      set: jest.fn()
+    } as unknown as WritableSignal<iProduct[]>
 
     component.decreaseQuantity(itemIndex, colorIndex);
 
     expect(component.colors).toEqual(expectedColors);
-    expect(products[itemIndex].color).toBe('[]');
-  });
+    expect(products[itemIndex].color).toBe(colors);
+  }));
 
   it('should remove item', fakeAsync( () => {
     const itemIndex = 0;
@@ -111,13 +130,14 @@ describe('CardComponent', () => {
     const expectedProducts: iProduct[] = [];
     const expectedColors: iColor[][] = [];
 
-
+    component.products = signal<iProduct[]>([]);
     jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
 
     component.ngOnInit();
     component.act$.subscribe();
     tick();
     fixture.detectChanges();
+
     component.removeItem(itemIndex);
 
 

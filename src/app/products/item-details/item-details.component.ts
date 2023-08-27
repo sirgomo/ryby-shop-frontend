@@ -109,4 +109,4 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
 
   }
 }
-1
+

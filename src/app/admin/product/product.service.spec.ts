@@ -74,7 +74,9 @@ describe('ProductService', () => {
         bewertung: [
           // bewertung properties
         ],
-        product_sup_id: ''
+        product_sup_id: '',
+        lange: 0,
+        gewicht: 0
       };
 
       service.createProduct(product).subscribe(response => {
@@ -87,7 +89,7 @@ describe('ProductService', () => {
     });
 
     it('should handle error when creating a product', () => {
-      const product = {
+      const product:iProduct = {
         id: 1,
         name: 'Test Product',
         preis: 10,
@@ -129,7 +131,9 @@ describe('ProductService', () => {
         bewertung: [
           // bewertung properties
         ],
-        product_sup_id: ''
+        product_sup_id: '',
+        lange: 0,
+        gewicht: 0
       };
 
       service.createProduct(product).subscribe({
@@ -149,7 +153,7 @@ describe('ProductService', () => {
   describe('updateProduct', () => {
     it('should send a PUT request to update a product', () => {
       const id = 1;
-      const product = {
+      const product:iProduct = {
         id: 1,
         name: 'Test Product',
         preis: 10,
@@ -191,7 +195,9 @@ describe('ProductService', () => {
         bewertung: [
           // bewertung properties
         ],
-        product_sup_id: ''
+        product_sup_id: '',
+        lange: 0,
+        gewicht: 0
       };
 
       service.updateProduct(id, product).subscribe(response => {
@@ -205,7 +211,7 @@ describe('ProductService', () => {
 
     it('should handle error when updating a product', () => {
       const id = 1;
-      const product = {
+      const product:iProduct = {
         id: 1,
         name: 'Test Product',
         preis: 10,
@@ -247,7 +253,9 @@ describe('ProductService', () => {
         bewertung: [
           // bewertung properties
         ],
-        product_sup_id: ''
+        product_sup_id: '',
+        lange: 0,
+        gewicht: 0
       };
 
       service.updateProduct(id, product).subscribe({

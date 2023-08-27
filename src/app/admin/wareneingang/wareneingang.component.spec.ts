@@ -12,6 +12,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatSelectModule } from '@angular/material/select';
 
 describe('WareneingangComponent', () => {
   let component: WareneingangComponent;
@@ -21,7 +29,7 @@ describe('WareneingangComponent', () => {
   let dialog: MatDialog;
   let snackBar: MatSnackBar;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     mockWareneingangService = {
       warenEingangSig: signal<iWarenEingang[]>([]),
       deleteWareneingangBuchung: jest.fn().mockReturnValue(of({ affected: 1, raw: '' })),
@@ -31,9 +39,10 @@ describe('WareneingangComponent', () => {
       message: signal<string>(''),
     };
 
-    await TestBed.configureTestingModule({
-      declarations: [WareneingangComponent],
-      imports: [MatDialogModule, HttpClientTestingModule, MatTableModule, MatIconModule],
+    TestBed.configureTestingModule({
+      declarations: [WareneingangComponent, AddEditBuchungComponent],
+      imports: [MatDialogModule, HttpClientTestingModule, MatTableModule, MatIconModule, MatTabsModule, MatCheckboxModule, MatDatepickerModule, MatInputModule, MatFormFieldModule,
+      MatMomentDateModule, MatSelectModule, ],
       providers: [
         { provide: WareneingangService, useValue: mockWareneingangService },
         { provide: ErrorService, useValue: mockErrorService },

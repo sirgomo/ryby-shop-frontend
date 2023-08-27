@@ -22,6 +22,7 @@ export class AddEditBuchungComponent implements OnInit{
   warenEingangForm: FormGroup;
   act$ = new Observable();
   liferants$ = this.lieferants.liferants$;
+
   constructor (private readonly dialRef: MatDialogRef<AddEditBuchungComponent>,
     private readonly warenService: WareneingangService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: iWarenEingang,
@@ -42,6 +43,7 @@ export class AddEditBuchungComponent implements OnInit{
         eingelagert: [{value: data?.eingelagert || false, disabled: true }],
       });
     }
+
   ngOnInit(): void {
     this.warenService.lieferantIdSig.set(0);
     this.warenService.currentWarenEingangSig.set(this);

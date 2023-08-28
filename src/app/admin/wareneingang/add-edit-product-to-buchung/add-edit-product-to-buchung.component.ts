@@ -36,7 +36,7 @@ export class AddEditProductToBuchungComponent {
         mengeEingelagert: [ { value: this.data && this.data.mengeEingelagert ? this.data.mengeEingelagert : 0, disabled: true} ],
         color:  this.fb.array([]),
     });
-console.log(data)
+
     if(data.color)
       this.colors = JSON.parse(this.data.color);
 

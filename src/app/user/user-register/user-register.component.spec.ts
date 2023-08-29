@@ -16,6 +16,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { marbles } from 'rxjs-marbles/jest';
 import { JwtModule } from '@auth0/angular-jwt';
 import { iUserData } from 'src/app/model/iUserData';
+import { iRegisterUser } from 'src/app/model/iRegisterUser';
 
 
 
@@ -56,7 +57,7 @@ describe('UserRegisterComponent', () => {
   });
 
   it('should send data to server', marbles((m) => {
-    const data = {
+    const data: iRegisterUser = {
       vorname: 'John',
       nachname: 'Doe',
       password: 'Password123!',
@@ -75,7 +76,7 @@ describe('UserRegisterComponent', () => {
       adresseStadt: 'Example City',
       adressePostleitzahl: '12345',
       adresseLand: 'Example Country',
-      isDifferentAddress: false,
+      shipping_name: ''
     };
     const resp: iUserData = {
       id: 1,

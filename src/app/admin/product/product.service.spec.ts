@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorService } from 'src/app/error/error.service';
@@ -7,6 +7,7 @@ import { ProductService } from './product.service';
 import { iLieferant } from 'src/app/model/iLieferant';
 import { iProduct } from 'src/app/model/iProduct';
 import { iDelete } from 'src/app/model/iDelete';
+import { JwtModule } from '@auth0/angular-jwt';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -14,11 +15,14 @@ describe('ProductService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [MatSnackBar, ErrorService, HelperService]
+      imports: [HttpClientTestingModule, JwtModule.forRoot({ config: {
+        tokenGetter: jest.fn(),
+      } })],
+      providers: [MatSnackBar, ErrorService, HelperService, ProductService]
     });
     service = TestBed.inject(ProductService);
     httpMock = TestBed.inject(HttpTestingController);
+
   });
 
   afterEach(() => {
@@ -474,16 +478,21 @@ describe('ProductService', () => {
           fileid: 'kosi'
         };
 
-        service.deleteImage(image).subscribe({
+       service.deleteImage(image).subscribe({
           error: error => {
             expect(error).toBeTruthy();
             expect(error.message).toBe('Fehler beim Löschen des Bildes.');
+          },
+          next: data => {
+            console.log(data)
           }
       });
 
         const req = httpMock.expectOne(`${service.API}/file-delete`);
+
         expect(req.request.method).toBe('POST');
         req.flush(null, { status: 500, statusText: 'Internal Server Error' });
+
       });
     });
   });

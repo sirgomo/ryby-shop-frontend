@@ -1,7 +1,7 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Injectable, computed, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY, Subject, catchError, combineLatest, finalize, map, retry, share, shareReplay, switchMap, takeUntil, tap, throwError } from 'rxjs';
+import { EMPTY, Subject, catchError, combineLatest, finalize, map, of, retry, share, shareReplay, switchMap, takeUntil, tap, throwError } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'
@@ -201,10 +201,11 @@ export class ProductService {
       );
   }
   deleteImage(image: iDelete) {
+
     return this.http.post(`${this.API}/file-delete`, image).pipe(
       catchError((err) => {
         this.error.newMessage(err.message);
-        return err;
+        return throwError(()=> err);
       }),
       map((res) => {
         return res;

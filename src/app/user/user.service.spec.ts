@@ -96,7 +96,6 @@ describe('UserService', () => {
 
   it('should make a POST request to create a new user', () => {
     const data: iRegisterUser = {
-
       vorname: "John",
       nachname: "Doe",
       password: "password123",
@@ -114,7 +113,8 @@ describe('UserService', () => {
       adresseHausnummer: "123",
       adresseStadt: "Cityville",
       adressePostleitzahl: "12345",
-      adresseLand: "Countryland"
+      adresseLand: "Countryland",
+      shipping_name: ''
     };
 
     const mockResponse: iUserData = {
@@ -133,11 +133,12 @@ describe('UserService', () => {
         land: "Countryland"
       },
       lieferadresse: {
-        l_strasse: "Delivery Street",
-        l_hausnummer: "456",
-        l_stadt: "Delivery City",
-        l_postleitzahl: "54321",
-        l_land: "Delivery Country"
+        shipping_name: '',
+        strasse: "Main Street",
+        hausnummer: "123",
+        stadt: "Cityville",
+        postleitzahl: "12345",
+        land: "Countryland"
       }
     };
 
@@ -168,7 +169,8 @@ describe('UserService', () => {
       adresseHausnummer: '',
       adresseStadt: '',
       adressePostleitzahl: '',
-      adresseLand: ''
+      adresseLand: '',
+      shipping_name: ''
     };
 
     const mockError = { error: { message: ['Error message'] } };

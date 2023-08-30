@@ -18,7 +18,8 @@
       </select>
     </div>
     <div class="act">
-      <button mat-raised-button color="primary" (click)="addItem(item)" >In den Warenkorb</button>
+      <div *ngIf="clicked"><span *ngIf="itemGet$ | async  else loader "></span> </div>
+      <button *ngIf="!clicked" mat-raised-button color="primary" (click)="addItem(item)" > In den Warenkorb</button>
       <button mat-raised-button color="accent" (click)="openDetails()" >Details</button>
     </div>
   </div>

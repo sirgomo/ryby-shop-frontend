@@ -22,6 +22,8 @@ export class ItemComponent implements OnInit {
   color: iColor[] = [];
   images: string[] = [];
   selectedColor: iColor = {} as iColor;
+  itemGet$ = new Observable();
+  clicked = false;
   constructor( private readonly productService: ProductService, private santizier: DomSanitizer,
     private readonly dialog: MatDialog,
     private helper: HelperService,
@@ -74,17 +76,32 @@ export class ItemComponent implements OnInit {
   return (Number(item.preis) + mwst).toFixed(2);
   }
   addItem(item: iProduct) {
+    this.clicked = true;
+    if(item.id) {
+      this.itemGet$ = this.productService.getProductById(item.id).pipe(map((res) => {
+        if(!res.id) {
+          this.clicked = false;
+          this.snackBar.open(' Etwas ist schiefgelaufen, item wurde nicht hinzugefügt!', 'Ok', { duration: 2000 })
+          return res;
+        }
+      this.selectedColor.menge = 1;
+      let tmpItem: iProduct = {} as iProduct;
+      Object.assign(tmpItem, res);
+      tmpItem.color = JSON.stringify([this.selectedColor]);
 
-    this.selectedColor.menge = 1;
-    let tmpItem: iProduct = {} as iProduct;
-    Object.assign(tmpItem, item);
-    tmpItem.color = JSON.stringify([this.selectedColor]);
+      const items = this.helper.cardSig();
+      const newItems = items.slice(0);
+      newItems.push(tmpItem);
+      this.helper.cardSig.set(newItems);
+      this.snackBar.open(item.name + ' wurde zum Warenkorb hinzugefügt!', 'Ok', { duration: 1500 });
+      this.clicked = false;
+        return res;
+      }))
 
-    const items = this.helper.cardSig();
-    const newItems = items.slice(0);
-    newItems.push(tmpItem);
-    this.helper.cardSig.set(newItems);
-    this.snackBar.open(item.name + ' wurde zum Warenkorb hinzugefügt!', 'Ok', { duration: 1500 });
+    } else {
+      this.clicked = false;
+    }
+
 
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, computed, signal } from '@angular/core';
 import { HelperService } from '../helper/helper.service';
 import { iProduct } from '../model/iProduct';
 import { iColor } from '../model/iColor';
@@ -18,10 +18,15 @@ export class CardComponent implements OnInit {
   colors: iColor[][] = [];
   company = {} as iCompany;
   act$ = new Observable();
+
+  totalPrice = computed(() => {
+    return (Number(this.getTotalBrutto()) + Number(this.helper.VersandAndKost().split('|')[1])).toFixed(2);
+  })
   columns: string[] = ['artid', 'name', 'color', 'toTmenge', 'priceSt', 'mwst', 'totalPrice', 'remove'];
     constructor (private readonly helper: HelperService, private companyService: CompanyService) {}
   ngOnInit(): void {
     this.reloadColors(this.products());
+    this.helper.VersandAndKost.set('0|0');
     this.act$ = this.companyService.getCompanyById(1).pipe(map((res) => {
       this.company = res;
       if(res && res.isKleinUnternehmen === 1)
@@ -81,7 +86,7 @@ export class CardComponent implements OnInit {
         const colors: iColor[] = JSON.parse( this.products()[itemIndex].color);
         let total = 0;
         for (let i = 0; i < colors.length; i++) {
-          let price = Number(this.products()[itemIndex].preis);
+          let price = this.getPicePriceWithActions(this.products()[itemIndex]);
           if(this.products()[itemIndex].mehrwehrsteuer > 0 )
           {
             price += (price * this.products()[itemIndex].mehrwehrsteuer / 100);
@@ -91,11 +96,20 @@ export class CardComponent implements OnInit {
         return total.toFixed(2);
 
   }
+  getPicePriceWithActions(item: iProduct) {
+    let price = 0;
+    price = Number(item.preis);
+    if(item.promocje && item.promocje[0]) {
+      price -= price * item.promocje[0].rabattProzent / 100;
+    }
+
+    return price;
+  }
   getPricePerSt(itemIndex: number) {
     if(!this.products()[itemIndex])
     return;
 
-    return Number(this.products()[itemIndex].preis);
+    return this.getPicePriceWithActions(this.products()[itemIndex]);
   }
   getProduktMwst(itemIndex: number) {
     if(!this.products()[itemIndex])
@@ -104,7 +118,7 @@ export class CardComponent implements OnInit {
     if(this.products()[itemIndex].mehrwehrsteuer === 0)
     return 0;
 
-    return (Number(this.products()[itemIndex].preis) * this.products()[itemIndex].mehrwehrsteuer / 100).toFixed(2);
+    return (this.getPicePriceWithActions(this.products()[itemIndex]) * this.products()[itemIndex].mehrwehrsteuer / 100).toFixed(2);
   }
   getProductMenge(itemIndex: number) {
 
@@ -139,7 +153,7 @@ export class CardComponent implements OnInit {
     for (let i = 0; i < items.length; i++) {
       const color: iColor[] = JSON.parse(items[i].color);
       for (let y = 0; y < color.length; y++ ) {
-        price += color[y].menge * Number(items[i].preis);
+        price += color[y].menge * this.getPicePriceWithActions(items[i])
       }
     }
     return price.toFixed(2);
@@ -150,12 +164,15 @@ export class CardComponent implements OnInit {
     for (let i = 0; i < items.length; i++) {
       const color: iColor[] = JSON.parse(items[i].color);
       for (let y = 0; y < color.length; y++ ) {
-        mwst += (Number(items[i].preis) * items[i].mehrwehrsteuer / 100) * color[y].menge;
+        mwst += (this.getPicePriceWithActions(items[i]) * items[i].mehrwehrsteuer / 100) * color[y].menge;
       }
     }
     return mwst.toFixed(2);
   }
   getTotalBrutto() {
     return (Number(this.getTotalPriceNetto()) + Number(this.getTotalMwst())).toFixed(2);
+  }
+  setVersandKosten(value: string) {
+    this.helper.VersandAndKost.set(value);
   }
 }

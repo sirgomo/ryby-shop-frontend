@@ -12,7 +12,8 @@ export interface iBestellung {
   gesamtwert: number,
   zahlungsstatus: string,
   bestellungstatus: BESTELLUNGSSTATUS,
-
+  versandart: string;
+  versandprice: number;
 }
 
 export enum BESTELLUNGSSTATUS {

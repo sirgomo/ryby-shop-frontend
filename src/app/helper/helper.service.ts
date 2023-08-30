@@ -23,6 +23,7 @@ import { iUserData } from '../model/iUserData';
     uploadProgersSig = signal<number>(0);
     appComponenet!: AppComponent;
     buyerAcc: iUserData = {} as iUserData;
+    VersandAndKost = signal('');
     constructor() { }
     setApp(app: AppComponent) {
       this.appComponenet = app;

@@ -69,11 +69,11 @@ export class ShippingAddressComponent {
   makeBestellung() {
 
     if  (this.shippingAddres.invalid || this.rechnungAddress.invalid && this.isRechnungAddress)  {
-      console.log('kliked false')
+
       this.snack.open('Das Formular ist nicht vollständig ausgefüllt', 'Ok', { duration: 3000 });
       return;
     }
-    console.log('kliked poza')
+
     const user = {} as iUserData;
     if(this.helperService.buyerAcc.id) {
       Object.assign(user, this.helperService.buyerAcc);
@@ -108,6 +108,8 @@ export class ShippingAddressComponent {
       products.push(item);
     }
     newBestellung.produkte = products;
+    newBestellung.versandprice = Number(this.helperService.VersandAndKost().split('|')[1]);
+    newBestellung.versandart = this.helperService.VersandAndKost().split('|')[0];
       console.log(newBestellung)
   }
 }

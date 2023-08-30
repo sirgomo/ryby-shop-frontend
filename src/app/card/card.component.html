@@ -59,7 +59,7 @@
   <ng-container matColumnDef="totalPrice">
     <mat-header-cell *matHeaderCellDef>Total Price</mat-header-cell>
     <mat-cell *matCellDef="let product; let i = index">{{ getTotalPrice(i) }}  &euro;</mat-cell>
-    <mat-footer-cell *matFooterCellDef><span>Total: {{getTotalBrutto()}} &euro;</span></mat-footer-cell>
+    <mat-footer-cell *matFooterCellDef><span>Total: {{totalPrice()}} &euro;</span></mat-footer-cell>
   </ng-container>
 
   <!-- Remove Column -->
@@ -78,7 +78,16 @@
   <mat-footer-row *matFooterRowDef="columns"></mat-footer-row>
 </mat-table>
 </div>
-
+<div class="versand">
+  <div>Versand Kosten: </div>
+  <mat-form-field>
+    <mat-select placeholder="Versand Kosten" (selectionChange)="setVersandKosten($event.value)">
+      <mat-option [value]="'Selbstabholung|0'">Selbstabholung</mat-option>
+      <mat-option [value]="'DHL|3.99'">DHL ( 3.99 &euro;)</mat-option>
+      <mat-option [value]="'GLS|4.50'">GLS (4.50 &euro; )</mat-option>
+  </mat-select>
+  </mat-form-field>
+</div>
 <div>
   <app-shipping-address></app-shipping-address>
 </div>

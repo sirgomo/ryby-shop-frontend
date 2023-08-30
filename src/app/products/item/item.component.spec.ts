@@ -14,7 +14,6 @@ import { iKategorie } from 'src/app/model/iKategorie';
 import { iKundenbewertung } from 'src/app/model/iKundenbewertung';
 import { iLieferant } from 'src/app/model/iLieferant';
 import { iProductBestellung } from 'src/app/model/iProductBestellung';
-import { iReservierung } from 'src/app/model/iReservierung';
 import { iStellplatze } from 'src/app/model/iStellplatze';
 import { iWarenausgangProduct } from 'src/app/model/iWarenausgangProduct';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
@@ -96,7 +95,6 @@ describe('ItemComponent', () => {
       warenausgang: [] as iWarenausgangProduct[],
       mehrwehrsteuer: 0,
       promocje: [] as iAktion[],
-      reservation: [] as iReservierung[],
       bewertung: [] as iKundenbewertung[],
     };
 

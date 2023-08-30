@@ -155,7 +155,6 @@ describe('AddEditProductComponent', () => {
         warenausgang: [],
         mehrwehrsteuer: 0,
         promocje: [],
-        reservation: [],
         bewertung: [],
         color: JSON.stringify(['hjgasghd']),
         lange: 0,
@@ -183,7 +182,6 @@ describe('AddEditProductComponent', () => {
         warenausgang: [],
         mehrwehrsteuer: 0,
         promocje: [],
-        reservation: [],
         bewertung: [],
         lange: 0,
         gewicht: 0

@@ -1,5 +1,4 @@
 import { iProductBestellung } from "./iProductBestellung";
-import { iReservierung } from "./iReservierung";
 import { iUserData } from "./iUserData";
 
 export interface iBestellung {
@@ -12,5 +11,11 @@ export interface iBestellung {
   zahlungsart: string,
   gesamtwert: number,
   zahlungsstatus: string,
-  reservation: iReservierung,
+  bestellungstatus: BESTELLUNGSSTATUS,
+
+}
+
+export enum BESTELLUNGSSTATUS {
+  INBEARBEITUNG = 'INBEARBEITUNG',
+  VERSCHICKT = 'VERSCHICKT',
 }

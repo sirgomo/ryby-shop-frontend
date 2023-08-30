@@ -45,7 +45,6 @@ describe('ArtikelListComponent', () => {
       warenausgang: [],
       mehrwehrsteuer: 0,
       promocje: [],
-      reservation: [],
       bewertung: [],
     },
     {
@@ -77,7 +76,6 @@ describe('ArtikelListComponent', () => {
       warenausgang: [],
       mehrwehrsteuer: 0,
       promocje: [],
-      reservation: [],
       bewertung: [],
     },
   ];

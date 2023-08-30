@@ -57,8 +57,8 @@ describe('CardComponent', () => {
 
   it('should reload colors', () => {
     const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] }
+      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [],  bewertung: [] },
+      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] }
     ];
     const expectedColors: iColor[][] = [
       [{ id: '1', menge: 5 }],
@@ -76,7 +76,7 @@ describe('CardComponent', () => {
     const colorIndex = 0;
     component.products = signal<iProduct[]>([]);
     const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] }
+      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [],  bewertung: [] }
     ];
     const expectedColors: iColor[][] = [
       [{ id: '1', menge: 6 }]
@@ -101,7 +101,7 @@ describe('CardComponent', () => {
     const colorIndex = 0;
     component.products = signal<iProduct[]>([]);
     const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] }
+      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [],  bewertung: [] }
     ];
 
     component.products.set(products);
@@ -125,7 +125,7 @@ describe('CardComponent', () => {
   it('should remove item', fakeAsync( () => {
     const itemIndex = 0;
     const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] }
+      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [],  bewertung: [] }
     ];
     const expectedProducts: iProduct[] = [];
     const expectedColors: iColor[][] = [];
@@ -148,8 +148,8 @@ describe('CardComponent', () => {
   it('should calculate total price', () => {
     const itemIndex = 0;
     const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] }
+      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] },
+      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] }
     ];
     const expectedTotalPrice = ['50.00', '200.00'];
 
@@ -165,8 +165,8 @@ describe('CardComponent', () => {
   it('should calculate price per unit', () => {
     const itemIndex = 0;
     const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] }
+      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] },
+      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] }
     ];
     const expectedPricePerSt = [10, 20];
 
@@ -182,8 +182,8 @@ describe('CardComponent', () => {
   it('should calculate product Mwst', () => {
     const itemIndex = 0;
     const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 20, promocje: [], reservation: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 15, promocje: [], reservation: [], bewertung: [] }
+      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 20, promocje: [], bewertung: [] },
+      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 15, promocje: [], bewertung: [] }
     ];
     const expectedProductMwst = ['2.00', '3.00'];
 
@@ -199,8 +199,8 @@ describe('CardComponent', () => {
   it('should calculate product menge', () => {
     const itemIndex = 0;
     const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] }
+      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] },
+      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] }
     ];
     const expectedProductMenge = [5, 10];
 
@@ -215,8 +215,8 @@ describe('CardComponent', () => {
 
   it('should calculate total count', fakeAsync( () => {
     const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] }
+      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] },
+      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] }
     ];
     const expectedTotalCount = 15;
 
@@ -232,8 +232,8 @@ describe('CardComponent', () => {
 
   it('should calculate total price netto', () => {
     const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], reservation: [], bewertung: [] }
+      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] },
+      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] }
     ];
     const expectedTotalPriceNetto = '250.00';
 
@@ -246,8 +246,8 @@ describe('CardComponent', () => {
 
   it('should calculate total Mwst', () => {
     const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 20, promocje: [], reservation: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 15, promocje: [], reservation: [], bewertung: [] }
+      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 20, promocje: [], bewertung: [] },
+      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 15, promocje: [], bewertung: [] }
     ];
     const expectedTotalMwst = '40.00';
 
@@ -260,8 +260,8 @@ describe('CardComponent', () => {
 
   it('should calculate total brutto', () => {
     const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 20, promocje: [], reservation: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 15, promocje: [], reservation: [], bewertung: [] }
+      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 20, promocje: [], bewertung: [] },
+      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 15, promocje: [], bewertung: [] }
     ];
 
     const expectedTotalBrutto = '290.00';

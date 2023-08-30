@@ -72,9 +72,6 @@ describe('ProductService', () => {
         promocje: [
           // promocje properties
         ],
-        reservation: [
-          // reservation properties
-        ],
         bewertung: [
           // bewertung properties
         ],
@@ -128,9 +125,6 @@ describe('ProductService', () => {
         mehrwehrsteuer: 0.19,
         promocje: [
           // promocje properties
-        ],
-        reservation: [
-          // reservation properties
         ],
         bewertung: [
           // bewertung properties
@@ -193,9 +187,6 @@ describe('ProductService', () => {
         promocje: [
           // promocje properties
         ],
-        reservation: [
-          // reservation properties
-        ],
         bewertung: [
           // bewertung properties
         ],
@@ -250,9 +241,6 @@ describe('ProductService', () => {
         mehrwehrsteuer: 0.19,
         promocje: [
           // promocje properties
-        ],
-        reservation: [
-          // reservation properties
         ],
         bewertung: [
           // bewertung properties

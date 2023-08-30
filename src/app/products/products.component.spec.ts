@@ -40,7 +40,6 @@ describe('ProductComponent', () => {
       warenausgang: [],
       mehrwehrsteuer: 0,
       promocje: [],
-      reservation: [],
       bewertung: []
     };
     productService = {

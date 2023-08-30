@@ -55,7 +55,6 @@ describe('ItemDetailsComponent', () => {
     warenausgang: [],
     mehrwehrsteuer: 20,
     promocje: [],
-    reservation: [],
     bewertung: []
   };
 

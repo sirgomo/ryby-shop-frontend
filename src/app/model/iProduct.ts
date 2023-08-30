@@ -3,7 +3,6 @@ import { iKategorie } from "./iKategorie";
 import { iKundenbewertung } from "./iKundenbewertung";
 import { iLieferant } from "./iLieferant";
 import { iProductBestellung } from "./iProductBestellung";
-import { iReservierung } from "./iReservierung";
 import { iStellplatze } from "./iStellplatze";
 import { iWarenausgangProduct } from "./iWarenausgangProduct";
 import { iWareneingangProduct } from "./iWareneingangProduct";
@@ -33,6 +32,5 @@ export interface iProduct {
   warenausgang: iWarenausgangProduct[];
   mehrwehrsteuer: number;
   promocje: iAktion[];
-  reservation: iReservierung[];
   bewertung: iKundenbewertung[];
 }

@@ -76,7 +76,6 @@ export class AddEditProductComponent implements OnInit {
       warenausgang: [this.data ? this.data.warenausgang : []],
       mehrwehrsteuer: [this.data ? this.data.mehrwehrsteuer : '', Validators.required],
       promocje: [this.data ? this.data.promocje : []],
-      reservation: [this.data ? this.data.reservation : []],
       bewertung: [this.data ? this.data.bewertung : []]
     });
   }

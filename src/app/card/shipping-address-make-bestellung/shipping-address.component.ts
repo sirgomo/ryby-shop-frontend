@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, combineLatest, concatMap, map, of, startWith } from 'rxjs';
 import { HelperService } from 'src/app/helper/helper.service';
@@ -9,6 +10,8 @@ import { iProductBestellung } from 'src/app/model/iProductBestellung';
 import { iShippingAddress } from 'src/app/model/iShippingAddress';
 import { iUserData } from 'src/app/model/iUserData';
 import { UserService } from 'src/app/user/user.service';
+import { PaypalComponent } from '../paypal/paypal.component';
+
 
 @Component({
   selector: 'app-shipping-address',
@@ -31,7 +34,7 @@ export class ShippingAddressComponent {
   isRechnungAddress = false;
 
   constructor (private helperService: HelperService, private readonly userService: UserService, private readonly fb: FormBuilder,
-    private readonly snack: MatSnackBar) {
+    private readonly snack: MatSnackBar, private readonly dialog: MatDialog) {
     this.shippingAddres = this.fb.group({
       shipping_name: ['', Validators.required],
       strasse: ['', Validators.required],
@@ -66,7 +69,7 @@ export class ShippingAddressComponent {
       return address;
     }))
   }
-  makeBestellung() {
+  async makeBestellung() {
 
     if  (this.shippingAddres.invalid || this.rechnungAddress.invalid && this.isRechnungAddress)  {
 
@@ -110,6 +113,10 @@ export class ShippingAddressComponent {
     newBestellung.produkte = products;
     newBestellung.versandprice = Number(this.helperService.VersandAndKost().split('|')[1]);
     newBestellung.versandart = this.helperService.VersandAndKost().split('|')[0];
-      console.log(newBestellung)
+
+    const conf: MatDialogConfig = new MatDialogConfig();
+    conf.width = '50%'
+    conf.data = newBestellung;
+    this.dialog.open(PaypalComponent, conf);
   }
 }

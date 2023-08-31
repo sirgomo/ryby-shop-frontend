@@ -79,9 +79,9 @@
 </mat-table>
 </div>
 <div class="versand">
-  <div>Versand Kosten: </div>
+  <div>Versandkosten: </div>
   <mat-form-field>
-    <mat-select placeholder="Versand Kosten" (selectionChange)="setVersandKosten($event.value)">
+    <mat-select placeholder="Versand art" (selectionChange)="setVersandKosten($event.value)">
       <mat-option [value]="'Selbstabholung|0'">Selbstabholung</mat-option>
       <mat-option [value]="'DHL|3.99'">DHL ( 3.99 &euro;)</mat-option>
       <mat-option [value]="'GLS|4.50'">GLS (4.50 &euro; )</mat-option>
@@ -91,6 +91,7 @@
 <div>
   <app-shipping-address></app-shipping-address>
 </div>
+
 <ng-template #loader>
   <mat-spinner></mat-spinner>
 </ng-template>

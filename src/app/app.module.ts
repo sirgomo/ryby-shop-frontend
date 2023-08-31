@@ -111,7 +111,7 @@ import { ShippingAddressComponent } from './card/shipping-address-make-bestellun
     MatMomentDateModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatTabsModule
+    MatTabsModule,
   ],
   providers: [
     {

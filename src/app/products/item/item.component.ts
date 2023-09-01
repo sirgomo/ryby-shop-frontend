@@ -76,6 +76,8 @@ export class ItemComponent implements OnInit {
   }
   addItem(item: iProduct) {
 
+
+      this.helper.cardSigForMengeControl().push(item);
       this.selectedColor.menge = 1;
       let tmpItem: iProduct = {} as iProduct;
       Object.assign(tmpItem, item);

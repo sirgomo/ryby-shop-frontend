@@ -98,6 +98,9 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
   }
 
   addItem(item: iProduct) {
+    this.helperService.cardSigForMengeControl().push(item);
+    if(!this.doWeHaveEnough(item))
+      return;
     item.color = JSON.stringify(this.colorToBuy);
     const items = this.helperService.cardSig();
     const newItems = items.slice(0);
@@ -107,6 +110,18 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
      this.snackBar.open(item.name + ' wurde zum Warenkorb hinzugefügt!', 'Ok', { duration: 1500 });
 
 
+  }
+  doWeHaveEnough(item:iProduct): boolean {
+    const availableColors = JSON.parse(item.color);
+
+    for (let i = 0; i < this.colorToBuy.length; i++) {
+      if(this.colorToBuy[i].menge > availableColors[i].menge) {
+        this.snackBar.open('Es tut uns leid, aber wir haben die gewünschte Menge nicht verfügbar.', 'Ok', {duration: 2000 })
+        return false;
+      }
+    }
+
+    return true;
   }
 }
 

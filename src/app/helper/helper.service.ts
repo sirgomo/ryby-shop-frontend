@@ -13,6 +13,7 @@ import { iUserData } from '../model/iUserData';
   export class HelperService {
     menuSub: BehaviorSubject<iMenuItem[]> = new BehaviorSubject<iMenuItem[]>([]);
     cardSig = signal<iProduct[]>([]);
+    cardSigForMengeControl = signal<iProduct[]>([]);
     menu$ = this.menuSub.asObservable();
     titelSig = signal('Ryby');
     searchSig = signal<string>('');

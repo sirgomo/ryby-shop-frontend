@@ -58,7 +58,7 @@ export class PaypalComponent implements OnInit{
                   headers: {
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify({'orderID': data.orderID, 'data': res})
+                  body: JSON.stringify({'orderID': data.orderID, 'bestellung': res})
                 });
 
                 const orderData = await response.json();
@@ -99,6 +99,9 @@ export class PaypalComponent implements OnInit{
                 console.log(err);
                 resultMessage(`Sorry, your transaction could not be processed...<br><br>${err}`);
               }
+          },
+          async onShippingChange(data, actions) {
+            resultMessage('Addres wird nicht geeandert');
           },
 
         }).render("#paypal-container");

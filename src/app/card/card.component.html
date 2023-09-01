@@ -25,7 +25,11 @@
           <button mat-icon-button class="mat-icon-button" color="primary" (click)="decreaseQuantity(i, y)">
             <mat-icon>remove</mat-icon>
           </button>
-          <button mat-icon-button class="mat-icon-button" color="primary" (click)="increaseQuantity(i, y)">
+          <button mat-icon-button class="mat-icon-button" color="warn" *ngIf="!doWeHaveEnough(i, y)">
+            <mat-icon>add</mat-icon>
+          </button>
+
+          <button mat-icon-button class="mat-icon-button" color="primary" (click)="increaseQuantity(i, y)" *ngIf="doWeHaveEnough(i, y)">
             <mat-icon>add</mat-icon>
           </button>
         </div>

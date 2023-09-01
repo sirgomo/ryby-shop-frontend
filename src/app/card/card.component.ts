@@ -41,15 +41,21 @@ export class CardComponent implements OnInit {
 
 
   private reloadColors(arr: iProduct[]) {
+
     this.colors = [];
     for (let i = 0; i < arr.length; i++) {
       this.colors.push(JSON.parse(arr[i].color));
+
     }
   }
 
   increaseQuantity(itemIndex: number, colorIndex: number) {
     this.colors[itemIndex][colorIndex].menge += 1;
     this.products()[itemIndex].color = JSON.stringify(this.colors[itemIndex]);
+    const tmp = this.products();
+    const newT = tmp.slice();
+    this.reloadColors(newT);
+    this.helper.cardSig.set(newT);
   }
   decreaseQuantity(itemIndex: number, colorIndex: number) {
     this.colors[itemIndex][colorIndex].menge -= 1;
@@ -164,7 +170,7 @@ export class CardComponent implements OnInit {
     for (let i = 0; i < items.length; i++) {
       const color: iColor[] = JSON.parse(items[i].color);
       for (let y = 0; y < color.length; y++ ) {
-        mwst += (this.getPicePriceWithActions(items[i]) * items[i].mehrwehrsteuer / 100) * color[y].menge;
+        mwst += Number((this.getPicePriceWithActions(items[i]) * items[i].mehrwehrsteuer / 100).toFixed(2)) * color[y].menge;
       }
     }
     return mwst.toFixed(2);
@@ -174,5 +180,11 @@ export class CardComponent implements OnInit {
   }
   setVersandKosten(value: string) {
     this.helper.VersandAndKost.set(value);
+  }
+  doWeHaveEnough(itemIndex: number, colorIndex: number) :boolean {
+    const colorBuy: iColor[] = JSON.parse(this.helper.cardSig()[itemIndex].color);
+    const colorOrgi: iColor[] = JSON.parse(this.helper.cardSigForMengeControl()[itemIndex].color);
+
+    return colorBuy[colorIndex].menge < colorOrgi[colorIndex].menge;
   }
 }

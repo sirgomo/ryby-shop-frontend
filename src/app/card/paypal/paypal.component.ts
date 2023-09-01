@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { loadScript } from '@paypal/paypal-js';
+import { PayPalNamespace, loadScript } from '@paypal/paypal-js';
 import { iBestellung } from 'src/app/model/iBestellung';
 import { environment } from 'src/environments/environment';
 
@@ -10,20 +10,21 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./paypal.component.scss']
 })
 export class PaypalComponent implements OnInit{
+  paypal! :PayPalNamespace | null;
   constructor (private readonly dialRef: MatDialogRef<PaypalComponent>, @Inject(MAT_DIALOG_DATA) public data: iBestellung) {}
   ngOnInit(): void {
-    this.loadPaypal(this.data);
+    this.loadPaypal(this.data, this.dialRef);
   }
-  async loadPaypal(res: iBestellung) {
-    let paypal;
+  async loadPaypal(res: iBestellung, dialRef: MatDialogRef<PaypalComponent>) {
+
     try {
-      paypal = await loadScript({ clientId: 'AeDiupsu7C8EsJ1LlfTWZ5Hjqa_jBrL07wotcEaGIyH8Q7BgtlStuniAPw94dAi1482Jv_-xk0RpJAlU', currency: 'EUR'});
+      this.paypal = await loadScript({ clientId: 'AeDiupsu7C8EsJ1LlfTWZ5Hjqa_jBrL07wotcEaGIyH8Q7BgtlStuniAPw94dAi1482Jv_-xk0RpJAlU', currency: 'EUR'});
     } catch (err) {
       console.log('failed to load paypal....')
     }
-    if(paypal?.Buttons) {
+    if(this.paypal?.Buttons) {
       try {
-        await paypal.Buttons({
+        await this.paypal.Buttons({
           async createOrder() {
             try {
               const response = await fetch(`${environment.api}order/create`, {
@@ -57,7 +58,7 @@ export class PaypalComponent implements OnInit{
                   headers: {
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify({'orderID': data.orderID})
+                  body: JSON.stringify({'orderID': data.orderID, 'data': res})
                 });
 
                 const orderData = await response.json();
@@ -81,7 +82,8 @@ export class PaypalComponent implements OnInit{
                 } else {
                   // (3) Successful transaction -> Show confirmation or thank you message
                   // Or go to another URL:  actions.redirect('thank_you.html');
-                  const transaction =
+                  dialRef.close('COMPLETED');
+                /*  const transaction =
                     orderData?.purchase_units?.[0]?.payments?.captures?.[0] ||
                     orderData?.purchase_units?.[0]?.payments?.authorizations?.[0];
                   resultMessage(
@@ -91,7 +93,7 @@ export class PaypalComponent implements OnInit{
                     "Capture result",
                     orderData,
                     JSON.stringify(orderData, null, 2),
-                  );
+                  );*/
                 }
               } catch (err) {
                 console.log(err);

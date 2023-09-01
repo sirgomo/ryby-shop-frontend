@@ -1,9 +1,9 @@
 
 
-  <div>
+<div>
     <span id="result-message"></span>
   </div>
-  <div class="paypal" id="paypal-container">
+  <div class="paypal" id="paypal-container" *ngIf="paypal !== null else loader">
 
   </div>
 
@@ -13,3 +13,6 @@
 
 
 </mat-dialog-actions>
+<ng-template #loader>
+  <mat-spinner></mat-spinner>
+</ng-template>

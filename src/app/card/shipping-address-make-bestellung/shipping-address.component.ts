@@ -11,6 +11,7 @@ import { iShippingAddress } from 'src/app/model/iShippingAddress';
 import { iUserData } from 'src/app/model/iUserData';
 import { UserService } from 'src/app/user/user.service';
 import { PaypalComponent } from '../paypal/paypal.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -34,7 +35,7 @@ export class ShippingAddressComponent {
   isRechnungAddress = false;
 
   constructor (private helperService: HelperService, private readonly userService: UserService, private readonly fb: FormBuilder,
-    private readonly snack: MatSnackBar, private readonly dialog: MatDialog) {
+    private readonly snack: MatSnackBar, private readonly dialog: MatDialog, private reouter: Router) {
     this.shippingAddres = this.fb.group({
       shipping_name: ['', Validators.required],
       strasse: ['', Validators.required],
@@ -117,6 +118,13 @@ export class ShippingAddressComponent {
     const conf: MatDialogConfig = new MatDialogConfig();
     conf.width = '50%'
     conf.data = newBestellung;
-    this.dialog.open(PaypalComponent, conf);
+    const subs$ = this.dialog.open(PaypalComponent, conf).afterClosed().subscribe((cl) => {
+      if(cl && cl === 'COMPLETED') {
+        this.helperService.cardSig.set([]);
+        this.snack.open('Vielen Dank für Ihren Einkauf!', 'Ok', {duration: 2500 });
+        this.reouter.navigate(['/']);
+      }
+      subs$.unsubscribe();
+    });
   }
 }

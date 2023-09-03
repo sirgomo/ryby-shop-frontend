@@ -170,7 +170,7 @@ async getData() {
         return res;
       }));
       } else {
-        product.verfgbarkeit = this.productForm.get('verfgbarkeit')?.getRawValue() == 1 ? true : false;
+       // product.verfgbarkeit = this.productForm.get('verfgbarkeit')?.getRawValue() == 1 ? true : false;
       this.create$ = this.prodService.updateProduct(product.id, product).pipe(tap((res) => {
         if(res && res.id && isFinite(res.id)) {
           this.snackBar.open('Die Änderungen wurden gespeichert', '', {duration: 1500 });

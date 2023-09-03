@@ -23,8 +23,7 @@ export class ProductService {
     switchMap(([search, kat, artpro, pagenr]) => this.getAllProducts(search, kat.id, artpro, pagenr)),
     map((res) => {
       return res;
-    }),
-    shareReplay(1)
+    })
   );
 
   productsGetSig = toSignal<iProduct[], iProduct[]>(this.items$, { initialValue:  []});
@@ -52,7 +51,7 @@ export class ProductService {
       nit[index] = this.item();
       return nit;
     }
-
+    console.log(items)
     return items;
   })
   break: Subject<any> = new Subject();

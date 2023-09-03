@@ -35,7 +35,7 @@ export class PaypalComponent implements OnInit{
                 body: JSON.stringify(res),
               })
               const orderData = await response.json();
-              console.log(orderData)
+
               if(orderData.id) {
                 return orderData.id;
               } else {
@@ -46,7 +46,8 @@ export class PaypalComponent implements OnInit{
               }
 
             } catch (err) {
-              console.error(err);
+              const tmp = { statusCode: 0, message : ''};
+
               resultMessage(`Could not initiate PayPal Checkout...<br><br>${err}`);
             }
           },
@@ -76,6 +77,7 @@ export class PaypalComponent implements OnInit{
                   return actions.restart();
                 } else if (errorDetail) {
                   // (2) Other non-recoverable errors -> Show a failure message
+                  console.log(errorDetail)
                   throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
                 } else if (!orderData.purchase_units) {
                   throw new Error(JSON.stringify(orderData));

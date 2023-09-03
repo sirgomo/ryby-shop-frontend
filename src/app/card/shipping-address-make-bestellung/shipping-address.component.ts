@@ -23,6 +23,7 @@ import { Router } from '@angular/router';
 export class ShippingAddressComponent {
   isLogged = this.helperService.isLogged();
   data$ = new Observable();
+  versand = this.helperService.VersandAndKost;
   act$ = combineLatest([ toObservable(this.helperService.isLogged), this.data$.pipe(startWith(null))]).pipe(concatMap(([log, res]) => this.getShippingAddress(log)),
   map((resp) => {
 
@@ -40,7 +41,7 @@ export class ShippingAddressComponent {
       shipping_name: ['', Validators.required],
       strasse: ['', Validators.required],
       hausnummer: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       stadt: ['', Validators.required],
       postleitzahl: ['', Validators.required],
       land: ['', Validators.required],
@@ -64,7 +65,7 @@ export class ShippingAddressComponent {
       const address = {} as iShippingAddress;
         Object.assign(address, res.adresse);
 
-      address.shipping_name = res.vorname + ' ' + res.nachname;
+      address.shipping_name = res.nachname + ' ' + res.vorname;
       this.helperService.buyerAcc = res;
       this.shippingAddres.get('email')?.patchValue(res.email);
       return address;
@@ -72,7 +73,7 @@ export class ShippingAddressComponent {
   }
   async makeBestellung() {
 
-    if  (this.shippingAddres.invalid || this.rechnungAddress.invalid && this.isRechnungAddress)  {
+    if  (this.shippingAddres.invalid || this.rechnungAddress.invalid && this.isRechnungAddress )  {
 
       this.snack.open('Das Formular ist nicht vollständig ausgefüllt', 'Ok', { duration: 3000 });
       return;
@@ -83,8 +84,8 @@ export class ShippingAddressComponent {
       Object.assign(user, this.helperService.buyerAcc);
     } else {
       user.email = this.shippingAddres.get('email')?.getRawValue();
-      user.vorname = this.shippingAddres.get('shipping_name')?.getRawValue().split(' ')[0];
-      user.nachname = this.shippingAddres.get('shipping_name')?.getRawValue().split(' ')[1];
+      user.vorname = this.shippingAddres.get('shipping_name')?.getRawValue().split(' ')[1];
+      user.nachname = this.shippingAddres.get('shipping_name')?.getRawValue().split(' ')[0];
       const address = {} as iShippingAddress;
       Object.assign(address, this.shippingAddres.value);
       user.adresse = address;
@@ -94,11 +95,11 @@ export class ShippingAddressComponent {
         const shipAddress = {} as iShippingAddress;
         Object.assign(shipAddress, this.rechnungAddress.value);
         user.lieferadresse = shipAddress;
-      } else {
+      } /* else {
         const address = {} as iShippingAddress;
         Object.assign(address, this.shippingAddres.value);
         user.lieferadresse = address;
-      }
+      }*/
 
     const newBestellung = {} as iBestellung;
       newBestellung.kunde = user;

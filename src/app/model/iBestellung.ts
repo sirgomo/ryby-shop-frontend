@@ -14,9 +14,16 @@ export interface iBestellung {
   bestellungstatus: BESTELLUNGSSTATUS,
   versandart: string;
   versandprice: number;
+  varsandnr: string;
 }
 
 export enum BESTELLUNGSSTATUS {
   INBEARBEITUNG = 'INBEARBEITUNG',
   VERSCHICKT = 'VERSCHICKT',
+}
+export enum BESTELLUNGSSTATE {
+  ABGEBROCHEN = 'ABGEBROCHEN',
+  BEZAHLT = 'BEZAHLT',
+  COMPLETE = 'COMPLETE',
+  ARCHIVED = 'ARCHIVED',
 }

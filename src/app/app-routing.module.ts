@@ -11,11 +11,23 @@ import { ProductsComponent } from './products/products.component';
 import { WareneingangComponent } from './admin/wareneingang/wareneingang.component';
 import { CardComponent } from './card/card.component';
 import { CompanyComponent } from './admin/company/company.component';
+import { OrdersComponent } from './orders/orders.component';
+import { OrderComponent } from './admin/order/order.component';
 
 const routes: Routes = [
 {
   component: CardComponent,
   path: 'card',
+},
+{
+  component: OrdersComponent,
+  path: 'order',
+  canActivate: [routeGuard]
+},
+{
+  component: OrderComponent,
+  path: 'admin-order',
+  canActivate: [routeGuard],
 },
 {
   component: CompanyComponent,

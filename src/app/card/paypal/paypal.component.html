@@ -3,7 +3,8 @@
 <div>
     <span id="result-message"></span>
   </div>
-  <div class="paypal" id="paypal-container" *ngIf="paypal !== null else loader">
+  <span  *ngIf="paypal else loader"></span>
+  <div class="paypal" id="paypal-container">
 
   </div>
 

@@ -5,20 +5,19 @@
   <form [formGroup]="shippingAddres">
     <div class="row">
       <mat-form-field class="rest">
-        <mat-label>Straße</mat-label>
-        <input matInput formControlName="strasse" required />
-        <mat-error *ngIf="shippingAddres.get('strasse')?.hasError('required')">Straße ist erforderlich</mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="rest">
         <mat-label>Email:</mat-label>
-        <input matInput formControlName="email" required/>
+        <input matInput formControlName="email" required email/>
         <mat-error *ngIf="shippingAddres.get('email')?.hasError('required')">Email ist erforderlich</mat-error>
       </mat-form-field>
       <mat-form-field class="rest">
         <mat-label>Empfänger</mat-label>
         <input matInput formControlName="shipping_name" required placeholder="Name und Vorname"/>
         <mat-error *ngIf="shippingAddres.get('shipping_name')?.hasError('required')">Empfänger ist erforderlich</mat-error>
+      </mat-form-field>
+      <mat-form-field class="rest">
+        <mat-label>Straße</mat-label>
+        <input matInput formControlName="strasse" required />
+        <mat-error *ngIf="shippingAddres.get('strasse')?.hasError('required')">Straße ist erforderlich</mat-error>
       </mat-form-field>
     </div>
     <div class="row">
@@ -92,6 +91,6 @@
     </form>
   </div>
 
-  <div class="row" *ngIf="(shippingAddres.valid && rechnungAddress.invalid && !isRechnungAddress) || shippingAddres.valid && rechnungAddress.valid" ><button mat-raised-button color="primary" (click)="makeBestellung()">Bestellen mit Paypal</button></div>
-  <div class="row" *ngIf="shippingAddres.invalid || (rechnungAddress.invalid && isRechnungAddress)" ><button mat-raised-button (click)="makeBestellung()" disabled>Bestellen mit Paypal</button></div>
+  <div class="row" *ngIf="(shippingAddres.valid && rechnungAddress.invalid && !isRechnungAddress ) && this.versand().length > 4  || shippingAddres.valid && rechnungAddress.valid && this.versand().length > 4 " ><button mat-raised-button color="primary" (click)="makeBestellung()">Bestellen mit Paypal</button></div>
+  <div class="row" *ngIf="shippingAddres.invalid || (rechnungAddress.invalid && isRechnungAddress) || this.versand().length < 4 " ><button mat-raised-button (click)="makeBestellung()" disabled>Bestellen mit Paypal</button></div>
 </div>

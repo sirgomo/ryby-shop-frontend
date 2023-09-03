@@ -32,6 +32,7 @@ export class ItemComponent implements OnInit {
     }
   ngOnInit(): void {
     if(this.item) {
+
       let tmpColor : iColor[] = JSON.parse(this.item.color);
       let tmpClolor1 = tmpColor.filter((item) => item.menge > 0)
       this.images = JSON.parse(this.item.foto);

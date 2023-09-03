@@ -21,7 +21,7 @@ export interface iProduct {
   bestellungen: iProductBestellung[];
   datumHinzugefuegt: string;
   kategorie: iKategorie[];
-  verfgbarkeit: boolean;
+  verfgbarkeit: number;
   mindestmenge: number;
   currentmenge: number;
   product_sup_id: string;

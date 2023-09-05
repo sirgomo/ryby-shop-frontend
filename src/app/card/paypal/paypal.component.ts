@@ -18,7 +18,7 @@ export class PaypalComponent implements OnInit{
   async loadPaypal(res: iBestellung, dialRef: MatDialogRef<PaypalComponent>) {
 
     try {
-      this.paypal = await loadScript({ clientId: 'AeDiupsu7C8EsJ1LlfTWZ5Hjqa_jBrL07wotcEaGIyH8Q7BgtlStuniAPw94dAi1482Jv_-xk0RpJAlU', currency: 'EUR'});
+      this.paypal = await loadScript({ clientId: environment.paypal_client_id, currency: 'EUR'});
     } catch (err) {
       console.log('failed to load paypal....')
     }

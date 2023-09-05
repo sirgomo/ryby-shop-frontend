@@ -55,6 +55,7 @@ import { ShippingAddressComponent } from './card/shipping-address-make-bestellun
 import { PaypalComponent } from './card/paypal/paypal.component';
 import { OrdersComponent } from './orders/orders.component';
 import { OrderComponent } from './admin/order/order.component';
+import { OrderDetailsComponent } from './admin/order/order-details/order-details.component';
 
 
 @NgModule({
@@ -89,6 +90,7 @@ import { OrderComponent } from './admin/order/order.component';
     PaypalComponent,
     OrdersComponent,
     OrderComponent,
+    OrderDetailsComponent,
 
   ],
   imports: [

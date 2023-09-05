@@ -48,9 +48,12 @@ mat-toolbar {
   }
   .logo{
     display: flex;
-    width: 30%;
-    height: 120px;
+    width: 33%;
+    height: 55px;
     scale: auto;
+    img {
+      border-radius: .5rem;
+    }
   }
 }
 

@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -14,6 +15,7 @@ import { iProduct } from 'src/app/model/iProduct';
   styleUrls: ['./item-details.component.scss']
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy{
+  @ViewChildren(MatCheckbox) checks! : MatCheckbox[];
   item: iProduct = {} as iProduct;
   act$ = new Observable();
   titleSig = this.helperService.titelSig;
@@ -81,23 +83,39 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     return (Number(item.preis) + mwst).toFixed(2);
   }
   changeImage(index: number) {
+    this.checkChekboxes(index);
     this.getImage(this.fotos[index]);
     if(this.colorToBuy.length <= 1)
     this.colorToBuy[0] = ({id: this.color[index].id, menge: 0});
+  }
+  checkChekboxes(index: number) {
+    this.checks.forEach((item, ind) => {
+      if(ind !== index) {
+        item['checked'] = false;
+      } else {
+        item['checked'] = true;
+      }
+
+    })
   }
   addColor(index: string, event: any) {
       if(event.checked === true) {
         this.colorToBuy.push({id: index, menge: 0});
       } else {
-        if(this.colorToBuy.length > 1) {
+
           const removeIndex = this.colorToBuy.findIndex(item => item.id === index);
           this.colorToBuy.splice(removeIndex, 1);
-        }
+
 
       }
   }
 
   addItem(item: iProduct) {
+    if(this.colorToBuy.length < 1) {
+      this.snackBar.open('Es gibt nichts, was ich dem Warenkorb hinzufügen könnte.', 'Ok', { duration: 2000 })
+      return;
+    }
+
     this.helperService.cardSigForMengeControl().push(item);
     if(!this.doWeHaveEnough(item))
       return;

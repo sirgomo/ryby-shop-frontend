@@ -1,4 +1,48 @@
 <div class="error" *ngIf="err() && err().length > 3">
   <app-error></app-error>
 </div>
-<p>order-details works!</p>
+<div mat-dialog-title class="title">
+  Bestellung nr: {{data.id}}
+</div>
+<div mat-dialog-content class="content">
+  <div class="row">
+      <mat-form-field>
+          <mat-label>Versand Date:</mat-label>
+          <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="data.versand_datum">
+          <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Bestellung Status:</mat-label>
+        <mat-select [(ngModel)]="data.status" placeholder="">
+            <mat-option *ngFor="let item of stan" [value]="item">{{item}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Bestellung Verschickt ?</mat-label>
+        <mat-select [(ngModel)]="data.bestellungstatus" placeholder="">
+            <mat-option *ngFor="let item of status" [value]="item">{{item}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  </div>
+  <div *ngIf="currentItem else loader ">
+    <div *ngFor="let item of currentItem()?.produkte; let i = index" class="tab-row">
+      <div>
+        {{item.produkt[0].name}}
+      </div>
+      <div>
+        <div *ngFor="let col of color[i]">
+            {{col.id}} : {{col.menge}}
+        </div>
+      </div>
+      <div>
+        <mat-checkbox value="" color="primary">Checkbox label</mat-checkbox>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions class="act">
+  <button mat-raised-button (click)="schlissen()" color="warn" >Schlissen</button>
+  <button mat-raised-button color="primary" >Speichern</button>
+</div>
+<ng-template #loader></ng-template>

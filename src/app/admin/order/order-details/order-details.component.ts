@@ -1,8 +1,10 @@
-import { Component, Inject, OnInit, signal } from '@angular/core';
+import { Component, Inject, OnInit, Signal, WritableSignal, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
-import { iBestellung } from 'src/app/model/iBestellung';
+import { BESTELLUNGSSTATE, BESTELLUNGSSTATUS, iBestellung } from 'src/app/model/iBestellung';
+import { iColor } from 'src/app/model/iColor';
 import { OrdersService } from 'src/app/orders/orders.service';
 
 @Component({
@@ -12,7 +14,18 @@ import { OrdersService } from 'src/app/orders/orders.service';
 })
 export class OrderDetailsComponent implements OnInit {
   err = this.error.message;
-  item = signal<iBestellung>({} as iBestellung);
+  stan = Object.values(BESTELLUNGSSTATE);
+  status = Object.values(BESTELLUNGSSTATUS);
+  color: iColor[][] = [];
+
+    currentItem: Signal<iBestellung | undefined> | undefined = this.data.id ? toSignal(this.orderService.getBestellungById(this.data.id).pipe(tap((res) => {
+      if(res.id) {
+        for (let i = 0; i < res.produkte.length; i++) {
+          const item = JSON.parse(res.produkte[i].color);
+          this.color.push(item);
+        }
+      }
+    }))) : undefined;
   constructor(private readonly orderService: OrdersService, private readonly dialRef: MatDialogRef<OrderDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data : iBestellung, private error: ErrorService) {}
 
@@ -21,8 +34,8 @@ export class OrderDetailsComponent implements OnInit {
           this.error.newMessage('Error - Keine Data vorhanden!')
           return;
         }
-        if(this.data.id)
-          this.item = toSignal(this.orderService.getBestellungById(this.data.id));
-
+    }
+    schlissen() {
+      this.dialRef.close();
     }
 }

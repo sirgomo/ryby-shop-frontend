@@ -28,7 +28,6 @@ export class OrdersService {
   }
   getBestellungById(id: number): Observable<iBestellung> {
     return this.http.get<iBestellung>(this.#api+'/'+id).pipe(map((res) => {
-      console.log('res ' + res)
       return res;
     }),
     catchError((err) => {

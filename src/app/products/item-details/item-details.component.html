@@ -70,8 +70,9 @@
   <div class="farbe">
     <div class="row">
       <div class="item" *ngFor="let item of color; let i = index">
+        <mat-checkbox *ngIf="fotos.length > 1  && i === 0" checked="true" (change)="addColor(color[i].id, $event)"></mat-checkbox>
+        <mat-checkbox *ngIf="fotos.length > 1  && i !== 0"  (change)="addColor(color[i].id, $event)"></mat-checkbox>
         <button mat-raised-button color="primary" (click)="changeImage(i)">
-          <mat-checkbox *ngIf="fotos.length > 1 " (change)="addColor(color[i].id, $event)"></mat-checkbox>
           <span>{{item.id}} ({{item.menge}})</span>
           </button>
       </div>

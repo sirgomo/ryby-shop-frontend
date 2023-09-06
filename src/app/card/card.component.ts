@@ -184,7 +184,12 @@ export class CardComponent implements OnInit {
   doWeHaveEnough(itemIndex: number, colorIndex: number) :boolean {
     const colorBuy: iColor[] = JSON.parse(this.helper.cardSig()[itemIndex].color);
     const colorOrgi: iColor[] = JSON.parse(this.helper.cardSigForMengeControl()[itemIndex].color);
+    if(colorBuy.length === colorOrgi.length)
+      return colorBuy[colorIndex].menge < colorOrgi[colorIndex].menge;
 
-    return colorBuy[colorIndex].menge < colorOrgi[colorIndex].menge;
+    const index = colorOrgi.findIndex((item) => item.id === colorBuy[colorIndex].id);
+    console.log(index)
+      return colorBuy[colorIndex].menge < colorOrgi[index].menge;
+
   }
 }

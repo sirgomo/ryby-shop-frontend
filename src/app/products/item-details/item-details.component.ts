@@ -115,8 +115,9 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
       this.snackBar.open('Es gibt nichts, was ich dem Warenkorb hinzufügen könnte.', 'Ok', { duration: 2000 })
       return;
     }
-
-    this.helperService.cardSigForMengeControl().push(item);
+    const tmpItem= {} as iProduct;
+    Object.assign(tmpItem, item);
+    this.helperService.cardSigForMengeControl().push(tmpItem);
     if(!this.doWeHaveEnough(item))
       return;
     item.color = JSON.stringify(this.colorToBuy);

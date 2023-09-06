@@ -118,8 +118,10 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     const tmpItem= {} as iProduct;
     Object.assign(tmpItem, item);
     this.helperService.cardSigForMengeControl().push(tmpItem);
+
     if(!this.doWeHaveEnough(item))
       return;
+
     item.color = JSON.stringify(this.colorToBuy);
     const items = this.helperService.cardSig();
     const newItems = items.slice(0);

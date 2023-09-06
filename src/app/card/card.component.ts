@@ -188,7 +188,6 @@ export class CardComponent implements OnInit {
       return colorBuy[colorIndex].menge < colorOrgi[colorIndex].menge;
 
     const index = colorOrgi.findIndex((item) => item.id === colorBuy[colorIndex].id);
-    console.log(index)
       return colorBuy[colorIndex].menge < colorOrgi[index].menge;
 
   }

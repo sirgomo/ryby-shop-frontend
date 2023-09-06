@@ -66,6 +66,7 @@ input[type=file]::file-selector-button:hover {
 .row {
   display: flex;
   gap: .4rem;
+  width: 99%;
   mat-form-field {
     flex: 1;
   }
@@ -111,4 +112,10 @@ input[type=file]::file-selector-button:hover {
   display: flex;
   flex-direction: column;
   margin-bottom: .5rem;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 99%;
+  margin: .5rem .5rem;
 }

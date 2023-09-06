@@ -1,4 +1,5 @@
 import { iAktion } from "./iAktion";
+import { iEan } from "./iEan";
 import { iKategorie } from "./iKategorie";
 import { iKundenbewertung } from "./iKundenbewertung";
 import { iLieferant } from "./iLieferant";
@@ -33,4 +34,5 @@ export interface iProduct {
   mehrwehrsteuer: number;
   promocje: iAktion[];
   bewertung: iKundenbewertung[];
+  eans: iEan[];
 }

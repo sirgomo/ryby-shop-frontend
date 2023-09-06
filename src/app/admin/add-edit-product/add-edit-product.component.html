@@ -5,7 +5,7 @@
   <h2>{{ data ? 'Produkt bearbeiten' : 'Produkt hinzufügen' }}</h2>
 </div>
 <div class="add-edit-product">
-    <form [formGroup]="productForm">
+    <form [formGroup]="productForm" class="form">
       <div class="product-details">
           <div class="product-image">
             <div class="image" *ngIf="images.length > 0">
@@ -48,99 +48,124 @@
             </mat-form-field>
           </div>
         </div>
-      <div class="row" >
-        <mat-form-field>
-          <mat-label>Verkaufpreis</mat-label>
-          <input matInput type="number" id="preis" formControlName="preis" required>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Item Länge (mm)</mat-label>
-          <input matInput type="number" id="lange" formControlName="lange" required>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Lieferant</mat-label>
-          <mat-select required formControlName="lieferant" [compareWith]="getSelected">
-            <mat-option *ngFor="let supplier of liferantSignal()" [value]="supplier" >{{supplier.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <mat-tab-group [disableRipple]="false" animationDuration="0ms">
+          <mat-tab label="Product Details" >
+            <div class="row" >
+              <mat-form-field>
+                <mat-label>Verkaufpreis</mat-label>
+                <input matInput type="number" id="preis" formControlName="preis" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Item Länge (mm)</mat-label>
+                <input matInput type="number" id="lange" formControlName="lange" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Lieferant</mat-label>
+                <mat-select required formControlName="lieferant" [compareWith]="getSelected">
+                  <mat-option *ngFor="let supplier of liferantSignal()" [value]="supplier" >{{supplier.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-        <div class="imginput">
-          <div class="upload">
-            <input type="file" id="img" (change)="onFileChange($event)" accept="image/*"  />
-            <button mat-mini-fab color="primary" class="upload-btn" *ngIf="helperService.uploadProgersSig() === 0"
-            (click)="uploadPhoto()">
-              <mat-icon>attach_file</mat-icon>
-            </button>
-            <button mat-mini-fab color="warn" class="upload-btn" *ngIf="helperService.uploadProgersSig() > 0"
-            (click)="cancelUpload()">
-              <mat-icon>delete_forever</mat-icon>
-            </button>
-          </div>
-            <mat-progress-bar class="progress-bar" mode="determinate"
-            [value]="helperService.uploadProgersSig()" *ngIf="helperService.uploadProgersSig() > 0 && helperService.uploadProgersSig() < 100">
-            </mat-progress-bar>
-            <span *ngIf="act$ | async"></span>
-        </div>
+              <div class="imginput">
+                <div class="upload">
+                  <input type="file" id="img" (change)="onFileChange($event)" accept="image/*"  />
+                  <button mat-mini-fab color="primary" class="upload-btn" *ngIf="helperService.uploadProgersSig() === 0"
+                  (click)="uploadPhoto()">
+                    <mat-icon>attach_file</mat-icon>
+                  </button>
+                  <button mat-mini-fab color="warn" class="upload-btn" *ngIf="helperService.uploadProgersSig() > 0"
+                  (click)="cancelUpload()">
+                    <mat-icon>delete_forever</mat-icon>
+                  </button>
+                </div>
+                  <mat-progress-bar class="progress-bar" mode="determinate"
+                  [value]="helperService.uploadProgersSig()" *ngIf="helperService.uploadProgersSig() > 0 && helperService.uploadProgersSig() < 100">
+                  </mat-progress-bar>
+                  <span *ngIf="act$ | async"></span>
+              </div>
 
-      </div>
-      <div class="row">
-        <mat-form-field>
-          <mat-label>Datum Hinzugefügt</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="datumHinzugefuegt" type="date" required>
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+            </div>
+            <div class="row">
+              <mat-form-field>
+                <mat-label>Datum Hinzugefügt</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="datumHinzugefuegt" type="date" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
 
 
-        <mat-checkbox id="verfgbarkeit" formControlName="verfgbarkeit">Verfügbarkeit</mat-checkbox>
+              <mat-checkbox id="verfgbarkeit" formControlName="verfgbarkeit">Verfügbarkeit</mat-checkbox>
 
-        <mat-form-field>
-          <mat-label>Mindestmenge</mat-label>
-          <input matInput type="number" id="mindestmenge" formControlName="mindestmenge" required>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Current Menge</mat-label>
-          <input matInput type="number" id="currentmenge" formControlName="currentmenge" >
-        </mat-form-field>
-        <mat-form-field *ngIf="actionsSig().length < 1">
-          <mat-label>Keine Angebots verfügbar</mat-label>
-          <mat-select formControlName="promocje" id="promocje">
-            <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field  *ngIf="actionsSig().length > 1">
-          <mat-label>Aktions</mat-label>
-          <mat-select formControlName="promocje" id="promocje">
-            <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+              <mat-form-field>
+                <mat-label>Mindestmenge</mat-label>
+                <input matInput type="number" id="mindestmenge" formControlName="mindestmenge" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Current Menge</mat-label>
+                <input matInput type="number" id="currentmenge" formControlName="currentmenge" >
+              </mat-form-field>
+              <mat-form-field *ngIf="actionsSig().length < 1">
+                <mat-label>Keine Angebots verfügbar</mat-label>
+                <mat-select formControlName="promocje" id="promocje">
+                  <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field  *ngIf="actionsSig().length > 1">
+                <mat-label>Aktions</mat-label>
+                <mat-select formControlName="promocje" id="promocje">
+                  <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-      </div>
-      <div class="row">
-        <mat-form-field>
-          <mat-label>Verkaufte Anzahl</mat-label>
-          <input matInput type="number" id="verkaufteAnzahl" formControlName="verkaufteAnzahl">
-        </mat-form-field>
-        <div class="color">
-          <div class="colors">
-            <div  *ngFor="let item of color"> {{item.id }} : {{item.menge}}</div>
-          </div>
+            </div>
+            <div class="row">
+              <mat-form-field>
+                <mat-label>Verkaufte Anzahl</mat-label>
+                <input matInput type="number" id="verkaufteAnzahl" formControlName="verkaufteAnzahl">
+              </mat-form-field>
+              <div class="color">
+                <div class="colors">
+                  <div  *ngFor="let item of color"> {{item.id }} : {{item.menge}}</div>
+                </div>
 
-          <div class="colbutt">
-            <button mat-button (click)="addColor()">Farbe hinzufugen</button>
-            <button mat-button (click)="removeColor()">Farbe entfernen</button>
-          </div>
-        </div>
-        <mat-form-field>
-          <mat-label>Item Gewicht (g)</mat-label>
-          <input matInput type="number" id="gewicht" formControlName="gewicht" required>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Mehrwertsteuer</mat-label>
-          <input matInput type="number" id="mehrwehrsteuer" formControlName="mehrwehrsteuer" required>
-        </mat-form-field>
-      </div>
+                <div class="colbutt">
+                  <button mat-button (click)="addColor()">Farbe hinzufugen</button>
+                  <button mat-button (click)="removeColor()">Farbe entfernen</button>
+                </div>
+              </div>
+              <mat-form-field>
+                <mat-label>Item Gewicht (g)</mat-label>
+                <input matInput type="number" id="gewicht" formControlName="gewicht" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Mehrwertsteuer</mat-label>
+                <input matInput type="number" id="mehrwehrsteuer" formControlName="mehrwehrsteuer" required>
+              </mat-form-field>
+            </div>
+          </mat-tab>
+          <mat-tab label="Eans" >
+            <ng-container formArrayName="eans">
+              <div *ngFor="let eanform of ean.controls; let index = index">
+                  <div  [formGroupName]="index" class="ean">
+                    <input type="hidden" formControlName="id">
+                    <div>{{index}}</div>
+                      <mat-form-field appearance="fill">
+                          <input matInput
+                                 formControlName="eanCode"
+                                 placeholder="ean">
+                      </mat-form-field>
 
+                      <mat-icon class="delete-btn" (click)="removeEan(index)">
+                          delete_forever</mat-icon>
+                  </div>
+                </div>
+          </ng-container>
+
+          <button mat-mini-fab (click)="addEan()">
+              <mat-icon class="add-course-btn">add</mat-icon>
+          </button>
+        </mat-tab>
+      </mat-tab-group>
       <div class="button" >
         <button mat-button (click)="saveProduct()" >Speichern</button>
         <button mat-button type="button" (click)="cancel()">Abbrechen</button>

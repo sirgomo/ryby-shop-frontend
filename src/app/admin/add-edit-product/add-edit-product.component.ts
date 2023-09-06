@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit, Optional, signal } from '@angular/core';
 import { ProductService } from '../product/product.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { iProduct } from 'src/app/model/iProduct';
 import { iColor } from 'src/app/model/iColor';
@@ -17,6 +17,7 @@ import { iAktion } from 'src/app/model/iAktion';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { iDelete } from 'src/app/model/iDelete';
+import { iEan } from 'src/app/model/iEan';
 
 @Component({
   selector: 'app-add-edit-product',
@@ -76,7 +77,8 @@ export class AddEditProductComponent implements OnInit {
       warenausgang: [this.data ? this.data.warenausgang : []],
       mehrwehrsteuer: [this.data ? this.data.mehrwehrsteuer : '', Validators.required],
       promocje: [this.data ? this.data.promocje : []],
-      bewertung: [this.data ? this.data.bewertung : []]
+      bewertung: [this.data ? this.data.bewertung : []],
+      eans: this.formBuilder.array<iEan>([]),
     });
   }
   ngOnInit(): void {
@@ -88,6 +90,17 @@ export class AddEditProductComponent implements OnInit {
         this.color = JSON.parse(res.color);
         this.productForm.patchValue(res);
 
+        if(res.eans && res.eans.length > 0) {
+          for (let i = 0; i < res.eans.length; i++) {
+            const tmp = this.formBuilder.group({
+              id: [res.eans[i].id],
+              eanCode: [res.eans[i].eanCode , Validators.required],
+              product: undefined,
+            });
+            this.ean.push(tmp);
+          }
+        }
+
         if(this.images.length > 0)
         this.getImage(this.images[0])
         return res;
@@ -95,9 +108,20 @@ export class AddEditProductComponent implements OnInit {
 
     }
   }
-async getData() {
-
-}
+  get ean() {
+    return this.productForm.get('eans') as FormArray;
+  }
+  addEan() {
+    const tmp = this.formBuilder.group({
+      id: undefined,
+      eanCode: ['', Validators.required],
+      product: undefined,
+    });
+    this.ean.push(tmp);
+  }
+  removeEan(index: number) {
+    this.ean.removeAt(index);
+  }
 
   onFileChange(event: any) {
     if (event.target.files && event.target.files.length) {

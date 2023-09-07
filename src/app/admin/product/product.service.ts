@@ -211,4 +211,13 @@ export class ProductService {
       })
     )
   }
+  deleteEanById(id: number) {
+    return this.http.delete(`${this.API}/ean/`+id).pipe(map((res) => {
+      return res;
+    }),
+    catchError((err) => {
+      this.error.newMessage(err.message);
+      return throwError(()=> err);
+    }))
+  }
 }

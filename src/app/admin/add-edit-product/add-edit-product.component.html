@@ -144,8 +144,8 @@
             </div>
           </mat-tab>
           <mat-tab label="Eans" >
-            <ng-container formArrayName="eans">
-              <div *ngFor="let eanform of ean.controls; let index = index">
+            <div formArrayName="eans" class="eancon">
+              <div *ngFor="let eanform of ean.controls; let index = index"  >
                   <div  [formGroupName]="index" class="ean">
                     <input type="hidden" formControlName="id">
                     <div>{{index}}</div>
@@ -155,15 +155,17 @@
                                  placeholder="ean">
                       </mat-form-field>
 
-                      <mat-icon class="delete-btn" (click)="removeEan(index)">
+                      <mat-icon class="delete-btn" (click)="removeEan(index)" color="warn">
                           delete_forever</mat-icon>
                   </div>
                 </div>
-          </ng-container>
+              </div>
+<div  class="button" >
+  <button mat-mini-fab (click)="addEan()" color="primary" >
+    <mat-icon >add</mat-icon>
+</button>
+</div>
 
-          <button mat-mini-fab (click)="addEan()">
-              <mat-icon class="add-course-btn">add</mat-icon>
-          </button>
         </mat-tab>
       </mat-tab-group>
       <div class="button" >
@@ -172,7 +174,7 @@
       </div>
 </form>
 </div>
-<span *ngIf="create$ | async"></span>
+<span *ngIf="create$ | async else loader"></span>
 <ng-template #loader>
   <mat-spinner></mat-spinner>
 </ng-template>

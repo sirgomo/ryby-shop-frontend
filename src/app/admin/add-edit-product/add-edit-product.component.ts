@@ -11,7 +11,7 @@ import { iLieferant } from 'src/app/model/iLieferant';
 import { iKategorie } from 'src/app/model/iKategorie';
 import { HelperService } from 'src/app/helper/helper.service';
 import { ErrorService } from 'src/app/error/error.service';
-import { Observable, combineLatest, map, shareReplay, startWith, tap } from 'rxjs';
+import { Observable, combineLatest, map, of, shareReplay, startWith, switchMap, tap } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { iAktion } from 'src/app/model/iAktion';
 import { DatePipe } from '@angular/common';
@@ -95,7 +95,6 @@ export class AddEditProductComponent implements OnInit {
             const tmp = this.formBuilder.group({
               id: [res.eans[i].id],
               eanCode: [res.eans[i].eanCode , Validators.required],
-              product: undefined,
             });
             this.ean.push(tmp);
           }
@@ -114,13 +113,30 @@ export class AddEditProductComponent implements OnInit {
   addEan() {
     const tmp = this.formBuilder.group({
       id: undefined,
-      eanCode: ['', Validators.required],
-      product: undefined,
+      eanCode: ['', Validators.required]
     });
     this.ean.push(tmp);
   }
   removeEan(index: number) {
-    this.ean.removeAt(index);
+    const itemid : number = this.ean.value[index].id;
+    if(itemid === null) {
+      this.ean.removeAt(index);
+      return;
+    }
+
+
+    let tmp$ = of(itemid);
+
+    this.create$ = combineLatest([this.act$.pipe(startWith(null)), tmp$]).pipe(
+    switchMap(([act, tmp]) => this.prodService.deleteEanById(tmp)),
+    map((res) => {
+      if (Object(res).affected === 1) {
+        this.ean.removeAt(index);
+        this.snackBar.open('Ean wurde entfernt',  'Ok', { duration: 2000 });
+      }
+      return res;
+    }))
+
   }
 
   onFileChange(event: any) {

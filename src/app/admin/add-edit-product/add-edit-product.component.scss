@@ -119,3 +119,19 @@ input[type=file]::file-selector-button:hover {
   width: 99%;
   margin: .5rem .5rem;
 }
+.ean {
+  display: flex;
+  gap: .4rem;
+  align-items: center;
+}
+.delete-btn {
+  cursor: pointer;
+}
+.eancon {
+  display: flex;
+  margin: 1rem 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 1rem;
+  width: 95%;
+}

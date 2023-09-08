@@ -13,8 +13,39 @@
 }
 .tab-row {
   display: flex;
-  justify-content: center;
-  gap: .4rem;
+  justify-content:flex-start;
+  align-items: center;
   margin-left: .5rem;
+  width: 100%;
+  flex: 1;
+}
+.color {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.item-name {
+  width: 50%;
+}
+.color-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.color-item-innen {
+  width: 30%;
+}
+.color-item-innen-input {
+  margin-right: .4rem;
+  margin-left: .6rem;
+  input {
+   width: 5rem;
+  }
+}
+.green-icon {
+  color: green;
+}
 
+.red-icon {
+  color: red;
 }

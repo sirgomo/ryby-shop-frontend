@@ -51,7 +51,7 @@ export class ProductService {
       nit[index] = this.item();
       return nit;
     }
-    console.log(items)
+
     return items;
   })
   break: Subject<any> = new Subject();

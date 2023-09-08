@@ -13,36 +13,53 @@
           <mat-datepicker #myDatepicker></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Bestellung Status:</mat-label>
-        <mat-select [(ngModel)]="data.status" placeholder="">
-            <mat-option *ngFor="let item of stan" [value]="item">{{item}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Bestellung Verschickt ?</mat-label>
-        <mat-select [(ngModel)]="data.bestellungstatus" placeholder="">
-            <mat-option *ngFor="let item of status" [value]="item">{{item}}</mat-option>
-        </mat-select>
+        <mat-label>Versand Nr:</mat-label>
+        <input type="text" matInput [(ngModel)]="data.varsandnr">
       </mat-form-field>
   </div>
-  <div *ngIf="currentItem else loader ">
+  <div class="row">
+    <mat-form-field>
+      <mat-label>Bestellung Status:</mat-label>
+      <mat-select [(ngModel)]="data.status" placeholder="">
+          <mat-option *ngFor="let item of stan" [value]="item">{{item}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Bestellung Verschickt ?</mat-label>
+      <mat-select [(ngModel)]="data.bestellungstatus" placeholder="">
+          <mat-option *ngFor="let item of status" [value]="item">{{item}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div *ngIf="currentItem() else loader ">
     <div *ngFor="let item of currentItem()?.produkte; let i = index" class="tab-row">
-      <div>
-        {{item.produkt[0].name}}
+      <div class="item-name">
+        {{item.produkt[0].name}} ( {{item.produkt[0].artid}} )
       </div>
-      <div>
-        <div *ngFor="let col of color[i]">
-            {{col.id}} : {{col.menge}}
+      <div class="color">
+        <div *ngFor="let col of color[i]; let z = index" class="color-item">
+            <div class="color-item-innen">
+              {{col.id}} : <span class="red-icon">{{col.menge}}</span>
+            </div>
+            <div class="color-item-innen-input">
+              {{col.id}} : <input type="number" [(ngModel)]="color_gepackt[i][z].menge">
+            </div>
+            <div class="color-item-innen">
+              <mat-icon [ngClass]="{'green-icon': col.menge === color_gepackt[i][z].menge, 'red-icon': col.menge !== color_gepackt[i][z].menge}">
+                thumb_up_alt
+                thumb_down_alt
+              </mat-icon>
+            </div>
         </div>
-      </div>
-      <div>
-        <mat-checkbox value="" color="primary">Checkbox label</mat-checkbox>
       </div>
     </div>
   </div>
 </div>
 <div mat-dialog-actions class="act">
-  <button mat-raised-button (click)="schlissen()" color="warn" >Schlissen</button>
-  <button mat-raised-button color="primary" >Speichern</button>
+  <button mat-raised-button (click)="close()" color="warn" >Schlissen</button>
+  <button mat-raised-button color="primary" (click)="saveOrder()" >Speichern</button>
+  <span *ngIf="act$ | async"></span>
 </div>
-<ng-template #loader></ng-template>
+<ng-template #loader>
+<mat-spinner></mat-spinner>
+</ng-template>

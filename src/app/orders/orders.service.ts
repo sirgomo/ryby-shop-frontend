@@ -36,5 +36,14 @@ export class OrdersService {
     })
     )
   }
+  updateOrder(order: iBestellung): Observable<iBestellung> {
+    return this.http.patch<iBestellung>(`${this.#api}/update`, order).pipe(map((res) => {
+      return res;
+    }),
+    catchError((err) => {
+      this.error.newMessage(err.message);
+      return of({} as iBestellung);
+    }))
+  }
 
 }

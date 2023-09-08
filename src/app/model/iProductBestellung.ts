@@ -7,6 +7,7 @@ export interface iProductBestellung {
   produkt: iProduct[],
   menge: number,
   color: string,
+  color_gepackt: string;
   rabatt: number,
   mengeGepackt: number,
   productRucgabe: iProduktRueckgabe,

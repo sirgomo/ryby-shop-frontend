@@ -20,7 +20,8 @@ export class OrderComponent {
 
   openDetailts(item: iBestellung) {
     const conf: MatDialogConfig = new MatDialogConfig();
-    conf.width = '50%';
+    conf.width = '80%';
+    conf.minHeight = '80%';
     conf.data = item;
     this.dialog.open(OrderDetailsComponent, conf);
   }

@@ -38,11 +38,7 @@ mat-toolbar {
 
   }
   .search {
-    display: flex;
-    justify-content: center;
-    align-items: center;
    flex: 1;
-   border: 1px solid rgb(105, 46, 6);
    border-radius: .4rem;
    box-shadow: 0px 2px 4px rgba($color: #000000, $alpha: 0.5);
   }

@@ -1,0 +1,24 @@
+.search-div {
+  display: flex;
+  padding: .2rem .2rem;
+  align-items: center;
+  gap: .4rem;
+
+  input {
+    width: 85%;
+    height: 1.5rem;
+    border-radius: .4rem;
+    border: none;
+    padding: 5px;
+    outline: none;
+  }
+
+  button {
+    width: 12%;
+    height: 2rem;
+    border-radius: .4rem;
+    border: none;
+    cursor: pointer;
+  }
+
+}

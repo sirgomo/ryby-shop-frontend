@@ -8,6 +8,7 @@ import { BESTELLUNGSSTATE, BESTELLUNGSSTATUS, iBestellung } from 'src/app/model/
 import { iColor } from 'src/app/model/iColor';
 import { iUserData } from 'src/app/model/iUserData';
 import { OrdersService } from 'src/app/orders/orders.service';
+import { ItemComponent } from 'src/app/products/item/item.component';
 
 @Component({
   selector: 'app-order-details',
@@ -60,8 +61,7 @@ export class OrderDetailsComponent implements OnInit {
       const item: iBestellung | undefined = this.currentItem();
 
       if(item !== undefined) {
-        item.varsandnr = this.data.varsandnr;
-        item.status = this.data.status;
+        Object.assign(item, this.data);
 
         for (let i = 0; i < item.produkte.length; i++) {
           item.produkte[i].color_gepackt =  JSON.stringify(this.color_gepackt[i]);

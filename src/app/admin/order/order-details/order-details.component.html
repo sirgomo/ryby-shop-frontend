@@ -31,6 +31,7 @@
       </mat-select>
     </mat-form-field>
   </div>
+  <div class="title">Produkte in Bestellung: </div>
   <div *ngIf="currentItem() else loader ">
     <div *ngFor="let item of currentItem()?.produkte; let i = index" class="tab-row">
       <div class="item-name">
@@ -56,7 +57,7 @@
   </div>
 </div>
 <div mat-dialog-actions class="act">
-  <button mat-raised-button (click)="close()" color="warn" >Schlissen</button>
+  <button mat-raised-button (click)="close()" color="warn" >X</button>
   <button mat-raised-button color="primary" (click)="saveOrder()" >Speichern</button>
   <span *ngIf="act$ | async"></span>
 </div>

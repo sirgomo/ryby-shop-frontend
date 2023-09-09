@@ -47,7 +47,7 @@ import { iUserData } from '../model/iUserData';
         menu[6] = { name: 'Company', link: 'company' };
         menu[7] = { name: 'Bestellungen', link: 'admin-order'}
       } else if (role === 'USER') {
-        menu[0] = { name: 'User Panel', link: 'user' };
+        menu[0] = { name: 'User Profil', link: 'user' };
         menu[1] = { name: 'Mein Bestellungen', link: 'order' }
       }
       this.menuSub.next(menu);

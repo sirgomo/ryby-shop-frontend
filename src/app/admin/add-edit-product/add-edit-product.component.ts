@@ -74,7 +74,6 @@ export class AddEditProductComponent implements OnInit {
       gewicht: [this.data ? this.data.gewicht: 0, Validators.required],
       verkaufteAnzahl: [{ value:  this.data ? this.data.verkaufteAnzahl : 0,  disabled: true } ],
       wareneingang: [this.data ? this.data.wareneingang : []],
-      warenausgang: [this.data ? this.data.warenausgang : []],
       mehrwehrsteuer: [this.data ? this.data.mehrwehrsteuer : '', Validators.required],
       promocje: [this.data ? this.data.promocje : []],
       bewertung: [this.data ? this.data.bewertung : []],

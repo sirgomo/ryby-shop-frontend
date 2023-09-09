@@ -30,7 +30,6 @@ export interface iProduct {
   gewicht: number;
   verkaufteAnzahl: number;
   wareneingang: iWareneingangProduct[];
-  warenausgang: iWarenausgangProduct[];
   mehrwehrsteuer: number;
   promocje: iAktion[];
   bewertung: iKundenbewertung[];

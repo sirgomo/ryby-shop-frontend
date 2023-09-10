@@ -23,4 +23,10 @@ export class PaginatorComponent {
 
     this.helper.pageNrSig.update((val) => val -1 );
   }
+  canGoBack() {
+    return this.helper.pageNrSig() - 1 >= 1;
+  }
+  canGoNext() {
+    return this.helper.pageNrSig() + 1 <= Math.round(this.pagiSig());
+  }
 }

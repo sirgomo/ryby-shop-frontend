@@ -15,7 +15,7 @@ import { OrderDetailsComponent } from './order-details/order-details.component';
 export class OrderComponent {
   oders = this.oderService.ordersSig;
   //oders$= this.oderService.getBestellungen();
-  columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus', 'versandnr', 'versArt'];
+  columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt'];
   constructor(private readonly oderService: OrdersService, public error: ErrorService, private readonly dialog: MatDialog) {}
 
   openDetailts(item: iBestellung) {

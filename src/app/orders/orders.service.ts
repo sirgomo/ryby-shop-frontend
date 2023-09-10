@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, WritableSignal, computed, signal } from '@angular/core';
-import { Observable, catchError, map, of, shareReplay, tap } from 'rxjs';
+import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { Observable, catchError, combineLatest, map, of, shareReplay, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ErrorService } from '../error/error.service';
-import { iBestellung } from '../model/iBestellung';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { BESTELLUNGSSTATE, BESTELLUNGSSTATUS, iBestellung } from '../model/iBestellung';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { iOrderGetSettings } from '../model/iOrderGetSettings';
+import { HelperService } from '../helper/helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,18 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class OrdersService {
   #role = localStorage.getItem('role');
   #api = environment.api + 'order';
-  itemsSig = toSignal(this.getBestellungen(),{ initialValue: [] as iBestellung[] });
+
+  currentVersandStatusSig = signal(BESTELLUNGSSTATUS.INBEARBEITUNG);
+  currentOrderStateSig = signal(BESTELLUNGSSTATE.BEZAHLT);
+
+
+  items$ = combineLatest([toObservable(this.currentVersandStatusSig), toObservable(this.currentOrderStateSig), toObservable(this.helper.artikelProSiteSig), toObservable(this.helper.pageNrSig)]).pipe(
+    switchMap(([verStat, orderStat, itemsQuan, sitenr]) => this.getBestellungen(verStat, orderStat, itemsQuan, sitenr)),
+    map((res) => {
+      return res
+    })
+  );
+  itemsSig = toSignal(this.items$, { initialValue: [] as iBestellung[]});
   item = signal<iBestellung>({} as iBestellung);
   ordersSig =  computed(() => {
 
@@ -27,12 +40,25 @@ export class OrdersService {
     }
     return tmpItems;
   })
-  constructor(private http: HttpClient, private error: ErrorService) { }
+  constructor(private http: HttpClient, private error: ErrorService, private helper: HelperService) { }
 
-  getBestellungen(): Observable<iBestellung[]> {
+  getBestellungen(versStatus: string, orderState: string, itemsQuanity: number, sitenr: number): Observable<iBestellung[]> {
+
+    const settings: iOrderGetSettings = {
+      state: orderState,
+      status: versStatus,
+      itemsProSite: itemsQuanity,
+    };
+
+    if(versStatus.length < 3)
+      return of([]);
+
+
+
     if(this.#role && this.#role === 'ADMIN') {
-      return this.http.get<iBestellung[]>(this.#api+'/all/get').pipe(map((res) => {
-        return res;
+      return this.http.post<[[], number]>(this.#api+'/all/get/'+sitenr, settings).pipe(map((res) => {
+        this.helper.paginationCountSig.set(res[1])
+        return res[0];
       }),
       catchError((err) => {
         this.error.newMessage(err.message);

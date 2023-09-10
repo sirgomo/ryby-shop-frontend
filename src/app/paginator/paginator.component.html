@@ -1,0 +1,13 @@
+<div class="pag" *ngIf="pagiSig() > 1">
+  <div>
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon class="mat-18">keyboard_arrow_left</mat-icon>
+    </button>
+  </div>
+  <div>{{ helper.pageNrSig() }}</div>
+  <div>
+    <button mat-icon-button (click)="goNext()">
+      <mat-icon class="mat-18">keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+</div>

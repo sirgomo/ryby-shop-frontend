@@ -56,6 +56,8 @@ import { PaypalComponent } from './card/paypal/paypal.component';
 import { OrdersComponent } from './orders/orders.component';
 import { OrderComponent } from './admin/order/order.component';
 import { OrderDetailsComponent } from './admin/order/order-details/order-details.component';
+import { OrderSelectorComponent } from './admin/order/order-selector/order-selector.component';
+import { PaginatorComponent } from './paginator/paginator.component';
 
 
 @NgModule({
@@ -91,6 +93,8 @@ import { OrderDetailsComponent } from './admin/order/order-details/order-details
     OrdersComponent,
     OrderComponent,
     OrderDetailsComponent,
+    OrderSelectorComponent,
+    PaginatorComponent,
 
   ],
   imports: [

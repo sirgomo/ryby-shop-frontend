@@ -1,0 +1,20 @@
+<div class="selector">
+  <mat-form-field>
+    <mat-label>Sortire nach Versand status</mat-label>
+    <mat-select [(ngModel)]="currentStatus" (selectionChange)="changeStatus()">
+        <mat-option *ngFor="let item of statusArr" [value]="item">{{item}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Sortire nach Bestellung status</mat-label>
+    <mat-select [(ngModel)]="currentState" (selectionChange)="changeState()">
+        <mat-option *ngFor="let item of stateArr" [value]="item">{{item}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Items pro Site</mat-label>
+    <mat-select [(ngModel)]="currentItemProSite" (selectionChange)="changeItemQuanity()">
+        <mat-option *ngFor="let item of siteItems" [value]="item"> {{item}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

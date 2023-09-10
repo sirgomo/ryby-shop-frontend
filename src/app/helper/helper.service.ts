@@ -25,6 +25,7 @@ import { iUserData } from '../model/iUserData';
     appComponenet!: AppComponent;
     buyerAcc: iUserData = {} as iUserData;
     VersandAndKost = signal('');
+    paginationCountSig = signal(0);
     constructor() { }
     setApp(app: AppComponent) {
       this.appComponenet = app;

@@ -1,0 +1,38 @@
+<div *ngIf="errorService.message() && errorService.message().length > 3">
+  {{errorService.message()}}
+</div>
+<div *ngIf="item$ | async; else loader">
+  <div class="invoice">
+    <div class="header">
+      <div >
+        <div class="logo"> <img src="../../../assets/img/logo.png" alt="logo fischfang-profi.de"></div>
+        <div class="company">
+          <div>{{company.company_name}}</div>
+          <div>{{company.name}}</div>
+          <div>{{company.address}}</div>
+          <div> {{company.postleitzahl}} {{company.city}}</div>
+           <div>{{company.country}}</div>
+           <div>{{company.email}}</div>
+        </div>
+
+      </div>
+      <div class="spacer"></div>
+      <div class="customer">
+        <div>{{currentItem.kunde.vorname}} {{currentItem.kunde.nachname}}</div>
+        <div>{{currentItem.kunde.adresse.strasse}} {{currentItem.kunde.adresse.hausnummer}}</div>
+        <div>{{currentItem.kunde.adresse.postleitzahl}} {{currentItem.kunde.adresse.stadt}}</div>
+        <div>{{currentItem.kunde.adresse.land}}</div>
+        <div>{{currentItem.kunde.email}}</div>
+      </div>
+    </div>
+    <div class="prod">
+
+    </div>
+    <div class="footer">
+
+    </div>
+  </div>
+</div>
+<ng-template #loader>
+ <mat-spinner></mat-spinner>
+</ng-template>

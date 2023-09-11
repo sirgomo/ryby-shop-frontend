@@ -1,0 +1,44 @@
+.invoice {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2.5cm 2.5cm;
+  width: calc(95% - margin);
+
+}
+.logo{
+  display: flex;
+  justify-content: center;
+  height: 70px;
+  scale: auto;
+  margin-bottom: .5rem;
+  img {
+    border-radius: .5rem;
+  }
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: medium;
+}
+.company {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 20rem;
+}
+.spacer {
+  display: flex;
+  flex: 1 ;
+
+}
+.customer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 20rem;
+
+}

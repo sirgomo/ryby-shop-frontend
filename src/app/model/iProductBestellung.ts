@@ -10,5 +10,8 @@ export interface iProductBestellung {
   color_gepackt: string;
   rabatt: number,
   mengeGepackt: number,
+  verkauf_price: number,
+  verkauf_rabat: number,
+  verkauf_steuer: number,
   productRucgabe: iProduktRueckgabe,
 }

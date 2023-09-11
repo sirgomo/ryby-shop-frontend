@@ -58,6 +58,7 @@ import { OrderComponent } from './admin/order/order.component';
 import { OrderDetailsComponent } from './admin/order/order-details/order-details.component';
 import { OrderSelectorComponent } from './admin/order/order-selector/order-selector.component';
 import { PaginatorComponent } from './paginator/paginator.component';
+import { InoviceComponent } from './inovice/inovice.component';
 
 
 @NgModule({
@@ -95,6 +96,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
     OrderDetailsComponent,
     OrderSelectorComponent,
     PaginatorComponent,
+    InoviceComponent,
 
   ],
   imports: [

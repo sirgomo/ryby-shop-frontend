@@ -4,6 +4,7 @@ export interface iCompany {
   company_name: string;
   address: string;
   city: string;
+  postleitzahl: string;
   country: string;
   phone: string;
   email: string;

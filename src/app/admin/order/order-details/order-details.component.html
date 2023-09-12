@@ -1,13 +1,13 @@
 <div class="error" *ngIf="err() && err().length > 3">
   <app-error></app-error>
 </div>
-<div class="close">
+<div  class="title">
+ <div><h2>Bestellung nr: {{data.id}}</h2></div>
+ <div>
   <button mat-icon-button (click)="close()" color="warn">
       <mat-icon>close</mat-icon>
   </button>
 </div>
-<div mat-dialog-title class="title">
-  Bestellung nr: {{data.id}}
 </div>
 <div mat-dialog-content class="content">
   <div class="row">

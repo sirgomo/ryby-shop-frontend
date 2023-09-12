@@ -12,7 +12,7 @@ export class PaginatorComponent {
   })
   constructor(public helper: HelperService) {}
   goNext() {
-    if(this.helper.pageNrSig() + 1 > Math.round(this.pagiSig()))
+    if(this.helper.pageNrSig() + 1 > Math.ceil(this.pagiSig()))
     return;
 
     this.helper.pageNrSig.update((val) => val + 1);
@@ -27,6 +27,6 @@ export class PaginatorComponent {
     return this.helper.pageNrSig() - 1 >= 1;
   }
   canGoNext() {
-    return this.helper.pageNrSig() + 1 <= Math.round(this.pagiSig());
+    return this.helper.pageNrSig() + 1 <= Math.ceil(this.pagiSig());
   }
 }

@@ -18,6 +18,7 @@
   margin-left: .5rem;
   width: 100%;
   flex: 1;
+  border-bottom: 1px solid rgb(80, 42, 6);
 }
 .color {
   display: flex;
@@ -49,8 +50,10 @@
 .red-icon {
   color: red;
 }
-.close {
+.title {
   display: flex;
-  justify-content: flex-end;
+  margin: .5rem;
+  justify-content: space-between;
+
 }
 

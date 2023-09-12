@@ -234,8 +234,16 @@ export class AddEditProductComponent implements OnInit {
     this.color.push(color);
   }
   removeColor(){
-    if(this.color.length > 0)
+    if(this.color.length > 0) {
+      if(this.color[this.color.length -1].menge > 0) {
+        this.snackBar.open('Color kann nicht entfernt werden, menge größer als 0', 'Ok', {duration: 2000 })
+        return;
+      }
+
+
       this.color.splice(this.color.length -1, 1);
+    }
+
   }
   getImage(id: string) {
 

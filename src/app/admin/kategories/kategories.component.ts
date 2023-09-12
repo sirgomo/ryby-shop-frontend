@@ -33,12 +33,16 @@ export class KategoriesComponent implements OnDestroy {
 
   editKategoria(item: iKategorie): void {
     const conf: MatDialogConfig = new MatDialogConfig();
+    conf.height = '300px'
+    conf.width = '300px'
     conf.data = item;
     this.dialog.open(AddEditKategorieComponent, conf);
   }
 
   addKategorie(): void {
     const conf: MatDialogConfig = new MatDialogConfig();
+    conf.height = '300px'
+    conf.width = '300px'
     this.dialog.open(AddEditKategorieComponent, conf);
   }
 }

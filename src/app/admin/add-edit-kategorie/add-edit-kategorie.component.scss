@@ -1,9 +1,16 @@
 .form {
   display: flex;
+  margin: 1rem;
   flex-direction: column;
   justify-content: center;
 }
 .close {
   display: flex;
-  justify-content: flex-end;
+  padding-left: 1rem;
+  justify-content:space-between;
+  align-items: center;
+}
+.button {
+  display: flex;
+  justify-content: center;
 }

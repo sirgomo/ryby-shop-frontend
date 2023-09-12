@@ -1,10 +1,10 @@
 .invoice {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   margin: 2.5cm 2.5cm;
-  width: calc(95% - margin);
-
+  width: calc(210mm - margin);
+  flex-direction: column;
 }
 .logo{
   display: flex;
@@ -14,12 +14,11 @@
   margin-bottom: .5rem;
   img {
     border-radius: .5rem;
+    width: 210px;
   }
 }
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   width: 100%;
   font-size: medium;
 }
@@ -28,17 +27,44 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 20rem;
+  flex: 1;
 }
-.spacer {
-  display: flex;
-  flex: 1 ;
 
-}
 .customer {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  width: 20rem;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+.prod {
+  width: 100%;
+}
 
+.mat-column-name {
+  width: 20%;
+  padding: 0 .1rem 0 .2rem;
+  font-size: small;
+}
+.mat-column-varia {
+  width: 10%;
+  padding: 0 .1rem 0 .2rem;
+  font-size: small;
+}
+.mat-column-pos,
+.mat-column-preis,
+.mat-column-menge,
+.mat-column-netto,
+.mat-column-rabat,
+.mat-column-brutto {
+  padding: 0 .1rem 0 .2rem;
+  width: 10%;
+  font-size: small;
+}
+.tab {
+  width: 100%;
+}
+.close {
+  display: flex;
+  justify-content: flex-end;
 }

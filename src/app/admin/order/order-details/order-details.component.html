@@ -1,6 +1,11 @@
 <div class="error" *ngIf="err() && err().length > 3">
   <app-error></app-error>
 </div>
+<div class="close">
+  <button mat-icon-button (click)="close()" color="warn">
+      <mat-icon>close</mat-icon>
+  </button>
+</div>
 <div mat-dialog-title class="title">
   Bestellung nr: {{data.id}}
 </div>
@@ -57,7 +62,6 @@
   </div>
 </div>
 <div mat-dialog-actions class="act">
-  <button mat-raised-button (click)="close()" color="warn" >X</button>
   <button mat-raised-button color="primary" (click)="saveOrder()" >Speichern</button>
   <span *ngIf="act$ | async"></span>
 </div>

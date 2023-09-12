@@ -1,3 +1,8 @@
+<div class="close">
+  <button mat-icon-button (click)="onCancelClick()" color="warn">
+      <mat-icon>close</mat-icon>
+  </button>
+</div>
 <h2 mat-dialog-title>Neue Kategorie</h2>
 <div mat-dialog-content>
   <form [formGroup]="kategorieForm" class="form">
@@ -21,5 +26,4 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onCancelClick()">Abbrechen</button>
-  <button mat-button (click)="onSaveClick()">Speichern</button>
 </div>

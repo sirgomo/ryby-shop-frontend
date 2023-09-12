@@ -1,6 +1,11 @@
 <div *ngIf="err?.message && err.message().length > 2">
   <app-error></app-error>
 </div>
+<div class="close">
+  <button mat-icon-button (click)="cancel()" color="warn">
+      <mat-icon>close</mat-icon>
+  </button>
+</div>
 <div class="h2">
   <h2>{{ data ? 'Produkt bearbeiten' : 'Produkt hinzufügen' }}</h2>
 </div>
@@ -170,7 +175,6 @@
       </mat-tab-group>
       <div class="button" >
         <button mat-button (click)="saveProduct()" >Speichern</button>
-        <button mat-button type="button" (click)="cancel()">Abbrechen</button>
       </div>
 </form>
 </div>

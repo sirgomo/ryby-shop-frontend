@@ -1,19 +1,24 @@
 <div *ngIf="errorService.message() && errorService.message().length > 3">
   {{errorService.message()}}
 </div>
+<div class="close">
+  <button mat-icon-button (click)="close()" color="warn">
+      <mat-icon>close</mat-icon>
+  </button>
+</div>
 <div *ngIf="item$ | async; else loader">
   <div class="invoice">
     <div class="header">
-      <div >
+      <div class="company">
         <div class="logo"> <img src="../../../assets/img/logo.png" alt="logo fischfang-profi.de"></div>
-        <div class="company">
+
           <div>{{company.company_name}}</div>
           <div>{{company.name}}</div>
           <div>{{company.address}}</div>
           <div> {{company.postleitzahl}} {{company.city}}</div>
            <div>{{company.country}}</div>
            <div>{{company.email}}</div>
-        </div>
+
 
       </div>
       <div class="spacer"></div>
@@ -26,7 +31,65 @@
       </div>
     </div>
     <div class="prod">
+      <table mat-table [dataSource]="currentItem.produkte" class="tab">
 
+          <ng-container matColumnDef="pos">
+            <th mat-header-cell *matHeaderCellDef>Pos:</th>
+            <td mat-cell *matCellDef="let item; let i = index">{{ i }}</td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let item">{{ item.produkt[0].name }}</td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="varia">
+            <th mat-header-cell *matHeaderCellDef>Farbe:</th>
+            <td mat-cell *matCellDef="let item; let i = index">
+              <div class="color" *ngFor="let color of getVariations(i)">
+                {{color.id }} : {{color.menge}} st.
+              </div>
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="preis">
+            <th mat-header-cell *matHeaderCellDef>Preis</th>
+            <td mat-cell *matCellDef="let item">{{ item.verkauf_price }} &euro;</td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="menge">
+            <th mat-header-cell *matHeaderCellDef>Menge: </th>
+            <td mat-cell *matCellDef="let item">{{ item.menge }}</td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="netto">
+            <th mat-header-cell *matHeaderCellDef>Netto: </th>
+            <td mat-cell *matCellDef="let item; let i = index">{{ getNetto(i) }} &euro;</td>
+            <td mat-footer-cell *matFooterCellDef>{{getTotalNetto()}} &euro;</td>
+          </ng-container>
+
+          <ng-container matColumnDef="rabat">
+            <th mat-header-cell *matHeaderCellDef>Rabat: </th>
+            <td mat-cell *matCellDef="let item; let i = index">{{ getRabat(i) }} &euro;</td>
+            <td mat-footer-cell *matFooterCellDef>{{ getTotalRabat()}} &euro;</td>
+          </ng-container>
+
+          <ng-container matColumnDef="brutto">
+            <th mat-header-cell *matHeaderCellDef>Brutto: </th>
+            <td mat-cell *matCellDef="let item; let i = index">{{ getBrutto(i) }} &euro;</td>
+            <td mat-footer-cell *matFooterCellDef> {{getTotalBrutto()}} &euro;</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <tr mat-row *matRowDef="let row; columns: columns"></tr>
+          <tr mat-footer-row *matFooterRowDef="columns"></tr>
+
+      </table>
     </div>
     <div class="footer">
 

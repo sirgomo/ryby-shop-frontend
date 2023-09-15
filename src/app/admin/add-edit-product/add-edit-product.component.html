@@ -1,13 +1,13 @@
 <div *ngIf="err?.message && err.message().length > 2">
   <app-error></app-error>
 </div>
-<div class="close">
-  <button mat-icon-button (click)="cancel()" color="warn">
-      <mat-icon>close</mat-icon>
-  </button>
-</div>
 <div class="h2">
   <h2>{{ data ? 'Produkt bearbeiten' : 'Produkt hinzufügen' }}</h2>
+  <div class="close">
+    <button mat-icon-button (click)="cancel()" color="warn">
+        <mat-icon>close</mat-icon>
+    </button>
+  </div>
 </div>
 <div class="add-edit-product">
     <form [formGroup]="productForm" class="form">
@@ -28,21 +28,21 @@
           <div class="image-right">
             <mat-form-field>
               <mat-label>Artikel Nr:</mat-label>
-              <input matInput type="number" id="artid" formControlName="artid" required>
+              <input matInput type="number" id="artid" formControlName="artid" required autocomplete="off">
             </mat-form-field>
             <mat-form-field>
               <mat-label>Lieferant Artikel Nr:</mat-label>
-              <input matInput type="text" id="product_sup_id" formControlName="product_sup_id">
+              <input matInput type="text" id="product_sup_id" formControlName="product_sup_id" autocomplete="off">
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>Name</mat-label>
-              <input matInput type="text" id="name" formControlName="name" required>
+              <input matInput type="text" id="name" formControlName="name" required autocomplete="off">
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>Beschreibung</mat-label>
-              <textarea matInput id="beschreibung" formControlName="beschreibung" required></textarea>
+              <textarea matInput id="beschreibung" formControlName="beschreibung" required autocomplete="off"></textarea>
             </mat-form-field>
 
             <mat-form-field>
@@ -58,11 +58,11 @@
             <div class="row" >
               <mat-form-field>
                 <mat-label>Verkaufpreis</mat-label>
-                <input matInput type="number" id="preis" formControlName="preis" required>
+                <input matInput type="number" id="preis" formControlName="preis" required autocomplete="off">
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Item Länge (mm)</mat-label>
-                <input matInput type="number" id="lange" formControlName="lange" required>
+                <input matInput type="number" id="lange" formControlName="lange" required autocomplete="off">
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Lieferant</mat-label>
@@ -103,11 +103,11 @@
 
               <mat-form-field>
                 <mat-label>Mindestmenge</mat-label>
-                <input matInput type="number" id="mindestmenge" formControlName="mindestmenge" required>
+                <input matInput type="number" id="mindestmenge" formControlName="mindestmenge" required autocomplete="off">
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Current Menge</mat-label>
-                <input matInput type="number" id="currentmenge" formControlName="currentmenge" >
+                <input matInput type="number" id="currentmenge" formControlName="currentmenge" autocomplete="off">
               </mat-form-field>
               <mat-form-field *ngIf="actionsSig().length < 1">
                 <mat-label>Keine Angebots verfügbar</mat-label>
@@ -126,7 +126,7 @@
             <div class="row">
               <mat-form-field>
                 <mat-label>Verkaufte Anzahl</mat-label>
-                <input matInput type="number" id="verkaufteAnzahl" formControlName="verkaufteAnzahl">
+                <input matInput type="number" id="verkaufteAnzahl" formControlName="verkaufteAnzahl" autocomplete="off">
               </mat-form-field>
               <div class="color">
                 <div class="colors">
@@ -140,11 +140,11 @@
               </div>
               <mat-form-field>
                 <mat-label>Item Gewicht (g)</mat-label>
-                <input matInput type="number" id="gewicht" formControlName="gewicht" required>
+                <input matInput type="number" id="gewicht" formControlName="gewicht" required autocomplete="off">
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Mehrwertsteuer</mat-label>
-                <input matInput type="number" id="mehrwehrsteuer" formControlName="mehrwehrsteuer" required>
+                <input matInput type="number" id="mehrwehrsteuer" formControlName="mehrwehrsteuer" required autocomplete="off">
               </mat-form-field>
             </div>
           </mat-tab>
@@ -175,6 +175,7 @@
       </mat-tab-group>
       <div class="button" >
         <button mat-button (click)="saveProduct()" >Speichern</button>
+
       </div>
 </form>
 </div>

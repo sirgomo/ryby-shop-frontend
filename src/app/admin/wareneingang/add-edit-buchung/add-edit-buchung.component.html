@@ -18,25 +18,25 @@
 
       <mat-form-field>
         <mat-label>Empfangsdatum</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="empfangsdatum">
+        <input matInput [matDatepicker]="picker" formControlName="empfangsdatum" autocomplete="off">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Rechnung</mat-label>
-        <input matInput formControlName="rechnung">
+        <input matInput formControlName="rechnung" autocomplete="off">
       </mat-form-field>
     </div>
     <div class="row">
       <mat-form-field>
         <mat-label>Lieferschein Nr</mat-label>
-        <input matInput formControlName="lieferscheinNr">
+        <input matInput formControlName="lieferscheinNr" autocomplete="off">
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Buchungs Datum</mat-label>
-        <input matInput [matDatepicker]="pickero" formControlName="datenEingabe">
+        <input matInput [matDatepicker]="pickero" formControlName="datenEingabe" autocomplete="off">
         <mat-datepicker-toggle matSuffix [for]="pickero"></mat-datepicker-toggle>
         <mat-datepicker #pickero></mat-datepicker>
       </mat-form-field>

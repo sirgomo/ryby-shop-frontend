@@ -37,9 +37,9 @@ export class AddEditProductComponent implements OnInit {
   actionsSig = signal<iAktion[]>([]);
   liferantSignal = toSignal<iLieferant[], iLieferant[]>(this.liferantService.liferants$, { initialValue: [] });
   kategorySignal = toSignal<iKategorie[], iKategorie[]>(this.katService.kategorie$, { initialValue: []});
-  act$ = new Observable().pipe(shareReplay(1));
-  create$ = new Observable().pipe(shareReplay(1));
-  getFoto$ = new Observable();
+  act$ = new Observable().pipe(startWith(null));
+  create$ = new Observable().pipe(startWith({}));
+  getFoto$ = new Observable().pipe(startWith(null));
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<AddEditProductComponent>,
@@ -155,7 +155,7 @@ export class AddEditProductComponent implements OnInit {
           this.images.push(tmp.imageid);
           this.productForm.get('foto')?.patchValue(this.images);
           this.getImage(tmp.imageid);
-          this.snackBar.open('Du musst das Produkt speichern oder die Bilder werden nicht gespeichert mit Produkt...', '', { duration: 2000})
+          this.snackBar.open('Image wurde gespiechert', '', { duration: 2000})
         }
         return act;
       }))
@@ -179,6 +179,8 @@ export class AddEditProductComponent implements OnInit {
       product.verkaufteAnzahl = this.data ?  this.data.verkaufteAnzahl : 0;
       product.preis = Number(this.productForm.get('preis')?.getRawValue());
       product.currentmenge = 0;
+      if(!product.verfgbarkeit)
+        product.verfgbarkeit = 0;
       if(this.data) {
         product.currentmenge = this.data.currentmenge;
       }
@@ -221,6 +223,7 @@ export class AddEditProductComponent implements OnInit {
       }));
       }
     }
+
   }
 
   cancel() {

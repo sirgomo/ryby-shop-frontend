@@ -106,7 +106,9 @@ input[type=file]::file-selector-button:hover {
   }
 }
 .h2 {
-  text-align: center;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 .imageItem {
   display: flex;
@@ -135,7 +137,4 @@ input[type=file]::file-selector-button:hover {
   gap: 1rem;
   width: 95%;
 }
-.close {
-  display: flex;
-  justify-content: flex-end;
-}
+

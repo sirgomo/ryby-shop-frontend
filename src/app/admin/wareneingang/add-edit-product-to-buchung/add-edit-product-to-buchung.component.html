@@ -1,14 +1,14 @@
-<div class="close">
-  <button mat-icon-button (click)="close()" color="warn">
-      <mat-icon>close</mat-icon>
-  </button>
-</div>
 <div class="content">
   <div *ngIf="errMessage?.message && errMessage.message().length > 2">
     <app-error></app-error>
   </div>
   <div class="h2">
     <h2>{{ data ? 'Produkt bearbeiten' : 'Produkt hinzufügen' }}</h2>
+    <div class="close">
+      <button mat-icon-button (click)="close()" color="warn">
+          <mat-icon>close</mat-icon>
+      </button>
+    </div>
   </div>
   <form [formGroup]="wEingangProduct" >
     <div class="row">
@@ -19,18 +19,18 @@
 
       <mat-form-field>
         <mat-label>Menge</mat-label>
-        <input matInput formControlName="menge" placeholder="Menge" type="number">
+        <input matInput formControlName="menge" placeholder="Menge" type="number" autocomplete="off">
       </mat-form-field>
     </div>
     <div class="row">
       <mat-form-field>
         <mat-label>Preis</mat-label>
-        <input matInput formControlName="preis" placeholder="Preis" type="number">
+        <input matInput formControlName="preis" placeholder="Preis" type="number" autocomplete="off">
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>MwSt</mat-label>
-        <input matInput formControlName="mwst" placeholder="MwSt" type="number">
+        <input matInput formControlName="mwst" placeholder="MwSt" type="number" autocomplete="off">
       </mat-form-field>
     </div>
     <div formArrayName="color">

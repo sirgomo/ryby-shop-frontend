@@ -61,11 +61,13 @@ export class CardComponent implements OnInit {
     this.colors[itemIndex][colorIndex].menge -= 1;
     if(this.colors[itemIndex][colorIndex].menge  === 0) {
       this.colors[itemIndex].splice(colorIndex, 1);
-      if(this.colors[itemIndex].length === 0)
-      this.removeItem(itemIndex);
-      return;
+      if(this.colors[itemIndex].length === 0) {
+        this.removeItem(itemIndex);
+        return;
+      }
     }
     this.products()[itemIndex].color = JSON.stringify(this.colors[itemIndex]);
+
     const tmp = this.products();
     const newT = tmp.slice();
     this.reloadColors(newT);
@@ -78,12 +80,18 @@ export class CardComponent implements OnInit {
     tmp.splice(itemIndex, 1);
     if(tmp.length === 0) {
       this.products.set([]);
+      this.helper.cardSig.set([]);
+      this.helper.cardSigForMengeControl.set([]);
+      this.getTotalCount();
       return;
     }
     const newTab = tmp.slice(0);
     this.reloadColors(newTab);
     this.helper.cardSig.set(newTab);
-
+    const controlItems = this.helper.cardSigForMengeControl().slice(0);
+    controlItems.splice(itemIndex,1);
+    this.helper.cardSigForMengeControl.set(controlItems);
+    this.getTotalCount();
   }
   getTotalPrice(itemIndex: number) {
     if(!this.products()[itemIndex])
@@ -140,8 +148,8 @@ export class CardComponent implements OnInit {
     return menge;
   }
   getTotalCount() {
-    if(!this.products())
-    return;
+    if(!this.products() || this.products().length === 0)
+    return 0;
 
     let count = 0;
     for (let i = 0; i < this.colors.length; i++ ) {
@@ -184,6 +192,7 @@ export class CardComponent implements OnInit {
   doWeHaveEnough(itemIndex: number, colorIndex: number) :boolean {
     const colorBuy: iColor[] = JSON.parse(this.helper.cardSig()[itemIndex].color);
     const colorOrgi: iColor[] = JSON.parse(this.helper.cardSigForMengeControl()[itemIndex].color);
+
     if(colorBuy.length === colorOrgi.length)
       return colorBuy[colorIndex].menge < colorOrgi[colorIndex].menge;
 

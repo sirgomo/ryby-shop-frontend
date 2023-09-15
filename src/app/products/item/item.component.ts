@@ -31,6 +31,7 @@ export class ItemComponent implements OnInit {
 
     }
   ngOnInit(): void {
+
     if(this.item) {
 
       let tmpColor : iColor[] = JSON.parse(this.item.color);

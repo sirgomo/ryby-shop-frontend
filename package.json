@@ -25,6 +25,7 @@
     "@auth0/angular-jwt": "^5.1.2",
     "@paypal/paypal-js": "^7.0.2",
     "@schuchard/schematics-core": "^0.4.2",
+    "html2canvas": "^1.4.1",
     "inquirer": "^9.2.10",
     "inquirer-autocomplete-prompt": "^3.0.0",
     "jspdf": "^2.5.1",

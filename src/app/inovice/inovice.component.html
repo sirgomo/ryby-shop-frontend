@@ -2,12 +2,15 @@
   {{errorService.message()}}
 </div>
 <div class="close">
+  <button mat-icon-button (click)="savePdf()" color="primary">
+    <mat-icon> picture_as_pdf</mat-icon>
+</button>
   <button mat-icon-button (click)="close()" color="warn">
       <mat-icon>close</mat-icon>
   </button>
 </div>
 <div *ngIf="item$ | async; else loader">
-  <div class="invoice">
+  <div class="invoice" id="invoice">
     <div class="header">
       <div class="company">
         <div class="logo"> <img src="../../../assets/img/logo.png" alt="logo fischfang-profi.de"></div>
@@ -20,6 +23,7 @@
            <div>{{company.email}}</div>
 
 
+
       </div>
       <div class="spacer"></div>
       <div class="customer">
@@ -30,19 +34,17 @@
         <div>{{currentItem.kunde.email}}</div>
       </div>
     </div>
+    <div class="rechData">
+      <div>Rechnungsnummer: {{ currentItem.id }}</div>
+      <div>Rechnungsdatum: {{currentItem.bestelldatum | date: 'dd/MM/yyyy'}}</div>
+    </div>
     <div class="prod">
       <table mat-table [dataSource]="currentItem.produkte" class="tab">
-
-          <ng-container matColumnDef="pos">
-            <th mat-header-cell *matHeaderCellDef>Pos:</th>
-            <td mat-cell *matCellDef="let item; let i = index">{{ i }}</td>
-            <td mat-footer-cell *matFooterCellDef></td>
-          </ng-container>
 
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let item">{{ item.produkt[0].name }}</td>
-            <td mat-footer-cell *matFooterCellDef></td>
+            <td mat-footer-cell *matFooterCellDef>Zwischensumme:</td>
           </ng-container>
 
           <ng-container matColumnDef="varia">
@@ -55,22 +57,22 @@
             <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
+          <ng-container matColumnDef="stpreis">
+            <th mat-header-cell *matHeaderCellDef>Einzelpreis</th>
+            <td mat-cell *matCellDef="let item; let i = index">{{ item.verkauf_price }} &euro;</td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
           <ng-container matColumnDef="preis">
-            <th mat-header-cell *matHeaderCellDef>Preis</th>
-            <td mat-cell *matCellDef="let item">{{ item.verkauf_price }} &euro;</td>
-            <td mat-footer-cell *matFooterCellDef></td>
+            <th mat-header-cell *matHeaderCellDef>Umsatzsteuer</th>
+            <td mat-cell *matCellDef="let item; let i = index">{{ getTaxProStuck(i) }} &euro;</td>
+            <td mat-footer-cell *matFooterCellDef>{{getTax()}} &euro;</td>
           </ng-container>
 
-          <ng-container matColumnDef="menge">
-            <th mat-header-cell *matHeaderCellDef>Menge: </th>
-            <td mat-cell *matCellDef="let item">{{ item.menge }}</td>
+          <ng-container matColumnDef="mwst">
+            <th mat-header-cell *matHeaderCellDef>MwSt. </th>
+            <td mat-cell *matCellDef="let item; let i = index">{{item.produkt[0].mehrwehrsteuer}} %</td>
             <td mat-footer-cell *matFooterCellDef></td>
-          </ng-container>
-
-          <ng-container matColumnDef="netto">
-            <th mat-header-cell *matHeaderCellDef>Netto: </th>
-            <td mat-cell *matCellDef="let item; let i = index">{{ getNetto(i) }} &euro;</td>
-            <td mat-footer-cell *matFooterCellDef>{{getTotalNetto()}} &euro;</td>
           </ng-container>
 
           <ng-container matColumnDef="rabat">
@@ -80,7 +82,8 @@
           </ng-container>
 
           <ng-container matColumnDef="brutto">
-            <th mat-header-cell *matHeaderCellDef>Brutto: </th>
+            <th mat-header-cell *matHeaderCellDef>Gesamtpreis:
+              <mat-hint *ngIf="!company.isKleinUnternehmen">Brutto</mat-hint> </th>
             <td mat-cell *matCellDef="let item; let i = index">{{ getBrutto(i) }} &euro;</td>
             <td mat-footer-cell *matFooterCellDef> {{getTotalBrutto()}} &euro;</td>
           </ng-container>
@@ -90,6 +93,17 @@
           <tr mat-footer-row *matFooterRowDef="columns"></tr>
 
       </table>
+      <div class="versand">
+        <div class="art">{{currentItem.versandart}}, Versandkosten: </div>
+        <div class="preise">{{currentItem.versandprice}} &euro;</div>
+      </div>
+      <div class="versand">
+        <div class="art">Total:</div>
+        <div class="preise">{{getPriceWithShipping() }} &euro;</div>
+      </div>
+    </div>
+    <div *ngIf="company.isKleinUnternehmen" class="kunternehmen">
+      Als Kleinunternehmer im Sinne von § 19 Abs. 1 UStG wird keine Umsatzsteuer berechnet
     </div>
     <div class="footer">
 

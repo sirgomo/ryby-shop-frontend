@@ -61,6 +61,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
 import { InoviceComponent } from './inovice/inovice.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -96,8 +97,7 @@ import { InoviceComponent } from './inovice/inovice.component';
     OrderDetailsComponent,
     OrderSelectorComponent,
     PaginatorComponent,
-    InoviceComponent,
-
+    InoviceComponent
   ],
   imports: [
     BrowserModule,

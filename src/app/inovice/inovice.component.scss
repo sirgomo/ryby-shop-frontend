@@ -2,9 +2,16 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 2.5cm 2.5cm;
+  margin: 1.5cm 2.5cm;
   width: calc(210mm - margin);
   flex-direction: column;
+}
+.rechData {
+ display: flex;
+ justify-content: space-between;
+ width: 100%;
+ margin-top: 1rem;
+ margin-bottom: .5rem;
 }
 .logo{
   display: flex;
@@ -42,23 +49,31 @@
 }
 
 .mat-column-name {
+  flex: 1;
+  padding: 0 .1rem 0 .2rem;
+  min-width: 30%;
+  font-size: small;
+}
+.mat-column-varia {
   width: 20%;
   padding: 0 .1rem 0 .2rem;
   font-size: small;
 }
-.mat-column-varia {
-  width: 10%;
-  padding: 0 .1rem 0 .2rem;
-  font-size: small;
-}
-.mat-column-pos,
+
 .mat-column-preis,
-.mat-column-menge,
-.mat-column-netto,
 .mat-column-rabat,
+.mat-column-stpreis,
 .mat-column-brutto {
   padding: 0 .1rem 0 .2rem;
-  width: 10%;
+  width: 13%;
+  font-size: small;
+}
+
+
+.mat-column-mwst
+{
+  padding: 0 .1rem 0 .2rem;
+  width: 3%;
   font-size: small;
 }
 .tab {
@@ -67,4 +82,21 @@
 .close {
   display: flex;
   justify-content: flex-end;
+  z-index: 100;
+}
+.versand {
+  display: flex;
+  justify-content: space-between;
+  font-size: small;
+  width: 100%;
+
+  .preise {
+    width: 13%;
+
+  }
+}
+.kunternehmen {
+  margin-top: .5rem;
+  font-size: small;
+  font-weight: 550;
 }

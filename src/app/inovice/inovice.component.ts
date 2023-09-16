@@ -9,6 +9,7 @@ import { iCompany } from '../model/iCompany';
 import { iColor } from '../model/iColor';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import { image } from 'html2canvas/dist/types/css/types/image';
 
 
 
@@ -101,27 +102,46 @@ export class InoviceComponent {
     savePdf() {
       const item = document.getElementById('invoice');
       if(item) {
-       const htmlWidth = item.clientWidth;
-       const htmlHeight = item.clientHeight;
 
-       const leftMargin = 50;
-       const pdfWidth = htmlWidth + (leftMargin *2);
-       const pdfHeigh = (pdfWidth * 1.5) + (leftMargin *2);
-        const canvasImageWidth = htmlWidth;
-        const canvasImageHeight = htmlHeight;
 
-        const totalPages = Math.ceil(htmlHeight / pdfHeigh) -1;
+       let pdf = new jsPDF('p', 'pt', 'a4');
+       const leftMargin = 20;
+       const pdfWidth = pdf.internal.pageSize.width;
+       const pdfHeigh = pdf.internal.pageSize.height;
 
-        html2canvas(item, { allowTaint: true, scale: 2 }).then(canvas => {
-          canvas.getContext('2d');
-          const imageData = canvas.toDataURL('image/jpeg', 1.0);
-          let pdf = new jsPDF('p', 'pt', [pdfWidth, pdfHeigh]);
 
-          pdf.addImage(imageData, 'PNG', leftMargin, leftMargin, canvasImageWidth, canvasImageHeight,'', 'MEDIUM');
 
+
+        html2canvas(item, { allowTaint: true, scale: 1 }).then(canvas => {
+
+          let imgHight = Math.floor(canvas.width * ( pdfHeigh / pdfWidth)) - 2* leftMargin;
+
+          const totalPages = Math.ceil(canvas.height / imgHight);
+          console.log(imgHight)
+          console.log(pdfHeigh)
+
+          const newCanvas = document.createElement('canvas');
+          newCanvas.width = canvas.width
+          newCanvas.height = imgHight;
+          const ctx = newCanvas.getContext('2d');
+
+          let imgStart = 0;
+          pdf.setFontSize(9)
           for (let i = 1; i <= totalPages; i++) {
-           pdf.addPage([pdfWidth, pdfHeigh], 'p');
-           pdf.addImage(imageData, 'PNG', leftMargin, - (pdfHeigh * i) + leftMargin , canvasImageWidth, canvasImageHeight,'', 'MEDIUM');
+           if (i > 1)
+            pdf.addPage();
+
+            if(ctx !== null) {
+              ctx.fillStyle = 'white';
+              ctx.fillRect(0,0,canvas.width, imgHight);
+
+              ctx.drawImage(canvas, 0,imgStart,canvas.width ,imgHight, 0,0,pdfWidth - 5 * leftMargin, pdfHeigh - 10* leftMargin);
+
+              pdf.addImage(newCanvas.toDataURL('image/jpeg', 0.95), 'PNG', leftMargin *2, leftMargin *2 , pdfWidth , pdfHeigh,'', 'MEDIUM');
+              pdf.text('Page ' + i + ' of ' + totalPages, leftMargin, pdfHeigh - leftMargin);
+            }
+            imgStart += imgHight;
+         //  pdf.addImage(imageData, 'PNG', leftMargin, - (pdfHeigh * i) + leftMargin , canvasImageWidth, canvasImageHeight,'', 'MEDIUM');
           }
           pdf.output('pdfobjectnewwindow');
         })

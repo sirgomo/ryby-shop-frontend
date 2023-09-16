@@ -28,7 +28,7 @@ export class OrderComponent {
   }
   openInovice(item: iBestellung) {
     const conf: MatDialogConfig = new MatDialogConfig();
-    conf.width = '90%';
+    conf.width = '210mm';
     conf.maxWidth = '210mm'
     conf.height = '90%';
     conf.data = item;

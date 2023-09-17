@@ -29,6 +29,7 @@ export class AuthService {
     this.helper.isLogged.set(true);
     this.helper.setMenu(this.#role);
     localStorage.setItem('role', this.#role);
+    localStorage.setItem('userid', this.#userid.toString());
   }
 
   /**
@@ -38,6 +39,7 @@ export class AuthService {
     this.#token.next('');
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('userid');
     this.#userid = 0;
     this.#email = '';
     this.#role = '';

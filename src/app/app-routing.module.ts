@@ -22,12 +22,11 @@ const routes: Routes = [
 {
   component: OrdersComponent,
   path: 'order',
-  canActivate: [routeGuard]
 },
 {
   component: OrderComponent,
   path: 'admin-order',
-  canActivate: [routeGuard],
+  canActivate: [routeGuard]
 },
 {
   component: CompanyComponent,

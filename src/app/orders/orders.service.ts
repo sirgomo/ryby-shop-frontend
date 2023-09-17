@@ -90,5 +90,15 @@ export class OrdersService {
       return of({} as iBestellung);
     }))
   }
-
+  getBestellungBeiKundeNr(kunde: number): Observable<iBestellung[]> {
+    return this.http.get<iBestellung[]>(`${this.#api}/kunde/${kunde}`).pipe(
+      map((res) => {
+      return res;
+    }),
+    catchError((err) => {
+      this.error.newMessage(err.message);
+      return [];
+    }),
+    )
+  }
 }

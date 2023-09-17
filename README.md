@@ -11,10 +11,12 @@ Testing using "Jest" framework (unity test)
   - Product - add, edit, delete, addition of item variants and pictures for each variant
   - Receiving goods based on products and suppliers
   - PayPal payments (handled on the server), payment approved saves the order to the database
-  - Order management (in progress)
+  - Order management, order status, a certain form of commissioning
   - Company profile management
+  - Generating a PDF invoice based on an order (with the ability to save, print).
 
-3. Home page with a list of products and sorting by category
-4. Shopping Cart
+
+3. Home page with a list of products and sorting by category, Search Functionality on item name
+4. Shopping Cart with paypal payment
 5. Item on the homepage, direct addition to the cart, changing the variant and adding one piece to the cart
 6. Item details - details of the item as well as the possibility of adding quantities for each item variant.

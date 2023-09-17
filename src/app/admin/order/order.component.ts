@@ -14,7 +14,7 @@ import { InoviceComponent } from 'src/app/inovice/inovice.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderComponent {
-  oders = this.oderService.ordersSig;
+  orders = this.oderService.ordersSig;
   //oders$= this.oderService.getBestellungen();
   columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt', 'inovice'];
   constructor(private readonly oderService: OrdersService, public error: ErrorService, private readonly dialog: MatDialog) {}

@@ -1,0 +1,14 @@
+<div class="content">
+  <h1>Impressum</h1>
+  <div class="item">{{companySig().name}}</div>
+  <div class="item">{{companySig().company_name}}</div>
+  <div class="item">{{companySig().address}}</div>
+  <div class="item">{{companySig().postleitzahl}} {{companySig().city}}</div>
+  <div class="item">{{companySig().country}}</div>
+  <div class="item">Umsatzsteuer-Identifikationsnummer: <b>{{companySig().ustNr}}</b></div>
+  <div class="item">Email: {{companySig().email}}</div>
+  <div class="item">Telefon: {{ companySig().phone}}</div>
+  <div class="item" *ngIf="companySig().fax && companySig().fax.length > 3">Fax: {{companySig().fax}}</div>
+  <div class="hinweis" [innerHTML]="companySig().eu_komm_hinweis"></div>
+
+</div>

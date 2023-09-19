@@ -1,0 +1,16 @@
+.links {
+  display: flex;
+  justify-content: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+  a {
+    text-decoration: none;
+    margin-top: .5rem;
+  }
+}
+.content {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}

@@ -9,4 +9,9 @@ export interface iCompany {
   phone: string;
   email: string;
   isKleinUnternehmen: number;
+  ustNr: string;
+  fax: string;
+  eu_komm_hinweis: string;
+  agb: string;
+  daten_schutzt: string;
 }

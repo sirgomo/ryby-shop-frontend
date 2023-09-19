@@ -27,7 +27,7 @@ export class InoviceComponent {
   columns: string[] = [ 'name','varia','rabat', 'stpreis', 'mwst', 'preis', 'brutto'];
   item$ = forkJoin([this.orderService.getBestellungById(this.itemid), this.companyService.getAllCompanies()]).pipe(tap(([best, comp]) => {
     this.currentItem = best;
-    this.company = comp[0];
+    this.company = comp;
     this.isPromotion();
 
   }));

@@ -59,6 +59,9 @@ import { OrderDetailsComponent } from './admin/order/order-details/order-details
 import { OrderSelectorComponent } from './admin/order/order-selector/order-selector.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { InoviceComponent } from './inovice/inovice.component';
+import { ImpressumComponent } from './admin/company/impressum/impressum.component';
+import { AgbComponent } from './admin/company/agb/agb.component';
+import { DatenSchutztComponent } from './admin/company/daten-schutzt/daten-schutzt.component';
 
 
 
@@ -97,7 +100,10 @@ import { InoviceComponent } from './inovice/inovice.component';
     OrderDetailsComponent,
     OrderSelectorComponent,
     PaginatorComponent,
-    InoviceComponent
+    InoviceComponent,
+    ImpressumComponent,
+    AgbComponent,
+    DatenSchutztComponent
   ],
   imports: [
     BrowserModule,

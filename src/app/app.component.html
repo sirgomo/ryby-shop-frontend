@@ -4,7 +4,7 @@
       <mat-sidenav mode="side" align="start" opened #sidenav>
           <div class="menu" *ngIf="menu$ | async as menus">
             <div class="menuItem" *ngFor="let item of menus;let i = index;" ><button mat-button color="accent" routerLink="{{item.link}}" (click)="buttonActive(i)" >{{item.name}}</button></div>
-            <div class="menuItem" *ngIf="currentCategory !== 0"><button mat-button color="accent" (click)="showAll()" >Zurück</button></div>
+            <div class="menuItem" *ngIf="currentCategory !== 0"><button mat-button color="accent" (click)="showAll()" >Home</button></div>
           </div>
           <div *ngIf="kategorie$ | async as kategories" class="menu">
             <div class="menuItem" *ngFor="let item of kategories"><button mat-button color="accent" (click)="changeCategorie(item)" >{{item.name}}</button></div>

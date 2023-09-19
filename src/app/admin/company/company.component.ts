@@ -12,7 +12,7 @@ import { ErrorService } from 'src/app/error/error.service';
 })
 export class CompanyComponent {
   companyForm: FormGroup;
-  companies: iCompany[] = [];
+  companies!: iCompany;
   currentCompany = {} as iCompany;
   act$ = new Observable();
   constructor(private formBuilder: FormBuilder, private companyService: CompanyService, public errorServeice: ErrorService) {
@@ -26,17 +26,22 @@ export class CompanyComponent {
       country: [''],
       phone: [''],
       email: [''],
-      isKleinUnternehmen: [false]
+      isKleinUnternehmen: [false],
+      ustNr: [''],
+      fax: [''],
+      eu_komm_hinweis: [''],
+      agb: [''],
+      daten_schutzt: ['']
     });
   }
 
   ngOnInit(): void {
 
     this.act$ =  this.companyService.getAllCompanies().pipe(map(companies => {
-      if(companies && companies.length > 0) {
+      if(companies && companies.id === 1) {
         this.companies = companies;
-        this.populateForm(this.companies[0]);
-        this.currentCompany = this.companies[0];
+        this.populateForm(this.companies);
+        this.currentCompany = this.companies;
         return companies;
       }
       return [];
@@ -54,7 +59,12 @@ export class CompanyComponent {
       country: company.country,
       phone: company.phone,
       email: company.email,
-      isKleinUnternehmen: company.isKleinUnternehmen
+      ustNr: company.ustNr,
+      fax: company.fax,
+      eu_komm_hinweis: company.eu_komm_hinweis,
+      isKleinUnternehmen: company.isKleinUnternehmen,
+      agb: company.agb,
+      daten_schutzt: company.daten_schutzt,
     });
   }
   save() {

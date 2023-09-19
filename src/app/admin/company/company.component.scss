@@ -6,6 +6,13 @@
   display: flex;
   gap: .5rem;
 }
+.textrow {
+  display: flex;
+  width: 100%;
+  mat-form-field {
+    width: 100%;
+  }
+}
 .act {
   display: flex;
   justify-content: center;

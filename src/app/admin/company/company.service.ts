@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, of } from 'rxjs';
+import { Observable, catchError, map, of, shareReplay } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iCompany } from 'src/app/model/iCompany';
 import { environment } from 'src/environments/environment';
@@ -12,12 +12,17 @@ export class CompanyService {
   private apiUrl = environment.api + 'company';
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
-  getAllCompanies() {
+  getAllCompanies(): Observable<iCompany> {
     return this.http.get<iCompany[]>(this.apiUrl).pipe(
+      map((res) => {
+        return res[0];
+      }),
     catchError((err) => {
       this.errorService.newMessage(err.message);
       return [];
-    }));
+    }),
+    shareReplay(1)
+    );
   }
 
   getCompanyById(id: number) {

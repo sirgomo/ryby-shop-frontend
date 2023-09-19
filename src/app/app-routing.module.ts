@@ -13,11 +13,22 @@ import { CardComponent } from './card/card.component';
 import { CompanyComponent } from './admin/company/company.component';
 import { OrdersComponent } from './orders/orders.component';
 import { OrderComponent } from './admin/order/order.component';
+import { ImpressumComponent } from './admin/company/impressum/impressum.component';
+import { AgbComponent } from './admin/company/agb/agb.component';
+import { DatenSchutztComponent } from './admin/company/daten-schutzt/daten-schutzt.component';
 
 const routes: Routes = [
 {
+  component: AgbComponent,
+  path: 'agb',
+},
+{
   component: CardComponent,
   path: 'card',
+},
+{
+  component: DatenSchutztComponent,
+  path: 'datenschutzt'
 },
 {
   component: OrdersComponent,
@@ -52,6 +63,10 @@ const routes: Routes = [
   component: LiferantsComponent,
   path: 'liferant',
   canActivate: [routeGuard],
+},
+{
+  component: ImpressumComponent,
+  path: 'impressum',
 },
 {
   component: KategoriesComponent,

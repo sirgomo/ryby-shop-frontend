@@ -50,6 +50,32 @@
         <mat-label>Is Klein Unternehmen</mat-label>
         <mat-checkbox formControlName="isKleinUnternehmen"></mat-checkbox>
       </div>
+      <mat-form-field>
+        <mat-label>Umsatzsteueridentifikationsnr.</mat-label>
+        <input matInput formControlName="ustNr">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Fax</mat-label>
+        <input matInput formControlName="fax">
+      </mat-form-field>
+    </div>
+    <div class="textrow">
+      <mat-form-field>
+        <mat-label>EU-Kommission Hinweis (HTML)</mat-label>
+        <textarea matInput formControlName="eu_komm_hinweis"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="textrow">
+      <mat-form-field>
+        <mat-label>AGB (HTML)</mat-label>
+        <textarea matInput formControlName="agb"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="textrow">
+      <mat-form-field>
+        <mat-label>Datenschutzerklärung (HTML)</mat-label>
+        <textarea matInput formControlName="daten_schutzt"></textarea>
+      </mat-form-field>
     </div>
     <div class="act">
       <button mat-raised-button color="primary" (click)="save()">Speichern</button>

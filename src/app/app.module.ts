@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -134,6 +134,7 @@ import { DatenSchutztComponent } from './admin/company/daten-schutzt/daten-schut
     MatTabsModule,
   ],
   providers: [
+    provideClientHydration(),
     {
       provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
     },

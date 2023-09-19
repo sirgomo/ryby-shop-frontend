@@ -127,10 +127,12 @@
           "builder": "@nguniversal/builders:ssr-dev-server",
           "configurations": {
             "development": {
+              "port": 4222,
               "browserTarget": "ryby-shop-frontend:build:development",
               "serverTarget": "ryby-shop-frontend:server:development"
             },
             "production": {
+              "port": 4222,
               "browserTarget": "ryby-shop-frontend:build:production",
               "serverTarget": "ryby-shop-frontend:server:production"
             }

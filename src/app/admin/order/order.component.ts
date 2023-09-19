@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ErrorService } from 'src/app/error/error.service';
 import { iBestellung } from 'src/app/model/iBestellung';
 import { OrdersService } from 'src/app/orders/orders.service';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { InoviceComponent } from 'src/app/inovice/inovice.component';
+import { HelperService } from 'src/app/helper/helper.service';
 
 @Component({
   selector: 'app-order',
@@ -13,11 +13,14 @@ import { InoviceComponent } from 'src/app/inovice/inovice.component';
   styleUrls: ['./order.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OrderComponent {
-  orders = this.oderService.ordersSig;
-  //oders$= this.oderService.getBestellungen();
+export class OrderComponent implements OnDestroy{
+  ordersSig = this.oderService.ordersSig;
+
   columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt', 'inovice'];
-  constructor(private readonly oderService: OrdersService, public error: ErrorService, private readonly dialog: MatDialog) {}
+  constructor(private readonly oderService: OrdersService, public error: ErrorService, private readonly dialog: MatDialog, private helperService: HelperService) {}
+  ngOnDestroy(): void {
+    this.helperService.artikelProSiteSig.set(0);
+  }
 
   openDetailts(item: iBestellung) {
     const conf: MatDialogConfig = new MatDialogConfig();

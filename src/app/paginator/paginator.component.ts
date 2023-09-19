@@ -1,13 +1,17 @@
-import { Component, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { HelperService } from '../helper/helper.service';
 
 @Component({
   selector: 'app-paginator',
   templateUrl: './paginator.component.html',
-  styleUrls: ['./paginator.component.scss']
+  styleUrls: ['./paginator.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginatorComponent {
   pagiSig = computed(() => {
+    if(this.helper.artikelProSiteSig() === 0)
+      return 0;
+
     return this.helper.paginationCountSig() / this.helper.artikelProSiteSig();
   })
   constructor(public helper: HelperService) {}

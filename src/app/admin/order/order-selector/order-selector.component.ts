@@ -16,7 +16,9 @@ export class OrderSelectorComponent {
   currentState: BESTELLUNGSSTATE = BESTELLUNGSSTATE.BEZAHLT;
   currentItemProSite: number = 10;
 
-    constructor(private orderService: OrdersService, private helper: HelperService) {}
+    constructor(private orderService: OrdersService, private helper: HelperService) {
+      this.helper.artikelProSiteSig.set(10);
+    }
 
     changeStatus() {
       this.orderService.currentVersandStatusSig.set(this.currentStatus);

@@ -19,7 +19,7 @@ import { iUserData } from '../model/iUserData';
     searchSig = signal<string>('');
     pageNrSig = signal<number>(1);
     kategorySig = signal<iKategorie>({} as iKategorie);
-    artikelProSiteSig = signal<number> (10);
+    artikelProSiteSig = signal<number> (0);
     isLogged = signal(false);
     uploadProgersSig = signal<number>(0);
     appComponenet!: AppComponent;

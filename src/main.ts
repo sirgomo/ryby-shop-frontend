@@ -14,7 +14,7 @@ import { importProvidersFrom } from '@angular/core';
 /*
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));*/
-  bootstrapApplication(AppComponent, {
+  await bootstrapApplication(AppComponent, {
     providers: [
       {
         provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
@@ -25,4 +25,6 @@ platformBrowserDynamic().bootstrapModule(AppModule)
       provideRouter(routes),
       importProvidersFrom(JwtModule.forRoot({})),
     ]
+  }).catch(err => {
+    console.log(err);
   })

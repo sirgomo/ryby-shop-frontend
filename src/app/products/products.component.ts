@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ProductService } from '../admin/product/product.service';
 import { ItemComponent } from './item/item.component';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { ItemComponent } from './item/item.component';
   styleUrls: ['./products.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ItemComponent]
+  imports: [ItemComponent, CommonModule]
 })
 export class ProductsComponent {
   productsSig = this.productService.productsSig;

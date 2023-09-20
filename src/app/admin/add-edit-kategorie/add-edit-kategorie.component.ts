@@ -1,9 +1,12 @@
 import { ChangeDetectionStrategy, Component, Inject, Optional } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { iKategorie } from 'src/app/model/iKategorie';
 import { KategorieService } from '../kategories/kategorie.service';
 import { combineLatest, tap } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @Component({
@@ -11,6 +14,8 @@ import { combineLatest, tap } from 'rxjs';
   templateUrl: './add-edit-kategorie.component.html',
   styleUrls: ['./add-edit-kategorie.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ReactiveFormsModule, MatIconModule, MatFormFieldModule, MatSelectModule]
 })
 export class AddEditKategorieComponent {
   kategorieForm: FormGroup;

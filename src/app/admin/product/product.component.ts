@@ -6,12 +6,16 @@ import { AddEditProductComponent } from '../add-edit-product/add-edit-product.co
 import { Observable } from 'rxjs';
 import { HelperService } from 'src/app/helper/helper.service';
 import { iKategorie } from 'src/app/model/iKategorie';
+import { MatTableModule } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MatTableModule, CommonModule]
 })
 export class ProductComponent {
   displayedColumns: string[] = ['prodid','artid', 'name', 'preis', 'verfugbar', 'edit', 'delete'];

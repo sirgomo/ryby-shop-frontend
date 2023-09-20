@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit, Optional, signal } from '@angular/core';
 import { ProductService } from '../product/product.service';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { iProduct } from 'src/app/model/iProduct';
 import { iColor } from 'src/app/model/iColor';
@@ -14,17 +14,29 @@ import { ErrorService } from 'src/app/error/error.service';
 import { Observable, combineLatest, map, of, shareReplay, startWith, switchMap, tap } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { iAktion } from 'src/app/model/iAktion';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { iDelete } from 'src/app/model/iDelete';
 import { iEan } from 'src/app/model/iEan';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-add-edit-product',
   templateUrl: './add-edit-product.component.html',
   styleUrls: ['./add-edit-product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DatePipe]
+  providers: [DatePipe],
+  standalone: true,
+  imports: [CommonModule, ErrorComponent, MatIconModule, MatButtonModule, FormsModule, ReactiveFormsModule,
+  MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule, MatProgressSpinnerModule]
 })
 export class AddEditProductComponent implements OnInit {
 

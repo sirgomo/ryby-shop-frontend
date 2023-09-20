@@ -9,6 +9,12 @@ import { iCompany } from '../model/iCompany';
 import { iColor } from '../model/iColor';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 
@@ -18,6 +24,8 @@ import html2canvas from 'html2canvas';
   templateUrl: './inovice.component.html',
   styleUrls: ['./inovice.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MatIconModule, CommonModule, MatTableModule, MatFormFieldModule, MatProgressSpinnerModule]
 })
 export class InoviceComponent {
 

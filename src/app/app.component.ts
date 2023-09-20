@@ -1,12 +1,15 @@
 import { AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { HelperService } from './helper/helper.service';
-import { MatSidenav } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UserLoginComponent } from './user/user-login/user-login.component';
 import { KategorieService } from './admin/kategories/kategorie.service';
 import { iKategorie } from './model/iKategorie';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer/footer.component';
+import { PaginatorComponent } from './paginator/paginator.component';
+import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +17,7 @@ import { FooterComponent } from './footer/footer/footer.component';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ FooterComponent]
+  imports: [ FooterComponent, PaginatorComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule]
 })
 export class AppComponent implements AfterContentChecked{
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;

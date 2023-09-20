@@ -6,12 +6,20 @@ import { OrdersService } from 'src/app/orders/orders.service';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { InoviceComponent } from 'src/app/inovice/inovice.component';
 import { HelperService } from 'src/app/helper/helper.service';
+import { CommonModule } from '@angular/common';
+import { OrderSelectorComponent } from './order-selector/order-selector.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, OrderSelectorComponent, MatTableModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule]
 })
 export class OrderComponent implements OnDestroy{
   ordersSig = this.oderService.ordersSig;

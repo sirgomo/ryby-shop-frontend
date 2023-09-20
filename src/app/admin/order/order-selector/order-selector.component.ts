@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { HelperService } from 'src/app/helper/helper.service';
 import { BESTELLUNGSSTATE, BESTELLUNGSSTATUS } from 'src/app/model/iBestellung';
 import { OrdersService } from 'src/app/orders/orders.service';
@@ -6,7 +9,10 @@ import { OrdersService } from 'src/app/orders/orders.service';
 @Component({
   selector: 'app-order-selector',
   templateUrl: './order-selector.component.html',
-  styleUrls: ['./order-selector.component.scss']
+  styleUrls: ['./order-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MatFormFieldModule, MatSelectModule, FormsModule]
 })
 export class OrderSelectorComponent {
   statusArr = Object.values(BESTELLUNGSSTATUS);

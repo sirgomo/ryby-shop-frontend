@@ -3,19 +3,30 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
 import { WareneingangService } from '../wareneingang.service';
 import { iWarenEingang } from 'src/app/model/iWarenEingang';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { LiferantsService } from '../../liferants/liferants.service';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ArtikelListComponent } from '../artikel-list/artikel-list.component';
+import { ArtikelGebuchtComponent } from '../artikel-gebucht/artikel-gebucht.component';
 
 @Component({
   selector: 'app-add-edit-buchung',
   templateUrl: './add-edit-buchung.component.html',
   styleUrls: ['./add-edit-buchung.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DatePipe]
+  providers: [DatePipe],
+  standalone: true,
+  imports: [CommonModule, MatIconModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatSelectModule, ErrorComponent,
+     MatDatepickerModule, MatTabsModule, ArtikelListComponent, ArtikelGebuchtComponent]
 })
 export class AddEditBuchungComponent implements OnInit{
   products: iWareneingangProduct[] = [];

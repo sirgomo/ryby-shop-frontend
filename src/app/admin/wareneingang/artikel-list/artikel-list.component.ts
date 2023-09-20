@@ -7,12 +7,16 @@ import { iWarenEingang } from 'src/app/model/iWarenEingang';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddEditProductToBuchungComponent } from '../add-edit-product-to-buchung/add-edit-product-to-buchung.component';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-artikel-list',
   templateUrl: './artikel-list.component.html',
   styleUrls: ['./artikel-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, MatTableModule]
 })
 export class ArtikelListComponent {
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { OrdersService } from './orders.service';
 import { HelperService } from '../helper/helper.service';
 import { ErrorService } from '../error/error.service';
@@ -6,11 +6,19 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { iBestellung } from '../model/iBestellung';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { InoviceComponent } from '../inovice/inovice.component';
+import { OrderSelectorComponent } from '../admin/order/order-selector/order-selector.component';
+import { MatTableModule } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.scss']
+  styleUrls: ['./orders.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [OrderSelectorComponent, MatTableModule, CommonModule, MatIconModule, MatProgressSpinnerModule]
 })
 export class OrdersComponent {
 

@@ -1,6 +1,13 @@
-import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable, map } from 'rxjs';
@@ -12,7 +19,10 @@ import { iProduct } from 'src/app/model/iProduct';
 @Component({
   selector: 'app-item-details',
   templateUrl: './item-details.component.html',
-  styleUrls: ['./item-details.component.scss']
+  styleUrls: ['./item-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MatFormFieldModule, CommonModule, MatIconModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, MatInputModule, FormsModule]
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy{
   @ViewChildren(MatCheckbox) checks! : MatCheckbox[];

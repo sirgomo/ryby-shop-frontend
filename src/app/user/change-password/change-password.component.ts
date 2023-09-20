@@ -1,11 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControlOptions } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControlOptions, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../user.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { iNewPassword } from 'src/app/model/iNewPassword';
 import { Observable, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -13,6 +17,8 @@ import { MatDialogRef } from '@angular/material/dialog';
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ErrorComponent, MatFormFieldModule, FormsModule, MatInputModule, ReactiveFormsModule, CommonModule]
 })
 export class ChangePasswordComponent {
   changePasswordForm: FormGroup;

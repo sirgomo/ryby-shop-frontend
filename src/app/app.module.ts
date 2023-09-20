@@ -66,47 +66,9 @@ import { DatenSchutztComponent } from './admin/company/daten-schutzt/daten-schut
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ToolbarComponent,
-    FooterComponent,
-    SearchComponent,
-    UserLoginComponent,
-    UserRegisterComponent,
-    ErrorComponent,
-    AdminComponent,
-    LiferantsComponent,
-    AddEditLiferantComponent,
-    AddEditKategorieComponent,
-    KategoriesComponent,
-    UserComponent,
-    ChangePasswordComponent,
-    ProductComponent,
-    AddEditProductComponent,
-    ProductsComponent,
-    WareneingangComponent,
-    ArtikelListComponent,
-    ArtikelGebuchtComponent,
-    AddEditBuchungComponent,
-    AddEditProductToBuchungComponent,
-    ItemComponent,
-    ItemDetailsComponent,
-    CardComponent,
-    CompanyComponent,
-    ShippingAddressComponent,
-    PaypalComponent,
-    OrdersComponent,
-    OrderComponent,
-    OrderDetailsComponent,
-    OrderSelectorComponent,
-    PaginatorComponent,
-    InoviceComponent,
-    ImpressumComponent,
-    AgbComponent,
-    DatenSchutztComponent
-  ],
+  declarations: [],
   imports: [
-    BrowserModule,
+    /*BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -131,7 +93,7 @@ import { DatenSchutztComponent } from './admin/company/daten-schutzt/daten-schut
     MatMomentDateModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatTabsModule,
+    MatTabsModule,*/
   ],
   providers: [
     provideClientHydration(),
@@ -143,6 +105,6 @@ import { DatenSchutztComponent } from './admin/company/daten-schutzt/daten-schut
     },
   ],
   exports: [],
-  bootstrap: [AppComponent]
+ // bootstrap: [AppComponent]
 })
 export class AppModule { }

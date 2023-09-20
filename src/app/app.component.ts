@@ -6,12 +6,15 @@ import { UserLoginComponent } from './user/user-login/user-login.component';
 import { KategorieService } from './admin/kategories/kategorie.service';
 import { iKategorie } from './model/iKategorie';
 import { Router } from '@angular/router';
+import { FooterComponent } from './footer/footer/footer.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ FooterComponent]
 })
 export class AppComponent implements AfterContentChecked{
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;

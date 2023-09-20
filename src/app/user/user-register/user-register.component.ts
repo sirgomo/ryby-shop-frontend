@@ -1,11 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../user.service';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { iRegisterUser } from 'src/app/model/iRegisterUser';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
@@ -14,6 +18,8 @@ import { ErrorService } from 'src/app/error/error.service';
   styleUrls: ['./user-register.component.scss'],
   providers: [DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, ErrorComponent, MatIconModule, MatButtonModule ]
 })
 export class UserRegisterComponent {
   dataPipe = inject(DatePipe);

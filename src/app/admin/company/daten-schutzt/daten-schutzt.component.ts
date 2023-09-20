@@ -8,6 +8,7 @@ import { iCompany } from 'src/app/model/iCompany';
   templateUrl: './daten-schutzt.component.html',
   styleUrls: ['./daten-schutzt.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class DatenSchutztComponent {
   companySig: Signal<iCompany> = toSignal(this.companyService.getAllCompanies(), { initialValue: {} as iCompany});

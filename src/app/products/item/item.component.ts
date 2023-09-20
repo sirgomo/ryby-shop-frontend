@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, Sanitizer } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnInit, PLATFORM_ID, Sanitizer } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable, concatMap, map, of, shareReplay, tap } from 'rxjs';
@@ -8,12 +8,16 @@ import { ItemDetailsComponent } from '../item-details/item-details.component';
 import { iColor } from 'src/app/model/iColor';
 import { HelperService } from 'src/app/helper/helper.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule, isPlatformServer } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.scss'],
   changeDetection:ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MatProgressSpinnerModule, CommonModule]
 })
 export class ItemComponent implements OnInit {
   @Input() item!: iProduct;
@@ -26,7 +30,7 @@ export class ItemComponent implements OnInit {
   constructor( private readonly productService: ProductService, private santizier: DomSanitizer,
     private readonly dialog: MatDialog,
     private helper: HelperService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar, @Inject(PLATFORM_ID) private readonly platformId: any) {
 
 
     }
@@ -48,8 +52,14 @@ export class ItemComponent implements OnInit {
   }
 
   getImage(item: string)  {
+    if(isPlatformServer(this.platformId))
+      return;
+    if(!this.item.id)
+      return;
+
     this.image = undefined;
        this.act$ =  this.productService.getThumbnails(item).pipe(map(res => {
+        console.log(res)
         if (res instanceof Blob) {
           this.image = this.santizier.bypassSecurityTrustResourceUrl(URL.createObjectURL(res));
         }
@@ -59,6 +69,8 @@ export class ItemComponent implements OnInit {
     return this.image;
   }
   openDetails() {
+    if(isPlatformServer(this.platformId))
+    return;
   const conf : MatDialogConfig = new MatDialogConfig();
   conf.width = '90%';
   conf.height= '90%';
@@ -66,6 +78,8 @@ export class ItemComponent implements OnInit {
     this.dialog.open(ItemDetailsComponent, conf);
  }
  colorChange(val: any) {
+  if(isPlatformServer(this.platformId))
+  return;
   const index = this.color.findIndex((item) => item.id === val.value);
   this.getImage(this.images[index]);
   this.selectedColor = this.color[index];

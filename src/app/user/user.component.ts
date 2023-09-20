@@ -1,11 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UserService } from './user.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, combineLatest, concatMap, map, of, tap } from 'rxjs';
 import { iUserData } from '../model/iUserData';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-user',
@@ -13,6 +16,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
   styleUrls: ['./user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DatePipe],
+  standalone: true,
+  imports: [MatFormFieldModule, MatInputModule, CommonModule, MatCardModule, FormsModule, ReactiveFormsModule]
 })
 export class UserComponent implements OnInit{
   user$ = new Observable<iUserData>();

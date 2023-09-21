@@ -39,7 +39,6 @@ export function app(): express.Express {
     bootstrap: () => bootstrapApplication(AppComponent, {
       providers: [
         provideHttpClient(),
-
         {
           provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
         },

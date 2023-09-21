@@ -10,6 +10,7 @@ import { FooterComponent } from './footer/footer/footer.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
 import { CommonModule, isPlatformServer } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ import { CommonModule, isPlatformServer } from '@angular/common';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ FooterComponent, PaginatorComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule]
+  imports: [ FooterComponent, PaginatorComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule, MatButtonModule]
 })
 export class AppComponent implements AfterContentChecked {
 

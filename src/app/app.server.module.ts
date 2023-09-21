@@ -3,7 +3,7 @@ import { ServerModule } from '@angular/platform-server';
 
 import { AppModule } from './app.module';
 import { AppComponent } from './app.component';
-import { bootstrapApplication } from '@angular/platform-browser';
+import { bootstrapApplication, provideClientHydration } from '@angular/platform-browser';
 
 
 
@@ -12,7 +12,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
     AppModule,
     ServerModule,
   ],
-  //bootstrap: [AppComponent],
+  providers: [ provideClientHydration()],
   bootstrap: [],
 })
 export class AppServerModule {}

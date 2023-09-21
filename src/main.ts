@@ -19,7 +19,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   bootstrapApplication(AppComponent, {
     providers: [
       provideHttpClient(),
-      provideClientHydration(),
+
       {
         provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
       },

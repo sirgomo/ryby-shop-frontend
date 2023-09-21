@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, Optional, PLATFORM_ID } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
 import { WareneingangService } from '../wareneingang.service';
@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Observable, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { LiferantsService } from '../../liferants/liferants.service';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, isPlatformServer } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -42,6 +42,7 @@ export class AddEditBuchungComponent implements OnInit{
     private readonly lieferants: LiferantsService,
     private datePipe: DatePipe,
     private snackBar: MatSnackBar,
+    @Inject(PLATFORM_ID) private readonly platformId: any
     ) {
       this.warenEingangForm =  this.fb.group({
         id: [data?.id || null],
@@ -123,6 +124,9 @@ export class AddEditBuchungComponent implements OnInit{
     this.dialRef.close();
   }
   SaveReceiptCompletely() {
+    if(isPlatformServer(this.platformId))
+      return;
+
     if(window.confirm('Buchen ?')) {
       this.warenEingangForm.get('datenEingabe')?.patchValue(this.datePipe.transform(new Date( Date.now()).toISOString(), 'yyyy-MM-dd'));
       this.saveGoodsReceipt();

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { iBestellung } from '../model/iBestellung';
 import { OrdersService } from '../orders/orders.service';
@@ -10,7 +10,7 @@ import { iColor } from '../model/iColor';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformServer } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -42,7 +42,7 @@ export class InoviceComponent {
 
 
     constructor(@Inject(MAT_DIALOG_DATA) public data: iBestellung, private readonly dialoRef: MatDialogRef<InoviceComponent>, private orderService: OrdersService,
-    public errorService: ErrorService, private companyService: CompanyService){}
+    public errorService: ErrorService, private companyService: CompanyService, @Inject(PLATFORM_ID) private readonly platformId: any){}
 
   private isPromotion() {
     let isPromoted = false;
@@ -152,6 +152,9 @@ export class InoviceComponent {
               imgStart += imgHight;
            //  pdf.addImage(imageData, 'PNG', leftMargin, - (pdfHeigh * i) + leftMargin , canvasImageWidth, canvasImageHeight,'', 'MEDIUM');
             }
+            if(isPlatformServer(this.platformId))
+              return;
+
             pdf.output('pdfobjectnewwindow');
 
         })

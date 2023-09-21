@@ -1,7 +1,7 @@
-import { AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { HelperService } from './helper/helper.service';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { UserLoginComponent } from './user/user-login/user-login.component';
 import { KategorieService } from './admin/kategories/kategorie.service';
 import { iKategorie } from './model/iKategorie';
@@ -9,7 +9,7 @@ import { Router, RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer/footer.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -17,21 +17,23 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ FooterComponent, PaginatorComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule]
+  imports: [ FooterComponent, PaginatorComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule]
 })
-export class AppComponent implements AfterContentChecked{
+export class AppComponent implements AfterContentChecked {
+
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;
   title = this.helper.titelSig;
   currentCategory = 0;
   kategorie$ = this.katService.kategorie$;
+  menu$ = this.helper.menu$;
   constructor(private readonly helper: HelperService, private readonly dialog: MatDialog, private readonly katService: KategorieService, private changeRef: ChangeDetectorRef,
-  private readonly router: Router) {
+  private readonly router: Router, @Inject(PLATFORM_ID) private readonly platformId: any) {
     this.helper.setApp(this);
   }
   ngAfterContentChecked(): void {
    this.changeRef.detectChanges();
   }
-  menu$ = this.helper.menu$;
+
   login() {
     const conf : MatDialogConfig = new MatDialogConfig();
     conf.width = '400px';

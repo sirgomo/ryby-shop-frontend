@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
   providers: [DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, ErrorComponent, MatIconModule, MatButtonModule ]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, ErrorComponent, MatIconModule, MatButtonModule, MatInputModule ]
 })
 export class UserRegisterComponent {
   dataPipe = inject(DatePipe);

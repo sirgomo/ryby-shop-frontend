@@ -10,6 +10,7 @@ import { HelperService } from 'src/app/helper/helper.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule, isPlatformServer } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-item',
@@ -17,7 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrls: ['./item.component.scss'],
   changeDetection:ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatProgressSpinnerModule, CommonModule]
+  imports: [MatProgressSpinnerModule, CommonModule, MatButtonModule]
 })
 export class ItemComponent implements OnInit {
   @Input() item!: iProduct;

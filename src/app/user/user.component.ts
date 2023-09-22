@@ -9,6 +9,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-user',
@@ -17,7 +18,7 @@ import { MatCardModule } from '@angular/material/card';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DatePipe],
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, CommonModule, MatCardModule, FormsModule, ReactiveFormsModule]
+  imports: [MatFormFieldModule, MatInputModule, CommonModule, MatCardModule, FormsModule, ReactiveFormsModule, MatButtonModule]
 })
 export class UserComponent implements OnInit{
   user$ = new Observable<iUserData>();

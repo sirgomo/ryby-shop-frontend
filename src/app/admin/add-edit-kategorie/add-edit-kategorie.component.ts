@@ -7,6 +7,9 @@ import { combineLatest, tap } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
@@ -15,7 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrls: ['./add-edit-kategorie.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReactiveFormsModule, MatIconModule, MatFormFieldModule, MatSelectModule]
+  imports: [ReactiveFormsModule, MatIconModule, MatFormFieldModule, MatSelectModule, CommonModule, MatInputModule, MatButtonModule]
 })
 export class AddEditKategorieComponent {
   kategorieForm: FormGroup;

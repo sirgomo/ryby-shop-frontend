@@ -27,6 +27,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-add-edit-product',
@@ -36,7 +39,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   providers: [DatePipe],
   standalone: true,
   imports: [CommonModule, ErrorComponent, MatIconModule, MatButtonModule, FormsModule, ReactiveFormsModule,
-  MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule, MatProgressSpinnerModule]
+  MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule, MatProgressSpinnerModule, MatMomentDateModule, MatInputModule, MatCheckboxModule]
 })
 export class AddEditProductComponent implements OnInit {
 
@@ -78,7 +81,7 @@ export class AddEditProductComponent implements OnInit {
       bestellungen: [this.data ? this.data.bestellungen : []],
       datumHinzugefuegt: [this.data ? this.data.datumHinzugefuegt : Date.now()],
       kategorie: [this.data ? this.data.kategorie : [], Validators.required],
-      verfgbarkeit: [this.data ? this.data.verfgbarkeit : false],
+      verfgbarkeit: [this.data ? this.data.verfgbarkeit : 0],
       mindestmenge: [this.data ? this.data.mindestmenge : '', Validators.required],
       currentmenge: [{ value: this.data ? this.data.currentmenge : 0, disabled: true }],
       product_sup_id: [this.data ? this.data.product_sup_id: ''],

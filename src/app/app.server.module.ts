@@ -12,7 +12,7 @@ import { bootstrapApplication, provideClientHydration } from '@angular/platform-
     AppModule,
     ServerModule,
   ],
-  providers: [ provideClientHydration()],
+  providers: [],
   bootstrap: [],
 })
 export class AppServerModule {}

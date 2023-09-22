@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-user-login',
@@ -18,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
   styleUrls: ['./user-login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ErrorComponent, MatFormFieldModule, FormsModule, CommonModule, MatInputModule]
+  imports: [ErrorComponent, MatFormFieldModule, FormsModule, CommonModule, MatInputModule, MatButtonModule]
 })
 export class UserLoginComponent {
   loginData: iLogin = {

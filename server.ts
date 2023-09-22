@@ -46,11 +46,11 @@ export function app(): express.Express {
           provide: MAT_DATE_FORMATS, useValue: MY_FORMATS
         },
         importProvidersFrom(MatSnackBarModule),
-        provideRouter(routes),
+       // provideRouter(routes),
         importProvidersFrom(JwtModule.forRoot({})),
         importProvidersFrom(BrowserAnimationsModule),
-        importProvidersFrom(AppRoutingModule)
-
+        importProvidersFrom(AppRoutingModule),
+        provideClientHydration(),
       ],
     })
    //bootstrap: AppServerModule

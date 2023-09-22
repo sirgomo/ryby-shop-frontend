@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, Inject, PLATFORM_ID } from '@angula
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { HelperService } from 'src/app/helper/helper.service';
 import { SearchComponent } from 'src/app/search/search.component';
@@ -13,7 +14,7 @@ import { SearchComponent } from 'src/app/search/search.component';
   styleUrls: ['./toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatToolbarModule, SearchComponent, MatIconModule, CommonModule, MatButtonModule]
+  imports: [MatToolbarModule, SearchComponent, MatIconModule, CommonModule, MatButtonModule, RouterModule]
 })
 export class ToolbarComponent {
   isLogged = this.helper.isLogged;

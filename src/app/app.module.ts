@@ -93,13 +93,13 @@ import { CommonModule } from '@angular/common';
 */
   ],
   providers: [
-    provideClientHydration(),
+  /*  provideClientHydration(),
     {
       provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
     },
     {
       provide: MAT_DATE_FORMATS, useValue: MY_FORMATS
-    },
+    },*/
   ],
   exports: [],
   //bootstrap: [AppComponent]

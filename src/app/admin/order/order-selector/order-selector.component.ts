@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,7 +13,7 @@ import { OrdersService } from 'src/app/orders/orders.service';
   styleUrls: ['./order-selector.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatFormFieldModule, MatSelectModule, FormsModule]
+  imports: [MatFormFieldModule, MatSelectModule, FormsModule, CommonModule]
 })
 export class OrderSelectorComponent {
   statusArr = Object.values(BESTELLUNGSSTATUS);

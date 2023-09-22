@@ -10,6 +10,7 @@ import { ErrorComponent } from 'src/app/error/error.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-add-edit-liferant',
@@ -17,7 +18,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   styleUrls: ['./add-edit-liferant.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, ErrorComponent, MatIconModule, MatButtonModule, MatFormFieldModule, FormsModule, ReactiveFormsModule]
+  imports: [CommonModule, ErrorComponent, MatIconModule, MatButtonModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatInputModule]
 })
 export class AddEditLiferantComponent implements OnInit{
   lieferantForm: FormGroup;

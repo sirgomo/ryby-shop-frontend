@@ -8,6 +8,7 @@ import { HelperService } from 'src/app/helper/helper.service';
 import { iKategorie } from 'src/app/model/iKategorie';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule, isPlatformServer } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-product',
@@ -15,7 +16,7 @@ import { CommonModule, isPlatformServer } from '@angular/common';
   styleUrls: ['./product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatTableModule, CommonModule]
+  imports: [MatTableModule, CommonModule, MatButtonModule]
 })
 export class ProductComponent {
   displayedColumns: string[] = ['prodid','artid', 'name', 'preis', 'verfugbar', 'edit', 'delete'];

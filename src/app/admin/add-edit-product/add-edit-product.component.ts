@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit, Optional, signal } from '@angular/core';
 import { ProductService } from '../product/product.service';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { iProduct } from 'src/app/model/iProduct';
 import { iColor } from 'src/app/model/iColor';
@@ -14,17 +14,32 @@ import { ErrorService } from 'src/app/error/error.service';
 import { Observable, combineLatest, map, of, shareReplay, startWith, switchMap, tap } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { iAktion } from 'src/app/model/iAktion';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { iDelete } from 'src/app/model/iDelete';
 import { iEan } from 'src/app/model/iEan';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-add-edit-product',
   templateUrl: './add-edit-product.component.html',
   styleUrls: ['./add-edit-product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DatePipe]
+  providers: [DatePipe],
+  standalone: true,
+  imports: [CommonModule, ErrorComponent, MatIconModule, MatButtonModule, FormsModule, ReactiveFormsModule,
+  MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule, MatProgressSpinnerModule, MatMomentDateModule, MatInputModule, MatCheckboxModule]
 })
 export class AddEditProductComponent implements OnInit {
 
@@ -66,7 +81,7 @@ export class AddEditProductComponent implements OnInit {
       bestellungen: [this.data ? this.data.bestellungen : []],
       datumHinzugefuegt: [this.data ? this.data.datumHinzugefuegt : Date.now()],
       kategorie: [this.data ? this.data.kategorie : [], Validators.required],
-      verfgbarkeit: [this.data ? this.data.verfgbarkeit : false],
+      verfgbarkeit: [this.data ? this.data.verfgbarkeit : 0],
       mindestmenge: [this.data ? this.data.mindestmenge : '', Validators.required],
       currentmenge: [{ value: this.data ? this.data.currentmenge : 0, disabled: true }],
       product_sup_id: [this.data ? this.data.product_sup_id: ''],

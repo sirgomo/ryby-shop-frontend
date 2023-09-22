@@ -1,16 +1,24 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit, Optional } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { iLieferant } from 'src/app/model/iLieferant';
 import { LiferantsService } from '../liferants/liferants.service';
 import { Observable, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
+import { CommonModule } from '@angular/common';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-add-edit-liferant',
   templateUrl: './add-edit-liferant.component.html',
   styleUrls: ['./add-edit-liferant.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, ErrorComponent, MatIconModule, MatButtonModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatInputModule]
 })
 export class AddEditLiferantComponent implements OnInit{
   lieferantForm: FormGroup;

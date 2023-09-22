@@ -1,5 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PayPalNamespace, loadScript } from '@paypal/paypal-js';
 import { iBestellung } from 'src/app/model/iBestellung';
 import { environment } from 'src/environments/environment';
@@ -7,7 +9,10 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-paypal',
   templateUrl: './paypal.component.html',
-  styleUrls: ['./paypal.component.scss']
+  styleUrls: ['./paypal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, MatDialogModule, MatProgressSpinnerModule]
 })
 export class PaypalComponent implements OnInit{
   paypal! :PayPalNamespace | null;

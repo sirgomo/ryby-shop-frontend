@@ -6,12 +6,20 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dial
 import { UserRegisterComponent } from '../user-register/user-register.component';
 import { Observable } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',
   styleUrls: ['./user-login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ErrorComponent, MatFormFieldModule, FormsModule, CommonModule, MatInputModule, MatButtonModule]
 })
 export class UserLoginComponent {
   loginData: iLogin = {

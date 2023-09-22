@@ -1,14 +1,32 @@
 import 'zone.js/node';
 
-import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF, isPlatformServer } from '@angular/common';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import * as express from 'express';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { AppServerModule } from './src/main.server';
 import 'localstorage-polyfill'
+import { bootstrapApplication, provideClientHydration } from '@angular/platform-browser';
+import { AppComponent } from 'src/app/app.component';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { importProvidersFrom } from '@angular/core';
+import { JwtInterceptor, JwtModule } from '@auth0/angular-jwt';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule, routes } from 'src/app/app-routing.module';
+import { applyDomino } from '@ntegral/ngx-universal-window';
+import { provideRouter } from '@angular/router';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MY_FORMATS } from 'src/app/const';
+
 
 global['localStorage'] = localStorage;
+//
+const BROWSER_DIR = join(process.cwd(), 'dist/ryby-shop-frontend/browser');
+applyDomino(global, join(BROWSER_DIR, 'index.html'));
+
+(global as any).WebSocket = require('ws');
+(global as any).XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -18,7 +36,24 @@ export function app(): express.Express {
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/main/modules/express-engine)
   server.engine('html', ngExpressEngine({
-    bootstrap: AppServerModule
+    bootstrap: () => bootstrapApplication(AppComponent, {
+      providers: [
+        provideHttpClient(),
+        {
+          provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
+        },
+        {
+          provide: MAT_DATE_FORMATS, useValue: MY_FORMATS
+        },
+        importProvidersFrom(MatSnackBarModule),
+       // provideRouter(routes),
+        importProvidersFrom(JwtModule.forRoot({})),
+        importProvidersFrom(BrowserAnimationsModule),
+        importProvidersFrom(AppRoutingModule),
+        provideClientHydration(),
+      ],
+    })
+   //bootstrap: AppServerModule
   }));
 
   server.set('view engine', 'html');

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, combineLatest, concatMap, map, of, startWith } from 'rxjs';
@@ -12,6 +12,11 @@ import { iUserData } from 'src/app/model/iUserData';
 import { UserService } from 'src/app/user/user.service';
 import { PaypalComponent } from '../paypal/paypal.component';
 import { Router } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -19,6 +24,8 @@ import { Router } from '@angular/router';
   templateUrl: './shipping-address.component.html',
   styleUrls: ['./shipping-address.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MatFormFieldModule, ReactiveFormsModule, MatCheckboxModule, MatInputModule, MatButtonModule, CommonModule, FormsModule]
 })
 export class ShippingAddressComponent {
   isLogged = this.helperService.isLogged();

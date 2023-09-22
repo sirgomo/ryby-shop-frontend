@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, Optional } from '@angular/core';
 import { WareneingangService } from '../wareneingang.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
 import { iColor } from 'src/app/model/iColor';
 import { ErrorService } from 'src/app/error/error.service';
@@ -9,12 +9,19 @@ import { iProduct } from 'src/app/model/iProduct';
 import { iWarenEingang } from 'src/app/model/iWarenEingang';
 import { Observable, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-add-edit-product-to-buchung',
   templateUrl: './add-edit-product-to-buchung.component.html',
   styleUrls: ['./add-edit-product-to-buchung.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, ErrorComponent, FormsModule, MatIconModule, MatButtonModule, ReactiveFormsModule, MatFormFieldModule]
 })
 export class AddEditProductToBuchungComponent {
   wareneingang = this.wEingService.currentWarenEingangSig();

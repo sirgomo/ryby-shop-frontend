@@ -6,12 +6,20 @@ import { AddEditLiferantComponent } from '../add-edit-liferant/add-edit-liferant
 import { LiferantsService } from './liferants.service';
 import { ErrorService } from 'src/app/error/error.service';
 import { HelperService } from 'src/app/helper/helper.service';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-liferants',
   templateUrl: './liferants.component.html',
   styleUrls: ['./liferants.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ErrorComponent, MatCardModule, CommonModule, MatTableModule, MatIconModule, MatButtonModule]
 })
 export class LiferantsComponent implements OnDestroy {
   #title = '';

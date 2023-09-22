@@ -189,7 +189,7 @@ export class ProductService {
   }
   //get thumbnails
   getThumbnails(id: string) {
-    return this.http.get(`${this.API}/thumbnails/${id}`, { responseType: 'blob' }).pipe(
+    return  this.http.get(`${this.API}/thumbnails/${id}`, { responseType: 'blob' }).pipe(
       catchError((err) => {
         this.error.newMessage(err.message);
         return throwError(()=> err);

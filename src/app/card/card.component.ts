@@ -5,12 +5,22 @@ import { iColor } from '../model/iColor';
 import { CompanyService } from '../admin/company/company.service';
 import { iCompany } from '../model/iCompany';
 import { Observable, map, tap } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ShippingAddressComponent } from './shipping-address-make-bestellung/shipping-address.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MatProgressSpinnerModule, ShippingAddressComponent, MatSelectModule, MatTableModule, MatIconModule, CommonModule, MatButtonModule]
 })
 export class CardComponent implements OnInit {
 

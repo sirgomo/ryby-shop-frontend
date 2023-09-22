@@ -1,20 +1,33 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, OnInit, Signal, WritableSignal, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, map, of, tap } from 'rxjs';
+import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
 import { BESTELLUNGSSTATE, BESTELLUNGSSTATUS, iBestellung } from 'src/app/model/iBestellung';
 import { iColor } from 'src/app/model/iColor';
-import { iUserData } from 'src/app/model/iUserData';
 import { OrdersService } from 'src/app/orders/orders.service';
-import { ItemComponent } from 'src/app/products/item/item.component';
+
 
 @Component({
   selector: 'app-order-details',
   templateUrl: './order-details.component.html',
   styleUrls: ['./order-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ErrorComponent, MatFormFieldModule, MatIconModule, MatDatepickerModule, MatInputModule, MatSelectModule, FormsModule, ReactiveFormsModule,
+  CommonModule, MatProgressSpinnerModule, MatMomentDateModule, MatButtonModule, MatDialogModule]
 })
 export class OrderDetailsComponent implements OnInit {
   err = this.error.message;

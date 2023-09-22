@@ -1,11 +1,16 @@
 import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { HelperService } from '../helper/helper.service';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-paginator',
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, MatButtonModule, MatIconModule]
 })
 export class PaginatorComponent {
   pagiSig = computed(() => {

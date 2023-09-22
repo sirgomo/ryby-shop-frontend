@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, catchError, map, of, switchMap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
-import { HelperService } from 'src/app/helper/helper.service';
 import { iKategorie } from 'src/app/model/iKategorie';
 import { environment } from 'src/environments/environment';
 

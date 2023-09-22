@@ -17,66 +17,79 @@ import { ImpressumComponent } from './admin/company/impressum/impressum.componen
 import { AgbComponent } from './admin/company/agb/agb.component';
 import { DatenSchutztComponent } from './admin/company/daten-schutzt/daten-schutzt.component';
 
-const routes: Routes = [
+export const routes: Routes = [
 {
-  component: AgbComponent,
+  //component: AgbComponent,
   path: 'agb',
+  loadComponent: () => import('./admin/company/agb/agb.component').then(m => m.AgbComponent),
 },
 {
-  component: CardComponent,
+ // component: CardComponent,
   path: 'card',
+  loadComponent: () => import('./card/card.component').then(m => m.CardComponent),
 },
 {
-  component: DatenSchutztComponent,
-  path: 'datenschutzt'
+ // component: DatenSchutztComponent,
+  path: 'datenschutzt',
+  loadComponent: () => import('./admin/company/daten-schutzt/daten-schutzt.component').then(m => m.DatenSchutztComponent),
 },
 {
-  component: OrdersComponent,
+//  component: OrdersComponent,
   path: 'order',
+  loadComponent: () => import('./orders/orders.component').then(m => m.OrdersComponent),
 },
 {
-  component: OrderComponent,
+  //component: OrderComponent,
   path: 'admin-order',
-  canActivate: [routeGuard]
+  canActivate: [routeGuard],
+  loadComponent: () => import('./admin/order/order.component').then(m => m.OrderComponent),
 },
 {
-  component: CompanyComponent,
+  //component: CompanyComponent,
   path: 'company',
   canActivate: [routeGuard],
+  loadComponent: () => import('./admin/company/company.component').then(m => m.CompanyComponent),
 },
 {
-  component: WareneingangComponent,
+  //component: WareneingangComponent,
   path: 'waren-eingang',
   canActivate: [routeGuard],
+  loadComponent: () => import('./admin/wareneingang/wareneingang.component').then(m => m.WareneingangComponent),
 },
 {
-  component: ProductComponent,
+ // component: ProductComponent,
   path: 'product',
   canActivate: [routeGuard],
+  loadComponent: () => import('./admin/product/product.component').then(m => m.ProductComponent),
 },
 {
-  component: AdminComponent,
+  //component: AdminComponent,
   path: 'admin',
   canActivate: [routeGuard],
+  loadComponent: () => import('./admin/admin.component').then(m => m.AdminComponent),
 },
 {
-  component: LiferantsComponent,
+  //component: LiferantsComponent,
   path: 'liferant',
   canActivate: [routeGuard],
+  loadComponent: () => import('./admin/liferants/liferants.component').then(m => m.LiferantsComponent),
 },
 {
-  component: ImpressumComponent,
+  //component: ImpressumComponent,
   path: 'impressum',
+  loadComponent: () => import('./admin/company/impressum/impressum.component').then(m => m.ImpressumComponent),
 },
 {
-  component: KategoriesComponent,
+  //component: KategoriesComponent,
   path: 'kategory',
   canActivate: [routeGuard],
+  loadComponent: () => import('./admin/kategories/kategories.component').then(m => m.KategoriesComponent),
 },
 {
-  component: UserComponent,
+ // component: UserComponent,
   path: 'user',
   canActivate: [userGuard],
+  loadComponent: () => import('./user/user.component').then(m => m.UserComponent),
 },
 {
   component: ProductsComponent,

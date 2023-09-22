@@ -1,14 +1,23 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { iCompany } from 'src/app/model/iCompany';
 import { CompanyService } from './company.service';
 import { Observable, map } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-company',
   templateUrl: './company.component.html',
-  styleUrls: ['./company.component.scss']
+  styleUrls: ['./company.component.scss'],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ErrorComponent, CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatCheckboxModule, MatInputModule, MatButtonModule]
 })
 export class CompanyComponent {
   companyForm: FormGroup;

@@ -62,87 +62,47 @@ import { InoviceComponent } from './inovice/inovice.component';
 import { ImpressumComponent } from './admin/company/impressum/impressum.component';
 import { AgbComponent } from './admin/company/agb/agb.component';
 import { DatenSchutztComponent } from './admin/company/daten-schutzt/daten-schutzt.component';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    ToolbarComponent,
-    FooterComponent,
-    SearchComponent,
-    UserLoginComponent,
-    UserRegisterComponent,
-    ErrorComponent,
-    AdminComponent,
-    LiferantsComponent,
-    AddEditLiferantComponent,
-    AddEditKategorieComponent,
-    KategoriesComponent,
-    UserComponent,
-    ChangePasswordComponent,
-    ProductComponent,
-    AddEditProductComponent,
-    ProductsComponent,
-    WareneingangComponent,
-    ArtikelListComponent,
-    ArtikelGebuchtComponent,
-    AddEditBuchungComponent,
-    AddEditProductToBuchungComponent,
-    ItemComponent,
-    ItemDetailsComponent,
-    CardComponent,
-    CompanyComponent,
-    ShippingAddressComponent,
-    PaypalComponent,
-    OrdersComponent,
-    OrderComponent,
-    OrderDetailsComponent,
-    OrderSelectorComponent,
+  /* FooterComponent,
     PaginatorComponent,
-    InoviceComponent,
-    ImpressumComponent,
-    AgbComponent,
-    DatenSchutztComponent
+    ToolbarComponent,
+    AppComponent,
+    SearchComponent,*/
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatDialogModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatSnackBarModule,
+  /*  BrowserModule,
+     MatButtonModule,
+     MatIconModule,
+     MatSidenavModule,
+     MatToolbarModule,
+     RouterModule,
+     CommonModule,
+     FormsModule,
+     MatDialogModule,
+     MatSnackBarModule,
+     AppRoutingModule,
     JwtModule.forRoot({
       config: {}
     }),
-    MatCardModule,
-    MatTableModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatMomentDateModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatTabsModule,
+*/
   ],
   providers: [
-    provideClientHydration(),
+  /*  provideClientHydration(),
     {
       provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
     },
     {
       provide: MAT_DATE_FORMATS, useValue: MY_FORMATS
-    },
+    },*/
   ],
   exports: [],
-  bootstrap: [AppComponent]
+  //bootstrap: [AppComponent]
+  bootstrap: []
 })
 export class AppModule { }

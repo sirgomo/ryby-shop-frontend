@@ -17,6 +17,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ArtikelListComponent } from '../artikel-list/artikel-list.component';
 import { ArtikelGebuchtComponent } from '../artikel-gebucht/artikel-gebucht.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MAT_DATE_FORMATS, MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+
 
 @Component({
   selector: 'app-add-edit-buchung',
@@ -25,8 +31,9 @@ import { ArtikelGebuchtComponent } from '../artikel-gebucht/artikel-gebucht.comp
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DatePipe],
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatSelectModule, ErrorComponent,
-     MatDatepickerModule, MatTabsModule, ArtikelListComponent, ArtikelGebuchtComponent]
+  imports: [ MatIconModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatSelectModule, ErrorComponent,
+     MatDatepickerModule, MatTabsModule, ArtikelListComponent, ArtikelGebuchtComponent, CommonModule, MatMomentDateModule, MatNativeDateModule, MatButtonModule, MatCheckboxModule,
+    MatInputModule]
 })
 export class AddEditBuchungComponent implements OnInit{
   products: iWareneingangProduct[] = [];

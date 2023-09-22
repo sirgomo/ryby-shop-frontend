@@ -8,16 +8,18 @@ import { join } from 'node:path';
 import 'localstorage-polyfill'
 import { bootstrapApplication, provideClientHydration } from '@angular/platform-browser';
 import { AppComponent } from 'src/app/app.component';
-import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import {  provideHttpClient, withInterceptors } from '@angular/common/http';
+import {  MatSnackBarModule } from '@angular/material/snack-bar';
 import { importProvidersFrom } from '@angular/core';
-import { JwtInterceptor, JwtModule } from '@auth0/angular-jwt';
+import { JwtModule } from '@auth0/angular-jwt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule, routes } from 'src/app/app-routing.module';
 import { applyDomino } from '@ntegral/ngx-universal-window';
 import { provideRouter } from '@angular/router';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_FORMATS } from 'src/app/const';
+import { jwtInterceptorFn } from 'src/app/interceptors/jwtInterceptorFn';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 
 global['localStorage'] = localStorage;
@@ -38,18 +40,15 @@ export function app(): express.Express {
   server.engine('html', ngExpressEngine({
     bootstrap: () => bootstrapApplication(AppComponent, {
       providers: [
-        provideHttpClient(),
-        {
-          provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
-        },
+        provideHttpClient(withInterceptors([jwtInterceptorFn])),
         {
           provide: MAT_DATE_FORMATS, useValue: MY_FORMATS
         },
-        importProvidersFrom(MatSnackBarModule),
-       // provideRouter(routes),
+        provideRouter(routes),
         importProvidersFrom(JwtModule.forRoot({})),
         importProvidersFrom(BrowserAnimationsModule),
         importProvidersFrom(AppRoutingModule),
+        importProvidersFrom(MatSnackBarModule),
         provideClientHydration(),
       ],
     })

@@ -12,6 +12,7 @@ import { importProvidersFrom } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { jwtInterceptorFn } from './app/interceptors/jwtInterceptorFn';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 
 //platformBrowserDynamic().bootstrapModule(AppModule)
@@ -26,7 +27,8 @@ import { jwtInterceptorFn } from './app/interceptors/jwtInterceptorFn';
       importProvidersFrom(JwtModule.forRoot({})),
       importProvidersFrom(BrowserAnimationsModule),
       importProvidersFrom(AppRoutingModule),
-      importProvidersFrom(MatSnackBarModule)
+      importProvidersFrom(MatSnackBarModule),
+
     ]
   }).catch(err => {
     console.log(err);

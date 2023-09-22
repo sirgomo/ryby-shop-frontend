@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PayPalNamespace, loadScript } from '@paypal/paypal-js';
@@ -12,7 +13,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatProgressSpinnerModule]
+  imports: [CommonModule, MatDialogModule, MatProgressSpinnerModule, MatButtonModule]
 })
 export class PaypalComponent implements OnInit{
   paypal! :PayPalNamespace | null;

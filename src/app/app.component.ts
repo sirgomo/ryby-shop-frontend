@@ -9,8 +9,9 @@ import { Router, RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer/footer.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
-import { CommonModule, isPlatformServer } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+
 
 @Component({
   selector: 'app-root',

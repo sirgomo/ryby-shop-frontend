@@ -9,6 +9,7 @@ import { AddEditProductToBuchungComponent } from '../add-edit-product-to-buchung
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-artikel-list',
@@ -16,7 +17,7 @@ import { MatTableModule } from '@angular/material/table';
   styleUrls: ['./artikel-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, MatTableModule]
+  imports: [CommonModule, MatTableModule, MatButtonModule]
 })
 export class ArtikelListComponent {
 

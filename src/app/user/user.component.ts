@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-user',
@@ -18,7 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DatePipe],
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, CommonModule, MatCardModule, FormsModule, ReactiveFormsModule, MatButtonModule]
+  imports: [MatFormFieldModule, MatCheckboxModule, MatInputModule, CommonModule, MatCardModule, FormsModule, ReactiveFormsModule, MatButtonModule]
 })
 export class UserComponent implements OnInit{
   user$ = new Observable<iUserData>();

@@ -1,5 +1,4 @@
 import 'zone.js/node';
-
 import { APP_BASE_HREF, isPlatformServer } from '@angular/common';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import * as express from 'express';
@@ -14,19 +13,19 @@ import { importProvidersFrom } from '@angular/core';
 import { JwtModule } from '@auth0/angular-jwt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule, routes } from 'src/app/app-routing.module';
-import { applyDomino } from '@ntegral/ngx-universal-window';
 import { provideRouter } from '@angular/router';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_FORMATS } from 'src/app/const';
 import { jwtInterceptorFn } from 'src/app/interceptors/jwtInterceptorFn';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+//import * as domino from 'domino';
+//import * as fs from 'fs';
 
 
 global['localStorage'] = localStorage;
-//
-const BROWSER_DIR = join(process.cwd(), 'dist/ryby-shop-frontend/browser');
-applyDomino(global, join(BROWSER_DIR, 'index.html'));
-
+//const template = fs.readFileSync(join(process.cwd(), 'dist/ryby-shop-frontend/browser/index.html')).toString();
+//const win = domino.createWindow(template);
+//global['window'] = win as Window & typeof globalThis;
+(global as any).window = new Window();
 (global as any).WebSocket = require('ws');
 (global as any).XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
@@ -74,7 +73,7 @@ export function app(): express.Express {
 }
 
 function run(): void {
-  const port = process.env['PORT'] || 4000;
+  const port = process.env['PORT'] || 4222;
 
   // Start up the Node server
   const server = app();

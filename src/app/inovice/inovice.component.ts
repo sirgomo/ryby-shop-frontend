@@ -10,7 +10,7 @@ import { iColor } from '../model/iColor';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule, isPlatformServer } from '@angular/common';
+import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -109,6 +109,8 @@ export class InoviceComponent {
       this.dialoRef.close();
     }
     savePdf() {
+
+
       const item = document.getElementById('invoice');
       if(item) {
 
@@ -153,10 +155,8 @@ export class InoviceComponent {
               imgStart += imgHight;
            //  pdf.addImage(imageData, 'PNG', leftMargin, - (pdfHeigh * i) + leftMargin , canvasImageWidth, canvasImageHeight,'', 'MEDIUM');
             }
-            if(isPlatformServer(this.platformId))
-              return;
 
-            pdf.output('pdfobjectnewwindow');
+              pdf.output('pdfobjectnewwindow');
 
         })
       }

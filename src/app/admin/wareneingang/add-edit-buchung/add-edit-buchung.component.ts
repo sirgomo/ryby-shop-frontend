@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Observable, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { LiferantsService } from '../../liferants/liferants.service';
-import { CommonModule, DatePipe, isPlatformServer } from '@angular/common';
+import { CommonModule, DatePipe, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -131,14 +131,15 @@ export class AddEditBuchungComponent implements OnInit{
     this.dialRef.close();
   }
   SaveReceiptCompletely() {
-    if(isPlatformServer(this.platformId))
-      return;
 
-    if(window.confirm('Buchen ?')) {
-      this.warenEingangForm.get('datenEingabe')?.patchValue(this.datePipe.transform(new Date( Date.now()).toISOString(), 'yyyy-MM-dd'));
-      this.saveGoodsReceipt();
-    }
-    this.warenEingangForm.get('gebucht')?.setValue(false);
+
+      if(window.confirm('Buchen ?')) {
+        this.warenEingangForm.get('datenEingabe')?.patchValue(this.datePipe.transform(new Date( Date.now()).toISOString(), 'yyyy-MM-dd'));
+        this.saveGoodsReceipt();
+      }
+      this.warenEingangForm.get('gebucht')?.setValue(false);
+
+
   }
   onSelectionChange(liferantId: number) {
    this.warenService.lieferantIdSig.set(liferantId);

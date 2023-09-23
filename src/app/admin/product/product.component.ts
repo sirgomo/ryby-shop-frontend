@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { HelperService } from 'src/app/helper/helper.service';
 import { iKategorie } from 'src/app/model/iKategorie';
 import { MatTableModule } from '@angular/material/table';
-import { CommonModule, isPlatformServer } from '@angular/common';
+import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
@@ -35,12 +35,12 @@ export class ProductComponent {
     this.dialog.open(AddEditProductComponent, conf);
   }
   deleteProdukt(prod: iProduct) {
-    if(isPlatformServer(this.platformId))
-      return;
 
-   const yes = window.confirm('Bist du sicher das du der Produkt '+ prod.name +' löschen willst ?');
-   if (yes && prod.id) {
-    this.del$ = this.prodService.deleteProduct(prod.id);
-   }
+
+      const yes = window.confirm('Bist du sicher das du der Produkt '+ prod.name +' löschen willst ?');
+      if (yes && prod.id) {
+       this.del$ = this.prodService.deleteProduct(prod.id);
+      }
+
   }
 }

@@ -1,6 +1,4 @@
-//import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-//import { AppModule } from './app/app.module';
-import { bootstrapApplication, provideClientHydration } from '@angular/platform-browser';
+import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
@@ -12,11 +10,8 @@ import { importProvidersFrom } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { jwtInterceptorFn } from './app/interceptors/jwtInterceptorFn';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 
-//platformBrowserDynamic().bootstrapModule(AppModule)
-//  .catch(err => console.error(err));
   bootstrapApplication(AppComponent, {
     providers: [
       provideHttpClient(withInterceptors([jwtInterceptorFn])),
@@ -27,8 +22,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
       importProvidersFrom(JwtModule.forRoot({})),
       importProvidersFrom(BrowserAnimationsModule),
       importProvidersFrom(AppRoutingModule),
-      importProvidersFrom(MatSnackBarModule),
-
+      importProvidersFrom(MatSnackBarModule)
     ]
   }).catch(err => {
     console.log(err);

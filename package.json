@@ -33,7 +33,6 @@
     "@schuchard/schematics-core": "^0.4.2",
     "bufferutil": "^4.0.7",
     "compression": "^1.7.4",
-    "domino": "^2.1.6",
     "express": "^4.15.2",
     "html2canvas": "^1.4.1",
     "inquirer": "^9.2.10",

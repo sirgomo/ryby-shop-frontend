@@ -18,14 +18,10 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_FORMATS } from 'src/app/const';
 import { jwtInterceptorFn } from 'src/app/interceptors/jwtInterceptorFn';
 
-//import * as domino from 'domino';
-//import * as fs from 'fs';
 const compression = require('compression')
 
 global['localStorage'] = localStorage;
-//const template = fs.readFileSync(join(process.cwd(), 'dist/ryby-shop-frontend/browser/index.html')).toString();
-//const win = domino.createWindow(template);
-//global['window'] = win as Window & typeof globalThis;
+
 (global as any).window = new Window();
 (global as any).WebSocket = require('ws');
 (global as any).XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;

@@ -14,6 +14,7 @@ import { ErrorComponent } from 'src/app/error/error.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-add-edit-product-to-buchung',
@@ -21,7 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   styleUrls: ['./add-edit-product-to-buchung.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, ErrorComponent, FormsModule, MatIconModule, MatButtonModule, ReactiveFormsModule, MatFormFieldModule]
+  imports: [CommonModule, ErrorComponent, FormsModule, MatIconModule, MatButtonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule]
 })
 export class AddEditProductToBuchungComponent {
   wareneingang = this.wEingService.currentWarenEingangSig();

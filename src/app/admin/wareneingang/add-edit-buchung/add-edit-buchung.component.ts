@@ -17,8 +17,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ArtikelListComponent } from '../artikel-list/artikel-list.component';
 import { ArtikelGebuchtComponent } from '../artikel-gebucht/artikel-gebucht.component';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MAT_DATE_FORMATS, MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
@@ -32,7 +30,7 @@ import { MatInputModule } from '@angular/material/input';
   providers: [DatePipe],
   standalone: true,
   imports: [ MatIconModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatSelectModule, ErrorComponent,
-     MatDatepickerModule, MatTabsModule, ArtikelListComponent, ArtikelGebuchtComponent, CommonModule, MatMomentDateModule, MatNativeDateModule, MatButtonModule, MatCheckboxModule,
+     MatDatepickerModule, MatTabsModule, ArtikelListComponent, ArtikelGebuchtComponent, CommonModule, MatButtonModule, MatCheckboxModule,
     MatInputModule]
 })
 export class AddEditBuchungComponent implements OnInit{

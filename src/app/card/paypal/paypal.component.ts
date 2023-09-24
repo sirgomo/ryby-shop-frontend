@@ -28,6 +28,7 @@ export class PaypalComponent implements OnInit{
     } catch (err) {
       console.log('failed to load paypal....')
     }
+
     if(this.paypal?.Buttons) {
       try {
         await this.paypal.Buttons({

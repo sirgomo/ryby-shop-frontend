@@ -11,7 +11,7 @@ import { iLieferant } from 'src/app/model/iLieferant';
 import { iKategorie } from 'src/app/model/iKategorie';
 import { HelperService } from 'src/app/helper/helper.service';
 import { ErrorService } from 'src/app/error/error.service';
-import { Observable, combineLatest, map, of, shareReplay, startWith, switchMap, tap } from 'rxjs';
+import { Observable, combineLatest, map, of, startWith, switchMap, tap } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { iAktion } from 'src/app/model/iAktion';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -27,19 +27,21 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatNativeDateModule } from '@angular/material/core';
+
 
 @Component({
   selector: 'app-add-edit-product',
   templateUrl: './add-edit-product.component.html',
   styleUrls: ['./add-edit-product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DatePipe],
+  providers: [DatePipe, MatDatepickerModule],
   standalone: true,
   imports: [CommonModule, ErrorComponent, MatIconModule, MatButtonModule, FormsModule, ReactiveFormsModule,
-  MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule, MatProgressSpinnerModule, MatMomentDateModule, MatInputModule, MatCheckboxModule]
+  MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule,
+   MatProgressSpinnerModule, MatInputModule, MatCheckboxModule]
 })
 export class AddEditProductComponent implements OnInit {
 
@@ -104,6 +106,8 @@ export class AddEditProductComponent implements OnInit {
         this.color = JSON.parse(res.color);
         this.productForm.patchValue(res);
 
+          console.log(res.datumHinzugefuegt)
+          console.log(this.productForm.get('datumHinzugefuegt')?.getRawValue())
         if(res.eans && res.eans.length > 0) {
           for (let i = 0; i < res.eans.length; i++) {
             const tmp = this.formBuilder.group({

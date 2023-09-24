@@ -17,6 +17,7 @@ import { provideRouter } from '@angular/router';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_FORMATS } from 'src/app/const';
 import { jwtInterceptorFn } from 'src/app/interceptors/jwtInterceptorFn';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 const compression = require('compression')
 
@@ -50,7 +51,7 @@ export function app(): express.Express {
     })
    //bootstrap: AppServerModule
   }));
-  server.use(compression({ level: 5}));
+  server.use(compression({ level: 6}));
   server.set('view engine', 'html');
   server.set('views', distFolder);
 

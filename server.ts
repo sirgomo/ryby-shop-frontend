@@ -17,9 +17,10 @@ import { provideRouter } from '@angular/router';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_FORMATS } from 'src/app/const';
 import { jwtInterceptorFn } from 'src/app/interceptors/jwtInterceptorFn';
+
 //import * as domino from 'domino';
 //import * as fs from 'fs';
-
+const compression = require('compression')
 
 global['localStorage'] = localStorage;
 //const template = fs.readFileSync(join(process.cwd(), 'dist/ryby-shop-frontend/browser/index.html')).toString();
@@ -53,7 +54,7 @@ export function app(): express.Express {
     })
    //bootstrap: AppServerModule
   }));
-
+  server.use(compression({ level: 5}));
   server.set('view engine', 'html');
   server.set('views', distFolder);
 

@@ -10,9 +10,13 @@
             <div class="menuItem" *ngFor="let item of kategories"><button mat-button color="accent" (click)="changeCategorie(item)" >{{item.name}}</button></div>
           </div>
       </mat-sidenav>
-      <mat-sidenav-content >
+      <mat-sidenav-content>
+        <div *ngIf="showLoaderSig()" class="loader-spinner">
+          <mat-spinner></mat-spinner>
+        </div>
   <router-outlet></router-outlet>
   <app-paginator></app-paginator>
       </mat-sidenav-content>
 </mat-sidenav-container>
 <app-footer></app-footer>
+

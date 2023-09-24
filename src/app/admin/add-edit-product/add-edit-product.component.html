@@ -14,7 +14,7 @@
       <div class="product-details">
           <div class="product-image">
             <div class="image" *ngIf="images.length > 0">
-              <img [src]="getSafeImageData()" alt="Product Image" *ngIf="(getFoto$ | async) else loader">
+              <img [src]="getSafeImageData()" alt="Product Image" *ngIf="(getFoto$ | async)">
             </div>
             <div class="images">
               <div class="imageItem" *ngFor="let item of images; let i = index" >
@@ -179,7 +179,4 @@
       </div>
 </form>
 </div>
-<span *ngIf="create$ | async else loader"></span>
-<ng-template #loader>
-  <mat-spinner></mat-spinner>
-</ng-template>
+<span *ngIf="create$ | async" ></span>

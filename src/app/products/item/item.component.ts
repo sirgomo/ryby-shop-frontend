@@ -41,6 +41,10 @@ export class ItemComponent implements OnInit {
 
       let tmpColor : iColor[] = JSON.parse(this.item.color);
       let tmpClolor1 = tmpColor.filter((item) => item.menge > 0)
+
+      if(tmpColor.length < 1 || tmpClolor1.length < 1)
+        return;
+
       this.images = JSON.parse(this.item.foto);
       this.color = tmpClolor1;
       const index = tmpColor.findIndex((item) => item.id === tmpClolor1[0].id);

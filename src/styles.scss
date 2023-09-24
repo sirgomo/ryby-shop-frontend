@@ -112,4 +112,13 @@ mat-sidenav-content  {
 a {
   color: rgb(105, 47, 8);
 }
-
+.loader-spinner {
+  position: absolute;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 100%;
+  height: 100vh;
+}

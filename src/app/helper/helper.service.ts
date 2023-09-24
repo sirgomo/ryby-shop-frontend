@@ -11,6 +11,7 @@ import { iUserData } from '../model/iUserData';
     providedIn: 'root'
   })
   export class HelperService {
+    showLoaderSig = signal(false);
     menuSub: BehaviorSubject<iMenuItem[]> = new BehaviorSubject<iMenuItem[]>([]);
     cardSig = signal<iProduct[]>([]);
     cardSigForMengeControl = signal<iProduct[]>([]);

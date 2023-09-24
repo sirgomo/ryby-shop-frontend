@@ -37,7 +37,7 @@
     </mat-form-field>
   </div>
   <div class="title">Produkte in Bestellung: </div>
-  <div *ngIf="currentItem() else loader ">
+  <div *ngIf="currentItem()">
     <div *ngFor="let item of currentItem()?.produkte; let i = index" class="tab-row">
       <div class="item-name">
         {{item.produkt[0].name}} ( {{item.produkt[0].artid}} )
@@ -65,6 +65,4 @@
   <button mat-raised-button color="primary" (click)="saveOrder()" >Speichern</button>
   <span *ngIf="act$ | async"></span>
 </div>
-<ng-template #loader>
-<mat-spinner></mat-spinner>
-</ng-template>
+

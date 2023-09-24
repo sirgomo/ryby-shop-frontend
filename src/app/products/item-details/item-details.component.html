@@ -78,11 +78,8 @@
       </div>
     </div>
     <div class="image">
-      <img [src]="currentImage" alt="" *ngIf="act$ | async else loader">
+      <img [src]="currentImage" alt="" *ngIf="act$ | async">
     </div>
   </div>
 </div>
-<ng-template #loader>
-  <mat-spinner></mat-spinner>
-</ng-template>
 

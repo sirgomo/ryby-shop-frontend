@@ -1,7 +1,7 @@
 <div class="error" *ngIf="error.message().length > 3">
 {{error.message}}
 </div>
-<div class="content" *ngIf="ordersSig() as orders else loader">
+<div class="content" *ngIf="ordersSig() as orders">
   <app-order-selector></app-order-selector>
   <table mat-table [dataSource]="orders">
     <ng-container matColumnDef="id">
@@ -56,6 +56,4 @@
   </table>
 
 </div>
-<ng-template #loader>
-  <mat-spinner></mat-spinner>
-</ng-template>
+

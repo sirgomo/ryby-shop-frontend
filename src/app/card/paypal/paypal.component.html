@@ -3,7 +3,7 @@
 <div>
     <span id="result-message"></span>
   </div>
-  <span  *ngIf="paypal else loader"></span>
+
     <div class="paypal" id="paypal-container">
 
     </div>
@@ -15,6 +15,4 @@
 
 
 </mat-dialog-actions>
-<ng-template #loader>
-  <mat-spinner *ngIf="paypal"></mat-spinner>
-</ng-template>
+

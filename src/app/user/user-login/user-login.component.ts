@@ -28,7 +28,7 @@ export class UserLoginComponent {
   };
   errorHandle = this.errServi;
   login$ = new Observable();
-  constructor(private readonly userService: UserService, private readonly authService: AuthService, private readonly dialog: MatDialog,private readonly dialReg: MatDialogRef<UserLoginComponent>, private errServi: ErrorService) {}
+  constructor(private readonly userService: UserService, private readonly dialog: MatDialog,private readonly dialReg: MatDialogRef<UserLoginComponent>, private errServi: ErrorService) {}
 login() {
   if (this.loginData.email.length > 5 && this.loginData.password.length > 5) {
    this.login$ = this.userService.login(this.loginData, this.dialReg);

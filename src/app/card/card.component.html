@@ -1,4 +1,4 @@
-<div class="container" *ngIf="act$ | async else loader">
+<div class="container" *ngIf="act$ | async">
   <!-- card.component.html -->
 <mat-table [dataSource]="products()">
   <!-- ID Column -->
@@ -95,6 +95,4 @@
 <div>
   <app-shipping-address></app-shipping-address>
 </div>
-<ng-template #loader>
-  <mat-spinner></mat-spinner>
-</ng-template>
+

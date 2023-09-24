@@ -11,6 +11,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
 import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @Component({
@@ -19,22 +20,22 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ FooterComponent, PaginatorComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule, MatButtonModule]
+  imports: [ FooterComponent, PaginatorComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule, MatButtonModule, MatProgressSpinnerModule]
 })
-export class AppComponent implements AfterContentChecked {
+export class AppComponent  {
 
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;
+  showLoaderSig = this.helper.showLoaderSig;
   title = this.helper.titelSig;
-  currentCategory = 0;
+  currentCategory = -1;
+  currentButtonActive = -1;
   kategorie$ = this.katService.kategorie$;
   menu$ = this.helper.menu$;
-  constructor(private readonly helper: HelperService, private readonly dialog: MatDialog, private readonly katService: KategorieService, private changeRef: ChangeDetectorRef,
-  private readonly router: Router, @Inject(PLATFORM_ID) private readonly platformId: any) {
+  constructor(private readonly helper: HelperService, private readonly dialog: MatDialog, private readonly katService: KategorieService,
+  private readonly router: Router) {
     this.helper.setApp(this);
   }
-  ngAfterContentChecked(): void {
-   this.changeRef.detectChanges();
-  }
+
 
   login() {
     const conf : MatDialogConfig = new MatDialogConfig();
@@ -44,12 +45,19 @@ export class AppComponent implements AfterContentChecked {
     this.dialog.open(UserLoginComponent, conf);
   }
   buttonActive(index: number) {
+    if(this.currentButtonActive === index)
+      return;
 
+    this.currentButtonActive = index;
+    this.helper.showLoaderSig.set(true);
   }
   changeCategorie(item: iKategorie) {
+    if(item.id === this.currentCategory)
+      return;
     this.helper.kategorySig.set(item);
     this.currentCategory = item.id;
     this.router.navigateByUrl('');
+    this.helper.showLoaderSig.set(true);
   }
   showAll() {
     this.helper.kategorySig.set({} as iKategorie);

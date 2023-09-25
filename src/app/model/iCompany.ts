@@ -14,4 +14,5 @@ export interface iCompany {
   eu_komm_hinweis: string;
   agb: string;
   daten_schutzt: string;
+  cookie_info: string;
 }

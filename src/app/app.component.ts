@@ -1,4 +1,4 @@
-import { AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
+import { AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { HelperService } from './helper/helper.service';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
@@ -12,6 +12,7 @@ import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CoockieInfoComponent } from './admin/company/coockie-info/coockie-info.component';
 
 
 @Component({
@@ -22,7 +23,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   standalone: true,
   imports: [ FooterComponent, PaginatorComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule, MatButtonModule, MatProgressSpinnerModule]
 })
-export class AppComponent  {
+export class AppComponent  implements OnInit{
 
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;
   showLoaderSig = this.helper.showLoaderSig;
@@ -63,5 +64,12 @@ export class AppComponent  {
     this.helper.kategorySig.set({} as iKategorie);
     this.currentCategory = 0;
     this.router.navigateByUrl('');
+  }
+  ngOnInit(): void {
+    const conf : MatDialogConfig = new MatDialogConfig();
+    conf.width = '400px';
+    conf.height = '400px';
+    conf.position = { bottom: '5%', right: '5%'}
+    this.dialog.open(CoockieInfoComponent, conf);
   }
 }

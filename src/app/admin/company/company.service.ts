@@ -55,4 +55,12 @@ export class CompanyService {
         throw err;
       }));
   }
+  getCookies() {
+    return this.http.get<iCompany>(`${this.apiUrl}/cookie/get`).pipe(
+      catchError((err) => {
+        this.errorService.newMessage(err.message);
+        return of({} as iCompany);
+      })
+    );
+  }
 }

@@ -40,7 +40,8 @@ export class CompanyComponent {
       fax: [''],
       eu_komm_hinweis: [''],
       agb: [''],
-      daten_schutzt: ['']
+      daten_schutzt: [''],
+      cookie_info: ['']
     });
   }
 

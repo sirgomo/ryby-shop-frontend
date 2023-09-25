@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  padding-left: 1rem;
+  justify-content:space-between;
+  align-items: center;
+}
+h2 {
+  margin-top: .7rem;
+  height: 100%;
+}
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 1rem;
+  padding: .3rem .3rem;
+}

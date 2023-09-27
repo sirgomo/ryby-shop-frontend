@@ -44,8 +44,6 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
 
     this.titleSig.update((title) => {
       this.title = title;
-      if(this.data.kategorie !== undefined)
-        return title + ' ' + this.data.kategorie[0].name + ' ' + this.data.name;
 
       return title + ' ' + this.data.name
      })

@@ -54,5 +54,7 @@ import { iUserData } from '../model/iUserData';
       }
       this.menuSub.next(menu);
     }
-
+    showCookiesPolitics() {
+      this.appComponenet.askCookies();
+    }
   }

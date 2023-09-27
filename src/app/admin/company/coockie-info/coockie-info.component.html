@@ -1,7 +1,17 @@
 <div class="header">
   <div><h2>Cookies und andere Technologien</h2></div>
 </div>
-<div class="content" *ngIf="cookieSig()" [innerHTML]="cookieSig()?.cookie_info">
-
+<div class="content" >
+    <div class="cookie_info" *ngIf="cookieSig()" [innerHTML]="cookieSig()?.cookie_info">
+    </div>
+  <div class="buttons">
+    <button mat-raised-button (click)="takeAllCookies()" color="primary">Alle akzeptieren</button>
+    <button mat-raised-button (click)="onlyNecessary()" color="primary">Essenziell</button>
+    <button mat-raised-button (click)="noCookies()" color="accent">Ablehnen</button>
+</div>
+<div class="links">
+  <a [routerLink]="['/datenschutzt']" routerLinkActive="router-link-active" >Datenschutzerklärung</a>
+  <a [routerLink]="['/impressum']" routerLinkActive="router-link-active">Impressum</a>
+</div>
 </div>
 

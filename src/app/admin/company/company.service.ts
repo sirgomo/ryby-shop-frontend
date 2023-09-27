@@ -30,7 +30,9 @@ export class CompanyService {
       catchError((err) => {
         this.errorService.newMessage(err.message);
         return of({} as iCompany);
-      }));
+      }),
+      shareReplay(1)
+      );
   }
 
   createCompany(companyData: iCompany) {
@@ -60,7 +62,8 @@ export class CompanyService {
       catchError((err) => {
         this.errorService.newMessage(err.message);
         return of({} as iCompany);
-      })
+      }),
+      shareReplay(1)
     );
   }
 }

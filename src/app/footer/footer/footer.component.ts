@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { HelperService } from 'src/app/helper/helper.service';
 
 @Component({
   selector: 'app-footer',
@@ -10,5 +11,8 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule]
 })
 export class FooterComponent {
-
+    constructor (private readonly helper: HelperService) {}
+  showCookies() {
+    this.helper.showCookiesPolitics();
+  }
 }

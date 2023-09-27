@@ -1,4 +1,4 @@
-import { AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild, computed, signal } from '@angular/core';
 import { HelperService } from './helper/helper.service';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
@@ -15,6 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CoockieInfoComponent } from './admin/company/coockie-info/coockie-info.component';
 import { Subscription, filter } from 'rxjs';
 import { environment } from 'src/environments/environment';
+
 declare let gtag: Function;
 
 
@@ -35,7 +36,9 @@ export class AppComponent  implements OnInit, OnDestroy{
   currentButtonActive = -1;
   kategorie$ = this.katService.kategorie$;
   menu$ = this.helper.menu$;
-  routerEvent$ = new Subscription();
+  routerEventAnaliticsSub = new Subscription();
+  currentRouterSub = new Subscription();
+
   defaultTitile = '';
   constructor(private readonly helper: HelperService, private readonly dialog: MatDialog, private readonly katService: KategorieService,
   private readonly router: Router, @Inject(PLATFORM_ID) private readonly platformId: any) {
@@ -82,9 +85,13 @@ export class AppComponent  implements OnInit, OnDestroy{
     if(localStorage.getItem('cookies') && localStorage.getItem('analitiks') && localStorage.getItem('analitiks') == 'yes')
       this.setGoogleAnalitics();
 
-      if(!localStorage.getItem('cookies'))
-        this.askCookies();
+    if(!localStorage.getItem('cookies'))
+      this.askCookies();
 
+  this.currentRouterSub = this.router.events.pipe().subscribe((type) => {
+    if (type instanceof NavigationEnd)
+      this.helper.showLoaderSig.set(false);
+  });
 
   }
   askCookies() {
@@ -122,10 +129,10 @@ export class AppComponent  implements OnInit, OnDestroy{
         analytics_storage: "denied"
     });
     localStorage.setItem('analitiks', 'no');
-    this.routerEvent$.unsubscribe();
+    this.routerEventAnaliticsSub.unsubscribe();
   }
   setGoogleAnaliticsRoutes() {
-     this.routerEvent$ = this.router.events.pipe(filter(event => event instanceof NavigationEnd ))
+     this.routerEventAnaliticsSub = this.router.events.pipe(filter(event => event instanceof NavigationEnd ))
      .subscribe((event) => {
       const ev = event as NavigationEnd;
       gtag('config', environment.gtag, {
@@ -134,8 +141,10 @@ export class AppComponent  implements OnInit, OnDestroy{
      });
   }
   ngOnDestroy(): void {
-   this.routerEvent$.unsubscribe();
+   this.routerEventAnaliticsSub.unsubscribe();
+   this.currentRouterSub.unsubscribe();
   }
+
   updateTitle(name: string) {
     this.helper.titelSig.update((title) => {
       if(this.defaultTitile.length < 2)

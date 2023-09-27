@@ -64,7 +64,6 @@ export class ItemComponent implements OnInit {
 
     this.image = undefined;
        this.act$ =  this.productService.getThumbnails(item).pipe(map(res => {
-        console.log(res)
         if (res instanceof Blob) {
           this.image = this.santizier.bypassSecurityTrustResourceUrl(URL.createObjectURL(res));
         }

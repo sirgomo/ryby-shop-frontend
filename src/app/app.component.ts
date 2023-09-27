@@ -61,6 +61,7 @@ export class AppComponent  implements OnInit, OnDestroy{
   changeCategorie(item: iKategorie) {
     if(item.id === this.currentCategory)
       return;
+
     this.helper.kategorySig.set(item);
     this.currentCategory = item.id;
     this.router.navigateByUrl('/'+item.name);
@@ -74,18 +75,33 @@ export class AppComponent  implements OnInit, OnDestroy{
     this.updateTitle('');
   }
   ngOnInit(): void {
-    this.askCookies();
+    if(isPlatformServer(this.platformId))
+    return;
+
+
+    if(localStorage.getItem('cookies') && localStorage.getItem('analitiks') && localStorage.getItem('analitiks') == 'yes')
+      this.setGoogleAnalitics();
+
+      if(!localStorage.getItem('cookies'))
+        this.askCookies();
+
+
   }
   askCookies() {
+    if(isPlatformServer(this.platformId))
+    return;
+
+
     const conf: MatDialogConfig = new MatDialogConfig();
     conf.width = '400px';
     conf.height = '400px';
     conf.position = { bottom: '5%', right: '5%' };
     this.dialog.open(CoockieInfoComponent, conf);
+
+    localStorage.setItem('cookies', Date.now().toString());
   }
 
   setGoogleAnalitics() {
-
     if(isPlatformServer(this.platformId))
       return;
 
@@ -93,6 +109,7 @@ export class AppComponent  implements OnInit, OnDestroy{
         ad_storage: "granted",
         analytics_storage: "granted"
     });
+    localStorage.setItem('analitiks', 'yes');
     this.setGoogleAnaliticsRoutes();
   }
   setGoogleAnaliticsOff() {
@@ -104,13 +121,13 @@ export class AppComponent  implements OnInit, OnDestroy{
         ad_storage: "denied",
         analytics_storage: "denied"
     });
+    localStorage.setItem('analitiks', 'no');
     this.routerEvent$.unsubscribe();
   }
   setGoogleAnaliticsRoutes() {
      this.routerEvent$ = this.router.events.pipe(filter(event => event instanceof NavigationEnd ))
      .subscribe((event) => {
       const ev = event as NavigationEnd;
-      console.log('zmiana strony')
       gtag('config', environment.gtag, {
         page_path: ev.urlAfterRedirects
       });

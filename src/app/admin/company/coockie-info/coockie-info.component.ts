@@ -23,16 +23,13 @@ export class CoockieInfoComponent {
   close() {
     this.dialogRef.close();
   }
-  onlyNecessary() {
-    this.helper.appComponenet.setGoogleAnaliticsOff();
-    this.close();
-    }
+
   takeAllCookies() {
      this.helper.appComponenet.setGoogleAnalitics();
      this.close();
     }
   noCookies() {
-    this.helper.appComponenet.setGoogleAnalitics();
+    this.helper.appComponenet.setGoogleAnaliticsOff();
       this.close();
     }
 }

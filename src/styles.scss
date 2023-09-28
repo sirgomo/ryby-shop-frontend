@@ -57,12 +57,53 @@ mat-toolbar {
   transform: scale(1.5);
 }
 @media screen and (max-width: 600px) {
+  mat-toolbar {
+    display: flex;
+    justify-content: space-between;
+    margin-left: .2rem;
+    margin-right: .2rem;
+    z-index: 2;
+    gap: .4rem;
+    height: 60px;
+    .logandcard {
 
+      display: flex;
+      gap: .1rem;
+      justify-content: flex-end;
+      width: 25%;
+
+    }
+    .search {
+     flex: 1;
+     border-radius: .4rem;
+     box-shadow: 0px 2px 4px rgba($color: #000000, $alpha: 0.5);
+    }
+    .logo{
+      display: flex;
+      align-items: center;
+      width: 30%;
+      height: 55px;
+      scale: auto;
+      gap: .2rem;
+      .menu {
+        width: 30%;
+      }
+      img {
+        width: 70%;
+        height: 35px;
+        border-radius: .5rem;
+      }
+    }
+  }
+  .icon {
+    transform: scale(1);
+  }
 }
 
 mat-sidenav {
   width: 10rem;
   margin-top: .5rem;
+  border-radius: 1rem;
 }
 
 .menu {
@@ -83,11 +124,6 @@ mat-sidenav {
   }
 }
 
-mat-sidenav-content  {
-  width: calc(100% - 10.5rem);
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
 .error {
   display: flex;
   flex-direction: column;

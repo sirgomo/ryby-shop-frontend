@@ -1,5 +1,13 @@
 <mat-toolbar color="primary">
-   <div class="logo"> <img src="../../../assets/img/logo.png" alt="logo fischfang-profi.de">  </div>
+   <div class="logo">
+    <div class="menu" *ngIf="widthSig() < 600">
+      <button mat-icon-button (click)="showHideMenu()" >
+        <mat-icon>menu</mat-icon>
+    </button>
+    </div>
+
+     <img src="../../../assets/img/logo.png" alt="logo fischfang-profi.de">
+      </div>
    <div class="search"><app-search></app-search></div>
    <div class="logandcard">
     <button mat-icon-button (click)="showLoginPanel()" ><mat-icon class="icon">person</mat-icon></button>

@@ -15,4 +15,5 @@ export interface iCompany {
   agb: string;
   daten_schutzt: string;
   cookie_info: string;
+  ebay_refresh_token?: string;
 }

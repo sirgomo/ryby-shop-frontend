@@ -47,7 +47,8 @@ import { iUserData } from '../model/iUserData';
         menu[4] = { name: 'Products', link: 'product' };
         menu[5] = { name: 'Waren Eingang', link: 'waren-eingang' };
         menu[6] = { name: 'Company', link: 'company' };
-        menu[7] = { name: 'Bestellungen', link: 'admin-order'}
+        menu[7] = { name: 'Bestellungen', link: 'admin-order'};
+        menu[8] = { name: 'Ebay', link: 'ebay'};
       } else if (role === 'USER') {
         menu[0] = { name: 'User Profil', link: 'user' };
         menu[1] = { name: 'Mein Bestellungen', link: 'order' }

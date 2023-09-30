@@ -4,7 +4,7 @@ Continuation of RxJS practice, mix with Signals
 Testing using "Jest" framework (unity test)
 Change all components to standalone components, start app from component
 Working Angular Universe + ssr
-Continuous application development and integration
+Continuous application development 
 
  Accomplished:
 1. Client login and register, password change, data editing

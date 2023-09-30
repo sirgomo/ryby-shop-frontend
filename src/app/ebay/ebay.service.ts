@@ -15,8 +15,10 @@ export class EbayService {
     return this.httpService.get<{address: string}>(this.#api+'/consent');
   }
   getItemsSoldBeiEbay() {
-    return this.httpService.get<iEbayItem[]>(this.#api).pipe(tap((res) => {
-      console.log(res)
+    return this.httpService.get<iEbayItem>(this.#api).pipe(map((res) => {
+      console.log(res.orders)
+      return res;
+
     }));
   }
   generateFirstAccessToken(code: string) {

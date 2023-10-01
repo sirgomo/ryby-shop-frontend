@@ -1,6 +1,7 @@
 <div *ngIf="errrorSer.message() && errrorSer.message().length > 2">
   <app-error></app-error>
 </div>
+<div class="content">
 <div>
   <div class="button">
     <button mat-raised-button color="primary" (click)="addKategorie()">Neue Kategorie</button>
@@ -47,5 +48,6 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+</div>
 </div>
 </div>

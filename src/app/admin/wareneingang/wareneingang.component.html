@@ -1,6 +1,7 @@
 <div *ngIf="errService.message() && errService.message().length > 2">
   <app-error></app-error>
 </div>
+<div class="content">
 <div class="button">
   <button mat-raised-button color="primary" (click)="newOrEditGoodsReceipt()" >Neue Waren Buchung</button>
 </div>
@@ -58,3 +59,4 @@
   <span *ngIf="act$ | async"></span>
 </div>
 
+</div>

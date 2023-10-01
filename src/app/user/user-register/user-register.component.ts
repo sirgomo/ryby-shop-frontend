@@ -11,6 +11,7 @@ import { ErrorComponent } from 'src/app/error/error.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @Component({
@@ -20,7 +21,7 @@ import { MatInputModule } from '@angular/material/input';
   providers: [DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, ErrorComponent, MatIconModule, MatButtonModule, MatInputModule ]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, ErrorComponent, MatIconModule, MatButtonModule, MatInputModule, MatCheckboxModule ]
 })
 export class UserRegisterComponent {
   dataPipe = inject(DatePipe);

@@ -114,7 +114,7 @@ export class ProductService {
       return this.http.get<iProduct[]>(`${this.API}/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
         catchError((error) => {
           this.error.newMessage('Fehler beim Abrufen aller Produkte.');
-          return throwError(()=> error);
+          return [];
         }),
         tap((res) => {
           return res;
@@ -125,7 +125,7 @@ export class ProductService {
     return this.http.get<iProduct[]>(`${this.API}/kunde/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
       catchError((error) => {
         this.error.newMessage('Fehler beim Abrufen aller Produkte.');
-        return throwError(()=> error);
+        return [];
       }),
       tap((res) => {
         return res;

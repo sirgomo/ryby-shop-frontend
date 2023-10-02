@@ -59,7 +59,7 @@ export class AppComponent  implements OnInit, OnDestroy{
       return;
 
     this.currentButtonActive = index;
-    this.helper.showLoaderSig.set(true);
+    this.helper.showLoader.next(true);
   }
   changeCategorie(item: iKategorie) {
     if(item.id === this.currentCategory)
@@ -69,7 +69,7 @@ export class AppComponent  implements OnInit, OnDestroy{
     this.currentCategory = item.id;
     this.router.navigateByUrl('/'+item.name);
     this.updateTitle(item.name);
-    this.helper.showLoaderSig.set(true);
+    this.helper.showLoader.next(true);
   }
   showAll() {
     this.helper.kategorySig.set({} as iKategorie);
@@ -90,7 +90,7 @@ export class AppComponent  implements OnInit, OnDestroy{
 
   this.currentRouterSub = this.router.events.pipe().subscribe((type) => {
     if (type instanceof NavigationEnd)
-      this.helper.showLoaderSig.set(false);
+      this.helper.showLoader.next(false);
   });
 
   }

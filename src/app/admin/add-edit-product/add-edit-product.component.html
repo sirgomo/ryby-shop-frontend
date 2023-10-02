@@ -1,6 +1,9 @@
 <div *ngIf="err?.message && err.message().length > 2">
   <app-error></app-error>
 </div>
+<div *ngIf="helperService.showLoaderSig() && helperService.showLoaderSig() === true" class="loader-spinner">
+  <mat-spinner></mat-spinner>
+</div>
 <div class="h2">
   <h2>{{ data ? 'Produkt bearbeiten' : 'Produkt hinzufügen' }}</h2>
   <div class="close">
@@ -73,7 +76,7 @@
 
               <div class="imginput">
                 <div class="upload">
-                  <input type="file" id="img" (change)="onFileChange($event)" accept="image/*"  />
+                  <input type="file" id="img" (change)="onFileChange($event)" accept="image/*" *ngIf="helperService.uploadProgersSig() === 0"  />
                   <button mat-mini-fab color="primary" class="upload-btn" *ngIf="helperService.uploadProgersSig() === 0"
                   (click)="uploadPhoto()">
                     <mat-icon>attach_file</mat-icon>

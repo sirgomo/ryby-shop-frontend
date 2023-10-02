@@ -17,7 +17,7 @@ import { provideRouter } from '@angular/router';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_FORMATS } from 'src/app/const';
 import { jwtInterceptorFn } from 'src/app/interceptors/jwtInterceptorFn';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+
 
 const compression = require('compression')
 
@@ -32,7 +32,7 @@ export function app(): express.Express {
   const server = express();
   const distFolder = join(process.cwd(), 'dist/ryby-shop-frontend/browser');
   const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
-
+  const bodyParser = require('body-parser');
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/main/modules/express-engine)
   server.engine('html', ngExpressEngine({
     bootstrap: () => bootstrapApplication(AppComponent, {
@@ -52,6 +52,8 @@ export function app(): express.Express {
    //bootstrap: AppServerModule
   }));
   server.use(compression({ level: 6}));
+  server.use(bodyParser.json({ limit: '10mb' }));
+  server.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
   server.set('view engine', 'html');
   server.set('views', distFolder);
 

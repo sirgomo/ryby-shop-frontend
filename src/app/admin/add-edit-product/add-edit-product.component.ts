@@ -11,7 +11,7 @@ import { iLieferant } from 'src/app/model/iLieferant';
 import { iKategorie } from 'src/app/model/iKategorie';
 import { HelperService } from 'src/app/helper/helper.service';
 import { ErrorService } from 'src/app/error/error.service';
-import { Observable, combineLatest, map, of, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, finalize, map, of, startWith, switchMap, tap } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { iAktion } from 'src/app/model/iAktion';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -29,7 +29,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatNativeDateModule } from '@angular/material/core';
 
 
 @Component({
@@ -57,6 +56,7 @@ export class AddEditProductComponent implements OnInit {
   act$ = new Observable().pipe(startWith(null));
   create$ = new Observable().pipe(startWith({}));
   getFoto$ = new Observable().pipe(startWith(null));
+
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<AddEditProductComponent>,
@@ -101,25 +101,29 @@ export class AddEditProductComponent implements OnInit {
     if(this.data && this.data.id) {
 
       this.create$ = this.prodService.getProductById(this.data.id).pipe(map((res) => {
-        this.data.preis = Number(res.preis)
-        this.images = JSON.parse( res.foto);
-        this.color = JSON.parse(res.color);
-        this.productForm.patchValue(res);
+        if(res.id) {
+          this.data.preis = Number(res.preis)
+          this.images = JSON.parse( res.foto);
+          this.color = JSON.parse(res.color);
+          this.productForm.patchValue(res);
 
-          console.log(res.datumHinzugefuegt)
-          console.log(this.productForm.get('datumHinzugefuegt')?.getRawValue())
-        if(res.eans && res.eans.length > 0) {
-          for (let i = 0; i < res.eans.length; i++) {
-            const tmp = this.formBuilder.group({
-              id: [res.eans[i].id],
-              eanCode: [res.eans[i].eanCode , Validators.required],
-            });
-            this.ean.push(tmp);
+          if(res.eans && res.eans.length > 0) {
+            for (let i = 0; i < res.eans.length; i++) {
+              const tmp = this.formBuilder.group({
+                id: [res.eans[i].id],
+                eanCode: [res.eans[i].eanCode , Validators.required],
+              });
+              this.ean.push(tmp);
+            }
           }
+
+          if(this.images.length > 0)
+          this.getImage(this.images[0])
+        } else {
+          console.log(res);
+
         }
 
-        if(this.images.length > 0)
-        this.getImage(this.images[0])
         return res;
        }));
 
@@ -167,17 +171,27 @@ export class AddEditProductComponent implements OnInit {
     if(!this.data)
       return;
     if (this.photoFile) {
-      if(this.data.id)
-      this.act$ = this.prodService.uploadPhoto(this.photoFile, this.data.id).pipe(tap((act) => {
-        if(act) {
-          const tmp = act as unknown as { imageid: string };
-          this.images.push(tmp.imageid);
-          this.productForm.get('foto')?.patchValue(this.images);
-          this.getImage(tmp.imageid);
-          this.snackBar.open('Image wurde gespiechert', '', { duration: 2000})
-        }
-        return act;
-      }))
+      if(this.data.id) {
+        this.act$ = this.prodService.uploadPhoto(this.photoFile, this.data.id).pipe(
+
+          tap((act) => {
+          if(act) {
+
+            if(this.helperService.uploadProgersSig() > 99)
+            {
+              const tmp = act as unknown as { imageid: string };
+              this.images.push(tmp.imageid);
+              this.productForm.get('foto')?.patchValue(this.images);
+              this.snackBar.open('Image wurde gespiechert', '', { duration: 2000})
+              this.getImage(this.images[this.images.length-1]);
+              console.log('bleh')
+            }
+
+          }
+          return act;
+        })
+        );
+      }
     }
   }
 
@@ -269,8 +283,10 @@ export class AddEditProductComponent implements OnInit {
   }
   getImage(id: string) {
 
-    this.getFoto$ = this.prodService.getImage(id).pipe(tap((res) => {
+    this.getFoto$ =  this.prodService.getImage(id).pipe(tap((res) => {
+      console.log(res)
      this.currentImage = res;
+     return res;
     }));
   }
   getSafeImageData() {
@@ -291,6 +307,8 @@ export class AddEditProductComponent implements OnInit {
           const index = this.images.findIndex((tmp) => tmp === item.fileid);
           this.images.splice(index, 1);
           this.productForm.get('foto')?.patchValue(this.images);
+          if(this.images.length > 0)
+            this.getImage(this.images[0]);
         }
       }))
     }

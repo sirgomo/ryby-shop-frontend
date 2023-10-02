@@ -6,12 +6,12 @@ import { finalize } from "rxjs";
 export const LoaderInterceptorFn: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
     const loaderService = inject(HelperService);
     if(loaderService) {
-      loaderService.showLoaderSig.set(true);
+      loaderService.showLoader.next(true);
     }
     return next(req).pipe(
       finalize(() => {
         if(loaderService)
-          loaderService.showLoaderSig.set(false);
+          loaderService.showLoader.next(false);
       })
     );
 }

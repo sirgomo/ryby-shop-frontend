@@ -16,11 +16,11 @@
 .product-image {
   display: flex;
   flex-direction: column;
-align-items: center;
+  align-items: center;
   width: 50%;
-  height: 400px;
+  min-height: 400px;
   .image {
-    height: 75%;
+    height: 350px;
 
     img {
       height: 100%;
@@ -28,8 +28,10 @@ align-items: center;
   }
 
   .images {
-    height: 25%;
     display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: .5rem;
   }
 }
 
@@ -113,7 +115,6 @@ input[type=file]::file-selector-button:hover {
 .imageItem {
   display: flex;
   flex-direction: column;
-  margin-bottom: .5rem;
 }
 .form {
   display: flex;

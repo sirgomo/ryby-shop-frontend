@@ -139,8 +139,8 @@ export class ProductService {
         return res;
       }),
       catchError((error) => {
-        this.error.newMessage('Fehler beim Abrufen des Produkts nach der ID.');
-        return throwError(()=> error);
+        this.error.newMessage('Fehler beim Abrufen des Produkts nach der ID.' + error.message);
+        return of({} as iProduct);
       })
     );
   }

@@ -6,12 +6,15 @@
   import { iProduct } from '../model/iProduct';
 import { iShippingAddress } from '../model/iShippingAddress';
 import { iUserData } from '../model/iUserData';
+import { toSignal } from '@angular/core/rxjs-interop';
 
   @Injectable({
     providedIn: 'root'
   })
   export class HelperService {
-    showLoaderSig = signal(false);
+
+    showLoader = new BehaviorSubject(false);
+    showLoaderSig = toSignal(this.showLoader.asObservable());
     menuSub: BehaviorSubject<iMenuItem[]> = new BehaviorSubject<iMenuItem[]>([]);
     cardSig = signal<iProduct[]>([]);
     cardSigForMengeControl = signal<iProduct[]>([]);

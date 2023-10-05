@@ -87,8 +87,9 @@
   <mat-form-field>
     <mat-select placeholder="Versand art" (selectionChange)="setVersandKosten($event.value)">
       <mat-option [value]="'Selbstabholung|0'">Selbstabholung</mat-option>
-      <mat-option [value]="'DHL|3.99'">DHL ( 3.99 &euro;)</mat-option>
-      <mat-option [value]="'GLS|4.50'">GLS (4.50 &euro; )</mat-option>
+      <mat-option [value]="'DHL|3.99'">DHL(Päckchen S) ( 3.99 &euro;)</mat-option>
+      <mat-option [value]="'DHL|5.49'">DHL ( 5.49 &euro;)</mat-option>
+
   </mat-select>
   </mat-form-field>
 </div>

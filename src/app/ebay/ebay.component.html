@@ -1,8 +1,7 @@
-<p *ngIf="ebaySoldItems() && ebaySoldItems()?.orders?.length ">ebay works!</p>
+<p *ngIf="(ebaySoldItems() && ebaySoldItems()?.orders?.length) else show ">ebay works!</p>
 <ng-template #show >
   <div class="content">
     <button (click)="getLink()" *ngIf="!show_input">Not loged, login to ebay!</button>
-    <div *ngIf="show_input"> <input type="text" [(ngModel)]="ebaycode" /> <button (click)="sendCode()">Send it</button></div>
   </div>
 
 

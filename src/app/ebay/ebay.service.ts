@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, tap } from 'rxjs';
-import { environment } from 'src/environments/environment.development';
+import {  map } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { iEbayItem } from '../model/iEbayItem';
 
 @Injectable({
@@ -21,8 +21,6 @@ export class EbayService {
 
     }));
   }
-  generateFirstAccessToken(code: string) {
-    return this.httpService.post(this.#api, { code: code });
-  }
+
   getItemsFromEbay() {}
 }

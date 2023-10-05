@@ -29,13 +29,5 @@ export class EbayComponent {
 
    })
   }
-  sendCode() {
-    if(this.ebaycode.length < 5)
-      return;
 
-    const code = this.serv.generateFirstAccessToken(this.ebaycode).subscribe(res => {
-      if(res)
-        code.unsubscribe();
-    })
-  }
 }

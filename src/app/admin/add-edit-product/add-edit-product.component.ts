@@ -119,9 +119,6 @@ export class AddEditProductComponent implements OnInit {
 
           if(this.images.length > 0)
           this.getImage(this.images[0])
-        } else {
-          console.log(res);
-
         }
 
         return res;
@@ -184,7 +181,6 @@ export class AddEditProductComponent implements OnInit {
               this.productForm.get('foto')?.patchValue(this.images);
               this.snackBar.open('Image wurde gespiechert', '', { duration: 2000})
               this.getImage(this.images[this.images.length-1]);
-              console.log('bleh')
             }
 
           }

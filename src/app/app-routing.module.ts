@@ -12,6 +12,11 @@ export const routes: Routes = [
   loadComponent: () => import('./ebay/ebay.component').then(m => m.EbayComponent),
 },
 {
+  path: 'ebay-subs',
+  canActivate: [routeGuard],
+  loadComponent: () => import('./ebay/ebay-subscriptions/ebay-subscriptions.component').then(m => m.EbaySubscriptionsComponent),
+},
+{
   //component: AgbComponent,
   path: 'agb',
   loadComponent: () => import('./admin/company/agb/agb.component').then(m => m.AgbComponent),

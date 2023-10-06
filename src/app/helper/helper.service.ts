@@ -4,7 +4,6 @@
   import { AppComponent } from '../app.component';
   import { iKategorie } from '../model/iKategorie';
   import { iProduct } from '../model/iProduct';
-import { iShippingAddress } from '../model/iShippingAddress';
 import { iUserData } from '../model/iUserData';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -41,7 +40,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
       return this.appComponenet.login();
     }
     setMenu(role: string) {
-      const menu: iMenuItem[] = [];
+      const menu = [];
       if(role === 'ADMIN') {
         menu[0] = { name: 'Admin Panel', link: 'admin' };
         menu[1] = { name: 'Liferants', link: 'liferant' };
@@ -52,6 +51,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
         menu[6] = { name: 'Company', link: 'company' };
         menu[7] = { name: 'Bestellungen', link: 'admin-order'};
         menu[8] = { name: 'Ebay', link: 'ebay'};
+        menu[9] = {name: 'Subscriptions', link: 'ebay-subs'};
+
       } else if (role === 'USER') {
         menu[0] = { name: 'User Profil', link: 'user' };
         menu[1] = { name: 'Mein Bestellungen', link: 'order' }

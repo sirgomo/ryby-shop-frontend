@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {  map } from 'rxjs';
+import {  Observable, catchError, map, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { iEbayItem } from '../model/iEbayItem';
+import { iEbayItem } from '../model/ebay/iEbayItem';
+import { iEbaySubscriptionsPayload } from '../model/ebay/iEbaySubscriptionsPayload';
 
 @Injectable({
   providedIn: 'root'

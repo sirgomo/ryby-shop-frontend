@@ -3,7 +3,8 @@
 Continuation of RxJS practice, mix with Signals
 Testing using "Jest" framework (unity test)
 Change all components to standalone components, start app from component
-Working Angular Universe + ssr
+Working Angular Universe (SSR),
+Paypal api, Ebay api integration,
 Continuous application development 
 
  Accomplished:

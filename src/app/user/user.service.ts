@@ -117,6 +117,7 @@ export class UserService {
         return res;
       }),
       catchError((error) => {
+        console.log(error)
         this.errorHandle.newMessage(error.error.message);
         return EMPTY;
       })

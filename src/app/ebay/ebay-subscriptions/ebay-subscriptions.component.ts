@@ -7,11 +7,13 @@ import { HelperService } from 'src/app/helper/helper.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { EbaySubscriptionsService } from './ebay-subscriptions.service';
+import { MatTabsModule } from '@angular/material/tabs';
+import { TopicsComponent } from '../topics/topics.component';
 
 @Component({
   selector: 'app-ebay-subscriptions',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatButtonModule],
+  imports: [CommonModule, MatTableModule, MatButtonModule, MatTabsModule, TopicsComponent],
   templateUrl: './ebay-subscriptions.component.html',
   styleUrls: ['./ebay-subscriptions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,7 +24,9 @@ export class EbaySubscriptionsComponent {
   previous = signal<string[]>([]);
 
   columns = ['subid', 'topicid', 'status', 'getsub'];
-  constructor(private readonly ebaySer: EbaySubscriptionsService, private readonly helperService: HelperService) {}
+  constructor(private readonly ebaySer: EbaySubscriptionsService, private readonly helperService: HelperService) {
+    this.helperService.artikelProSiteSig.set(20);
+  }
 
   goNextSite() {
     if(!this.subscriptions())

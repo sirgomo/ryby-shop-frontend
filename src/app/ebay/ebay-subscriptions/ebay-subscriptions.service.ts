@@ -14,6 +14,7 @@ export class EbaySubscriptionsService {
     if(!link)
       link = 'null';
 
+
     return this.httpService.get<iEbaySubscriptionsPayload>(this.#api+`/subscriptions/${limit}/${link}`).pipe(
       catchError((error) => {
         console.log(error);
@@ -24,4 +25,5 @@ export class EbaySubscriptionsService {
       })
     )
   }
+
 }

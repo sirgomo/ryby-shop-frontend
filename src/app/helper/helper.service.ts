@@ -51,7 +51,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
         menu[6] = { name: 'Company', link: 'company' };
         menu[7] = { name: 'Bestellungen', link: 'admin-order'};
         menu[8] = { name: 'Ebay', link: 'ebay'};
-        menu[9] = {name: 'Subscriptions', link: 'ebay-subs'};
+        menu[9] = {name: 'Ebay - Subscriptions', link: 'ebay-subs'};
+        menu[10] = { name: 'Ebay - Inventory', link: 'ebay-items' };
 
       } else if (role === 'USER') {
         menu[0] = { name: 'User Profil', link: 'user' };

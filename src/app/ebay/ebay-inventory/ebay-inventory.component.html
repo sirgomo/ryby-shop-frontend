@@ -1,0 +1,43 @@
+<mat-tab-group>
+  <mat-tab label="Ebay Listings">
+    <div class="content" *ngIf="itemsSig$ | async as item">
+      <div class="selector">
+        <div class="items">
+          Items pro Site:
+        </div>
+        <div class="select">
+          <mat-select (selectionChange)="update($event.value) ">
+              <mat-option [value]="25">25</mat-option>
+              <mat-option [value]="50">50</mat-option>
+              <mat-option [value]="100">100</mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div >
+        <table mat-table [dataSource]="item.inventoryItems">
+          <ng-container matColumnDef="sku">
+            <th mat-header-cell *matHeaderCellDef>Sku</th>
+            <td mat-cell *matCellDef="let item">{{item.sku}}</td>
+          </ng-container>
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <td mat-cell *matCellDef="let item">{{item.product.title}}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+        </table>
+        <div class="actions">
+          <button mat-stroked-button (click)="goBack()" *ngIf="item.prev"><</button>
+          <button mat-stroked-button (click)="goNext()" *ngIf="item.next">></button>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+    <mat-tab label="Import Ebay Listing">
+      <ng-template matTabContent>
+        <app-import-ebay-listings></app-import-ebay-listings>
+      </ng-template>
+    </mat-tab>
+
+  </mat-tab-group>
+

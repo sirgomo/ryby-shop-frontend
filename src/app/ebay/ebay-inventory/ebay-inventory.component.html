@@ -5,10 +5,15 @@
         <div class="items">
           Items pro Site:
         </div>
-        <div class="select">
+        <div class="items">
+
+            <mat-checkbox (change)="showAllProduktsInGroup()" value="" color="primary" checked>Zeigt nur ein Artikel aus Grupe</mat-checkbox>
+
+        </div>
+        <div class="items">
           <mat-form-field>
             <mat-label>Select Item Menge</mat-label>
-            <mat-select (selectionChange)="update($event.value) ">
+            <mat-select (selectionChange)="update($event.value)" [value]="itemsProSite">
               <mat-option [value]="25">25</mat-option>
               <mat-option [value]="50">50</mat-option>
               <mat-option [value]="100">100</mat-option>

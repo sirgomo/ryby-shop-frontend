@@ -28,7 +28,6 @@ export class ImportEbayListingsComponent implements OnDestroy {
   sendItems() {
     if(this.items.length < 10)
       return;
-
       this.inventoryService.postListingsString(this.items).subscribe(res => {
         if(res.length > 0) {
           this.succesList.set(res);

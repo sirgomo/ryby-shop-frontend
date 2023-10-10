@@ -150,6 +150,16 @@
                 <input matInput type="number" id="mehrwehrsteuer" formControlName="mehrwehrsteuer" required autocomplete="off">
               </mat-form-field>
             </div>
+            <div class="row">
+              <mat-form-field>
+                <mat-label>Produkt Sku</mat-label>
+                <input matInput type="number" id="sku" formControlName="sku"  autocomplete="off">
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Ebay Group</mat-label>
+                <input matInput type="number" id="ebay_group" formControlName="ebay_group" autocomplete="off">
+              </mat-form-field>
+            </div>
           </mat-tab>
           <mat-tab label="Eans" >
             <div formArrayName="eans" class="eancon">

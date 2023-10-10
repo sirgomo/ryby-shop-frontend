@@ -11,6 +11,8 @@ import { iWareneingangProduct } from "./iWareneingangProduct";
 export interface iProduct {
   id: number | undefined;
   name: string;
+  sku: string;
+  ebay_group: string;
   preis: number;
   artid: number;
   beschreibung: string;

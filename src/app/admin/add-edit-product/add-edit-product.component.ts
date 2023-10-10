@@ -73,6 +73,8 @@ export class AddEditProductComponent implements OnInit {
     this.productForm = this.formBuilder.group({
       id: [this.data ? this.data.id : null],
       name: [this.data ? this.data.name : '', Validators.required],
+      sku: [this.data ? this.data.sku : ''],
+      ebay_group: [this.data ? this.data.ebay_group : ''],
       preis: [this.data ? this.data.preis : '', Validators.required],
       artid: [this.data ? this.data.artid : '', Validators.required],
       beschreibung: [this.data ? this.data.beschreibung : '', Validators.required],

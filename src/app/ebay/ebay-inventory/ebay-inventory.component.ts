@@ -10,11 +10,12 @@ import { iEbayInventory } from 'src/app/model/ebay/iEbayInventory';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ImportEbayListingsComponent } from './import-ebay-listings/import-ebay-listings.component';
 import { Observable, combineLatest, map } from 'rxjs';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-ebay-inventory',
   standalone: true,
-  imports: [CommonModule, MatSelectModule, MatTableModule, MatButtonModule, FormsModule, MatTabsModule, ImportEbayListingsComponent],
+  imports: [CommonModule, MatSelectModule, MatTableModule, MatButtonModule, FormsModule, MatTabsModule, ImportEbayListingsComponent, MatFormFieldModule],
   templateUrl: './ebay-inventory.component.html',
   styleUrls: ['./ebay-inventory.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -12,6 +12,7 @@ import { ImportEbayListingsComponent } from './import-ebay-listings/import-ebay-
 import { Observable, combineLatest, map } from 'rxjs';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ErrorService } from 'src/app/error/error.service';
 
 @Component({
   selector: 'app-ebay-inventory',
@@ -29,7 +30,7 @@ export class EbayInventoryComponent {
 
   columns = ['sku', 'title']
 
-  constructor(private readonly inventorySer: EbayInventoryService) {}
+  constructor(private readonly inventorySer: EbayInventoryService, public readonly errorService: ErrorService) {}
   update(val: any) {
     this.itemsProSite = val;
     this.itemsSig$ = this.inventorySer.getCurrentInventory(this.itemsProSite, this.currentSite, this.zeigtNurEinProGroupSig());

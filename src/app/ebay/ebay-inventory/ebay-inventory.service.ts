@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of, tap } from 'rxjs';
+import { ErrorService } from 'src/app/error/error.service';
 import { iEbayImportListingRes } from 'src/app/model/ebay/iEbayImportListingRes';
 import { iEbayInventory } from 'src/app/model/ebay/iEbayInventory';
 import { iEbayInventoryItem } from 'src/app/model/ebay/iEbayInventoryItem';
-import { ItemComponent } from 'src/app/products/item/item.component';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -13,12 +13,13 @@ import { environment } from 'src/environments/environment';
 export class EbayInventoryService {
 
   #api = environment.api + 'ebay-inventory';
-  constructor(private readonly httpClinet: HttpClient) { }
+  constructor(private readonly httpClinet: HttpClient, private readonly errorServ: ErrorService) { }
 
   getCurrentInventory(limit: number, offset: number, getall: boolean): Observable<iEbayInventory> {
     return this.httpClinet.get<iEbayInventory>(`${this.#api}/${limit}/${offset}`).pipe(
       catchError((err) => {
         console.log(err);
+        this.errorServ.newMessage(err);
         return of({} as iEbayInventory);
       }),
       map((res) => {
@@ -46,11 +47,14 @@ export class EbayInventoryService {
     const tmp : { listings: string } = { listings: listing.replace(/(\r\n\s|\n|\r|\s)/gm, '') };
     return this.httpClinet.post<iEbayImportListingRes[]>(`${this.#api}/listing`, tmp).pipe(
       catchError((err) => {
-        console.log(err);
+
         return [];
       }),
       tap(res => {
-        console.log(res)
+        if(res.length === undefined) {
+          this.errorServ.newMessage(JSON.stringify(res));
+        }
+
       })
     )
   }

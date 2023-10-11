@@ -1,5 +1,5 @@
 # RybyShopFrontend
- Goal:
+Goal:
 Continuation of RxJS practice, mix with Signals
 Testing using "Jest" framework (unity test)
 Change all components to standalone components, start app from component
@@ -24,3 +24,4 @@ Continuous application development
 4. Shopping Cart with paypal payment
 5. Item on the homepage, direct addition to the cart, changing the variant and adding one piece to the cart
 6. Item details - details of the item as well as the possibility of adding quantities for each item variant.
+7. Get items listed on eBay (first import them using listingId)

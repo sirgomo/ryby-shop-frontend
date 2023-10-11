@@ -19,8 +19,8 @@ import { iEbayImportListingRes } from 'src/app/model/ebay/iEbayImportListingRes'
 export class ImportEbayListingsComponent implements OnDestroy {
   items = '';
   subs = new Subscription();
-  errorList = [''];
-  succesList = signal<iEbayImportListingRes[]>([]);
+
+  succesList = signal<string[]>([]);
   constructor(private readonly inventoryService: EbayInventoryService, public readonly erroRService: ErrorService ) {}
   ngOnDestroy(): void {
    this.subs.unsubscribe();
@@ -28,13 +28,24 @@ export class ImportEbayListingsComponent implements OnDestroy {
   sendItems() {
     if(this.items.length < 10)
       return;
-      this.inventoryService.postListingsString(this.items).subscribe(res => {
-        if(res.length > 0) {
-          this.succesList.set(res);
-        } else {
-          this.erroRService.newMessage(JSON.stringify(res));
-        }
 
+      this.inventoryService.postListingsString(this.items).subscribe(res => {
+        const error: string[] = [];
+            if(res.length > 0) {
+              const items: string[] = [];
+
+                for(let i = 0; i < res.length; i++) {
+                  if(res[i].statusCode == 200) {
+                    items.push('ok, item with id '+res[i].listingId + ' wurde Erfolgreich hinzugefügt\n');
+                  } else {
+                    error.push(JSON.stringify(res[i]));
+                  }
+
+                }
+              this.succesList.set(items);
+            }
+            if(error.length > 0)
+              this.erroRService.newMessage(JSON.stringify(error));
       });
   }
 }

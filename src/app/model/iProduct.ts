@@ -5,7 +5,6 @@ import { iKundenbewertung } from "./iKundenbewertung";
 import { iLieferant } from "./iLieferant";
 import { iProductBestellung } from "./iProductBestellung";
 import { iStellplatze } from "./iStellplatze";
-import { iWarenausgangProduct } from "./iWarenausgangProduct";
 import { iWareneingangProduct } from "./iWareneingangProduct";
 
 export interface iProduct {

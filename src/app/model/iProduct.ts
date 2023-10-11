@@ -28,6 +28,7 @@ export interface iProduct {
   currentmenge: number;
   product_sup_id: string;
   lange: number;
+  ebay: number;
   gewicht: number;
   verkaufteAnzahl: number;
   wareneingang: iWareneingangProduct[];

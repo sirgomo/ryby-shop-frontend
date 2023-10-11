@@ -30,7 +30,7 @@ export class EbayInventoryComponent {
   zeigtNurEinProGroupSig = signal(true);
   itemsSig$: Observable<iEbayInventory> = this.inventorySer.getCurrentInventory(this.itemsProSite, this.currentSite, this.zeigtNurEinProGroupSig());
 
-  columns = ['sku', 'title']
+  columns = ['sku', 'title', 'inshop']
 
   constructor(private readonly inventorySer: EbayInventoryService, public readonly errorService: ErrorService) {}
   update(val: any) {

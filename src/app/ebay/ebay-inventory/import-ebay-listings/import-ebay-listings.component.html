@@ -1,7 +1,7 @@
 <div class="content">
-<div *ngIf="erroRService.message() && erroRService.message().length > 5">
-  {{erroRService.message()}}
-</div>
+  <div class="err" *ngIf="erroRService.message() && erroRService.message().length > 3">
+    <app-error></app-error>
+     </div>
     <div>Gib die Einträge ein, getrennt durch ein Komma (,)</div>
     <textarea name="" id="" cols="40" rows="5" [(ngModel)]="items" ></textarea>
 

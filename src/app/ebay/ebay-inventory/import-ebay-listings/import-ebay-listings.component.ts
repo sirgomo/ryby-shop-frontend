@@ -8,11 +8,12 @@ import { Subscription } from 'rxjs';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { ErrorService } from 'src/app/error/error.service';
 import { iEbayImportListingRes } from 'src/app/model/ebay/iEbayImportListingRes';
+import { ErrorComponent } from 'src/app/error/error.component';
 
 @Component({
   selector: 'app-import-ebay-listings',
   standalone: true,
-  imports: [CommonModule, MatInputModule, FormsModule, MatButtonModule, TextFieldModule],
+  imports: [CommonModule, MatInputModule, FormsModule, MatButtonModule, TextFieldModule, ErrorComponent],
   templateUrl: './import-ebay-listings.component.html',
   styleUrls: ['./import-ebay-listings.component.scss']
 })
@@ -31,6 +32,7 @@ export class ImportEbayListingsComponent implements OnDestroy {
 
       this.inventoryService.postListingsString(this.items).subscribe(res => {
         const error: string[] = [];
+
             if(res.length > 0) {
               const items: string[] = [];
 

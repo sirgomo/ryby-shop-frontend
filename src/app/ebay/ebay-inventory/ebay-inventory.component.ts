@@ -13,11 +13,13 @@ import { Observable, combineLatest, map } from 'rxjs';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ErrorService } from 'src/app/error/error.service';
+import { ErrorComponent } from 'src/app/error/error.component';
 
 @Component({
   selector: 'app-ebay-inventory',
   standalone: true,
-  imports: [CommonModule, MatSelectModule, MatTableModule, MatButtonModule, FormsModule, MatTabsModule, ImportEbayListingsComponent, MatFormFieldModule, MatCheckboxModule],
+  imports: [CommonModule, MatSelectModule, MatTableModule, MatButtonModule, FormsModule, MatTabsModule, ImportEbayListingsComponent, MatFormFieldModule, MatCheckboxModule,
+  ErrorComponent],
   templateUrl: './ebay-inventory.component.html',
   styleUrls: ['./ebay-inventory.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

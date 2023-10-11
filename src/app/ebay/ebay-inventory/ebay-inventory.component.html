@@ -1,7 +1,7 @@
 <mat-tab-group>
   <mat-tab label="Ebay Listings">
     <div class="err" *ngIf="errorService.message() && errorService.message().length > 3">
-      {{errorService.message()}}
+   <app-error></app-error>
     </div>
     <div class="content" >
       <div class="selector">

@@ -9,11 +9,12 @@ import { FormsModule } from '@angular/forms';
 import { iEbayInventory } from 'src/app/model/ebay/iEbayInventory';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ImportEbayListingsComponent } from './import-ebay-listings/import-ebay-listings.component';
-import { Observable, combineLatest, map } from 'rxjs';
-import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { Observable } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ErrorService } from 'src/app/error/error.service';
 import { ErrorComponent } from 'src/app/error/error.component';
+import { iEbayInventoryItem } from 'src/app/model/ebay/iEbayInventoryItem';
 
 @Component({
   selector: 'app-ebay-inventory',
@@ -52,5 +53,8 @@ export class EbayInventoryComponent {
       this.zeigtNurEinProGroupSig.set(true);
     }
     this.itemsSig$ = this.inventorySer.getCurrentInventory(this.itemsProSite, this.currentSite, this.zeigtNurEinProGroupSig());
+  }
+  addItemToShop(item: iEbayInventoryItem) {
+
   }
 }

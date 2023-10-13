@@ -69,6 +69,7 @@ export interface iEbayInventoryItem {
     videoIds?: string[];
   };
   sku?: string;
+  inebay?: string;
 }
 
 export enum AvailabilityTypeEnum {

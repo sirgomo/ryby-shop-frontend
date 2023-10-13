@@ -11,7 +11,7 @@ import { iLieferant } from 'src/app/model/iLieferant';
 import { iKategorie } from 'src/app/model/iKategorie';
 import { HelperService } from 'src/app/helper/helper.service';
 import { ErrorService } from 'src/app/error/error.service';
-import { BehaviorSubject, Observable, combineLatest, finalize, map, of, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, of, startWith, switchMap, tap } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { iAktion } from 'src/app/model/iAktion';
 import { CommonModule, DatePipe } from '@angular/common';

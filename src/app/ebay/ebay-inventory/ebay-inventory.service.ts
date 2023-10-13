@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, combineLatest, forkJoin, map, mergeMap, of, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iEbayImportListingRes } from 'src/app/model/ebay/iEbayImportListingRes';
 import { iEbayInventory } from 'src/app/model/ebay/iEbayInventory';
@@ -22,14 +22,15 @@ export class EbayInventoryService {
         this.errorServ.newMessage(err);
         return of({} as iEbayInventory);
       }),
+      //get 1 item from group of items
       map((res) => {
-        if(getall) {
+        if(getall && res.inventoryItems) {
           let list: iEbayInventoryItem[] = []
           for (let i = 0; i < res.inventoryItems.length; i++) {
                 if(res.inventoryItems[i].groupIds === undefined) {
                   res.inventoryItems[i] = {
                     ...res.inventoryItems[i],
-                    groupIds : ['null'+i]
+                    groupIds : ['null/'+i]
                   }
                 }
 
@@ -40,14 +41,57 @@ export class EbayInventoryService {
           res.inventoryItems = list;
         }
         return res;
-      })
+      }),
+      //merge it with data from shop, look if the item is in the store
+      mergeMap(
+        res => {
+
+          if(!res.inventoryItems)
+            return of(res);
+
+          const items$ = forkJoin(res.inventoryItems.map((item) => {
+            const gruopSplit = item.groupIds![0].split('/')[0];
+
+
+            if(gruopSplit === 'null')
+              return this.httpClinet.get(`${this.#api}/sku/${item.sku}`).pipe(
+                map((res) => {
+                  if(res.toString().length > 2)
+                  return {
+                    ...item,
+                    inebay: res.toString()
+                  }
+
+                  return item;
+                })
+            );
+
+              return this.httpClinet.get(`${this.#api}/group/${item.groupIds![0]}`).pipe(
+                map((res) => {
+                  if(res.toString().length > 2)
+                  return {
+                    ...item,
+                    inebay: res.toString()
+                  }
+
+                  return item;
+                })
+            );
+          }))
+          //return the result
+          return combineLatest([of(res), items$]).pipe(map(([res, itemy]) => {
+            res.inventoryItems = itemy;
+            return res;
+          }))
+        }
+      )
     );
   }
+  //listing with comma separated
   postListingsString(listing: string): Observable<iEbayImportListingRes[]> {
     const tmp : { listings: string } = { listings: listing.replace(/(\r\n\s|\n|\r|\s)/gm, '') };
     return this.httpClinet.post<iEbayImportListingRes[]>(`${this.#api}/listing`, tmp).pipe(
       catchError((err) => {
-
         return [];
       }),
       tap(res => {

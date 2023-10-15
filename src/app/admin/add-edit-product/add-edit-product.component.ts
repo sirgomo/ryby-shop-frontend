@@ -11,7 +11,7 @@ import { iLieferant } from 'src/app/model/iLieferant';
 import { iKategorie } from 'src/app/model/iKategorie';
 import { HelperService } from 'src/app/helper/helper.service';
 import { ErrorService } from 'src/app/error/error.service';
-import { BehaviorSubject, Observable, combineLatest, map, of, startWith, switchMap, tap } from 'rxjs';
+import { Observable, combineLatest, map, of, startWith, switchMap, tap } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { iAktion } from 'src/app/model/iAktion';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -49,7 +49,6 @@ export class AddEditProductComponent implements OnInit {
   currentImage!: Blob;
   photoFile!: File;
   images: string[] = [];
-  color: iColor[] = [];
   actionsSig = signal<iAktion[]>([]);
   liferantSignal = toSignal<iLieferant[], iLieferant[]>(this.liferantService.liferants$, { initialValue: [] });
   kategorySignal = toSignal<iKategorie[], iKategorie[]>(this.katService.kategorie$, { initialValue: []});
@@ -74,7 +73,6 @@ export class AddEditProductComponent implements OnInit {
       id: [this.data ? this.data.id : null],
       name: [this.data ? this.data.name : '', Validators.required],
       sku: [this.data ? this.data.sku : ''],
-      ebay_group: [this.data ? this.data.ebay_group : ''],
       preis: [this.data ? this.data.preis : '', Validators.required],
       artid: [this.data ? this.data.artid : '', Validators.required],
       beschreibung: [this.data ? this.data.beschreibung : '', Validators.required],
@@ -106,7 +104,7 @@ export class AddEditProductComponent implements OnInit {
         if(res.id) {
           this.data.preis = Number(res.preis)
           this.images = JSON.parse( res.foto);
-          this.color = JSON.parse(res.color);
+
           this.productForm.patchValue(res);
 
           if(res.eans && res.eans.length > 0) {
@@ -206,7 +204,7 @@ export class AddEditProductComponent implements OnInit {
       const product: iProduct = {} as iProduct;
       Object.assign(product, this.productForm.value)
       product.foto = JSON.stringify(this.images);
-      product.color = JSON.stringify(this.color);
+
       product.verkaufteAnzahl = this.data ?  this.data.verkaufteAnzahl : 0;
       product.preis = Number(this.productForm.get('preis')?.getRawValue());
       product.currentmenge = 0;
@@ -260,25 +258,7 @@ export class AddEditProductComponent implements OnInit {
   cancel() {
     this.dialogRef.close();
   }
-  addColor(){
-    const color: iColor = {
-      id: this.color.length  > 9 ? 'farbe ' + (this.color.length +1) : 'farbe 0' + (this.color.length +1),
-      menge: 0
-    };
-    this.color.push(color);
-  }
-  removeColor(){
-    if(this.color.length > 0) {
-      if(this.color[this.color.length -1].menge > 0) {
-        this.snackBar.open('Color kann nicht entfernt werden, menge größer als 0', 'Ok', {duration: 2000 })
-        return;
-      }
 
-
-      this.color.splice(this.color.length -1, 1);
-    }
-
-  }
   getImage(id: string) {
 
     this.getFoto$ =  this.prodService.getImage(id).pipe(tap((res) => {

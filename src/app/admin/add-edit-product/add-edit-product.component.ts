@@ -29,6 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { VariationsComponent } from './variations/variations.component';
 
 
 @Component({
@@ -40,7 +41,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   standalone: true,
   imports: [CommonModule, ErrorComponent, MatIconModule, MatButtonModule, FormsModule, ReactiveFormsModule,
   MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule,
-   MatProgressSpinnerModule, MatInputModule, MatCheckboxModule]
+   MatProgressSpinnerModule, MatInputModule, MatCheckboxModule, VariationsComponent]
 })
 export class AddEditProductComponent implements OnInit {
 
@@ -83,7 +84,7 @@ export class AddEditProductComponent implements OnInit {
       bestellungen: [this.data ? this.data.bestellungen : []],
       datumHinzugefuegt: [this.data ? this.data.datumHinzugefuegt : Date.now()],
       kategorie: [this.data ? this.data.kategorie : [], Validators.required],
-      verfgbarkeit: [this.data ? this.data.verfgbarkeit : 0],
+      verfgbarkeit: [{value : this.data ? this.data.verfgbarkeit : 0, disabled: true }],
       mindestmenge: [this.data ? this.data.mindestmenge : '', Validators.required],
       currentmenge: [{ value: this.data ? this.data.currentmenge : 0, disabled: true }],
       product_sup_id: [this.data ? this.data.product_sup_id: ''],

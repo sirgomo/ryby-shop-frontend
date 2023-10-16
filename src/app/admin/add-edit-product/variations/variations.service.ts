@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { tap } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, of, startWith } from 'rxjs';
 import { iProduktVariations } from 'src/app/model/iProduktVariations';
 import { environment } from 'src/environments/environment';
 
@@ -11,13 +11,27 @@ import { environment } from 'src/environments/environment';
 export class VariationsService {
   #api = environment.api + 'variation';
 
+  variations : BehaviorSubject<iProduktVariations[] | null> = new BehaviorSubject<iProduktVariations[] | null>(null);
+  variations$ = combineLatest([this.variations.asObservable(), this.findAll()]).pipe(map(([vari, find]) => {
+    if(vari === null)
+      return find;
+
+      return vari;
+  }))
 
   constructor(private httpClient: HttpClient, private readonly snack: MatSnackBar) { }
 
-  findAll() {
-    return this.httpClient.get<iProduktVariations[]>(this.#api).pipe(tap((res) => {
+  findAll(): Observable<iProduktVariations[]> {
+    return this.httpClient.get<iProduktVariations[]>(this.#api).pipe(
+      map((res) => {
       console.log(res)
-    }));
+
+      if(!res || res.length === undefined)
+      return [];
+
+        return res;
+    })
+    );
   }
 
   findByVariationsName(variations_name: string) {

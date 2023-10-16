@@ -1,5 +1,64 @@
-<div class="content">
-  <div class="select">
+<div class="content" *ngIf="product else noproduct">
+  <div class="selector">
+    <div class="select">
+      <mat-form-field>
+        <mat-label>Variations :</mat-label>
+        <mat-select placeholder="" [(ngModel)]="selectedVariation">
+            <mat-option *ngFor="let item of variationsSig()" [value]="item">{{item.variations_name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-stroked-button (click)="addVariation()" color="accent">Action</button>
+    </div>
+    <div class="right-button">
+      <button mat-stroked-button (click)="addNeueVariation()" color="primary">Neue Variation hinzufügen</button>
+    </div>
+  </div>
+  <div>
+    <table mat-table [dataSource]="productVarations()">
 
+      <!-- SKU Column -->
+      <ng-container matColumnDef="sk">
+        <th mat-header-cell *matHeaderCellDef> SKU </th>
+        <td mat-cell *matCellDef="let element"> {{element.sku}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.variations_name}} </td>
+      </ng-container>
+
+      <!-- Value Column -->
+      <ng-container matColumnDef="val">
+        <th mat-header-cell *matHeaderCellDef> Value </th>
+        <td mat-cell *matCellDef="let element"> {{element.value}} {{element.unit}} </td>
+      </ng-container>
+
+      <!-- Image Column -->
+      <ng-container matColumnDef="image">
+        <th mat-header *matHeaderCellDef> Image </th>
+        <td mat-cell *matCellDef="let element"> ... </td>
+      </ng-container>
+
+      <!-- Hint Column -->
+      <ng-container matColumnDef="hint">
+        <th mat-header-cell *matHeaderCellDef> Hint </th>
+        <td mat-cell *matCellDef="let element"> {{element.hint}} </td>
+      </ng-container>
+           <!-- Hint Column -->
+      <ng-container matColumnDef="del">
+        <th mat-header-cell *matHeaderCellDef> Entfernen </th>
+        <td mat-cell *matCellDef="let element">butt</td>
+      </ng-container>
+
+      <!-- Table Rows -->
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+    </table>
   </div>
 </div>
+<ng-template #noproduct>
+  <div class="nodata">
+    Product Data nicht gefunden!
+  </div>
+</ng-template>

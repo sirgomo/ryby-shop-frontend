@@ -1,0 +1,40 @@
+<div class="content">
+  <form [formGroup]="form" class="form">
+    <mat-form-field class="form-field">
+      <mat-label>Sku</mat-label>
+      <input matInput formControlName="sku" required>
+      <mat-error *ngIf="form.get('sku')?.hasError('required')">Sku is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <mat-label>Variations Name</mat-label>
+      <input matInput formControlName="variations_name" required>
+      <mat-error *ngIf="form.get('variations_name')?.hasError('required')">Variations Name is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <mat-label>Hint</mat-label>
+      <input matInput formControlName="hint">
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <mat-label>Value</mat-label>
+      <input matInput formControlName="value" required>
+      <mat-error *ngIf="form.get('value')?.hasError('required')">Value is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <mat-label>Unit</mat-label>
+      <input matInput formControlName="unit">
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <mat-label>Image</mat-label>
+      <input matInput formControlName="image" required>
+      <mat-error *ngIf="form.get('image')?.hasError('required')">Image is required</mat-error>
+    </mat-form-field>
+  </form>
+  <div class="acction">
+  <button mat-stroked-button color="primary" (click)="abort()">Abbrechen</button><button mat-stroked-button color="accent" (click)="save()"></button>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+.selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.select {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  height: 100%;
+}
+.right-button {
+  height: 100%;
+}
+.nodata {
+  display:block;
+  font-size: large;
+  color: red;
+  justify-content: center;
+  text-align: center;
+  margin-top: 5rem;
+  overflow: hidden;
+}

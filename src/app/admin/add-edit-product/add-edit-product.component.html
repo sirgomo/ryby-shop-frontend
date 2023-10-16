@@ -100,10 +100,6 @@
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
-
-
-              <mat-checkbox id="verfgbarkeit" formControlName="verfgbarkeit">Verfügbarkeit</mat-checkbox>
-
               <mat-form-field>
                 <mat-label>Mindestmenge</mat-label>
                 <input matInput type="number" id="mindestmenge" formControlName="mindestmenge" required autocomplete="off">
@@ -145,20 +141,20 @@
                 <mat-label>Item Gewicht (g)</mat-label>
                 <input matInput type="number" id="gewicht" formControlName="gewicht" required autocomplete="off">
               </mat-form-field>
-              <mat-form-field>
-                <mat-label>Mehrwertsteuer</mat-label>
-                <input matInput type="number" id="mehrwehrsteuer" formControlName="mehrwehrsteuer" required autocomplete="off">
-              </mat-form-field>
             </div>
             <div class="row">
               <mat-form-field>
                 <mat-label>Produkt Sku</mat-label>
-                <input matInput type="number" id="sku" formControlName="sku"  autocomplete="off">
+                <input matInput type="text" id="sku" formControlName="sku"  autocomplete="off" required>
               </mat-form-field>
               <mat-form-field>
-                <mat-label>Ebay Group</mat-label>
-                <input matInput type="number" id="ebay_group" formControlName="ebay_group" autocomplete="off">
+                <mat-label>Mehrwertsteuer</mat-label>
+                <input matInput type="number" id="mehrwehrsteuer" formControlName="mehrwehrsteuer" required autocomplete="off">
               </mat-form-field>
+              <div class="verfug">
+                <mat-checkbox id="verfgbarkeit" formControlName="verfgbarkeit">Verfügbarkeit</mat-checkbox>
+              </div>
+
             </div>
           </mat-tab>
           <mat-tab label="Eans" >
@@ -179,14 +175,17 @@
                 </div>
               </div>
             <div  class="button" >
-              <button mat-mini-fab (click)="addEan()" color="primary" >
+              <button mat-stroked-button (click)="addEan()" color="primary" >
                 <mat-icon >add</mat-icon>
+                Ean Hinzufügen
             </button>
             </div>
 
           </mat-tab>
           <mat-tab label="Variations">
-
+            <ng-template matTabContent>
+              <app-variations [product]="data"></app-variations>
+            </ng-template>
           </mat-tab>
       </mat-tab-group>
       <div class="button" >

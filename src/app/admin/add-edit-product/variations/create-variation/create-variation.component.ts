@@ -10,6 +10,7 @@ import { ErrorComponent } from 'src/app/error/error.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { ProductService } from 'src/app/admin/product/product.service';
 
 @Component({
   selector: 'app-create-variation',
@@ -23,10 +24,10 @@ export class CreateVariationComponent {
   produkt: iProduct | undefined = undefined;
   variation: iProduktVariations | undefined = undefined;
   form: FormGroup;
-  constructor(private readonly service: VariationsService, @Inject(MAT_DIALOG_DATA) data: { prod: iProduct, vari: iProduktVariations | undefined}, private readonly ref: MatDialogRef<CreateVariationComponent>,
-  private fb : FormBuilder, private error: ErrorService ) {
+  constructor(private readonly service: VariationsService, @Inject(MAT_DIALOG_DATA) public data: { prod: iProduct, vari: iProduktVariations | undefined}, private readonly ref: MatDialogRef<CreateVariationComponent>,
+  private fb : FormBuilder, private error: ErrorService, private readonly productService: ProductService ) {
     this.form = this.fb.group({
-      sku: [data.vari ? data.vari.sku : '', Validators.required],
+      sku: [ this.getSku(), Validators.required],
       variations_name: [data.vari ? data.vari.variations_name: '', Validators.required],
       hint: [ data.vari ? data.vari.hint : ''],
       value: [ data.vari ? data.vari.value: '', Validators.required],
@@ -45,5 +46,14 @@ export class CreateVariationComponent {
   }
   save() {
     console.log(this.form.value)
+  }
+  getSku() {
+    if(this.form && this.form.get('value'))
+      return this.data.prod.sku+'_'+this.form.get('value')?.getRawValue();
+
+    return this.data.prod.sku;
+  }
+  updateVariationSku() {
+    this.form.patchValue({sku: this.getSku()});
   }
 }

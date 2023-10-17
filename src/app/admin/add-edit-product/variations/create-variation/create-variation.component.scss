@@ -1,0 +1,20 @@
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.acction {
+  display: flex;
+  justify-content: center;
+  gap: .5rem;
+}
+.row {
+  display: flex;
+  gap: .5rem;
+}
+.header {
+  display: flex;
+  margin: 1rem .5rem;
+  justify-content: center;
+}

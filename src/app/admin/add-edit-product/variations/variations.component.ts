@@ -10,6 +10,8 @@ import { iProduktVariations } from 'src/app/model/iProduktVariations';
 import { Observable } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { iProduct } from 'src/app/model/iProduct';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { CreateVariationComponent } from './create-variation/create-variation.component';
 
 @Component({
   selector: 'app-variations',
@@ -25,10 +27,17 @@ export class VariationsComponent {
   selectedVariation: iProduktVariations = {} as iProduktVariations;
   productVarations = signal<iProduktVariations[]>([]);
   columns : string[] = ['sk', 'name', 'val', 'image', 'hint', 'del'];
-  constructor (private readonly service: VariationsService) {}
+  constructor (private readonly service: VariationsService, private dialog: MatDialog) {}
 
   addVariation() {
     console.log(this.selectedVariation);
   }
-  addNeueVariation() {}
+  addNeueVariation() {
+    const conf : MatDialogConfig = new MatDialogConfig();
+    conf.width = '500px';
+    conf.height = '500px';
+    conf.data = { prod: this.product };
+
+    this.dialog.open(CreateVariationComponent, conf);
+  }
 }

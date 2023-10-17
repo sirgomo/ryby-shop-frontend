@@ -1,6 +1,6 @@
 <div class="content" *ngIf="product else noproduct">
   <div class="selector">
-    <div class="select">
+    <div class="select" *ngIf="variationsSig().length > 0 else select">
       <mat-form-field>
         <mat-label>Variations :</mat-label>
         <mat-select placeholder="" [(ngModel)]="selectedVariation">
@@ -60,5 +60,10 @@
 <ng-template #noproduct>
   <div class="nodata">
     Product Data nicht gefunden!
+  </div>
+</ng-template>
+<ng-template #select>
+  <div class="select">
+    Es gibt kein Variationen!
   </div>
 </ng-template>

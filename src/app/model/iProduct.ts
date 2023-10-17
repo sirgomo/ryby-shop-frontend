@@ -4,6 +4,7 @@ import { iKategorie } from "./iKategorie";
 import { iKundenbewertung } from "./iKundenbewertung";
 import { iLieferant } from "./iLieferant";
 import { iProductBestellung } from "./iProductBestellung";
+import { iProduktVariations } from "./iProduktVariations";
 import { iStellplatze } from "./iStellplatze";
 import { iWareneingangProduct } from "./iWareneingangProduct";
 
@@ -36,4 +37,5 @@ export interface iProduct {
   promocje: iAktion[];
   bewertung: iKundenbewertung[];
   eans: iEan[];
+  variations: iProduktVariations[];
 }

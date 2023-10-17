@@ -120,8 +120,8 @@ export class AddEditProductComponent implements OnInit {
 
           if(this.images.length > 0)
           this.getImage(this.images[0])
+          this.data.variations = res.variations;
         }
-
         return res;
        }));
 

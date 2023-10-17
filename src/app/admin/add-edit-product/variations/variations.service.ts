@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, Observable, combineLatest, map, of, startWith } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, combineLatest, map, tap } from 'rxjs';
+import { ErrorService } from 'src/app/error/error.service';
 import { iProduktVariations } from 'src/app/model/iProduktVariations';
 import { environment } from 'src/environments/environment';
 
@@ -11,20 +12,18 @@ import { environment } from 'src/environments/environment';
 export class VariationsService {
   #api = environment.api + 'variation';
 
-  variations : BehaviorSubject<iProduktVariations[] | null> = new BehaviorSubject<iProduktVariations[] | null>(null);
-  variations$ = combineLatest([this.variations.asObservable(), this.findAll()]).pipe(map(([vari, find]) => {
-    if(vari === null)
+  variations : BehaviorSubject<iProduktVariations[]> = new BehaviorSubject<iProduktVariations[]>([]);
+
+  variations$ = combineLatest([this.findAllforSelect()]).pipe(map(([find]) => {
       return find;
+  }));
 
-      return vari;
-  }))
 
-  constructor(private httpClient: HttpClient, private readonly snack: MatSnackBar) { }
+  constructor(private httpClient: HttpClient, private readonly snack: MatSnackBar, private readonly errorService: ErrorService) { }
 
-  findAll(): Observable<iProduktVariations[]> {
+  findAllforSelect(): Observable<iProduktVariations[]> {
     return this.httpClient.get<iProduktVariations[]>(this.#api).pipe(
       map((res) => {
-      console.log(res)
 
       if(!res || res.length === undefined)
       return [];
@@ -43,7 +42,20 @@ export class VariationsService {
   }
 
   create(produktVariations: iProduktVariations) {
-    return this.httpClient.post<iProduktVariations>(this.#api, produktVariations);
+    return this.httpClient.post<iProduktVariations>(this.#api, produktVariations).pipe(
+      tap((res) => {
+        console.log(res);
+        const items = this.variations.value;
+        const tmp = items.slice(0);
+        tmp.push(res);
+        this.variations.next(tmp);
+        this.snack.open('Variation wurde hinzugefugt', 'Ok', { duration: 1000 });
+      }),
+      catchError((err) => {
+        this.errorService.newMessage('Etwas ist schiefgelaufen, Variation wurde nicht hinzugefugt!');
+        return err;
+      })
+    );
   }
 
   delete(sku: string) {

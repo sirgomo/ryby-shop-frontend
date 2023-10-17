@@ -1,20 +1,23 @@
 <div class="content" *ngIf="product else noproduct">
+  <div *ngIf="errorServi?.message && errorServi.message().length > 2">
+    <app-error></app-error>
+  </div>
   <div class="selector">
     <div class="select" *ngIf="variationsSig().length > 0 else select">
       <mat-form-field>
         <mat-label>Variations :</mat-label>
-        <mat-select placeholder="" [(ngModel)]="selectedVariation">
-            <mat-option *ngFor="let item of variationsSig()" [value]="item">{{item.variations_name}}</mat-option>
+        <mat-select [(ngModel)]="selectedVariation">
+            <mat-option *ngFor="let item of variationsSig()" [value]="item">{{item.variations_name }}</mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-stroked-button (click)="addVariation()" color="accent">Action</button>
+      <button mat-stroked-button (click)="addVariation()" color="accent">Variation Hinzufügen</button>
     </div>
     <div class="right-button">
       <button mat-stroked-button (click)="addNeueVariation()" color="primary">Neue Variation hinzufügen</button>
     </div>
   </div>
   <div>
-    <table mat-table [dataSource]="productVarations()">
+    <table mat-table [dataSource]="productVarationsSig()">
 
       <!-- SKU Column -->
       <ng-container matColumnDef="sk">
@@ -31,9 +34,13 @@
       <!-- Value Column -->
       <ng-container matColumnDef="val">
         <th mat-header-cell *matHeaderCellDef> Value </th>
-        <td mat-cell *matCellDef="let element"> {{element.value}} {{element.unit}} </td>
+        <td mat-cell *matCellDef="let element"> <span>{{element.value}} </span></td>
       </ng-container>
-
+      <!-- Value2 Column -->
+      <ng-container matColumnDef="val2">
+        <th mat-header-cell *matHeaderCellDef> Value 2 </th>
+        <td mat-cell *matCellDef="let element"> <span>{{element.unit}} </span></td>
+      </ng-container>
       <!-- Image Column -->
       <ng-container matColumnDef="image">
         <th mat-header *matHeaderCellDef> Image </th>
@@ -57,6 +64,7 @@
     </table>
   </div>
 </div>
+<span *ngIf="send$ | async"></span>
 <ng-template #noproduct>
   <div class="nodata">
     Product Data nicht gefunden!

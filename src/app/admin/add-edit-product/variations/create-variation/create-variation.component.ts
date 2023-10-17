@@ -10,7 +10,7 @@ import { ErrorComponent } from 'src/app/error/error.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { ProductService } from 'src/app/admin/product/product.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-variation',
@@ -21,35 +21,36 @@ import { ProductService } from 'src/app/admin/product/product.service';
   styleUrls: ['./create-variation.component.scss']
 })
 export class CreateVariationComponent {
-  produkt: iProduct | undefined = undefined;
-  variation: iProduktVariations | undefined = undefined;
+
+  variation: iProduktVariations = {} as iProduktVariations;
   form: FormGroup;
+  send$ = new  Observable();
   constructor(private readonly service: VariationsService, @Inject(MAT_DIALOG_DATA) public data: { prod: iProduct, vari: iProduktVariations | undefined}, private readonly ref: MatDialogRef<CreateVariationComponent>,
-  private fb : FormBuilder, private error: ErrorService, private readonly productService: ProductService ) {
+  private fb : FormBuilder, private error: ErrorService ) {
     this.form = this.fb.group({
       sku: [ this.getSku(), Validators.required],
       variations_name: [data.vari ? data.vari.variations_name: '', Validators.required],
       hint: [ data.vari ? data.vari.hint : ''],
       value: [ data.vari ? data.vari.value: '', Validators.required],
-      unit: [ data.vari ? data.vari.unit: ''],
-      image: [ data.vari? data.vari.image : '', Validators.required]
+      unit: [ data.vari ? data.vari.unit: '']
     });
 
     if(data.prod === undefined)
       this.error.newMessage('Produkt wurde nicht gefunden!');
 
-    this.produkt = data.prod;
-    this.variation = data.vari;
   }
   abort() {
     this.ref.close();
   }
   save() {
-    console.log(this.form.value)
+
+      Object.assign(this.variation, this.form.value);
+      this.variation.produkt = this.data.prod;
+      this.send$ = this.service.create(this.variation);
   }
   getSku() {
     if(this.form && this.form.get('value'))
-      return this.data.prod.sku+'_'+this.form.get('value')?.getRawValue();
+      return this.data.prod.sku+'_'+this.form.get('variations_name')?.getRawValue()+'_'+this.form.get('value')?.getRawValue();
 
     return this.data.prod.sku;
   }

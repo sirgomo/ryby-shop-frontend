@@ -5,16 +5,16 @@
   <div class="product-details">
     <h3>{{item.name}}</h3>
     <p>{{ item.beschreibung.length < 150 ? item.beschreibung : (item.beschreibung | slice:0:150) + '...'}}</p>
-    <p *ngIf="item.mehrwehrsteuer < 1">Preis: {{item.preis}} &euro; </p>
+    <p *ngIf="item.mehrwehrsteuer < 1">Preis: price &euro; </p>
     <p *ngIf="item.mehrwehrsteuer > 0">Preis: {{getPriceBrutto(item)}} &euro;</p>
     <div class="prop">
-      <p>Lange: {{item.lange}} (mm)</p>
-      <p>Gewicht: {{item.gewicht}} (g)</p>
+      <p>Lange: lange (mm)</p>
+      <p>Gewicht: gewicht (g)</p>
     </div>
-    <div class="color" *ngIf="color.length > 1">
+    <div class="color" >
       <label for="farbe">Farbe: </label>
       <select id="farbe" (change)="colorChange($event.target)">
-        <option *ngFor="let item of color" [value]="item.id">{{item.id}}</option>
+        <option  [value]="item.id">{{item.id}}</option>
       </select>
     </div>
     <div class="act">

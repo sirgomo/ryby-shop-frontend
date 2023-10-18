@@ -41,27 +41,27 @@
         </div>
       <div class="item">
         <div class="desc-title">Min Menge:</div>
-        <div class="desc-value">{{item.mindestmenge}} (st.)</div>
+        <div class="desc-value"> min mege (st.)</div>
       </div>
       <div class="item">
         <div class="desc-title">Verfugbare Menge:</div>
-        <div class="desc-value">{{item.currentmenge}} (st.)</div>
+        <div class="desc-value"> menge (st.)</div>
       </div>
       </div>
       <div class="right">
         <div class="item">
           <div class="desc-title">Länge:</div>
-          <div class="desc-value">{{item.lange}} (mm)</div>
+          <div class="desc-value"> lange (mm)</div>
         </div>
       <div class="item">
         <div class="desc-title">Gewicht:</div>
-        <div class="desc-value">{{item.gewicht}} (g)</div>
+        <div class="desc-value"> lange (g)</div>
       </div>
-      <div class="item" *ngFor="let item of colorToBuy">
+      <div class="item" >
           <mat-label >Farbe: </mat-label>
           <mat-form-field class="input" >
             <mat-label >{{item.id}}</mat-label>
-            <input type="number" matInput [(ngModel)]="item.menge" autocomplete="off">
+            <input type="number" matInput [(ngModel)]="item" autocomplete="off">
           </mat-form-field>
       </div>
       </div>
@@ -72,12 +72,8 @@
   </div>
   <div class="farbe">
     <div class="row">
-      <div class="item" *ngFor="let item of color; let i = index">
-        <mat-checkbox *ngIf="fotos.length > 1  && i === 0" checked="true" (change)="addColor(color[i].id, $event)"></mat-checkbox>
-        <mat-checkbox *ngIf="fotos.length > 1  && i !== 0"  (change)="addColor(color[i].id, $event)"></mat-checkbox>
-        <button mat-raised-button color="primary" (click)="changeImage(i)">
-          <span>{{item.id}} ({{item.menge}})</span>
-          </button>
+      <div class="item" >
+
       </div>
     </div>
     <div class="image">

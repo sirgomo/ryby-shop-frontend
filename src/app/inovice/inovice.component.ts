@@ -6,7 +6,6 @@ import { forkJoin, tap } from 'rxjs';
 import { ErrorService } from '../error/error.service';
 import { CompanyService } from '../admin/company/company.service';
 import { iCompany } from '../model/iCompany';
-import { iColor } from '../model/iColor';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { MatIconModule } from '@angular/material/icon';
@@ -102,8 +101,9 @@ export class InoviceComponent {
     getPriceWithShipping() {
       return (Number(this.currentItem.versandprice) + this.getTotalBrutto()).toFixed(2);
     }
-    getVariations(index: number): iColor[] {
-        return JSON.parse( this.currentItem.produkte[index].color);
+    getVariations(index: number) {
+      //TODO not working
+      //  return JSON.parse( this.currentItem.produkte[index].color);
     }
     close() {
       this.dialoRef.close();

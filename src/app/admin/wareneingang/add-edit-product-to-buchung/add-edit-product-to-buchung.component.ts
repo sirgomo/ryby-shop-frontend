@@ -3,7 +3,6 @@ import { WareneingangService } from '../wareneingang.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
-import { iColor } from 'src/app/model/iColor';
 import { ErrorService } from 'src/app/error/error.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { iWarenEingang } from 'src/app/model/iWarenEingang';
@@ -27,7 +26,7 @@ import { MatInputModule } from '@angular/material/input';
 export class AddEditProductToBuchungComponent {
   wareneingang = this.wEingService.currentWarenEingangSig();
   wEingangProduct: FormGroup;
-  colors: iColor[] =  JSON.parse(this.data.produkt[0].color);
+
   act$ = new Observable();
   constructor (private wEingService: WareneingangService, @Optional() @Inject(MAT_DIALOG_DATA) public data: iWareneingangProduct, private fb: FormBuilder,
   private dialRef: MatDialogRef<AddEditProductToBuchungComponent>,
@@ -45,22 +44,7 @@ export class AddEditProductToBuchungComponent {
         color:  this.fb.array([]),
     });
 
-    if(data.color)
-      this.colors = JSON.parse(this.data.color);
 
-   for (let i = 0; i < this.colors.length; i++) {
-    const item = this.colorForm();
-    if(!data.id)
-      this.colors[i].menge = 0;
-    item.patchValue(this.colors[i]);
-      this.getColor().push(item)
-   }
-   //No color, but the article has to have at least one color
-   if(this.colors.length === 0) {
-    const item = this.colorForm();
-    item.get('id')?.setValue('farbe 01')
-      this.getColor().push(item)
-   }
   }
   close() {
     this.dialRef.close();

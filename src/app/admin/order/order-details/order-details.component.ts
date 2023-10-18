@@ -16,7 +16,6 @@ import { Observable, map, of, tap } from 'rxjs';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
 import { BESTELLUNGSSTATE, BESTELLUNGSSTATUS, iBestellung } from 'src/app/model/iBestellung';
-import { iColor } from 'src/app/model/iColor';
 import { OrdersService } from 'src/app/orders/orders.service';
 
 
@@ -33,27 +32,12 @@ export class OrderDetailsComponent implements OnInit {
   err = this.error.message;
   stan = Object.values(BESTELLUNGSSTATE);
   status = Object.values(BESTELLUNGSSTATUS);
-  color: iColor[][] = [];
-  color_gepackt: iColor[][] = [];
+
   act$ = new Observable();
 
     currentItem: Signal<iBestellung | undefined>  = this.data.id ? toSignal(this.orderService.getBestellungById(this.data.id).pipe(map((res) => {
       if(res.id) {
-        for (let i = 0; i < res.produkte.length; i++) {
-          const item = JSON.parse(res.produkte[i].color);
-          this.color.push(item);
-          if(res.produkte[i].color_gepackt && res.produkte[i].color_gepackt.length > 0 ) {
-            const item_gepackt = JSON.parse(res.produkte[i].color_gepackt);
-            this.color_gepackt.push(item_gepackt);
-          } else {
-            const item: iColor[] = JSON.parse(res.produkte[i].color);
-            for (let i = 0; i < item.length; i++) {
-              item[i].menge = 0;
-            }
-            this.color_gepackt.push(item);
-          }
-        }
-        return res;
+
       }
       return {} as iBestellung;
     }))) : toSignal(of({} as iBestellung));
@@ -77,11 +61,7 @@ export class OrderDetailsComponent implements OnInit {
         Object.assign(item, this.data);
 
         for (let i = 0; i < item.produkte.length; i++) {
-          item.produkte[i].color_gepackt =  JSON.stringify(this.color_gepackt[i]);
-          item.produkte[i].mengeGepackt = 0;
-          for (let z = 0; z < this.color_gepackt[i].length; z++) {
-            item.produkte[i].mengeGepackt += this.color_gepackt[i][z].menge;
-          }
+
         }
         this.act$ = this.orderService.updateOrder(item).pipe(tap(res => {
           if(!res.id)

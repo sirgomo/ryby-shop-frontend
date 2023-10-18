@@ -115,7 +115,7 @@ export class ShippingAddressComponent {
 
     for (let i = 0; i < this.helperService.cardSig().length; i++) {
       const item = {} as iProductBestellung;
-      item.color = this.helperService.cardSig()[i].color;
+     // item.color = this.helperService.cardSig()[i].color;
       item.produkt = [this.helperService.cardSig()[i]];
       products.push(item);
     }

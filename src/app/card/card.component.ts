@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, computed, signal } from '@angular/core';
 import { HelperService } from '../helper/helper.service';
 import { iProduct } from '../model/iProduct';
-import { iColor } from '../model/iColor';
 import { CompanyService } from '../admin/company/company.service';
 import { iCompany } from '../model/iCompany';
 import { Observable, map, tap } from 'rxjs';
@@ -11,7 +10,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
@@ -25,7 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class CardComponent implements OnInit {
 
   products = this.helper.cardSig;
-  colors: iColor[][] = [];
+  colors: any[][] = [];
   company = {} as iCompany;
   act$ = new Observable();
 
@@ -54,14 +52,14 @@ export class CardComponent implements OnInit {
 
     this.colors = [];
     for (let i = 0; i < arr.length; i++) {
-      this.colors.push(JSON.parse(arr[i].color));
+
 
     }
   }
 
   increaseQuantity(itemIndex: number, colorIndex: number) {
     this.colors[itemIndex][colorIndex].menge += 1;
-    this.products()[itemIndex].color = JSON.stringify(this.colors[itemIndex]);
+    //this.products()[itemIndex].color = JSON.stringify(this.colors[itemIndex]);
     const tmp = this.products();
     const newT = tmp.slice();
     this.reloadColors(newT);
@@ -76,7 +74,7 @@ export class CardComponent implements OnInit {
         return;
       }
     }
-    this.products()[itemIndex].color = JSON.stringify(this.colors[itemIndex]);
+   // this.products()[itemIndex].color = JSON.stringify(this.colors[itemIndex]);
 
     const tmp = this.products();
     const newT = tmp.slice();
@@ -107,7 +105,7 @@ export class CardComponent implements OnInit {
     if(!this.products()[itemIndex])
     return;
 
-        const colors: iColor[] = JSON.parse( this.products()[itemIndex].color);
+        const colors: any = 0// JSON.parse( this.products()[itemIndex].color);
         let total = 0;
         for (let i = 0; i < colors.length; i++) {
           let price = this.getPicePriceWithActions(this.products()[itemIndex]);
@@ -122,7 +120,7 @@ export class CardComponent implements OnInit {
   }
   getPicePriceWithActions(item: iProduct) {
     let price = 0;
-    price = Number(item.preis);
+    price = 0// Number(item.price);
     if(item.promocje && item.promocje[0]) {
       price -= price * item.promocje[0].rabattProzent / 100;
     }
@@ -149,7 +147,7 @@ export class CardComponent implements OnInit {
     if(!this.products()[itemIndex])
     return;
 
-    const color: iColor[] = JSON.parse(this.products()[itemIndex].color);
+    const color: any = 0 //JSON.parse(this.products()[itemIndex].color);
 
     let menge = 0;
     for (let i = 0; i< color.length; i++) {
@@ -175,10 +173,7 @@ export class CardComponent implements OnInit {
     let price = 0;
     const items = this.products();
     for (let i = 0; i < items.length; i++) {
-      const color: iColor[] = JSON.parse(items[i].color);
-      for (let y = 0; y < color.length; y++ ) {
-        price += color[y].menge * this.getPicePriceWithActions(items[i])
-      }
+
     }
     return price.toFixed(2);
   }
@@ -186,10 +181,7 @@ export class CardComponent implements OnInit {
     let mwst = 0;
     const items = this.products();
     for (let i = 0; i < items.length; i++) {
-      const color: iColor[] = JSON.parse(items[i].color);
-      for (let y = 0; y < color.length; y++ ) {
-        mwst += Number((this.getPicePriceWithActions(items[i]) * items[i].mehrwehrsteuer / 100).toFixed(2)) * color[y].menge;
-      }
+
     }
     return mwst.toFixed(2);
   }
@@ -200,14 +192,14 @@ export class CardComponent implements OnInit {
     this.helper.VersandAndKost.set(value);
   }
   doWeHaveEnough(itemIndex: number, colorIndex: number) :boolean {
-    const colorBuy: iColor[] = JSON.parse(this.helper.cardSig()[itemIndex].color);
-    const colorOrgi: iColor[] = JSON.parse(this.helper.cardSigForMengeControl()[itemIndex].color);
+    const colorBuy: any = 0//JSON.parse(this.helper.cardSig()[itemIndex].color);
+    const colorOrgi: any = 0//JSON.parse(this.helper.cardSigForMengeControl()[itemIndex].color);
 
     if(colorBuy.length === colorOrgi.length)
       return colorBuy[colorIndex].menge < colorOrgi[colorIndex].menge;
 
-    const index = colorOrgi.findIndex((item) => item.id === colorBuy[colorIndex].id);
-      return colorBuy[colorIndex].menge < colorOrgi[index].menge;
+
+    return  false;
 
   }
 }

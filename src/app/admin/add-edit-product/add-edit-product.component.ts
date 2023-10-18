@@ -3,7 +3,6 @@ import { ProductService } from '../product/product.service';
 import { FormGroup, FormBuilder, Validators, FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { iProduct } from 'src/app/model/iProduct';
-import { iColor } from 'src/app/model/iColor';
 import { LiferantsService } from '../liferants/liferants.service';
 import { KategorieService } from '../kategories/kategorie.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -16,7 +15,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { iAktion } from 'src/app/model/iAktion';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { iDelete } from 'src/app/model/iDelete';
 import { iEan } from 'src/app/model/iEan';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,6 +28,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { VariationsComponent } from './variations/variations.component';
+import { VariationsService } from './variations/variations.service';
 
 
 @Component({
@@ -48,7 +47,6 @@ export class AddEditProductComponent implements OnInit {
 
   productForm: FormGroup;
   currentImage!: Blob;
-  photoFile!: File;
   images: string[] = [];
   actionsSig = signal<iAktion[]>([]);
   liferantSignal = toSignal<iLieferant[], iLieferant[]>(this.liferantService.liferants$, { initialValue: [] });
@@ -68,29 +66,28 @@ export class AddEditProductComponent implements OnInit {
     public readonly err: ErrorService,
     private readonly sanitizer: DomSanitizer,
     private readonly dpipe: DatePipe,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly variationService: VariationsService,
   ) {
     this.productForm = this.formBuilder.group({
       id: [this.data ? this.data.id : null],
       name: [this.data ? this.data.name : '', Validators.required],
       sku: [this.data ? this.data.sku : ''],
-      preis: [this.data ? this.data.preis : '', Validators.required],
+
       artid: [this.data ? this.data.artid : '', Validators.required],
       beschreibung: [this.data ? this.data.beschreibung : '', Validators.required],
-      foto: [this.data ? (this.data.foto && this.data.foto[0]) : this.images],
-      thumbnail: [this.data ? this.data.thumbnail : ''],
+
+
       lieferant: [this.data ? this.data.lieferant : {} as iLieferant, Validators.required],
       lagerorte: [this.data ? this.data.lagerorte : []],
       bestellungen: [this.data ? this.data.bestellungen : []],
       datumHinzugefuegt: [this.data ? this.data.datumHinzugefuegt : Date.now()],
       kategorie: [this.data ? this.data.kategorie : [], Validators.required],
       verfgbarkeit: [{value : this.data ? this.data.verfgbarkeit : 0, disabled: true }],
-      mindestmenge: [this.data ? this.data.mindestmenge : '', Validators.required],
-      currentmenge: [{ value: this.data ? this.data.currentmenge : 0, disabled: true }],
+
       product_sup_id: [this.data ? this.data.product_sup_id: ''],
-      lange: [this.data ? this.data.lange: 0, Validators.required],
-      gewicht: [this.data ? this.data.gewicht: 0, Validators.required],
-      verkaufteAnzahl: [{ value:  this.data ? this.data.verkaufteAnzahl : 0,  disabled: true } ],
+
+
       wareneingang: [this.data ? this.data.wareneingang : []],
       mehrwehrsteuer: [this.data ? this.data.mehrwehrsteuer : '', Validators.required],
       promocje: [this.data ? this.data.promocje : []],
@@ -103,8 +100,7 @@ export class AddEditProductComponent implements OnInit {
 
       this.create$ = this.prodService.getProductById(this.data.id).pipe(map((res) => {
         if(res.id) {
-          this.data.preis = Number(res.preis)
-          this.images = JSON.parse( res.foto);
+
 
           this.productForm.patchValue(res);
 
@@ -159,61 +155,21 @@ export class AddEditProductComponent implements OnInit {
 
   }
 
-  onFileChange(event: any) {
-    if (event.target.files && event.target.files.length) {
-        this.photoFile = event.target.files[0];
-    }
-  }
-
-  uploadPhoto() {
-    if(!this.data)
-      return;
-    if (this.photoFile) {
-      if(this.data.id) {
-        this.act$ = this.prodService.uploadPhoto(this.photoFile, this.data.id).pipe(
-
-          tap((act) => {
-          if(act) {
-
-            if(this.helperService.uploadProgersSig() > 99)
-            {
-              const tmp = act as unknown as { imageid: string };
-              this.images.push(tmp.imageid);
-              this.productForm.get('foto')?.patchValue(this.images);
-              this.snackBar.open('Image wurde gespiechert', '', { duration: 2000})
-              this.getImage(this.images[this.images.length-1]);
-            }
-
-          }
-          return act;
-        })
-        );
-      }
-    }
-  }
-
-  cancelUpload() {
-    if(this.images.length > 0)
-    this.getImage(this.images[this.images.length -1]);
 
 
-    this.prodService.resetFotoUpload();
-    }
 
   saveProduct() {
     if (this.productForm.valid) {
       const product: iProduct = {} as iProduct;
       Object.assign(product, this.productForm.value)
-      product.foto = JSON.stringify(this.images);
 
-      product.verkaufteAnzahl = this.data ?  this.data.verkaufteAnzahl : 0;
-      product.preis = Number(this.productForm.get('preis')?.getRawValue());
-      product.currentmenge = 0;
+
+
+
+
       if(!product.verfgbarkeit)
         product.verfgbarkeit = 0;
-      if(this.data) {
-        product.currentmenge = this.data.currentmenge;
-      }
+
 
       if(this.productForm.get('gewicht') === null) {
         this.snackBar.open('Gewicht muss eingegeben werden', 'Ok', { duration: 3000 } );
@@ -262,7 +218,7 @@ export class AddEditProductComponent implements OnInit {
 
   getImage(id: string) {
 
-    this.getFoto$ =  this.prodService.getImage(id).pipe(tap((res) => {
+    this.getFoto$ =  this.variationService.getImage(id).pipe(tap((res) => {
       console.log(res)
      this.currentImage = res;
      return res;
@@ -278,20 +234,5 @@ export class AddEditProductComponent implements OnInit {
     if(!o1 || !o2) return false;
     return (o1.id == o2.id);
   }
-  deleteImage(id: string) {
-    if(this.data && this.data.id !== undefined) {
-      const item: iDelete =  { produktid: this.data.id, fileid: id};
-      this.act$ = this.prodService.deleteImage(item).pipe(tap((res) => {
-        if(res === 1) {
-          const index = this.images.findIndex((tmp) => tmp === item.fileid);
-          this.images.splice(index, 1);
-          this.productForm.get('foto')?.patchValue(this.images);
-          if(this.images.length > 0)
-            this.getImage(this.images[0]);
-        }
-      }))
-    }
 
-
-  }
 }

@@ -8,4 +8,8 @@ export interface iProduktVariations {
   value: string;
   unit: string;
   image: string;
+  price: number;
+  thumbnail: string;
+  quanity: number;
+  quanity_sold: number;
 }

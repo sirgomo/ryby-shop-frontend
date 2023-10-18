@@ -14,11 +14,12 @@ import { CreateVariationComponent } from './create-variation/create-variation.co
 import { Observable } from 'rxjs';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-variations',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatSelectModule, FormsModule, MatFormFieldModule, MatTableModule, ErrorComponent],
+  imports: [CommonModule, MatButtonModule, MatSelectModule, FormsModule, MatFormFieldModule, MatTableModule, ErrorComponent, MatInputModule],
   templateUrl: './variations.component.html',
   styleUrls: ['./variations.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,6 +56,8 @@ export class VariationsComponent implements AfterViewInit {
 
     this.dialog.open(CreateVariationComponent, conf);
   }
-
+  deleteVariation(sku: string) {
+    this.send$ = this.service.delete(sku);
+  }
 }
 

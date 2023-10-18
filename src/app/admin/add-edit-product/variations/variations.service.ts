@@ -59,7 +59,18 @@ export class VariationsService {
   }
 
   delete(sku: string) {
-    return this.httpClient.delete<iProduktVariations>(`${this.#api}/${sku}`);
+    return this.httpClient.delete<{raw: [], affected: number}>(`${this.#api}/${sku}`).pipe(
+      tap((res) => {
+        if(res.affected === 1) {
+          const items = this.variations.value.filter((item) => item.sku !== sku);
+          const tmp = items.slice(0);
+          this.variations.next(tmp);
+          this.snack.open('Item wurde entfernt', 'Ok', {duration: 1000})
+        } else {
+          this.errorService.newMessage(' Etwas ist schiefgelaufen, das Item wurde nicht gelöscht.')
+        }
+      })
+    );
   }
 
   update(sku: string, produktVariations: Partial<iProduktVariations>) {

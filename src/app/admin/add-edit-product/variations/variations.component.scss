@@ -23,3 +23,23 @@
   margin-top: 5rem;
   overflow: hidden;
 }
+
+.mat-column-val, .mat-column-val2, .mat-column-price {
+  padding-top: 1rem;
+}
+.imginput {
+  flex: 1;
+  z-index: 9999;
+  .upload {
+    display: flex;
+    gap: .1rem;
+    height: inherit;
+  }
+
+  .upload-btn {
+    margin-top: .2rem;
+  }
+  .progress-bar {
+    margin-top: .1rem;
+  }
+}

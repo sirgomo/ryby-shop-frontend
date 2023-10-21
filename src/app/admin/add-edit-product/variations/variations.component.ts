@@ -11,13 +11,14 @@ import { MatTableModule } from '@angular/material/table';
 import { iProduct } from 'src/app/model/iProduct';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreateVariationComponent } from './create-variation/create-variation.component';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
 import { MatInputModule } from '@angular/material/input';
-import { HelperService } from 'src/app/helper/helper.service';
+import { HelperService, getUniqueSymbol } from 'src/app/helper/helper.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { iDelete } from 'src/app/model/iDelete';
 
 @Component({
   selector: 'app-variations',
@@ -34,9 +35,10 @@ export class VariationsComponent implements AfterViewInit {
   variationsSig = toSignal(this.service.variations$, { initialValue: []});
   selectedVariation: iProduktVariations = {} as iProduktVariations;
   productVarationsSig = toSignal(this.service.variations.asObservable(), { initialValue: []});
-  columns : string[] = ['sk', 'name', 'val', 'val2','price', 'quanity', 'quanity_sold', 'del','hint', 'thumb', 'image'];
-  send$ = new Observable();
-  constructor (private readonly service: VariationsService, private dialog: MatDialog, public errorServi: ErrorService,
+  columns : string[] = ['sk', 'name', 'val', 'val2','price', 'quanity', 'quanity_sold', 'del','hint', 'image'];
+  send$ = [new Observable()];
+
+  constructor (public readonly service: VariationsService, private dialog: MatDialog, public errorServi: ErrorService,
     public readonly helperService: HelperService) {}
   ngAfterViewInit(): void {
     this.service.variations.next(this.product.variations);
@@ -49,54 +51,59 @@ export class VariationsComponent implements AfterViewInit {
     return;
 
     this.selectedVariation.produkt = { id: this.product.id} as iProduct;
-    this.selectedVariation.value = this.productVarationsSig().length.toString();
-    this.selectedVariation.sku = this.product.sku+'_'+this.selectedVariation.variations_name+'_'+this.selectedVariation.value;
-    this.send$ = this.service.create(this.selectedVariation);
+    this.selectedVariation.value = this.getProductVariationValue();
+    this.selectedVariation.sku = this.product.sku+'_'+getUniqueSymbol()+this.selectedVariation.variations_name+'_'+this.selectedVariation.value;
+    this.selectedVariation.price = 0.00;
+    if(this.service.variations.value.length > 0 )
+      this.selectedVariation.price = this.service.variations.value[0].price;
+
+      this.selectedVariation.quanity = 0;
+      this.selectedVariation.quanity_sold = 0;
+    this.send$[-1] = this.service.create(this.selectedVariation);
 
   }
+
   addNeueVariation() {
     const conf : MatDialogConfig = new MatDialogConfig();
-    conf.width = '500px';
-    conf.height = '500px';
+    conf.width = '100%';
+    conf.height = '100%';
     conf.data = { prod: this.product };
 
     this.dialog.open(CreateVariationComponent, conf);
   }
   deleteVariation(sku: string) {
-    this.send$ = this.service.delete(sku);
+    this.send$[-1] = this.service.delete(sku);
   }
-  uploadPhoto() {
-    if(!this.product)
-      return;
+  uploadPhoto(element: iProduktVariations, index: number) {
+
     if (this.photoFile) {
-      if(this.product.id) {
-     /*   this.send$ = this.service.uploadPhoto(this.photoFile, this.data.id).pipe(
+      if(element.sku) {
+        this.send$[index] = this.service.uploadPhoto(this.photoFile, element.sku, index).pipe(
 
           tap((act) => {
           if(act) {
 
-            if(this.helperService.uploadProgersSig() > 99)
+            if(this.helperService.uploadProgersSig().signal > 99)
             {
               const tmp = act as unknown as { imageid: string };
-              this.images.push(tmp.imageid);
-              this.productForm.get('foto')?.patchValue(this.images);
-              this.snackBar.open('Image wurde gespiechert', '', { duration: 2000})
-              this.getImage(this.images[this.images.length-1]);
+
+              const items = this.service.variations.value;
+              const index = items.findIndex((item) => element.sku === item.sku);
+              const newItems = items.slice(0);
+              newItems[index].image =  tmp.imageid;
+              this.service.variations.next(newItems);
+              this.service.images.update((items) => [...items, tmp.imageid]);
             }
 
           }
           return act;
         })
-        );*/
+        );
       }
     }
   }
 
   cancelUpload() {
-   // if(this.images.length > 0)
-   // this.getImage(this.images[this.images.length -1]);
-
-
     this.service.resetFotoUpload();
     }
 
@@ -105,19 +112,47 @@ export class VariationsComponent implements AfterViewInit {
         this.photoFile = event.target.files[0];
     }
   }
-  deleteImage(id: string) {
-   /* if(this.data && this.data.id !== undefined) {
-      const item: iDelete =  { produktid: this.data.id, fileid: id};
-      this.send$ = this.service.deleteImage(item).pipe(tap((res) => {
+  deleteImage(variation: iProduktVariations, index: number) {
+
+      const item: iDelete =  { produktid: variation.sku, fileid: variation.image};
+      this.send$[index] = this.service.deleteImage(item).pipe(tap((res) => {
         if(res === 1) {
-          const index = this.images.findIndex((tmp) => tmp === item.fileid);
-          this.images.splice(index, 1);
-          this.productForm.get('foto')?.patchValue(this.images);
-          if(this.images.length > 0)
-            this.getImage(this.images[0]);
+            const items = this.service.variations.value;
+            const index = items.findIndex((tmp) => tmp.sku === variation.sku);
+            if(!index)
+              this.errorServi.newMessage('Produkt Variation mit gelöschte bild wurde nicht gefunden!');
+
+          const newItems = items.slice(0);
+          newItems[index].image = '';
+          this.service.variations.next(newItems);
         }
       }))
-    }*/
+
+  }
+  changesInVariation(item: iProduktVariations) {
+    const currentItems = this.service.variations.value;
+    const index = currentItems.findIndex((item) => item.sku === item.sku);
+
+    if(!index)
+      return;
+
+    const itemsNew = currentItems.slice(0);
+    itemsNew[index] = item;
+    this.service.variations.next(itemsNew);
+  }
+  private getProductVariationValue(): string {
+    const items = this.service.variations.value.filter(
+      (item) => item.variations_name === this.selectedVariation.variations_name
+    );
+
+
+    if(items.length < 10)
+      return '0' + items.length;
+
+    return items.length.toString();
+
   }
 }
+
+
 

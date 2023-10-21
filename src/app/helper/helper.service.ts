@@ -24,7 +24,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
     kategorySig = signal<iKategorie>({} as iKategorie);
     artikelProSiteSig = signal<number> (0);
     isLogged = signal(false);
-    uploadProgersSig = signal<number>(0);
+    uploadProgersSig = signal<{signal: number, index: number}>({ signal: 0, index: -1});
     appComponenet!: AppComponent;
     buyerAcc: iUserData = {} as iUserData;
     VersandAndKost = signal('');
@@ -64,3 +64,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
       this.appComponenet.askCookies();
     }
   }
+  //return random string of two characters or zifern + -_
+export function getUniqueSymbol(): string {
+  const sequence = 'abcdefghijklmnoprstuwxyzABCDEFGHIJKLMNOPRSTUWXYZ1234567890-_';
+    return sequence[(Math.floor(Math.random() * sequence.length))]+sequence[(Math.floor(Math.random() * sequence.length))];
+}

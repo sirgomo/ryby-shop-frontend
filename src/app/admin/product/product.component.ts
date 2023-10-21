@@ -19,7 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [MatTableModule, CommonModule, MatButtonModule]
 })
 export class ProductComponent {
-  displayedColumns: string[] = ['prodid','artid', 'name', 'preis', 'verfugbar', 'edit', 'delete'];
+  displayedColumns: string[] = ['prodid','artid', 'name', 'verfugbar', 'edit', 'delete'];
   productsSig = this.prodService.productsSig;
   del$ = new Observable();
   constructor( private readonly prodService: ProductService, private readonly dialog: MatDialog, private helperService: HelperService, @Inject(PLATFORM_ID) private platformId: any) {

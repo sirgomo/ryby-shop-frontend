@@ -1,5 +1,5 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, EMPTY, Observable, Subject, catchError, combineLatest, finalize, map, takeUntil, tap, throwError } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
@@ -17,6 +17,7 @@ export class VariationsService {
   break: Subject<any> = new Subject();
 
   variations : BehaviorSubject<iProduktVariations[]> = new BehaviorSubject<iProduktVariations[]>([]);
+  images = signal<string[]>([]);
 
   variations$ = combineLatest([this.findAllforSelect()]).pipe(map(([find]) => {
       return find;
@@ -49,7 +50,6 @@ export class VariationsService {
   create(produktVariations: iProduktVariations) {
     return this.httpClient.post<iProduktVariations>(this.#api, produktVariations).pipe(
       tap((res) => {
-        console.log(res);
         const items = this.variations.value;
         const tmp = items.slice(0);
         tmp.push(res);
@@ -64,9 +64,15 @@ export class VariationsService {
   }
 
   delete(sku: string) {
-    return this.httpClient.delete<{raw: [], affected: number}>(`${this.#api}/${sku}`).pipe(
+    return this.httpClient.delete<{raw: any, affected: number}>(`${this.#api}/${sku}`).pipe(
       tap((res) => {
+        console.log(res)
         if(res.affected === 1) {
+          //get item
+          const item = this.variations.value.filter((tmpitem) => tmpitem.sku === sku );
+          //remove image from image tabele
+          this.images.update((arr) => arr.filter((image) => image !== item[0].image));
+          //remo item from variations tabele
           const items = this.variations.value.filter((item) => item.sku !== sku);
           const tmp = items.slice(0);
           this.variations.next(tmp);
@@ -82,7 +88,7 @@ export class VariationsService {
     return this.httpClient.put<iProduktVariations>(`${this.#api}/${sku}`, produktVariations);
   }
 // upload image
-uploadPhoto(file: File, productid: number) {
+uploadPhoto(file: File, productid: string, index: number) {
   const formData = new FormData();
   formData.append('photo', file);
 
@@ -94,7 +100,7 @@ uploadPhoto(file: File, productid: number) {
     finalize(() => this.resetFotoUpload()),
     tap((event) => {
       if(event.type == HttpEventType.UploadProgress && event.total) {
-         this.helper.uploadProgersSig.set(Math.round(100 * (event.loaded / event.total)));
+         this.helper.uploadProgersSig.set({ signal: Math.round(100 * (event.loaded / event.total)), index: index});
 
       }
     }),
@@ -109,7 +115,7 @@ uploadPhoto(file: File, productid: number) {
 }
 //reset upload and break
 resetFotoUpload() {
-  this.helper.uploadProgersSig.set(0);
+  this.helper.uploadProgersSig.set({ signal: 0, index : -1});
   this.break.next(EMPTY);
 }
 //get image
@@ -144,6 +150,7 @@ deleteImage(image: iDelete) {
       return throwError(()=> err);
     }),
     map((res) => {
+      this.images.update((arr) => arr.filter((img) => img !== image.fileid));
       return res;
     })
   )

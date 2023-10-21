@@ -8,7 +8,7 @@ import { KategorieService } from '../kategories/kategorie.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { iLieferant } from 'src/app/model/iLieferant';
 import { iKategorie } from 'src/app/model/iKategorie';
-import { HelperService } from 'src/app/helper/helper.service';
+import { HelperService, getUniqueSymbol } from 'src/app/helper/helper.service';
 import { ErrorService } from 'src/app/error/error.service';
 import { Observable, combineLatest, map, of, startWith, switchMap, tap } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -29,6 +29,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { VariationsComponent } from './variations/variations.component';
 import { VariationsService } from './variations/variations.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -47,7 +48,7 @@ export class AddEditProductComponent implements OnInit {
 
   productForm: FormGroup;
   currentImage!: Blob;
-  images: string[] = [];
+  images = this.variationService.images;
   actionsSig = signal<iAktion[]>([]);
   liferantSignal = toSignal<iLieferant[], iLieferant[]>(this.liferantService.liferants$, { initialValue: [] });
   kategorySignal = toSignal<iKategorie[], iKategorie[]>(this.katService.kategorie$, { initialValue: []});
@@ -72,22 +73,16 @@ export class AddEditProductComponent implements OnInit {
     this.productForm = this.formBuilder.group({
       id: [this.data ? this.data.id : null],
       name: [this.data ? this.data.name : '', Validators.required],
-      sku: [this.data ? this.data.sku : ''],
-
+      sku: [this.data ? this.data.sku : this.getRandomSku()],
       artid: [this.data ? this.data.artid : '', Validators.required],
       beschreibung: [this.data ? this.data.beschreibung : '', Validators.required],
-
-
       lieferant: [this.data ? this.data.lieferant : {} as iLieferant, Validators.required],
       lagerorte: [this.data ? this.data.lagerorte : []],
       bestellungen: [this.data ? this.data.bestellungen : []],
       datumHinzugefuegt: [this.data ? this.data.datumHinzugefuegt : Date.now()],
       kategorie: [this.data ? this.data.kategorie : [], Validators.required],
       verfgbarkeit: [{value : this.data ? this.data.verfgbarkeit : 0, disabled: true }],
-
       product_sup_id: [this.data ? this.data.product_sup_id: ''],
-
-
       wareneingang: [this.data ? this.data.wareneingang : []],
       mehrwehrsteuer: [this.data ? this.data.mehrwehrsteuer : '', Validators.required],
       promocje: [this.data ? this.data.promocje : []],
@@ -113,9 +108,16 @@ export class AddEditProductComponent implements OnInit {
               this.ean.push(tmp);
             }
           }
+          const images = [];
+          for(let i = 0; i < res.variations.length; i++) {
+              if(res.variations[i].image && res.variations[i].image.length > 2)
+                images.push(res.variations[i].image);
+          }
+          this.variationService.images.set(images);
 
-          if(this.images.length > 0)
-          this.getImage(this.images[0])
+          if(this.images().length > 0)
+           this.getImage(this.images()[0]);
+
           this.data.variations = res.variations;
         }
         return res;
@@ -163,18 +165,14 @@ export class AddEditProductComponent implements OnInit {
       const product: iProduct = {} as iProduct;
       Object.assign(product, this.productForm.value)
 
+      if(this.variationService.variations.value.length > 0)
+        product.variations = this.variationService.variations.value;
 
-
+      console.log(product)
 
 
       if(!product.verfgbarkeit)
         product.verfgbarkeit = 0;
-
-
-      if(this.productForm.get('gewicht') === null) {
-        this.snackBar.open('Gewicht muss eingegeben werden', 'Ok', { duration: 3000 } );
-        return;
-      }
 
 
       const curDate =  this.dpipe.transform(this.productForm.get('datumHinzugefuegt')?.getRawValue(), 'yyyy-MM-dd');
@@ -234,5 +232,14 @@ export class AddEditProductComponent implements OnInit {
     if(!o1 || !o2) return false;
     return (o1.id == o2.id);
   }
+  getRandomSku(): string {
 
+    let sku = '';
+    for(let i = 0; i < environment.minskulength; i++) {
+      sku += getUniqueSymbol();
+    }
+    return sku;
+  }
 }
+
+

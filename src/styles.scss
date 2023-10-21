@@ -150,11 +150,11 @@ a {
 }
 .loader-spinner {
   position: absolute;
-  z-index: 9999;
+  z-index: 9998;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: auto;
-  width: 100%;
-  height: 100vh;
+  width: 10%;
+  height: 10%;
 }

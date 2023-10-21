@@ -16,11 +16,11 @@
     <form [formGroup]="productForm" class="form">
       <div class="product-details">
           <div class="product-image">
-            <div class="image" *ngIf="images.length > 0">
+            <div class="image" *ngIf="images().length > 0">
               <img [src]="getSafeImageData()" alt="Product Image" *ngIf="(getFoto$ | async)">
             </div>
             <div class="images">
-              <div class="imageItem" *ngFor="let item of images; let i = index" >
+              <div class="imageItem" *ngFor="let item of images(); let i = index" >
                 <button mat-icon-button color="accent" (click)="getImage(item)">{{i + 1}}</button>
 
               </div>
@@ -56,24 +56,6 @@
         </div>
         <mat-tab-group [disableRipple]="false" animationDuration="0ms">
           <mat-tab label="Product Details" >
-            <div class="row" >
-              <mat-form-field>
-                <mat-label>Verkaufpreis</mat-label>
-                <input matInput type="number" id="preis" formControlName="preis" required autocomplete="off">
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Item Länge (mm)</mat-label>
-                <input matInput type="number" id="lange" formControlName="lange" required autocomplete="off">
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Lieferant</mat-label>
-                <mat-select required formControlName="lieferant" [compareWith]="getSelected">
-                  <mat-option *ngFor="let supplier of liferantSignal()" [value]="supplier" >{{supplier.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-
-            </div>
             <div class="row">
               <mat-form-field>
                 <mat-label>Datum Hinzugefügt</mat-label>
@@ -82,8 +64,10 @@
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
               <mat-form-field>
-                <mat-label>Mindestmenge</mat-label>
-                <input matInput type="number" id="mindestmenge" formControlName="mindestmenge" required autocomplete="off">
+                <mat-label>Lieferant</mat-label>
+                <mat-select required formControlName="lieferant" [compareWith]="getSelected">
+                  <mat-option *ngFor="let supplier of liferantSignal()" [value]="supplier" >{{supplier.name}}</mat-option>
+                </mat-select>
               </mat-form-field>
               <mat-form-field *ngIf="actionsSig().length < 1">
                 <mat-label>Keine Angebots verfügbar</mat-label>
@@ -97,22 +81,8 @@
                   <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>
                 </mat-select>
               </mat-form-field>
+            </div>
 
-            </div>
-            <div class="row">
-              <mat-form-field>
-                <mat-label>Verkaufte Anzahl</mat-label>
-                <input matInput type="number" id="verkaufteAnzahl" formControlName="verkaufteAnzahl" autocomplete="off">
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Current Menge</mat-label>
-                <input matInput type="number" id="currentmenge" formControlName="currentmenge" autocomplete="off">
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Item Gewicht (g)</mat-label>
-                <input matInput type="number" id="gewicht" formControlName="gewicht" required autocomplete="off">
-              </mat-form-field>
-            </div>
             <div class="row">
               <mat-form-field>
                 <mat-label>Produkt Sku</mat-label>

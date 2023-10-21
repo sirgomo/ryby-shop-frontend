@@ -3,35 +3,46 @@
     <h1 *ngIf="form.get('sku')?.getRawValue().length > 2">Variations bearbeiten</h1>
     <h1 *ngIf="form.get('sku')?.getRawValue().length < 2">Neue Variations hinzufügen</h1>
   </div>
-
-  <form [formGroup]="form" class="form">
+<div *ngIf="error.message() && error.message().length > 2">
+  <app-error></app-error>
+</div>
+  <form [formGroup]="form">
     <div class="row">
-      <mat-form-field class="form-field">
+      <mat-form-field >
         <mat-label>Variations Name</mat-label>
         <input matInput formControlName="variations_name" required autocomplete="off">
         <mat-error *ngIf="form.get('variations_name')?.hasError('required')">Variations Name is required</mat-error>
       </mat-form-field>
-      <mat-form-field class="form-field">
-        <mat-label>Value</mat-label>
+      <mat-form-field >
+        <mat-label>Symbol</mat-label>
         <input matInput formControlName="value" required (keyup)="updateVariationSku()" autocomplete="off">
         <mat-error *ngIf="form.get('value')?.hasError('required')">Value is required</mat-error>
       </mat-form-field>
-    </div>
-    <div class="row">
-      <mat-form-field class="form-field">
-        <mat-label>Value 2</mat-label>
+      <mat-form-field>
+        <mat-label>Symbol 2</mat-label>
         <input matInput formControlName="unit" autocomplete="off" placeholder="zb. gram or kilogram">
       </mat-form-field>
-    <mat-form-field class="form-field">
+    </div>
+    <div class="row">
+    <mat-form-field >
       <mat-label>Sku</mat-label>
       <input matInput formControlName="sku" required autocomplete="off">
       <mat-error *ngIf="form.get('sku')?.hasError('required')">Sku is required</mat-error>
     </mat-form-field>
+    <mat-form-field >
+      <mat-label>Preis</mat-label>
+      <input matInput formControlName="price" required autocomplete="off" type="number">
+      <mat-error *ngIf="form.get('price')?.hasError('required')">Preis is required</mat-error>
+    </mat-form-field>
+    <mat-form-field >
+      <mat-label>Menge</mat-label>
+      <input matInput formControlName="quanity" autocomplete="off" type="number">
+    </mat-form-field>
     </div>
 
-      <mat-form-field class="form-field">
+      <mat-form-field>
         <mat-label>Hint</mat-label>
-        <input matInput formControlName="hint" autocomplete="off" placeholder="value Beispiel 01">
+        <input matInput formControlName="hint" autocomplete="off" placeholder="Symbol zb. 01 and symbol2 12g">
       </mat-form-field>
 
   </form>

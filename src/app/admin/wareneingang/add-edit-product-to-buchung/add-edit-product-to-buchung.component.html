@@ -16,29 +16,27 @@
         <mat-label>Produkt</mat-label>
         <input matInput formControlName="produkt" placeholder="Produkt">
       </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Menge</mat-label>
-        <input matInput formControlName="menge" placeholder="Menge" type="number" autocomplete="off">
-      </mat-form-field>
-    </div>
-    <div class="row">
-      <mat-form-field>
-        <mat-label>Preis</mat-label>
-        <input matInput formControlName="preis" placeholder="Preis" type="number" autocomplete="off">
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>MwSt</mat-label>
-        <input matInput formControlName="mwst" placeholder="MwSt" type="number" autocomplete="off">
-      </mat-form-field>
     </div>
     <div formArrayName="color">
-      <div class="row" *ngFor="let item of getColor().controls; let i = index">
-        <mat-form-field [formGroup]="getItem(item)">
-          <mat-label>{{item.get('id')?.getRawValue()}}</mat-label>
-          <input matInput type="number" formControlName="menge"   (change)="onChangeFarbeMenge()">
-        </mat-form-field>
+      <div *ngFor="let item of color.controls; let i = index">
+        <div [formGroup]="getItem(item)" class="row">
+          <mat-form-field>
+            <mat-label>Sku</mat-label>
+            <input matInput type="text" formControlName="sku" autocomplete="off">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Menge: </mat-label>
+            <input matInput type="number" formControlName="quanity" autocomplete="off">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Preis</mat-label>
+            <input matInput type="number" formControlName="price" autocomplete="off">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Mwst</mat-label>
+            <input matInput type="number" formControlName="mwst" autocomplete="off">
+          </mat-form-field>
+        </div>
       </div>
     </div>
   </form>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { WareneingangService } from '../wareneingang.service';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { iWarenEingang } from 'src/app/model/iWarenEingang';
+import { iWarenEingangProdVariation } from 'src/app/model/iWarenEingangProdVariation';
 
 @Component({
   selector: 'app-artikel-gebucht',
@@ -20,9 +22,14 @@ import { MatButtonModule } from '@angular/material/button';
 export class ArtikelGebuchtComponent {
   columns = ['id', 'pname', 'menge', 'mwst', 'edit', 'del' ];
   act$ = new Observable();
+  productsSig = computed(() => {
+   const current = this.wEingService.currentProductsInBuchungSig();
 
-  constructor(public wEingService: WareneingangService, private dialog: MatDialog) {}
+   return current;
+  });
+  constructor(private readonly wEingService: WareneingangService, private dialog: MatDialog) {}
   editProduct(product: iWareneingangProduct) {
+    console.log(product)
     const conf: MatDialogConfig = new MatDialogConfig();
     conf.width = '80%';
     conf.height = '80%';
@@ -45,4 +52,5 @@ export class ArtikelGebuchtComponent {
     }
 
     }
+
 }

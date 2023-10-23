@@ -20,6 +20,8 @@ import { ArtikelGebuchtComponent } from '../artikel-gebucht/artikel-gebucht.comp
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
+import { iProduktVariations } from 'src/app/model/iProduktVariations';
+import { iWarenEingangProdVariation } from 'src/app/model/iWarenEingangProdVariation';
 
 
 @Component({
@@ -73,10 +75,12 @@ export class AddEditBuchungComponent implements OnInit{
             if(res.lieferant.id)
             this.warenService.lieferantIdSig.set(res.lieferant.id)
 
-           this.warenService.currentProductsInBuchungSig.set(res.products);
+           this.warenService.currentProductsInBuchungSig.set( res.products);
           }
       }))
   }
+
+
 
   saveGoodsReceipt() {
     if (this.warenEingangForm.valid) {

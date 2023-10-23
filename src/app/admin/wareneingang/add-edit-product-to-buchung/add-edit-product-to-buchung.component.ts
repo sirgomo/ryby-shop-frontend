@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { iProduktVariations } from 'src/app/model/iProduktVariations';
+import { iWarenEingangProdVariation } from 'src/app/model/iWarenEingangProdVariation';
 
 @Component({
   selector: 'app-add-edit-product-to-buchung',
@@ -37,27 +37,70 @@ export class AddEditProductToBuchungComponent {
         id: [ this.data && this.data.id ? this.data.id : null],
         wareneingang: [ this.wareneingang],
         produkt: [ this.data && this.data.produkt ? this.data.produkt[0].name : null],
-        color: this.fb.array([]),
+        product_variation: this.fb.array([]),
     });
-
-    if(this.data && this.data.produkt)
+    //no data new product in goods receipt
+    if(!this.data.id && this.data.produkt)
     for (let i = 0; i < this.data.produkt[0].variations.length; i++) {
-      this.color.push(this.colorForm(this.data.produkt[0].variations[i]));
+     const tmp : iWarenEingangProdVariation = {} as iWarenEingangProdVariation;
+
+      if(!tmp.sku)
+        tmp.sku = this.data.produkt[0].variations[i].sku;
+
+
+      this.product_variation.push(this.colorForm(tmp));
+    }
+    //product current in goods receipt
+    if(this.data && this.data.id) {
+
+      const tmp : iWarenEingangProdVariation = {} as iWarenEingangProdVariation;
+      if(this.data.id) {
+        for(let y = 0; y < this.data.product_variation.length; y++) {
+
+          tmp.id = this.data.product_variation[y].id;
+          tmp.quanity = this.data.product_variation[y].quanity;
+          tmp.price = this.data.product_variation[y].price;
+          tmp.mwst = this.data.product_variation[y].mwst;
+          tmp.quanity_stored = this.data.product_variation[y].quanity_stored;
+          tmp.sku = this.data.product_variation[y].sku;
+          tmp.waren_eingang_product = this.data;
+          this.product_variation.push(this.colorForm(tmp));
+      }
+          for (let i = 0; i < this.data.produkt[0].variations.length; i++) {
+              const index = this.data.product_variation.findIndex((item) => item.sku === this.data.produkt[0].variations[i].sku);
+
+              if(index === -1) {
+                tmp.id = undefined;
+                tmp.quanity = 0;
+                tmp.price = 0;
+                tmp.mwst = 0;
+                tmp.quanity_stored = 0;
+                tmp.sku = this.data.produkt[0].variations[i].sku;
+                tmp.waren_eingang_product = this.data;
+
+                this.product_variation.push(this.colorForm(tmp));
+              }
+          }
+
+       }
+
     }
   }
   close() {
     this.dialRef.close();
   }
-  get color() {
-    return this.wEingangProduct.controls['color'] as FormArray;
+  get product_variation() {
+    return this.wEingangProduct.controls['product_variation'] as FormArray;
   }
-  colorForm(item? : iProduktVariations) {
+  colorForm(item? : iWarenEingangProdVariation) {
+
     return this.fb.group({
+      id: [item?.id ? item.id : null],
       sku: [ item ? { value: item.sku, disabled: true } : null],
-      quanity: [0],
-      price: [0],
-      mwst: [0],
-      quanity_stored: [0],
+      quanity: [item?.quanity ? item.quanity : 0],
+      price: [item?.price ? item.price : 0],
+      mwst: [item?.mwst ? item.mwst: 0],
+      quanity_stored: [item?.quanity_stored ? item.quanity_stored : 0],
     });
   }
   getItem(item: AbstractControl) {
@@ -77,6 +120,8 @@ export class AddEditProductToBuchungComponent {
     Object.assign(wEinprod, this.wEingangProduct.value);
     wEinprod.produkt = [prod];
     wEinprod.wareneingang = wEingang;
+    wEinprod.product_variation = this.getVariations();
+
 
     //new product in buchung
     if(wEingang.id && this.data.id === undefined)
@@ -108,4 +153,25 @@ export class AddEditProductToBuchungComponent {
        }))
   }
 
+
+  private getVariations() {
+
+    const products: iWarenEingangProdVariation[] = [];
+    for (let i = 0; i < this.product_variation.getRawValue().length; i++) {
+
+      if (this.product_variation.getRawValue()[i].quanity > 0) {
+        const tmp: iWarenEingangProdVariation = {} as iWarenEingangProdVariation;
+        Object.assign(tmp, this.product_variation.getRawValue()[i]);
+        if(!this.product_variation.getRawValue()[i].quanity_stored)
+          tmp.quanity_stored = 0;
+
+        if(this.data.id)
+          tmp.waren_eingang_product = this.data;
+
+        products.push(tmp);
+      }
+
+    }
+    return products;
+  }
 }

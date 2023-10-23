@@ -8,6 +8,7 @@ import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
 import { environment } from 'src/environments/environment';
 import { AddEditBuchungComponent } from './add-edit-buchung/add-edit-buchung.component';
 import { ErrorService } from 'src/app/error/error.service';
+import { iWarenausgangProduct } from 'src/app/model/iWarenausgangProduct';
 
 @Injectable({
   providedIn: 'root'

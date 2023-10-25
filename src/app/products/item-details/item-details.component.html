@@ -1,85 +1,81 @@
 <div class="content">
 
 
-<div class="header">
-  <div class="h1">
-    <h1>{{item.name}}</h1>
+  <div class="header">
+    <div class="h1">
+      <h1>{{item.name}}</h1>
+    </div>
+    <div class="act">
+      <button mat-button color="primary" (click)="addItem(item)">
+          <mat-icon>add_shopping_cart</mat-icon>
+          In den Warenkorb
+      </button>
+      <button mat-button matDialogClose color="accent" (click)="close()">
+          <mat-icon>close</mat-icon>
+          Schließen
+      </button>
+    </div>
   </div>
-  <div class="act">
-    <button mat-button color="primary" (click)="addItem(item)">
-        <mat-icon>add_shopping_cart</mat-icon>
-        In den Warenkorb
-    </button>
-    <button mat-button matDialogClose color="accent" (click)="close()">
-        <mat-icon>close</mat-icon>
-        Schließen
-    </button>
-  </div>
-</div>
 
-<div class="con">
-  <div class="itemdesc">
-    <div class="itempro">
-      <div class="left">
-        <div class="item">
-          <div class="desc-title">Item Id:</div>
-          <div class="desc-value">{{item.artid}}</div>
+  <div class="con">
+    <div class="itemdesc">
+      <div class="itempro">
+        <div class="left">
+          <div class="item">
+            <div class="desc-title">Item Id:</div>
+            <div class="desc-value">{{item.artid}}</div>
+          </div>
+          <div class="item">
+            <div *ngIf="item.mehrwehrsteuer === 0" class="desc-title">
+              Preis (Netto):
+            </div>
+            <div *ngIf="item.mehrwehrsteuer === 0" class="desc-value">
+              {{getPriceBrutto()}} &euro;
+            </div>
+            <div *ngIf="item.mehrwehrsteuer !== 0" class="desc-title">
+              Preis (Brutto):
+            </div>
+            <div *ngIf="item.mehrwehrsteuer !== 0" class="desc-value">
+              {{getPriceBrutto()}} &euro;
+            </div>
+          </div>
+          <div class="item">
+            <div class="desc-title">Verfugbare Menge:</div>
+            <div class="desc-value" *ngIf="currentVariation" >{{currentVariation.quanity}} (st.)</div>
+          </div>
         </div>
-        <div class="item">
-          <div *ngIf="item.mehrwehrsteuer === 0" class="desc-title">
-            Preis (Netto):
-          </div>
-          <div *ngIf="item.mehrwehrsteuer === 0" class="desc-value">
-            {{getPriceNetto(item)}} &euro;
-          </div>
-          <div *ngIf="item.mehrwehrsteuer !== 0" class="desc-title">
-            Preis (Brutto):
-          </div>
-          <div *ngIf="item.mehrwehrsteuer !== 0" class="desc-value">
-            {{getPriceBrutto(item)}} &euro;
-          </div>
-        </div>
-      <div class="item">
-        <div class="desc-title">Min Menge:</div>
-        <div class="desc-value"> min mege (st.)</div>
-      </div>
-      <div class="item">
-        <div class="desc-title">Verfugbare Menge:</div>
-        <div class="desc-value"> menge (st.)</div>
-      </div>
-      </div>
       <div class="right">
-        <div class="item">
-          <div class="desc-title">Länge:</div>
-          <div class="desc-value"> lange (mm)</div>
+           <!-- <div class="item" *ngFor="let ite of item.variations">
+            <div class="desc-title">{{ ite.variations_name }}</div>
+            <div class="desc-value">{{ite.value}} (mm)</div>
+          </div>
+                -->
+        <div class="item" *ngFor="let ite of item.variations">
+            <mat-label >Farbe: </mat-label>
+            <mat-form-field class="input" >
+              <mat-label >{{ite.value}}</mat-label>
+              <input type="number" matInput [(ngModel)]="ite.quanity" autocomplete="off">
+            </mat-form-field>
         </div>
-      <div class="item">
-        <div class="desc-title">Gewicht:</div>
-        <div class="desc-value"> lange (g)</div>
+        </div>
       </div>
-      <div class="item" >
-          <mat-label >Farbe: </mat-label>
-          <mat-form-field class="input" >
-            <mat-label >{{item.id}}</mat-label>
-            <input type="number" matInput [(ngModel)]="item" autocomplete="off">
-          </mat-form-field>
-      </div>
+      <div class="desc">
+        {{item.beschreibung}}
       </div>
     </div>
-    <div class="desc">
-      {{item.beschreibung}}
+    <div class="farbe">
+      <div class="row">
+        <div class="item" *ngFor="let item of item.variations; let i = index">
+          <mat-checkbox *ngIf=" i === 0" checked="true"></mat-checkbox>
+          <mat-checkbox *ngIf=" i !== 0"  ></mat-checkbox>
+          <button mat-raised-button color="primary" (click)="changeImage(i)">
+            <span>{{item.value}} ({{item.quanity}})</span>
+            </button>
+        </div>
+      </div>
+      <div class="image">
+        <img [src]="currentImage" alt="" *ngIf="act$ | async">
+      </div>
     </div>
   </div>
-  <div class="farbe">
-    <div class="row">
-      <div class="item" >
-
-      </div>
-    </div>
-    <div class="image">
-      <img [src]="currentImage" alt="" *ngIf="act$ | async">
-    </div>
   </div>
-</div>
-</div>
-

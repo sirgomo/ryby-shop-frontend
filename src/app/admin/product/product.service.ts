@@ -31,7 +31,6 @@ export class ProductService {
 
   productsSig = computed (() => {
   const items = this.productsGetSig();
-
     if(this.item().id) {
       if( this.item().id! < 0) {
         const id = Math.abs(this.item().id!);
@@ -45,7 +44,7 @@ export class ProductService {
       if(index === -1) {
         const nit = items.slice(0);
         nit.push(this.item());
-        console.log(nit)
+
         return nit;
       }
       const nit = items.slice(0);
@@ -98,6 +97,9 @@ export class ProductService {
           this.snackbar.open('Produkt wurde gelöscht', '', { duration: 2000 });
           const item = { id : -id } as iProduct;
           this.item.set(item);
+        } else {
+
+          this.error.newMessage(Object(res).message);
         }
       })
     );

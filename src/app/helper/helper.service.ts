@@ -6,6 +6,7 @@
   import { iProduct } from '../model/iProduct';
 import { iUserData } from '../model/iUserData';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { iProduktVariations } from '../model/iProduktVariations';
 
   @Injectable({
     providedIn: 'root'

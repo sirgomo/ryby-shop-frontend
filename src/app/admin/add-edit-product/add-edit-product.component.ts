@@ -119,6 +119,7 @@ export class AddEditProductComponent implements OnInit {
            this.getImage(this.images()[0]);
 
           this.data.variations = res.variations;
+          this.data.verfgbarkeit = res.verfgbarkeit;
         }
         return res;
        }));
@@ -171,9 +172,11 @@ export class AddEditProductComponent implements OnInit {
       console.log(product)
 
 
-      if(!product.verfgbarkeit)
+      if(!product.verfgbarkeit )
         product.verfgbarkeit = 0;
 
+      if(this.data.verfgbarkeit)
+        product.verfgbarkeit = this.data.verfgbarkeit;
 
       const curDate =  this.dpipe.transform(this.productForm.get('datumHinzugefuegt')?.getRawValue(), 'yyyy-MM-dd');
 

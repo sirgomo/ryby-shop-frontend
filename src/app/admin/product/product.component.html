@@ -1,4 +1,7 @@
 <div>
+  <div *ngIf="err.message() && err.message().length > 2">
+    <app-error></app-error>
+  </div>
   <div class="button">
     <button mat-raised-button color="primary" (click)="addEditProduct()" >Produkt hinzufügen</button>
   </div>

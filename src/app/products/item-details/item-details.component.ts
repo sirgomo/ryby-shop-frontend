@@ -116,14 +116,14 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     Object.assign(tmpVari, this.currentVariation);
     tmpVari.quanity = this.currentItemQuanity;
 
-    if(!doWeHaveEnough(this.item, this.helperService, this.currentVariation, this.currentItemQuanity))
+    if(!doWeHaveEnough(this.helperService, this.currentVariation, this.currentItemQuanity))
      {
       this.snackBar.open(' Es tut uns leider, es sind nur '+this.currentVariation.quanity+' verfügbar', 'Ok', { duration: 1500 });
       return;
      }
      this.currentItemQuanity = 0;
         tmpItem.variations = [tmpVari];
-          this.helperService.cardSigForMengeControl().push(tmpItem);
+          this.helperService.cardSigForMengeControl().push(this.item);
 
         const items = this.helperService.cardSig();
         const newItems = items.slice(0);
@@ -131,6 +131,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
         this.helperService.cardSig.set(newItems);
 
         this.snackBar.open(this.item.name + ' wurde zum Warenkorb hinzugefügt!', 'Ok', { duration: 1500 });
+
   }
 
   close() {

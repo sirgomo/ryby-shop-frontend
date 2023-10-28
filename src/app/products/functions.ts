@@ -5,18 +5,27 @@ import { iProduct } from "../model/iProduct";
 import { iProduktVariations } from "../model/iProduktVariations";
 import { iSordedVariation } from "../model/iSortedVariation";
 
-export function  doWeHaveEnough(item: iProduct, helper: HelperService, current: iProduktVariations, quanity: number) {
-  const currentCard = helper.cardSigForMengeControl();
+export function  doWeHaveEnough(helper: HelperService, current: iProduktVariations, quanity: number) {
+  const currentCard = helper.cardSig();
+  const orginalQuani = helper.cardSigForMengeControl();
   let currentQanity = 0;
+  let orginalQuanity = 0;
+  let  found = false;
   for (let i = 0; i < currentCard.length; i++) {
-    if(currentCard[i].id === item.id) {
       for (let j = 0; j < currentCard[i].variations.length; j++) {
         if(currentCard[i].variations[j].sku === current.sku)
           currentQanity += currentCard[i].variations[j].quanity;
       }
+  }
+  for (let i = 0; i < orginalQuani.length; i++) {
+    for (let j = 0; j < orginalQuani[i].variations.length; j++) {
+      if(orginalQuani[i].variations[j].sku === current.sku && !found) {
+        orginalQuanity += orginalQuani[i].variations[j].quanity;
+        found = true;
+      }
     }
   }
-  return (currentQanity + quanity) <= current.quanity;
+  return found ? (currentQanity + quanity) <= orginalQuanity : true ;
 }
 export function getSortedVariation (item: iProduct) {
   const variations : iSordedVariation[] = [];

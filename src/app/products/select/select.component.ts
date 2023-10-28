@@ -14,6 +14,7 @@ import { getSortedVariation } from '../functions';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectComponent implements OnInit{
+
   @ViewChildren('select') selects!: QueryList<ElementRef>;
   @Input('item') item!: iProduct;
   @Output() current = new EventEmitter<iProduktVariations>();
@@ -28,7 +29,7 @@ export class SelectComponent implements OnInit{
   colorChange(index: any) {
     if(isPlatformServer(this.platformId))
     return;
-    this.isChanged = true;
+
     const getIndex = this.item.variations.findIndex((tmp) => tmp.sku === index.value);
 
     this.resetSelector(index);
@@ -42,8 +43,16 @@ export class SelectComponent implements OnInit{
     return;
 
     this.selects.forEach((item) => {
+
       if(index && item.nativeElement !== index)
         item.nativeElement.value = '---';
     })
+    this.isChanged = true;
+   }
+   getSelected (is: number) {
+    if(is === 0 && !this.isChanged)
+      return this.sortedVarations[0].item[0].value +' ' +this.sortedVarations[0].item[0].unit;
+
+      return '---';
    }
 }

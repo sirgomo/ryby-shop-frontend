@@ -17,6 +17,7 @@ import { HelperService } from 'src/app/helper/helper.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { iProduktVariations } from 'src/app/model/iProduktVariations';
 import { doWeHaveEnough } from '../functions';
+import { SelectComponent } from '../select/select.component';
 
 
 @Component({
@@ -25,7 +26,7 @@ import { doWeHaveEnough } from '../functions';
   styleUrls: ['./item-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatFormFieldModule, CommonModule, MatIconModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, MatInputModule, FormsModule]
+  imports: [MatFormFieldModule, CommonModule, MatIconModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, MatInputModule, FormsModule, SelectComponent]
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy{
   @ViewChildren(MatCheckbox) checks! : MatCheckbox[];
@@ -37,6 +38,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
   currentImage!: SafeResourceUrl;
   currentVariation!: iProduktVariations;
   currentItems!: iProduktVariations[];
+  currentItemQuanity: number = 0;
   constructor (@Inject(MAT_DIALOG_DATA) public readonly data: iProduct,
   private readonly service: ProductService,
   private helperService: HelperService,
@@ -88,10 +90,10 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     const mwst = Number(this.currentVariation.price) * this.item.mehrwehrsteuer / 100;
     return (Number(this.currentVariation.price) + mwst).toFixed(2);
   }
-  changeImage(index: number) {
-
-    this.getImage(this.item.variations[index].image);
-    this.currentVariation = this.item.variations[index];
+  changeImage(item: iProduktVariations) {
+    console.log(item)
+    this.getImage(item.image);
+    this.currentVariation = item;
 
   }
   checkChekboxes(index: number) {
@@ -106,18 +108,20 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
   }
 
 
-  addItem(item: iProduct) {
+  addItem() {
 
     const tmpItem= {} as iProduct;
     const tmpVari: iProduktVariations = {} as iProduktVariations;
-    Object.assign(tmpItem, item);
+    Object.assign(tmpItem, this.item);
     Object.assign(tmpVari, this.currentVariation);
-    tmpVari.quanity = 1;
-    if(!doWeHaveEnough(item, this.helperService, this.currentVariation))
+    tmpVari.quanity = this.currentItemQuanity;
+
+    if(!doWeHaveEnough(this.item, this.helperService, this.currentVariation, this.currentItemQuanity))
      {
       this.snackBar.open(' Es tut uns leider, es sind nur '+this.currentVariation.quanity+' verfügbar', 'Ok', { duration: 1500 });
       return;
      }
+     this.currentItemQuanity = 0;
         tmpItem.variations = [tmpVari];
           this.helperService.cardSigForMengeControl().push(tmpItem);
 
@@ -126,7 +130,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
         newItems.push(tmpItem);
         this.helperService.cardSig.set(newItems);
 
-        this.snackBar.open(item.name + ' wurde zum Warenkorb hinzugefügt!', 'Ok', { duration: 1500 });
+        this.snackBar.open(this.item.name + ' wurde zum Warenkorb hinzugefügt!', 'Ok', { duration: 1500 });
   }
 
   close() {

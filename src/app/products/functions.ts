@@ -5,7 +5,7 @@ import { iProduct } from "../model/iProduct";
 import { iProduktVariations } from "../model/iProduktVariations";
 import { iSordedVariation } from "../model/iSortedVariation";
 
-export function  doWeHaveEnough(item: iProduct, helper: HelperService, current: iProduktVariations) {
+export function  doWeHaveEnough(item: iProduct, helper: HelperService, current: iProduktVariations, quanity: number) {
   const currentCard = helper.cardSigForMengeControl();
   let currentQanity = 0;
   for (let i = 0; i < currentCard.length; i++) {
@@ -16,8 +16,7 @@ export function  doWeHaveEnough(item: iProduct, helper: HelperService, current: 
       }
     }
   }
-
-  return (currentQanity + 1) <= current.quanity;
+  return (currentQanity + quanity) <= current.quanity;
 }
 export function getSortedVariation (item: iProduct) {
   const variations : iSordedVariation[] = [];

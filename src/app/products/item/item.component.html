@@ -6,7 +6,7 @@
     <h3>{{item.name}}</h3>
     <p>{{ item.beschreibung.length < 150 ? item.beschreibung : (item.beschreibung | slice:0:150) + '...'}}</p>
     <p *ngIf="item.mehrwehrsteuer < 1">Preis:  {{getPriceBrutto()}} &euro; </p>
-    <p *ngIf="item.mehrwehrsteuer > 0">Preis (Brutto):: {{getPriceBrutto()}} &euro;</p>
+    <p *ngIf="item.mehrwehrsteuer > 0">Preis (Brutto): {{getPriceBrutto()}} &euro;</p>
     <app-select [item]="item" (current)="changeSelection($event)"></app-select>
     <div class="act">
       <button mat-raised-button color="primary" (click)="addItem(item)" > In den Warenkorb</button>

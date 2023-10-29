@@ -169,8 +169,6 @@ export class AddEditProductComponent implements OnInit {
       if(this.variationService.variations.value.length > 0)
         product.variations = this.variationService.variations.value;
 
-      console.log(product)
-
 
       if(!product.verfgbarkeit )
         product.verfgbarkeit = 0;

@@ -9,9 +9,8 @@ import { iCompany } from '../model/iCompany';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -48,16 +47,16 @@ export class InoviceComponent {
     let isPromoted = false;
     for (let i = 0; i < this.currentItem.produkte.length; i++) {
       if (this.currentItem.produkte[i].produkt[0].promocje && this.currentItem.produkte[i].produkt[0].promocje[0].id)
-        true;
+          isPromoted = true;
     }
     if (!isPromoted && this.company.isKleinUnternehmen) {
-      this.columns = [ 'name','varia','stpreis', 'brutto'];
+      this.columns = [ 'name','varia','menge' ,'stpreis', 'brutto'];
     } else if ( !isPromoted && !this.company.isKleinUnternehmen) {
-      this.columns = [ 'name','varia', 'stpreis', 'mwst', 'preis', 'brutto'];
+      this.columns = [ 'name','varia','menge' , 'stpreis', 'mwst', 'preis', 'brutto'];
     } else if (isPromoted && this.company.isKleinUnternehmen ) {
-     this.columns = [ 'name','varia','rabat', 'stpreis',  'brutto'];
+     this.columns = [ 'name','varia','menge' ,'rabat', 'stpreis',  'brutto'];
     } else {
-      this.columns = [ 'name','varia','rabat', 'stpreis', 'mwst', 'preis', 'brutto'];
+      this.columns = [ 'name','varia','menge' ,'rabat', 'stpreis', 'mwst', 'preis', 'brutto'];
     }
 
   }
@@ -102,8 +101,11 @@ export class InoviceComponent {
       return (Number(this.currentItem.versandprice) + this.getTotalBrutto()).toFixed(2);
     }
     getVariations(index: number) {
-      //TODO not working
-      //  return JSON.parse( this.currentItem.produkte[index].color);
+      let variation = '';
+      for (let i = 0; i < this.currentItem.produkte.length; i++) {
+        variation = this.currentItem.produkte[index].color;
+      }
+      return variation;
     }
     close() {
       this.dialoRef.close();

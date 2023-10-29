@@ -109,6 +109,11 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
 
 
   addItem() {
+    if(this.currentItemQuanity < 1) {
+      this.snackBar.open(' Das Menge kann nicht 0 sein', 'Ok', { duration: 1500 });
+      return;
+    }
+
 
     const tmpItem= {} as iProduct;
     const tmpVari: iProduktVariations = {} as iProduktVariations;

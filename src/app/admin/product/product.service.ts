@@ -7,7 +7,6 @@ import { iProduct } from 'src/app/model/iProduct';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'
 import { environment } from 'src/environments/environment';
 import { HelperService } from 'src/app/helper/helper.service';
-import { iDelete } from 'src/app/model/iDelete';
 import { AuthService } from 'src/app/auth/auth.service';
 
 
@@ -31,6 +30,7 @@ export class ProductService {
 
   productsSig = computed (() => {
   const items = this.productsGetSig();
+
     if(this.item().id) {
       if( this.item().id! < 0) {
         const id = Math.abs(this.item().id!);
@@ -137,6 +137,21 @@ export class ProductService {
   }
 
   getProductById(id: number) {
+
+    const role = localStorage.getItem('role')
+
+    if( role && role === 'ADMIN') {
+      return this.http.get<iProduct>(`${this.API}/admin/${id}`).pipe(
+        map(res => {
+          return res;
+        }),
+        catchError((error) => {
+          this.error.newMessage('Fehler beim Abrufen des Produkts nach der ID.' + error.message);
+          return of({} as iProduct);
+        })
+      );
+    }
+
     return this.http.get<iProduct>(`${this.API}/${id}`).pipe(
       map(res => {
         return res;

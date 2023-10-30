@@ -19,11 +19,11 @@ export class SelectComponent implements OnInit{
   @Input('item') item!: iProduct;
   @Output() current = new EventEmitter<iProduktVariations>();
   sortedVarations!: iSordedVariation[];
-  isChanged = false;
+
   constructor(@Inject(PLATFORM_ID) private platformId: any) {}
   ngOnInit(): void {
     this.sortedVarations = getSortedVariation(this.item);
-
+    this.current.emit(this.item.variations[0]);
   }
 
   colorChange(index: any) {
@@ -43,16 +43,12 @@ export class SelectComponent implements OnInit{
     return;
 
     this.selects.forEach((item) => {
-
       if(index && item.nativeElement !== index)
         item.nativeElement.value = '---';
     })
-    this.isChanged = true;
+
    }
    getSelected (is: number) {
-    if(is === 0 && !this.isChanged)
-      return this.sortedVarations[0].item[0].value +' ' +this.sortedVarations[0].item[0].unit;
-
       return '---';
    }
 }

@@ -17,6 +17,7 @@ import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
 import { BESTELLUNGSSTATE, BESTELLUNGSSTATUS, iBestellung } from 'src/app/model/iBestellung';
 import { OrdersService } from 'src/app/orders/orders.service';
+import { ItemComponent } from 'src/app/products/item/item.component';
 
 
 @Component({
@@ -37,9 +38,10 @@ export class OrderDetailsComponent implements OnInit {
 
     currentItem: Signal<iBestellung | undefined>  = this.data.id ? toSignal(this.orderService.getBestellungById(this.data.id).pipe(map((res) => {
       if(res.id) {
-
+        return res;
       }
       return {} as iBestellung;
+
     }))) : toSignal(of({} as iBestellung));
   constructor(private readonly orderService: OrdersService, private readonly dialRef: MatDialogRef<OrderDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data : iBestellung, private error: ErrorService,
@@ -60,9 +62,6 @@ export class OrderDetailsComponent implements OnInit {
       if(item !== undefined) {
         Object.assign(item, this.data);
 
-        for (let i = 0; i < item.produkte.length; i++) {
-
-        }
         this.act$ = this.orderService.updateOrder(item).pipe(tap(res => {
           if(!res.id)
           {
@@ -75,4 +74,5 @@ export class OrderDetailsComponent implements OnInit {
 
 
     }
+
 }

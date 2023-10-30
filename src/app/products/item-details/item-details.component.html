@@ -1,18 +1,17 @@
-<div class="content">
-
-
+<mat-toolbar color="primary">
   <div class="header">
     <div class="h1">
       <h1>{{item.name}}</h1>
     </div>
     <div class="act">
-      <button mat-button matDialogClose color="accent" (click)="close()">
+      <button mat-raised-button matDialogClose color="accent" (click)="close()">
           <mat-icon>close</mat-icon>
           Schließen
       </button>
     </div>
   </div>
-
+</mat-toolbar>
+<div class="content">
   <div class="con">
     <div class="itemdesc">
       <div class="itempro">
@@ -37,7 +36,7 @@
           </div>
           <div class="item">
             <div class="desc-title">Verfugbare Menge:</div>
-            <div class="desc-value" *ngIf="currentVariation" >{{currentVariation.quanity}} (st.)</div>
+            <div class="desc-value" *ngIf="currentVariation" ><span [style]="getItemQuanity() === 0 ? 'color: red;' : ''">{{getItemQuanity()}}</span> (st.)</div>
           </div>
 
         <div class="item" *ngIf="item.variations">
@@ -56,7 +55,7 @@
             </mat-form-field>
           </div>
           <div>
-            <button mat-button color="primary" (click)="addItem()">
+            <button mat-stroked-button color="primary" (click)="addItem()">
             <mat-icon>add_shopping_cart</mat-icon>
             In den Warenkorb
         </button>

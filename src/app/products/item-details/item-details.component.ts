@@ -18,6 +18,7 @@ import { iProduct } from 'src/app/model/iProduct';
 import { iProduktVariations } from 'src/app/model/iProduktVariations';
 import { doWeHaveEnough } from '../functions';
 import { SelectComponent } from '../select/select.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 @Component({
@@ -26,9 +27,10 @@ import { SelectComponent } from '../select/select.component';
   styleUrls: ['./item-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatFormFieldModule, CommonModule, MatIconModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, MatInputModule, FormsModule, SelectComponent]
+  imports: [MatFormFieldModule, CommonModule, MatIconModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, MatInputModule, FormsModule, SelectComponent, MatToolbarModule]
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy{
+
   @ViewChildren(MatCheckbox) checks! : MatCheckbox[];
   item: iProduct = {} as iProduct;
   act$ = new Observable();
@@ -91,21 +93,12 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     return (Number(this.currentVariation.price) + mwst).toFixed(2);
   }
   changeImage(item: iProduktVariations) {
-    console.log(item)
+
     this.getImage(item.image);
     this.currentVariation = item;
 
   }
-  checkChekboxes(index: number) {
-    this.checks.forEach((item, ind) => {
-      if(ind !== index) {
-        item['checked'] = false;
-      } else {
-        item['checked'] = true;
-      }
 
-    })
-  }
 
 
   addItem() {
@@ -141,5 +134,13 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
 
   close() {
     this.dialogRef.close();
+  }
+  getItemQuanity() {
+    let quanityInCard = 0;
+    for (let i = 0; i < this.helperService.cardSig().length; i++) {
+        if(this.helperService.cardSig()[i].variations[0].sku  === this.currentVariation.sku)
+          quanityInCard += this.helperService.cardSig()[i].variations[0].quanity;
+    }
+    return this.currentVariation.quanity - quanityInCard;
   }
 }

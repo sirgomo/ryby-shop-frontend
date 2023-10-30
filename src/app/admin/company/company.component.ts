@@ -75,6 +75,7 @@ export class CompanyComponent {
       isKleinUnternehmen: company.isKleinUnternehmen,
       agb: company.agb,
       daten_schutzt: company.daten_schutzt,
+      cookie_info: company.cookie_info,
     });
   }
   save() {

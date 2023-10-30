@@ -15,7 +15,7 @@ import { OrdersService } from 'src/app/orders/orders.service';
   standalone: true,
   imports: [MatFormFieldModule, MatSelectModule, FormsModule, CommonModule]
 })
-export class OrderSelectorComponent {
+export class OrderSelectorComponent implements OnInit{
   statusArr = Object.values(BESTELLUNGSSTATUS);
   stateArr = Object.values(BESTELLUNGSSTATE);
   siteItems = [5, 10, 20, 50, 100 ];
@@ -26,6 +26,10 @@ export class OrderSelectorComponent {
     constructor(private orderService: OrdersService, private helper: HelperService) {
       this.helper.artikelProSiteSig.set(10);
     }
+  ngOnInit(): void {
+    this.orderService.currentOrderStateSig.set(this.currentState);
+    this.orderService.currentVersandStatusSig.set(this.currentStatus);
+  }
 
     changeStatus() {
       this.orderService.currentVersandStatusSig.set(this.currentStatus);

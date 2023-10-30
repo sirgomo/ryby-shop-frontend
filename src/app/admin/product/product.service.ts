@@ -1,13 +1,12 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Injectable, computed, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY, Subject, catchError, combineLatest, finalize, map, of, retry, share, shareReplay, switchMap, takeUntil, tap, throwError } from 'rxjs';
+import { EMPTY, Subject, catchError, combineLatest, finalize, map, of, switchMap, takeUntil, tap, throwError } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'
 import { environment } from 'src/environments/environment';
 import { HelperService } from 'src/app/helper/helper.service';
-import { iDelete } from 'src/app/model/iDelete';
 import { AuthService } from 'src/app/auth/auth.service';
 
 
@@ -18,6 +17,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class ProductService {
   API = environment.api + 'product';
+
   item  = signal<iProduct>({} as iProduct);
   items$ = combineLatest([toObservable(this.helper.searchSig), toObservable(this.helper.kategorySig), toObservable(this.helper.artikelProSiteSig), toObservable(this.helper.pageNrSig)]).pipe(
     switchMap(([search, kat, artpro, pagenr]) => this.getAllProducts(search, kat.id, artpro, pagenr)),
@@ -44,7 +44,7 @@ export class ProductService {
       if(index === -1) {
         const nit = items.slice(0);
         nit.push(this.item());
-        console.log(nit)
+
         return nit;
       }
       const nit = items.slice(0);
@@ -54,7 +54,7 @@ export class ProductService {
 
     return items;
   })
-  break: Subject<any> = new Subject();
+
 
 
   constructor(private readonly http: HttpClient, private readonly error: ErrorService, private readonly snackbar: MatSnackBar,
@@ -97,6 +97,9 @@ export class ProductService {
           this.snackbar.open('Produkt wurde gelöscht', '', { duration: 2000 });
           const item = { id : -id } as iProduct;
           this.item.set(item);
+        } else {
+
+          this.error.newMessage(Object(res).message);
         }
       })
     );
@@ -134,6 +137,21 @@ export class ProductService {
   }
 
   getProductById(id: number) {
+
+    const role = localStorage.getItem('role')
+
+    if( role && role === 'ADMIN') {
+      return this.http.get<iProduct>(`${this.API}/admin/${id}`).pipe(
+        map(res => {
+          return res;
+        }),
+        catchError((error) => {
+          this.error.newMessage('Fehler beim Abrufen des Produkts nach der ID.' + error.message);
+          return of({} as iProduct);
+        })
+      );
+    }
+
     return this.http.get<iProduct>(`${this.API}/${id}`).pipe(
       map(res => {
         return res;
@@ -144,73 +162,7 @@ export class ProductService {
       })
     );
   }
-  // upload image
-  uploadPhoto(file: File, productid: number) {
-    const formData = new FormData();
-    formData.append('photo', file);
 
-    return this.http.post(`${this.API}/upload/${productid}`, formData, { reportProgress: true, observe: 'events' }).pipe(
-      catchError((error) => {
-        this.error.newMessage('Fehler beim Hochladen des Fotos.');
-        return throwError(()=> error);
-      }),
-      finalize(() => this.resetFotoUpload()),
-      tap((event) => {
-        if(event.type == HttpEventType.UploadProgress && event.total) {
-           this.helper.uploadProgersSig.set(Math.round(100 * (event.loaded / event.total)));
-
-        }
-      }),
-      map(res => {
-        if(res.type == HttpEventType.Response)
-          return res.body
-
-          return null;
-      })
-      ,takeUntil(this.break.asObservable())
-    );
-  }
-  //reset upload and break
-  resetFotoUpload() {
-    this.helper.uploadProgersSig.set(0);
-    this.break.next(EMPTY);
-  }
-  //get image
-  getImage(id: string) {
-    return this.http.get(`${this.API}/uploads/${id}`, { responseType: 'blob' }).pipe(
-      catchError((err) => {
-        this.error.newMessage(err.message);
-        return throwError(()=> err);
-      }),
-      map((res) => {
-        return res;
-      } )
-      );
-  }
-  //get thumbnails
-  getThumbnails(id: string) {
-    return  this.http.get(`${this.API}/thumbnails/${id}`, { responseType: 'blob' }).pipe(
-      catchError((err) => {
-        this.error.newMessage(err.message);
-        return throwError(()=> err);
-      }),
-      map((res) => {
-        return res;
-      })
-      );
-  }
-  deleteImage(image: iDelete) {
-
-    return this.http.post(`${this.API}/file-delete`, image).pipe(
-      catchError((err) => {
-        this.error.newMessage(err.message);
-        return throwError(()=> err);
-      }),
-      map((res) => {
-        return res;
-      })
-    )
-  }
   deleteEanById(id: number) {
     return this.http.delete(`${this.API}/ean/`+id).pipe(map((res) => {
       return res;

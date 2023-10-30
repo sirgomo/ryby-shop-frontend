@@ -17,6 +17,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { ProductService } from 'src/app/admin/product/product.service';
+import { iProduct } from 'src/app/model/iProduct';
 
 
 @Component({
@@ -43,7 +45,7 @@ export class ShippingAddressComponent {
   isRechnungAddress = false;
 
   constructor (private helperService: HelperService, private readonly userService: UserService, private readonly fb: FormBuilder,
-    private readonly snack: MatSnackBar, private readonly dialog: MatDialog, private reouter: Router) {
+    private readonly snack: MatSnackBar, private readonly dialog: MatDialog, private reouter: Router, private readonly producService: ProductService) {
     this.shippingAddres = this.fb.group({
       shipping_name: ['', Validators.required],
       strasse: ['', Validators.required],
@@ -115,7 +117,7 @@ export class ShippingAddressComponent {
 
     for (let i = 0; i < this.helperService.cardSig().length; i++) {
       const item = {} as iProductBestellung;
-      item.color = this.helperService.cardSig()[i].color;
+     // item.color = this.helperService.cardSig()[i].color;
       item.produkt = [this.helperService.cardSig()[i]];
       products.push(item);
     }
@@ -128,11 +130,18 @@ export class ShippingAddressComponent {
     conf.data = newBestellung;
     const subs$ = this.dialog.open(PaypalComponent, conf).afterClosed().subscribe((cl) => {
       if(cl && cl === 'COMPLETED') {
-        this.helperService.cardSig.set([]);
+
+        this.resetCard();
         this.snack.open('Vielen Dank für Ihren Einkauf!', 'Ok', {duration: 2500 });
         this.reouter.navigate(['/']);
       }
       subs$.unsubscribe();
     });
+  }
+
+  private resetCard() {
+    //reset products
+    this.helperService.cardSig.set([]);
+    this.helperService.cardSigForMengeControl.set([]);
   }
 }

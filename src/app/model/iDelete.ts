@@ -1,4 +1,4 @@
 export interface iDelete {
-  produktid: number,
+  produktid: string,
   fileid: string,
 }

@@ -16,15 +16,13 @@
     <form [formGroup]="productForm" class="form">
       <div class="product-details">
           <div class="product-image">
-            <div class="image" *ngIf="images.length > 0">
+            <div class="image" *ngIf="images().length > 0">
               <img [src]="getSafeImageData()" alt="Product Image" *ngIf="(getFoto$ | async)">
             </div>
             <div class="images">
-              <div class="imageItem" *ngFor="let item of images; let i = index" >
+              <div class="imageItem" *ngFor="let item of images(); let i = index" >
                 <button mat-icon-button color="accent" (click)="getImage(item)">{{i + 1}}</button>
-                <button mat-icon-button color="warn" (click)="deleteImage(item)">
-                  <mat-icon>delete</mat-icon>
-                </button>
+
               </div>
             </div>
           </div>
@@ -58,41 +56,6 @@
         </div>
         <mat-tab-group [disableRipple]="false" animationDuration="0ms">
           <mat-tab label="Product Details" >
-            <div class="row" >
-              <mat-form-field>
-                <mat-label>Verkaufpreis</mat-label>
-                <input matInput type="number" id="preis" formControlName="preis" required autocomplete="off">
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Item Länge (mm)</mat-label>
-                <input matInput type="number" id="lange" formControlName="lange" required autocomplete="off">
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Lieferant</mat-label>
-                <mat-select required formControlName="lieferant" [compareWith]="getSelected">
-                  <mat-option *ngFor="let supplier of liferantSignal()" [value]="supplier" >{{supplier.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <div class="imginput">
-                <div class="upload">
-                  <input type="file" id="img" (change)="onFileChange($event)" accept="image/*" *ngIf="helperService.uploadProgersSig() === 0"  />
-                  <button mat-mini-fab color="primary" class="upload-btn" *ngIf="helperService.uploadProgersSig() === 0"
-                  (click)="uploadPhoto()">
-                    <mat-icon>attach_file</mat-icon>
-                  </button>
-                  <button mat-mini-fab color="warn" class="upload-btn" *ngIf="helperService.uploadProgersSig() > 0"
-                  (click)="cancelUpload()">
-                    <mat-icon>delete_forever</mat-icon>
-                  </button>
-                </div>
-                  <mat-progress-bar class="progress-bar" mode="determinate"
-                  [value]="helperService.uploadProgersSig()" *ngIf="helperService.uploadProgersSig() > 0 && helperService.uploadProgersSig() < 100">
-                  </mat-progress-bar>
-                  <span *ngIf="act$ | async"></span>
-              </div>
-
-            </div>
             <div class="row">
               <mat-form-field>
                 <mat-label>Datum Hinzugefügt</mat-label>
@@ -101,8 +64,10 @@
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
               <mat-form-field>
-                <mat-label>Mindestmenge</mat-label>
-                <input matInput type="number" id="mindestmenge" formControlName="mindestmenge" required autocomplete="off">
+                <mat-label>Lieferant</mat-label>
+                <mat-select required formControlName="lieferant" [compareWith]="getSelected">
+                  <mat-option *ngFor="let supplier of liferantSignal()" [value]="supplier" >{{supplier.name}}</mat-option>
+                </mat-select>
               </mat-form-field>
               <mat-form-field *ngIf="actionsSig().length < 1">
                 <mat-label>Keine Angebots verfügbar</mat-label>
@@ -116,22 +81,8 @@
                   <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>
                 </mat-select>
               </mat-form-field>
+            </div>
 
-            </div>
-            <div class="row">
-              <mat-form-field>
-                <mat-label>Verkaufte Anzahl</mat-label>
-                <input matInput type="number" id="verkaufteAnzahl" formControlName="verkaufteAnzahl" autocomplete="off">
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Current Menge</mat-label>
-                <input matInput type="number" id="currentmenge" formControlName="currentmenge" autocomplete="off">
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Item Gewicht (g)</mat-label>
-                <input matInput type="number" id="gewicht" formControlName="gewicht" required autocomplete="off">
-              </mat-form-field>
-            </div>
             <div class="row">
               <mat-form-field>
                 <mat-label>Produkt Sku</mat-label>

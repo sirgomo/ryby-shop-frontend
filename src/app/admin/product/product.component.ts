@@ -9,6 +9,8 @@ import { iKategorie } from 'src/app/model/iKategorie';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { ErrorService } from 'src/app/error/error.service';
 
 @Component({
   selector: 'app-product',
@@ -16,13 +18,13 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatTableModule, CommonModule, MatButtonModule]
+  imports: [MatTableModule, CommonModule, MatButtonModule, ErrorComponent]
 })
 export class ProductComponent {
-  displayedColumns: string[] = ['prodid','artid', 'name', 'preis', 'verfugbar', 'edit', 'delete'];
+  displayedColumns: string[] = ['prodid','artid', 'name', 'verfugbar', 'edit', 'delete'];
   productsSig = this.prodService.productsSig;
   del$ = new Observable();
-  constructor( private readonly prodService: ProductService, private readonly dialog: MatDialog, private helperService: HelperService, @Inject(PLATFORM_ID) private platformId: any) {
+  constructor( private readonly prodService: ProductService, private readonly dialog: MatDialog, private helperService: HelperService, public readonly err: ErrorService) {
     this.helperService.kategorySig.set({id: 0} as iKategorie);
   }
 

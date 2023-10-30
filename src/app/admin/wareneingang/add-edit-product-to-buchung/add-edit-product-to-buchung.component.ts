@@ -3,7 +3,6 @@ import { WareneingangService } from '../wareneingang.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
-import { iColor } from 'src/app/model/iColor';
 import { ErrorService } from 'src/app/error/error.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { iWarenEingang } from 'src/app/model/iWarenEingang';
@@ -15,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { iWarenEingangProdVariation } from 'src/app/model/iWarenEingangProdVariation';
 
 @Component({
   selector: 'app-add-edit-product-to-buchung',
@@ -27,58 +27,87 @@ import { MatInputModule } from '@angular/material/input';
 export class AddEditProductToBuchungComponent {
   wareneingang = this.wEingService.currentWarenEingangSig();
   wEingangProduct: FormGroup;
-  colors: iColor[] =  JSON.parse(this.data.produkt[0].color);
+
   act$ = new Observable();
   constructor (private wEingService: WareneingangService, @Optional() @Inject(MAT_DIALOG_DATA) public data: iWareneingangProduct, private fb: FormBuilder,
   private dialRef: MatDialogRef<AddEditProductToBuchungComponent>,
   public errMessage: ErrorService,
   private snackBar: MatSnackBar ) {
-
     this.wEingangProduct =  this.fb.group({
         id: [ this.data && this.data.id ? this.data.id : null],
         wareneingang: [ this.wareneingang],
         produkt: [ this.data && this.data.produkt ? this.data.produkt[0].name : null],
-        menge: [{ value: this.data && this.data.menge ? this.data.menge : 0, disabled: true}],
-        preis: [ this.data && this.data.preis ? Number(this.data.preis) : 0],
-        mwst: [ this.data && this.data.mwst ? this.data.mwst : 0],
-        mengeEingelagert: [ { value: this.data && this.data.mengeEingelagert ? this.data.mengeEingelagert : 0, disabled: true} ],
-        color:  this.fb.array([]),
+        product_variation: this.fb.array([]),
     });
+    //no data new product in goods receipt
+    if(!this.data.id && this.data.produkt)
+    for (let i = 0; i < this.data.produkt[0].variations.length; i++) {
+     const tmp : iWarenEingangProdVariation = {} as iWarenEingangProdVariation;
 
-    if(data.color)
-      this.colors = JSON.parse(this.data.color);
+      if(!tmp.sku)
+        tmp.sku = this.data.produkt[0].variations[i].sku;
 
-   for (let i = 0; i < this.colors.length; i++) {
-    const item = this.colorForm();
-    if(!data.id)
-      this.colors[i].menge = 0;
-    item.patchValue(this.colors[i]);
-      this.getColor().push(item)
-   }
-   //No color, but the article has to have at least one color
-   if(this.colors.length === 0) {
-    const item = this.colorForm();
-    item.get('id')?.setValue('farbe 01')
-      this.getColor().push(item)
-   }
+
+      this.product_variation.push(this.colorForm(tmp));
+    }
+    //product current in goods receipt
+    if(this.data && this.data.id) {
+
+      const tmp : iWarenEingangProdVariation = {} as iWarenEingangProdVariation;
+      if(this.data.id) {
+        for(let y = 0; y < this.data.product_variation.length; y++) {
+
+          tmp.id = this.data.product_variation[y].id;
+          tmp.quanity = this.data.product_variation[y].quanity;
+          tmp.price = this.data.product_variation[y].price;
+          tmp.mwst = this.data.product_variation[y].mwst;
+          tmp.quanity_stored = this.data.product_variation[y].quanity_stored;
+          tmp.sku = this.data.product_variation[y].sku;
+          tmp.waren_eingang_product = this.data;
+          this.product_variation.push(this.colorForm(tmp));
+      }
+          for (let i = 0; i < this.data.produkt[0].variations.length; i++) {
+              const index = this.data.product_variation.findIndex((item) => item.sku === this.data.produkt[0].variations[i].sku);
+
+              if(index === -1) {
+                tmp.id = undefined;
+                tmp.quanity = 0;
+                tmp.price = 0;
+                tmp.mwst = 0;
+                tmp.quanity_stored = 0;
+                tmp.sku = this.data.produkt[0].variations[i].sku;
+                tmp.waren_eingang_product = this.data;
+
+                this.product_variation.push(this.colorForm(tmp));
+              }
+          }
+
+       }
+
+    }
   }
   close() {
     this.dialRef.close();
   }
-  getColor() {
-    return this.wEingangProduct.controls['color'] as FormArray;
+  get product_variation() {
+    return this.wEingangProduct.controls['product_variation'] as FormArray;
   }
-  colorForm() {
+  colorForm(item? : iWarenEingangProdVariation) {
+
     return this.fb.group({
-      id: [''],
-      menge: 0,
-    })
+      id: [item?.id ? item.id : null],
+      sku: [ item ? { value: item.sku, disabled: true } : null],
+      quanity: [item?.quanity ? item.quanity : 0],
+      price: [item?.price ? item.price : 0],
+      mwst: [item?.mwst ? item.mwst: 0],
+      quanity_stored: [item?.quanity_stored ? item.quanity_stored : 0],
+    });
   }
   getItem(item: AbstractControl) {
     return item as FormGroup;
   }
   save() {
-    if (!this.data.produkt[0].id || !this.wareneingang?.data.id || this.wEingangProduct.get('menge')?.getRawValue() <= 0 || this.wEingangProduct.get('preis')?.getRawValue() <= 0 ) {
+    if (!this.data.produkt[0].id || !this.wareneingang?.data.id  ) {
       this.snackBar.open('Etwas stimmit nicht', 'Ok', { duration: 2000 })
       return;
     }
@@ -91,9 +120,9 @@ export class AddEditProductToBuchungComponent {
     Object.assign(wEinprod, this.wEingangProduct.value);
     wEinprod.produkt = [prod];
     wEinprod.wareneingang = wEingang;
-    wEinprod.mengeEingelagert = 0;
-    wEinprod.menge = this.wEingangProduct.get('menge')?.getRawValue();
-    wEinprod.color = JSON.stringify(this.wEingangProduct.get('color')?.getRawValue());
+    wEinprod.product_variation = this.getVariations();
+
+
     //new product in buchung
     if(wEingang.id && this.data.id === undefined)
       this.act$ = this.wEingService.addProductToWarenEingang(wEingang.id, wEinprod).pipe(tap(res => {
@@ -123,11 +152,26 @@ export class AddEditProductToBuchungComponent {
 
        }))
   }
-  onChangeFarbeMenge() {
-    let newMenge = 0;
-    for( let i = 0; i < this.getColor().length; i++) {
-     newMenge += this.getColor().at(i).get('menge')?.getRawValue();
+
+
+  private getVariations() {
+
+    const products: iWarenEingangProdVariation[] = [];
+    for (let i = 0; i < this.product_variation.getRawValue().length; i++) {
+
+      if (this.product_variation.getRawValue()[i].quanity > 0) {
+        const tmp: iWarenEingangProdVariation = {} as iWarenEingangProdVariation;
+        Object.assign(tmp, this.product_variation.getRawValue()[i]);
+        if(!this.product_variation.getRawValue()[i].quanity_stored)
+          tmp.quanity_stored = 0;
+
+        if(this.data.id)
+          tmp.waren_eingang_product = this.data;
+
+        products.push(tmp);
+      }
+
     }
-    this.wEingangProduct.get('menge')?.setValue(newMenge);
+    return products;
   }
 }

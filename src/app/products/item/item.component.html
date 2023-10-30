@@ -5,18 +5,9 @@
   <div class="product-details">
     <h3>{{item.name}}</h3>
     <p>{{ item.beschreibung.length < 150 ? item.beschreibung : (item.beschreibung | slice:0:150) + '...'}}</p>
-    <p *ngIf="item.mehrwehrsteuer < 1">Preis: {{item.preis}} &euro; </p>
-    <p *ngIf="item.mehrwehrsteuer > 0">Preis: {{getPriceBrutto(item)}} &euro;</p>
-    <div class="prop">
-      <p>Lange: {{item.lange}} (mm)</p>
-      <p>Gewicht: {{item.gewicht}} (g)</p>
-    </div>
-    <div class="color" *ngIf="color.length > 1">
-      <label for="farbe">Farbe: </label>
-      <select id="farbe" (change)="colorChange($event.target)">
-        <option *ngFor="let item of color" [value]="item.id">{{item.id}}</option>
-      </select>
-    </div>
+    <p *ngIf="item.mehrwehrsteuer < 1">Preis:  {{getPriceBrutto()}} &euro; </p>
+    <p *ngIf="item.mehrwehrsteuer > 0">Preis (Brutto): {{getPriceBrutto()}} &euro;</p>
+    <app-select [item]="item" (current)="changeSelection($event)"></app-select>
     <div class="act">
       <button mat-raised-button color="primary" (click)="addItem(item)" > In den Warenkorb</button>
       <button mat-raised-button color="accent" (click)="openDetails()" >Details</button>

@@ -16,7 +16,7 @@ mat-cell {
 .mat-column-toTmenge,
 .mat-column-mwst,
 .mat-column-priceSt,
-.mat-column-artid {
+.mat-column-sku {
   flex: 1 1 8%;
 }
 @media only screen and (max-width: 600px) {
@@ -32,17 +32,15 @@ mat-cell {
 }
 .colorItem {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: .1rem;
  .item {
   display: flex;
   align-items: center;
   height: 2rem;
-  gap: .1rem
- }
- .span {
-  width: 60%;
 
  }
+
  .mat-icon-button {
   scale: .7;
  }

@@ -37,11 +37,7 @@ export class ArtikelListComponent {
     const item: iWareneingangProduct = {
       wareneingang: null,
       produkt: [product],
-      menge: 0,
-      preis: 0,
-      mwst: 0,
-      mengeEingelagert: 0,
-      color: ''
+      product_variation: []
     };
     const conf: MatDialogConfig = new MatDialogConfig();
       conf.width = '80%';

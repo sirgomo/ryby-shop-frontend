@@ -2,9 +2,9 @@
   <!-- card.component.html -->
 <mat-table [dataSource]="products()">
   <!-- ID Column -->
-  <ng-container matColumnDef="artid">
+  <ng-container matColumnDef="sku">
     <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-    <mat-cell *matCellDef="let product">{{ product.artid }}</mat-cell>
+    <mat-cell *matCellDef="let product">{{ product.variations[0].sku }}</mat-cell>
     <mat-footer-cell *matFooterCellDef></mat-footer-cell>
   </ng-container>
 
@@ -20,19 +20,19 @@
     <mat-header-cell *matHeaderCellDef>Color</mat-header-cell>
     <mat-cell *matCellDef="let product; let i = index">
       <div class="colorItem" >
-        <div class="item"  *ngFor="let color of colors[i]; let y = index">
-          <span class="span">ID: {{ color.id }}, Menge: {{ color.menge }}</span>
-          <button mat-icon-button class="mat-icon-button" color="primary" (click)="decreaseQuantity(i, y)">
+          <span>{{product.variations[0].value}} {{product.variations[0].unit }}</span>
+          <span>  Menge: {{ product.variations[0].quanity }}</span>
+          <button mat-icon-button class="mat-icon-button" color="primary" (click)="decreaseQuantity(i)">
             <mat-icon>remove</mat-icon>
           </button>
-          <button mat-icon-button class="mat-icon-button" color="warn" *ngIf="!doWeHaveEnough(i, y)">
+          <button mat-icon-button class="mat-icon-button" color="warn" *ngIf="!doWeHaveEnough(i)">
             <mat-icon>add</mat-icon>
           </button>
 
-          <button mat-icon-button class="mat-icon-button" color="primary" (click)="increaseQuantity(i, y)" *ngIf="doWeHaveEnough(i, y)">
+          <button mat-icon-button class="mat-icon-button" color="primary" (click)="increaseQuantity(i)" *ngIf="doWeHaveEnough(i)">
             <mat-icon>add</mat-icon>
           </button>
-        </div>
+
       </div>
     </mat-cell>
     <mat-footer-cell *matFooterCellDef></mat-footer-cell>
@@ -41,14 +41,14 @@
   <!-- Total Menge Column -->
   <ng-container matColumnDef="toTmenge">
     <mat-header-cell *matHeaderCellDef>Total Menge</mat-header-cell>
-    <mat-cell *matCellDef="let product; let i = index">{{ getProductMenge(i) }}</mat-cell>
+    <mat-cell *matCellDef="let product; let i = index"> {{ product.variations[0].quanity}}</mat-cell>
     <mat-footer-cell *matFooterCellDef><span class="footer">Total Menge: {{getTotalCount()}}</span> </mat-footer-cell>
   </ng-container>
 
   <!-- Price per St Column -->
   <ng-container matColumnDef="priceSt">
     <mat-header-cell *matHeaderCellDef>Price per St</mat-header-cell>
-    <mat-cell *matCellDef="let product; let i = index">{{ getPricePerSt(i) }} &euro;</mat-cell>
+    <mat-cell *matCellDef="let product; let i = index">{{ product.variations[0].price }} &euro;</mat-cell>
     <mat-footer-cell *matFooterCellDef><span *ngIf="company.isKleinUnternehmen !== 1">Netto: {{getTotalPriceNetto()}} &euro; </span></mat-footer-cell>
   </ng-container>
 
@@ -63,7 +63,7 @@
   <ng-container matColumnDef="totalPrice">
     <mat-header-cell *matHeaderCellDef>Total Price</mat-header-cell>
     <mat-cell *matCellDef="let product; let i = index">{{ getTotalPrice(i) }}  &euro;</mat-cell>
-    <mat-footer-cell *matFooterCellDef><span>Total: {{totalPrice()}} &euro;</span></mat-footer-cell>
+    <mat-footer-cell *matFooterCellDef><span>Total: {{getTotalPriceWithShipping()}} &euro;</span></mat-footer-cell>
   </ng-container>
 
   <!-- Remove Column -->

@@ -26,13 +26,18 @@ export class CreateVariationComponent {
   form: FormGroup;
   send$ = new  Observable();
   constructor(private readonly service: VariationsService, @Inject(MAT_DIALOG_DATA) public data: { prod: iProduct, vari: iProduktVariations | undefined}, private readonly ref: MatDialogRef<CreateVariationComponent>,
-  private fb : FormBuilder, private error: ErrorService ) {
+  private fb : FormBuilder, public readonly error: ErrorService ) {
     this.form = this.fb.group({
       sku: [ this.getSku(), Validators.required],
       variations_name: [data.vari ? data.vari.variations_name: '', Validators.required],
       hint: [ data.vari ? data.vari.hint : ''],
       value: [ data.vari ? data.vari.value: '', Validators.required],
-      unit: [ data.vari ? data.vari.unit: '']
+      unit: [ data.vari ? data.vari.unit: ''],
+      price: [ data.vari ? data.vari.price: 0, Validators.required],
+      thumbnail: [ data.vari ? data.vari.thumbnail: ''],
+      image: [ data.vari ? data.vari.image: ''],
+      quanity: [ { value: data.vari ? data.vari.quanity : 0, disabled: true}],
+      quanity_sold: [{ value: data.vari ? data.vari.quanity_sold: 0, disabled: true}],
     });
 
     if(data.prod === undefined)
@@ -43,10 +48,24 @@ export class CreateVariationComponent {
     this.ref.close();
   }
   save() {
+    if(!this.form.valid) {
+      this.error.newMessage('Nicht alle erforderlichen Felder sind ausgefüllt.')
+      return;
+    }
+
 
       Object.assign(this.variation, this.form.value);
       this.variation.produkt = this.data.prod;
+
+      if(!this.variation.price || this.variation.price == 0) {
+        this.error.newMessage('Der Artikel Prise stimmt nicht!');
+      }
+      this.variation.quanity = 0;
+      this.variation.quanity_sold = 0;
+
+
       this.send$ = this.service.create(this.variation);
+      this.ref.close();
   }
   getSku() {
     if(this.form && this.form.get('value'))

@@ -43,15 +43,15 @@
         {{item.produkt[0].name}} ( {{item.produkt[0].artid}} )
       </div>
       <div class="color">
-        <div *ngFor="let col of color[i]; let z = index" class="color-item">
+        <div class="color-item">
             <div class="color-item-innen">
-              {{col.id}} : <span class="red-icon">{{col.menge}}</span>
+              {{item.color}} : <span class="red-icon">{{item.menge}}</span>
             </div>
             <div class="color-item-innen-input">
-              {{col.id}} : <input type="number" [(ngModel)]="color_gepackt[i][z].menge">
+              {{item.color}} : <input type="number" [(ngModel)]="item.mengeGepackt">
             </div>
             <div class="color-item-innen">
-              <mat-icon [ngClass]="{'green-icon': col.menge === color_gepackt[i][z].menge, 'red-icon': col.menge !== color_gepackt[i][z].menge}">
+              <mat-icon [ngClass]="{'green-icon': item.menge === item.mengeGepackt, 'red-icon': item.menge !== item.mengeGepackt || item.mengeGepackt > item.menge }">
                 thumb_up_alt
                 thumb_down_alt
               </mat-icon>

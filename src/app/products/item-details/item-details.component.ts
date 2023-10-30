@@ -11,10 +11,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable, map } from 'rxjs';
+import { VariationsService } from 'src/app/admin/add-edit-product/variations/variations.service';
 import { ProductService } from 'src/app/admin/product/product.service';
 import { HelperService } from 'src/app/helper/helper.service';
-import { iColor } from 'src/app/model/iColor';
 import { iProduct } from 'src/app/model/iProduct';
+import { iProduktVariations } from 'src/app/model/iProduktVariations';
+import { doWeHaveEnough } from '../functions';
+import { SelectComponent } from '../select/select.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
 
 @Component({
   selector: 'app-item-details',
@@ -22,24 +27,27 @@ import { iProduct } from 'src/app/model/iProduct';
   styleUrls: ['./item-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatFormFieldModule, CommonModule, MatIconModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, MatInputModule, FormsModule]
+  imports: [MatFormFieldModule, CommonModule, MatIconModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, MatInputModule, FormsModule, SelectComponent, MatToolbarModule]
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy{
+
   @ViewChildren(MatCheckbox) checks! : MatCheckbox[];
   item: iProduct = {} as iProduct;
   act$ = new Observable();
   titleSig = this.helperService.titelSig;
   title = '';
-  color: iColor[] = [];
+
   currentImage!: SafeResourceUrl;
-  fotos: string[] = [];
-  colorToBuy: iColor[] = [];
+  currentVariation!: iProduktVariations;
+  currentItems!: iProduktVariations[];
+  currentItemQuanity: number = 0;
   constructor (@Inject(MAT_DIALOG_DATA) public readonly data: iProduct,
   private readonly service: ProductService,
   private helperService: HelperService,
   private santizier: DomSanitizer,
   private snackBar: MatSnackBar,
-  private dialogRef: MatDialogRef<ItemDetailsComponent>
+  private dialogRef: MatDialogRef<ItemDetailsComponent>,
+  private variationService: VariationsService,
   ) {
 
     this.titleSig.update((title) => {
@@ -52,21 +60,16 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     this.titleSig.set(this.title);
   }
   ngOnInit(): void {
-    this.color = [];
-    this.fotos = [];
+
     if(this.data.id)
     this.act$ = this.service.getProductById(this.data.id).pipe(map((res) => {
       if(res.id) {
         this.item = res;
-        this.fotos = JSON.parse(res.foto);
 
-        if(this.fotos.length > 0) {
-          let tmpClolor: iColor[] = JSON.parse(res.color);
-          let tmpClolor1 = tmpClolor.filter((item) => item.menge > 0);
-          this.color = tmpClolor1;
-          this.colorToBuy.push({id: this.color[0].id, menge: 0});
-          const index = tmpClolor.findIndex((item) => item.id === tmpClolor1[0].id);
-          this.getImage(this.fotos[index]);
+
+        if(res.variations.length > 0) {
+          this.currentVariation = res.variations[0];
+          this.getImage(res.variations[0].image);
         }
 
       }
@@ -74,7 +77,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     }))
   }
   getImage(id: string ) {
-    this.act$ = this.service.getImage(id).pipe(map((res) => {
+    this.act$ = this.variationService.getImage(id).pipe(map((res) => {
       if(res instanceof Blob)
         this.setImage(res);
 
@@ -84,77 +87,60 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
   setImage(image: Blob) {
     this.currentImage = this.santizier.bypassSecurityTrustResourceUrl(URL.createObjectURL(image));
   }
-  getPriceNetto(item: iProduct) {
-    return this.item.preis.toString();
-  }
-  getPriceBrutto(item: iProduct) {
-    const mwst = Number(item.preis) * item.mehrwehrsteuer / 100;
-    return (Number(item.preis) + mwst).toFixed(2);
-  }
-  changeImage(index: number) {
-    this.checkChekboxes(index);
-    this.getImage(this.fotos[index]);
-    if(this.colorToBuy.length <= 1)
-    this.colorToBuy[0] = ({id: this.color[index].id, menge: 0});
-  }
-  checkChekboxes(index: number) {
-    this.checks.forEach((item, ind) => {
-      if(ind !== index) {
-        item['checked'] = false;
-      } else {
-        item['checked'] = true;
-      }
 
-    })
+  getPriceBrutto() {
+    const mwst = Number(this.currentVariation.price) * this.item.mehrwehrsteuer / 100;
+    return (Number(this.currentVariation.price) + mwst).toFixed(2);
   }
-  addColor(index: string, event: any) {
-      if(event.checked === true) {
-        this.colorToBuy.push({id: index, menge: 0});
-      } else {
+  changeImage(item: iProduktVariations) {
 
-          const removeIndex = this.colorToBuy.findIndex(item => item.id === index);
-          this.colorToBuy.splice(removeIndex, 1);
+    this.getImage(item.image);
+    this.currentVariation = item;
 
-
-      }
   }
 
-  addItem(item: iProduct) {
-    if(this.colorToBuy.length < 1) {
-      this.snackBar.open('Es gibt nichts, was ich dem Warenkorb hinzufügen könnte.', 'Ok', { duration: 2000 })
+
+
+  addItem() {
+    if(this.currentItemQuanity < 1) {
+      this.snackBar.open(' Das Menge kann nicht 0 sein', 'Ok', { duration: 1500 });
       return;
     }
+
+
     const tmpItem= {} as iProduct;
-    Object.assign(tmpItem, item);
+    const tmpVari: iProduktVariations = {} as iProduktVariations;
+    Object.assign(tmpItem, this.item);
+    Object.assign(tmpVari, this.currentVariation);
+    tmpVari.quanity = this.currentItemQuanity;
 
-    if(!this.doWeHaveEnough(item))
+    if(!doWeHaveEnough(this.helperService, this.currentVariation, this.currentItemQuanity))
+     {
+      this.snackBar.open(' Es tut uns leider, es sind nur '+this.currentVariation.quanity+' verfügbar', 'Ok', { duration: 1500 });
       return;
+     }
+     this.currentItemQuanity = 0;
+        tmpItem.variations = [tmpVari];
+          this.helperService.cardSigForMengeControl().push(this.item);
 
-      this.helperService.cardSigForMengeControl().push(tmpItem);
-    item.color = JSON.stringify(this.colorToBuy);
-    const items = this.helperService.cardSig();
-    const newItems = items.slice(0);
-    newItems.push(item);
-    this.helperService.cardSig.set(newItems);
+        const items = this.helperService.cardSig();
+        const newItems = items.slice(0);
+        newItems.push(tmpItem);
+        this.helperService.cardSig.set(newItems);
 
-     this.snackBar.open(item.name + ' wurde zum Warenkorb hinzugefügt!', 'Ok', { duration: 1500 });
-
+        this.snackBar.open(this.item.name + ' wurde zum Warenkorb hinzugefügt!', 'Ok', { duration: 1500 });
 
   }
-  doWeHaveEnough(item:iProduct): boolean {
-    const availableColors = JSON.parse(item.color);
 
-    for (let i = 0; i < this.colorToBuy.length; i++) {
-      if(this.colorToBuy[i].menge > availableColors[i].menge) {
-        this.snackBar.open('Es tut uns leid, aber wir haben die gewünschte Menge nicht verfügbar.', 'Ok', {duration: 2000 })
-        return false;
-      }
-    }
-
-    return true;
-  }
   close() {
     this.dialogRef.close();
   }
+  getItemQuanity() {
+    let quanityInCard = 0;
+    for (let i = 0; i < this.helperService.cardSig().length; i++) {
+        if(this.helperService.cardSig()[i].variations[0].sku  === this.currentVariation.sku)
+          quanityInCard += this.helperService.cardSig()[i].variations[0].quanity;
+    }
+    return this.currentVariation.quanity - quanityInCard;
+  }
 }
-

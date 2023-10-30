@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Signal, computed, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { EMPTY, Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 import { iProduct } from 'src/app/model/iProduct';
 import { iWarenEingang } from 'src/app/model/iWarenEingang';
 import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
 import { environment } from 'src/environments/environment';
 import { AddEditBuchungComponent } from './add-edit-buchung/add-edit-buchung.component';
 import { ErrorService } from 'src/app/error/error.service';
+import { iWarenausgangProduct } from 'src/app/model/iWarenausgangProduct';
 
 @Injectable({
   providedIn: 'root'

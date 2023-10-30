@@ -1,10 +1,10 @@
 
-  <ng-container *ngIf="wEingService.currentProductsInBuchungSig()?.length === 0; else content">
+  <ng-container *ngIf="productsSig()?.length === 0; else content">
     <p>No data available</p>
   </ng-container>
 
   <ng-template #content   >
-    <table mat-table [dataSource]="wEingService.currentProductsInBuchungSig()" class="mat-elevation-z8">
+    <table mat-table [dataSource]="productsSig()" class="mat-elevation-z8">
 
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> ID </th>
@@ -17,13 +17,13 @@
       </ng-container>
 
       <ng-container matColumnDef="menge">
-        <th mat-header-cell *matHeaderCellDef> Menge </th>
-        <td mat-cell *matCellDef="let element"> {{element.menge}} </td>
+        <th mat-header-cell *matHeaderCellDef> Menge (Artikel Variationen) </th>
+        <td mat-cell *matCellDef="let element"> {{element.product_variation.length}} </td>
       </ng-container>
 
       <ng-container matColumnDef="mwst">
         <th mat-header-cell *matHeaderCellDef> MWST </th>
-        <td mat-cell *matCellDef="let element"> {{element.mwst}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.product_variation[0].mwst}} </td>
       </ng-container>
 
       <ng-container matColumnDef="edit">

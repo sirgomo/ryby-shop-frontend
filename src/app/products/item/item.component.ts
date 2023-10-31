@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { iSordedVariation } from 'src/app/model/iSortedVariation';
 import { SelectComponent } from '../select/select.component';
 import { getSortedVariation, doWeHaveEnough } from '../functions';
-import { ProductService } from 'src/app/admin/product/product.service';
+
 
 @Component({
   selector: 'app-item',
@@ -40,8 +40,7 @@ export class ItemComponent implements OnInit {
     private readonly dialog: MatDialog,
     private helper: HelperService,
     private snackBar: MatSnackBar, @Inject(PLATFORM_ID) private readonly platformId: any,
-    private readonly variationService: VariationsService,
-    private readonly productService: ProductService) {}
+    private readonly variationService: VariationsService) {}
   ngOnInit(): void {
 
     if(this.item) {

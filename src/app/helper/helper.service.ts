@@ -6,8 +6,8 @@
   import { iProduct } from '../model/iProduct';
 import { iUserData } from '../model/iUserData';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { iProduktVariations } from '../model/iProduktVariations';
 import { getMenu } from './menu';
+import { environment } from 'src/environments/environment';
 
   @Injectable({
     providedIn: 'root'
@@ -53,3 +53,4 @@ export function getUniqueSymbol(): string {
   const sequence = 'abcdefghijklmnoprstuwxyzABCDEFGHIJKLMNOPRSTUWXYZ1234567890-_';
     return sequence[(Math.floor(Math.random() * sequence.length))]+sequence[(Math.floor(Math.random() * sequence.length))];
 }
+

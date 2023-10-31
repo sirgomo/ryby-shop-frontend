@@ -15,12 +15,14 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ErrorService } from 'src/app/error/error.service';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { iEbayInventoryItem } from 'src/app/model/ebay/iEbayInventoryItem';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { EbayOffersComponent } from '../ebay-offers/ebay-offers.component';
 
 @Component({
   selector: 'app-ebay-inventory',
   standalone: true,
-  imports: [CommonModule, MatSelectModule, MatTableModule, MatButtonModule, FormsModule, MatTabsModule, ImportEbayListingsComponent, MatFormFieldModule, MatCheckboxModule,
-  ErrorComponent],
+  imports: [CommonModule, MatSelectModule, MatTableModule, MatButtonModule, FormsModule, MatTabsModule, ImportEbayListingsComponent, MatFormFieldModule,
+     MatCheckboxModule, ErrorComponent, MatDialogModule, EbayOffersComponent],
   templateUrl: './ebay-inventory.component.html',
   styleUrls: ['./ebay-inventory.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -33,7 +35,7 @@ export class EbayInventoryComponent {
 
   columns = ['sku', 'title', 'inshop']
 
-  constructor(private readonly inventorySer: EbayInventoryService, public readonly errorService: ErrorService) {}
+  constructor(private readonly inventorySer: EbayInventoryService, public readonly errorService: ErrorService, private readonly dialog: MatDialog) {}
   update(val: any) {
     this.itemsProSite = val;
     this.itemsSig$ = this.inventorySer.getCurrentInventory(this.itemsProSite, this.currentSite, this.zeigtNurEinProGroupSig());
@@ -55,6 +57,11 @@ export class EbayInventoryComponent {
     this.itemsSig$ = this.inventorySer.getCurrentInventory(this.itemsProSite, this.currentSite, this.zeigtNurEinProGroupSig());
   }
   addItemToShop(item: iEbayInventoryItem) {
+    const conf = new MatDialogConfig();
+    conf.height = '100%';
+    conf.width = '100%';
+    conf.data = item;
 
+    this.dialog.open(EbayOffersComponent, conf);
   }
 }

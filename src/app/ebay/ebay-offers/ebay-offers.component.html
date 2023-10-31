@@ -1,0 +1,13 @@
+<div class="content">
+  <div *ngIf="errMessage?.message && errMessage.message().length > 2">
+    <app-error></app-error>
+  </div>
+  <div class="h2">
+    <h2>Offer </h2>
+    <div class="close">
+      <button mat-icon-button (click)="close()" color="warn">
+          <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

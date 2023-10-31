@@ -102,4 +102,14 @@ export class EbayInventoryService {
       })
     )
   }
+  //get inventoryItemgroup with items
+  getInventoryItemGroup(groupid: string) {
+    if(groupid === undefined)
+    return of({});
+
+
+   return this.httpClinet.get(`${this.#api}/ebay/groupid/${groupid}`).pipe(tap(res => {
+    console.log(res);
+   }))
+  }
 }

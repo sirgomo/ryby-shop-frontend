@@ -54,7 +54,7 @@ export class ItemComponent implements OnInit {
     if(isPlatformServer(this.platformId))
       return;
     if(!this.item.id)
-      return;
+      return
 
     this.image = undefined;
        this.act$ =  this.variationService.getThumbnails(item).pipe(map(res => {

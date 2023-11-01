@@ -29,7 +29,9 @@
   height: 300px;
   .image {
   border-radius: 2rem;
-  scale: 1;
+  width: 100%;
+  height: 100%;
+  object-fit:fill;
   }
 }
 .prop {

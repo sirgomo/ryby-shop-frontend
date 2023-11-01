@@ -120,10 +120,7 @@ resetFotoUpload() {
 }
 //get image
 getImage(id: string) {
-  if(id.split('//')[0] == 'https:')
-  return this.getEbayImage(id);
-
-  return this.httpClient.get(`${this.#api}/uploads/${id}`, { responseType: 'blob' }).pipe(
+  return this.httpClient.post(`${this.#api}/uploads/`,{id: id}, { responseType: 'blob' }).pipe(
     catchError((err) => {
       this.errorService.newMessage(err.message);
       return throwError(()=> err);
@@ -133,25 +130,11 @@ getImage(id: string) {
     } )
     );
 }
-  getEbayImage(id: string) {
 
-    console.log('--ebay image variation serivce --')
-    return this.httpClient.get(`${id}`, { responseType: 'blob' }).pipe(
-      catchError((err) => {
-        this.errorService.newMessage(err.message);
-        return throwError(()=> err);
-      }),
-      map((res) => {
-        return res;
-      } )
-      );
-  }
 //get thumbnails
 getThumbnails(id: string) {
-  if(id.split('://')[0] === 'https')
-  this.getEbayImage(id);
 
-  return  this.httpClient.get(`${this.#api}/thumbnails/${id}`, { responseType: 'blob' }).pipe(
+  return  this.httpClient.post(`${this.#api}/thumbnails/`,{id: id}, { responseType: 'blob' }).pipe(
     catchError((err) => {
       this.errorService.newMessage(err.message);
       return throwError(()=> err);

@@ -34,8 +34,9 @@
           </ng-container>
           <ng-container matColumnDef="inshop">
             <th mat-header-cell *matHeaderCellDef>Artikel In Shop ?</th>
-            <td mat-cell *matCellDef="let item"><span *ngIf="item.product.inebay">{{item.product.inebay}}</span>
-            <button mat-raised-button *ngIf="!item.product.inebay" (click)="addItemToShop(item)">Fügen Sie den Artikel zu</button>
+            <td mat-cell *matCellDef="let item">
+              <span *ngIf="item.inebay">{{item.inebay}}</span>
+            <button mat-raised-button *ngIf="!item.inebay" (click)="addItemToShop(item)">Fügen Sie den Artikel zu</button>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="columns"></tr>

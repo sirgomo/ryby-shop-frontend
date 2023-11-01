@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, combineLatest, forkJoin, map, mergeMap, of, tap } from 'rxjs';
+import { observeNotification } from 'rxjs/internal/Notification';
 import { ErrorService } from 'src/app/error/error.service';
 import { iEbayGroupItem } from 'src/app/model/ebay/iEbayGroupItem';
 import { iEbayImportListingRes } from 'src/app/model/ebay/iEbayImportListingRes';
 import { iEbayInventory } from 'src/app/model/ebay/iEbayInventory';
 import { iEbayInventoryItem } from 'src/app/model/ebay/iEbayInventoryItem';
+import { iProduct } from 'src/app/model/iProduct';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -25,9 +27,11 @@ export class EbayInventoryService {
       }),
       //get 1 item from group of items
       map((res) => {
+
         if(getall && res.inventoryItems) {
           let list: iEbayInventoryItem[] = []
           for (let i = 0; i < res.inventoryItems.length; i++) {
+
                 if(res.inventoryItems[i].groupIds === undefined) {
                   res.inventoryItems[i] = {
                     ...res.inventoryItems[i],
@@ -41,6 +45,7 @@ export class EbayInventoryService {
           }
           res.inventoryItems = list;
         }
+        console.log(res);
         return res;
       }),
       //merge it with data from shop, look if the item is in the store
@@ -55,24 +60,28 @@ export class EbayInventoryService {
 
 
             if(gruopSplit === 'null')
-              return this.httpClinet.get(`${this.#api}/sku/${item.sku}`).pipe(
+              return this.httpClinet.get<iProduct>(`${this.#api}/sku/${item.sku}`).pipe(
                 map((res) => {
-                  if(res.toString().length > 2)
-                  return {
-                    ...item,
-                    inebay: res.toString()
+                  if(res.toString().length > 2) {
+                    return {
+                      ...item,
+                      inebay: res.sku
+                    }
                   }
+
 
                   return item;
                 })
             );
 
-              return this.httpClinet.get(`${this.#api}/group/${item.groupIds![0]}`).pipe(
+              return this.httpClinet.get<iProduct>(`${this.#api}/group/${item.groupIds![0]}`).pipe(
                 map((res) => {
-                  if(res.toString().length > 2)
-                  return {
-                    ...item,
-                    inebay: res.toString()
+
+                  if(res && res.sku) {
+                    return {
+                      ...item,
+                      inebay: res.sku
+                    }
                   }
 
                   return item;

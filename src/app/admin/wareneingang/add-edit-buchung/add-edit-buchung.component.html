@@ -47,6 +47,26 @@
 
       <mat-checkbox formControlName="eingelagert">Eingelagert</mat-checkbox>
     </div>
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Versand Kosten</mat-label>
+        <input type="number" matInput formControlName="shipping_cost">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Bemerkungen</mat-label>
+        <textarea name="" id="" cols="30" rows="2" matInput formControlName="remarks"></textarea>
+      </mat-form-field>
+    <mat-form-field>
+     <mat-label>Andre Kosten</mat-label>
+      <input type="number" name="" id="" formControlName="other_cost" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Lagerort</mat-label>
+      <mat-select formControlName="location" placeholder="">
+        <mat-option [value]="null">null</mat-option>
+    </mat-select>
+    </mat-form-field>
+    </div>
   </form>
   <div *ngIf="!data">
     <span class="info-warn">Du solltest zuerst die Buchung speichern!</span>

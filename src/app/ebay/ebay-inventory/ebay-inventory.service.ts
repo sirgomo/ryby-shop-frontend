@@ -45,7 +45,7 @@ export class EbayInventoryService {
           }
           res.inventoryItems = list;
         }
-        console.log(res);
+
         return res;
       }),
       //merge it with data from shop, look if the item is in the store

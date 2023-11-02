@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Observable, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { LiferantsService } from '../../liferants/liferants.service';
-import { CommonModule, DatePipe, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,8 +20,7 @@ import { ArtikelGebuchtComponent } from '../artikel-gebucht/artikel-gebucht.comp
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
-import { iProduktVariations } from 'src/app/model/iProduktVariations';
-import { iWarenEingangProdVariation } from 'src/app/model/iWarenEingangProdVariation';
+
 
 
 @Component({
@@ -60,6 +59,10 @@ export class AddEditBuchungComponent implements OnInit{
         datenEingabe: [{ value:  data?.datenEingabe || null, disabled: true }],
         gebucht: [data?.gebucht || false],
         eingelagert: [{value: data?.eingelagert || false, disabled: true }],
+        shipping_cost: [data?.shipping_cost || 0],
+        remarks: [data?.remarks || ''],
+        other_cost: [data?.other_cost || 0],
+        location: [data?.location || null]
       });
     }
 

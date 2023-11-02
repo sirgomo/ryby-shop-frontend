@@ -2,6 +2,7 @@
   <app-error></app-error>
 </div>
 <mat-card>
+  <div class="content">
   <mat-card-header>
     <div class="center-button">
       <button mat-raised-button color="primary" (click)="addEditLiferant()">Neuer Lieferant</button>
@@ -42,4 +43,5 @@
       <tr mat-row *matRowDef="let row; columns: tabColumns"></tr>
     </table>
   </mat-card-content>
+</div>
 </mat-card>

@@ -2,6 +2,7 @@
   <div *ngIf="err.message() && err.message().length > 2">
     <app-error></app-error>
   </div>
+  <div class="content">
   <div class="button">
     <button mat-raised-button color="primary" (click)="addEditProduct()" >Produkt hinzufügen</button>
   </div>
@@ -35,4 +36,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+</div>
 </div>

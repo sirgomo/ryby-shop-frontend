@@ -1,0 +1,27 @@
+<div class="content" *ngIf="warehouses() else loader">
+  <div class="header">
+    <div class="h2">
+      <h2>Lager</h2>
+    </div>
+    <div class="butt">
+      <button mat-stroked-button (click)="newWarehaouseOrEdit()"> Lager hinzufügen</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="item">Lager Id</div>
+    <div class="item">Lager Name</div>
+    <div class="item">Lager Stellplätze</div>
+    <div class="item">Lager anschrift</div>
+    <div class="item">Lager entfernen</div>
+  </div>
+  <div class="row" *ngFor="let item of warehouses()" (click)="newWarehaouseOrEdit(item)">
+    <div class="item">{{item.id}}</div>
+    <div class="item">{{item.name}}</div>
+    <div class="item">{{item.lagerorte.length}}</div>
+    <div class="item">{{item.adresse}}</div>
+    <div class="item"><button>x</button></div>
+  </div>
+</div>
+<ng-template #loader>
+  Loading....
+</ng-template>

@@ -1,0 +1,21 @@
+.row {
+  display: flex;
+  gap: .4rem;
+  width: 100%;
+  cursor: pointer;
+}
+.item {
+  display: flex;
+  flex: 1;
+}
+.h2 {
+  flex: 2;
+}
+.header {
+  display: flex;
+  margin-bottom: 1rem;
+}
+.butt {
+  flex: 1;
+}
+

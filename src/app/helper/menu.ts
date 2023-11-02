@@ -12,6 +12,7 @@ export function getMenu(role: string) {
     menu[8] = { name: 'Ebay', link: 'ebay'};
     menu[9] = {name: 'Ebay - Subscriptions', link: 'ebay-subs'};
     menu[10] = { name: 'Ebay - Inventory', link: 'ebay-items' };
+    menu[11] = { name: 'Lager', link: 'lager'};
 
   } else if (role === 'USER') {
     menu[0] = { name: 'User Profil', link: 'user' };

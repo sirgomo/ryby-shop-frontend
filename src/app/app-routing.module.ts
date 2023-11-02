@@ -7,6 +7,11 @@ import { ProductsComponent } from './products/products.component';
 
 export const routes: Routes = [
 {
+  path: 'lager',
+  canActivate: [routeGuard],
+  loadComponent: () => import('./admin/warehouse/warehouse.component').then(m => m.WarehouseComponent),
+},
+{
   path: 'ebay',
   canActivate: [routeGuard],
   loadComponent: () => import('./ebay/ebay.component').then(m => m.EbayComponent),

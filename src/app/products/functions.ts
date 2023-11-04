@@ -25,6 +25,9 @@ export function  doWeHaveEnough(helper: HelperService, current: iProduktVariatio
       }
     }
   }
+  if(orginalQuani.length === 0)
+  return current.quanity >= quanity;
+
   return found ? (currentQanity + quanity) <= orginalQuanity : true ;
 }
 export function getSortedVariation (item: iProduct) {

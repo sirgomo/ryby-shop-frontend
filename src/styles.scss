@@ -56,6 +56,9 @@ mat-toolbar {
 .icon {
   transform: scale(1.5);
 }
+.small-icon {
+  transform: scale(.5);
+}
 @media screen and (max-width: 600px) {
   mat-toolbar {
     display: flex;
@@ -110,7 +113,6 @@ mat-sidenav {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: .3rem;
 }
 .menuItem:hover {
   transition-duration: 500ms;
@@ -119,6 +121,7 @@ mat-sidenav {
 .menuItem {
   display: block;
   width: 80%;
+  margin-bottom: .2rem;
   button {
     width: 80%;
   }
@@ -162,4 +165,11 @@ a {
   margin: .3rem .3rem;
   height: 100%;
   padding: 1rem 1rem;
+}
+.title-close {
+  display: flex;
+  margin: .1rem .5rem;
+  padding: 0 .2rem;
+  justify-content: space-between;
+  width: 98%;
 }

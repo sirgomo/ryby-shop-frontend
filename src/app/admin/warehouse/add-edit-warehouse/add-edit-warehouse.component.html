@@ -1,1 +1,27 @@
-<p>add-edit-warehouse works!</p>
+<div class="title-close">
+  <div class="error" *ngIf="error.message()">
+    <app-error></app-error>
+  </div>
+  <div><h2> {{data ? 'Lagerort ändern' : 'Lagerort hinzufügen'}}</h2></div>
+  <div><button mat-icon-button matDialogClose color="warn">X</button></div>
+</div>
+
+<mat-dialog-content>
+  <form [formGroup]="lagerForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" required autocomplete="off">
+      <mat-error *ngIf="lagerForm.get('name')?.invalid">Name kann nicht leer sein</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Adresse</mat-label>
+      <input matInput formControlName="adresse" required autocomplete="off">
+      <mat-error *ngIf="lagerForm.get('adresse')?.invalid">Anschrift kann nicht leer sein</mat-error>
+    </mat-form-field>
+
+    <button mat-stroked-button color="primary" type="submit">Speichern</button>
+  </form>
+  <span *ngIf="act$ | async"></span>
+</mat-dialog-content>
+

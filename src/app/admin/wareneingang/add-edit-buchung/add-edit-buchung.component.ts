@@ -20,6 +20,8 @@ import { ArtikelGebuchtComponent } from '../artikel-gebucht/artikel-gebucht.comp
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
+import { WarehouseService } from '../../warehouse/warehouse.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 
 
@@ -39,6 +41,7 @@ export class AddEditBuchungComponent implements OnInit{
   warenEingangForm: FormGroup;
   act$ = new Observable();
   liferants$ = this.lieferants.liferants$;
+  warehousesSig = toSignal(this.warehaouses.warehouses$);
 
   constructor (private readonly dialRef: MatDialogRef<AddEditBuchungComponent>,
     private readonly warenService: WareneingangService,
@@ -48,7 +51,8 @@ export class AddEditBuchungComponent implements OnInit{
     private readonly lieferants: LiferantsService,
     private datePipe: DatePipe,
     private snackBar: MatSnackBar,
-    @Inject(PLATFORM_ID) private readonly platformId: any
+    @Inject(PLATFORM_ID) private readonly platformId: any,
+    private readonly warehaouses: WarehouseService
     ) {
       this.warenEingangForm =  this.fb.group({
         id: [data?.id || null],
@@ -62,7 +66,7 @@ export class AddEditBuchungComponent implements OnInit{
         shipping_cost: [data?.shipping_cost || 0],
         remarks: [data?.remarks || ''],
         other_cost: [data?.other_cost || 0],
-        location: [data?.location || null]
+        location: [data?.location?.id || null]
       });
     }
 
@@ -70,15 +74,18 @@ export class AddEditBuchungComponent implements OnInit{
     this.warenService.lieferantIdSig.set(0);
     this.warenService.currentWarenEingangSig.set(this);
     this.warenService.currentProductsInBuchungSig.set([]);
+
     if(this.data && this.data.id)
       this.act$ = this.warenService.getWareneingangBuchungbeiId(this.data.id).pipe(tap((res) => {
           if(res.id) {
             this.warenEingangForm.patchValue(res);
             this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
+            this.warenEingangForm.get('location')?.patchValue(res.location.id);
             if(res.lieferant.id)
             this.warenService.lieferantIdSig.set(res.lieferant.id)
 
            this.warenService.currentProductsInBuchungSig.set( res.products);
+
           }
       }))
   }
@@ -109,6 +116,7 @@ export class AddEditBuchungComponent implements OnInit{
             if(res.lieferant.id) {
               this.warenService.lieferantIdSig.set(res.lieferant.id)
               this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
+              this.warenEingangForm.get('location')?.patchValue(res.location.id);
             }
 
 
@@ -121,6 +129,7 @@ export class AddEditBuchungComponent implements OnInit{
           tap((res) => {
             this.warenEingangForm.patchValue(res);
             this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
+            this.warenEingangForm.get('location')?.patchValue(res.location.id);
             this.data = res;
             this.snackBar.open('Die buchung wurde gespeichert', ' Ok', { duration: 3000 });
             if(res.lieferant.id)

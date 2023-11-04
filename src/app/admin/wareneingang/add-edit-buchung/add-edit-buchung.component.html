@@ -1,7 +1,7 @@
 <div *ngIf="err.message() && err.message().length > 2">
   <app-error></app-error>
 </div>
-<div class="content">
+<div class="content-buch">
   <div class="close">
     <button mat-icon-button (click)="closeGoodsReceipt()" color="warn">
         <mat-icon>close</mat-icon>
@@ -63,7 +63,7 @@
     <mat-form-field>
       <mat-label>Lagerort</mat-label>
       <mat-select formControlName="location" placeholder="">
-        <mat-option [value]="null">null</mat-option>
+        <mat-option *ngFor="let item of warehousesSig()" [value]="item.id">{{item.name}}</mat-option>
     </mat-select>
     </mat-form-field>
     </div>

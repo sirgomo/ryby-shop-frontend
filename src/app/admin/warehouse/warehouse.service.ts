@@ -75,14 +75,21 @@ export class WarehouseService {
     if(index === -1 || itmes[index].lagerorte && itmes[index].lagerorte.length === 0)
       this.errorService.newMessage('Item kann nicht entfernt werden, item wurde nicht gefunden!');
 
-    const url = `${this.#api}/${id}`;
-    return this.http.delete<{raw: any, affected: number}>(url).pipe(tap(res => {
+
+    return this.http.delete<{raw: any, affected: number}>(`${this.#api}/${id}`).pipe(tap(res => {
       if(res && res.affected === 1) {
         const newItems = itmes.filter((tmp) => tmp.id  !== id);
         this.warehousesSub.next(newItems);
       } else {
+
         this.errorService.newMessage('Etwas ist schief gelaufen!');
       }
-    }));
+    }),
+    catchError((err) => {
+
+      this.errorService.newMessage('Etwas ist schief gelaufen!');
+      throw err;
+    })
+    );
   }
 }

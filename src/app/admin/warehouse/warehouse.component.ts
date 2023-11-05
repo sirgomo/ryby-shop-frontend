@@ -8,11 +8,13 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddEditWarehouseComponent } from './add-edit-warehouse/add-edit-warehouse.component';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { ErrorService } from 'src/app/error/error.service';
 
 @Component({
   selector: 'app-warehouse',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, ErrorComponent],
   templateUrl: './warehouse.component.html',
   styleUrls: ['./warehouse.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -20,7 +22,7 @@ import { Observable } from 'rxjs';
 export class WarehouseComponent {
   warehouses = toSignal(this.service.warehouses$);
   act$ = new Observable();
-  constructor(private readonly service: WarehouseService, private dialog: MatDialog) {}
+  constructor(private readonly service: WarehouseService, private dialog: MatDialog, public readonly error: ErrorService ) {}
 
   newWarehaouseOrEdit(item?: iLager) {
     const conf : MatDialogConfig = new MatDialogConfig();

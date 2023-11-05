@@ -1,4 +1,7 @@
 <div class="content" *ngIf="warehouses() else loader">
+  <div *ngIf="error.message() && error.message().length > 2">
+    <app-error></app-error>
+  </div>
   <div class="header">
     <div class="h2">
       <h2>Lager</h2>

@@ -32,7 +32,8 @@ export class CreateVariationComponent {
       variations_name: [data.vari ? data.vari.variations_name: '', Validators.required],
       hint: [ data.vari ? data.vari.hint : ''],
       value: [ data.vari ? data.vari.value: '', Validators.required],
-      unit: [ data.vari ? data.vari.unit: ''],
+      //gewicht
+      unit: [ data.vari ? data.vari.unit: '0', Validators.required],
       price: [ data.vari ? data.vari.price: 0, Validators.required],
       thumbnail: [ data.vari ? data.vari.thumbnail: ''],
       image: [ data.vari ? data.vari.image: ''],

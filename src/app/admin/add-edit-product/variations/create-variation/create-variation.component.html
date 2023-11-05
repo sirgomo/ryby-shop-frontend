@@ -19,8 +19,9 @@
         <mat-error *ngIf="form.get('value')?.hasError('required')">Value is required</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Symbol 2</mat-label>
-        <input matInput formControlName="unit" autocomplete="off" placeholder="zb. gram or kilogram">
+        <mat-label>Gewicht (zb. 10g or 1kg)</mat-label>
+        <input matInput formControlName="unit" autocomplete="off" placeholder="zb. gram or kilogram" required>
+        <mat-error *ngIf="form.get('unit')?.hasError('required')">Value is required</mat-error>
       </mat-form-field>
     </div>
     <div class="row">

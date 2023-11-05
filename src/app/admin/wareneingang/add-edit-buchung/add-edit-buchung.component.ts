@@ -25,6 +25,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 
 
+
 @Component({
   selector: 'app-add-edit-buchung',
   templateUrl: './add-edit-buchung.component.html',
@@ -66,7 +67,7 @@ export class AddEditBuchungComponent implements OnInit{
         shipping_cost: [data?.shipping_cost || 0],
         remarks: [data?.remarks || ''],
         other_cost: [data?.other_cost || 0],
-        location: [data?.location?.id || null]
+        location: [data?.location?.id || null, Validators.required]
       });
     }
 
@@ -105,6 +106,9 @@ export class AddEditBuchungComponent implements OnInit{
         const buchungs_Datum = this.datePipe.transform(new Date(Date.now()).toISOString(), 'yyyy-MM-dd');;
         if(this.warenEingangForm.get('gebucht')?.getRawValue() == true && buchungs_Datum)
         buchung.datenEingabe = buchungs_Datum;
+      if(this.warehousesSig() !== undefined)
+        buchung.location = this.warehousesSig()!.filter((tmo) => tmo.id == this.warenEingangForm.get('location')?.getRawValue())[0];
+
 
 
         if(!this.data) {
@@ -120,7 +124,7 @@ export class AddEditBuchungComponent implements OnInit{
             }
 
 
-            this.snackBar.open('Die buchung wurde gespeichert', ' Ok', { duration: 3000 });
+            this.snackBar.open('Die buchung wurde gespeichert', ' Ok', { duration: 2000 });
             return res;
           })
         )

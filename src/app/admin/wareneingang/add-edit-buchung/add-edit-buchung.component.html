@@ -62,7 +62,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Lagerort</mat-label>
-      <mat-select formControlName="location" placeholder="">
+      <mat-select formControlName="location" placeholder="" required>
         <mat-option *ngFor="let item of warehousesSig()" [value]="item.id">{{item.name}}</mat-option>
     </mat-select>
     </mat-form-field>

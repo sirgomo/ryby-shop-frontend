@@ -218,7 +218,6 @@ export class AddEditProductComponent implements OnInit {
   getImage(id: string) {
 
     this.getFoto$ =  this.variationService.getImage(id).pipe(tap((res) => {
-      console.log(res)
      this.currentImage = res;
      return res;
     }));

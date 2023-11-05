@@ -25,12 +25,12 @@ export class OrdersService {
       return res
     })
   );
-  itemsSig = toSignal(this.items$, { initialValue: [] as iBestellung[]});
+  itemsSig = toSignal(this.items$);
   item = signal<iBestellung>({} as iBestellung);
   ordersSig =  computed(() => {
 
     const tmpItems = this.itemsSig();
-    if(this.item() && this.item().id !== undefined) {
+    if(tmpItems && this.item() && this.item().id !== undefined) {
       const index = tmpItems.findIndex((item) => item.id === this.item().id);
       if(index !== -1) {
         const newItems = tmpItems;

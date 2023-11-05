@@ -35,6 +35,10 @@
             </div>
           </div>
           <div class="item">
+            <div class="desc-title">Gewicht (g):</div>
+            <div class="desc-value" *ngIf="currentVariation" ><span>{{currentVariation.unit}}</span> (g)</div>
+          </div>
+          <div class="item">
             <div class="desc-title">Verfugbare Menge:</div>
             <div class="desc-value" *ngIf="currentVariation" ><span [style]="getItemQuanity() === 0 ? 'color: red;' : ''">{{getItemQuanity()}}</span> (st.)</div>
           </div>

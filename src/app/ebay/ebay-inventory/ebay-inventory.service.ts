@@ -21,7 +21,7 @@ export class EbayInventoryService {
   getCurrentInventory(limit: number, offset: number, getall: boolean): Observable<iEbayInventory> {
     return this.httpClinet.get<iEbayInventory>(`${this.#api}/${limit}/${offset}`).pipe(
       catchError((err) => {
-        console.log(err);
+
         this.errorServ.newMessage(err);
         return of({} as iEbayInventory);
       }),
@@ -120,7 +120,6 @@ export class EbayInventoryService {
 
    return this.httpClinet.get<iEbayGroupItem>(`${this.#api}/ebay/groupid/${groupid}`).pipe(
     catchError((err) => {
-      console.log(err)
       return of({} as iEbayGroupItem);
     }))
   }

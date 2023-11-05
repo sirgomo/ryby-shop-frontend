@@ -145,7 +145,7 @@ getThumbnails(id: string) {
     );
 }
 deleteImage(image: iDelete) {
-
+  console.log(image)
   return this.httpClient.post(`${this.#api}/file-delete`, image).pipe(
     catchError((err) => {
       this.errorService.newMessage(err.message);

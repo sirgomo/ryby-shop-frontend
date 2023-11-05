@@ -116,6 +116,7 @@
       {{element.image}}
     </div>
     <button mat-stroked-button color="warn" (click)="deleteImage(element, index)">Löschen</button>
+    <span *ngIf="send$[index] | async"></span>
   </div>
 
 </ng-template>

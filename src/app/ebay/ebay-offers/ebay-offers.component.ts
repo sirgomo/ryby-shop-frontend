@@ -46,6 +46,9 @@ export class EbayOffersComponent implements OnInit{
       iProduct.variations = [];
       iProduct.name = itemGroup.title;
       iProduct.sku = this.group.groupIds![0];
+
+
+
       for(let i = 0; i < itemGroup.variantSKUs.length; i++) {
         const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.variantSKUs[i]));
         const offer = await firstValueFrom(this.inventoryService.getInventoryItemBySku(itemGroup.variantSKUs[i]));
@@ -58,11 +61,13 @@ export class EbayOffersComponent implements OnInit{
             variation.variations_name = Object.keys((offer.product.aspects))[0]
             if(offer.product && offer.product.aspects)
             variation.value = Object.values(offer.product.aspects)[0];
-
+            if(Object(itemGroup.aspects).Gewicht)
+            variation.unit = Object(itemGroup.aspects).Gewicht;
 
 
           iProduct.variations.push(variation);
       }
+
      this.openDialog(iProduct);
     }
   }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit, Optional, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, Optional, signal } from '@angular/core';
 import { ProductService } from '../product/product.service';
 import { FormGroup, FormBuilder, Validators, FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -43,7 +43,7 @@ import { environment } from 'src/environments/environment';
   MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule,
    MatProgressSpinnerModule, MatInputModule, MatCheckboxModule, VariationsComponent]
 })
-export class AddEditProductComponent implements OnInit {
+export class AddEditProductComponent implements OnInit, OnDestroy {
 
 
   productForm: FormGroup;
@@ -60,7 +60,7 @@ export class AddEditProductComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<AddEditProductComponent>,
     private readonly prodService: ProductService,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: iProduct,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: iProduct | null,
     private readonly liferantService: LiferantsService,
     private readonly katService: KategorieService,
     public readonly helperService: HelperService,
@@ -90,6 +90,9 @@ export class AddEditProductComponent implements OnInit {
       eans: this.formBuilder.array<iEan>([]),
     });
   }
+  ngOnDestroy(): void {
+    this.data = null;
+  }
   ngOnInit(): void {
     if(this.data && this.data.id) {
 
@@ -118,8 +121,10 @@ export class AddEditProductComponent implements OnInit {
           if(this.images().length > 0)
            this.getImage(this.images()[0]);
 
-          this.data.variations = res.variations;
-          this.data.verfgbarkeit = res.verfgbarkeit;
+          if(this.data ) {
+            this.data.variations = res.variations;
+            this.data.verfgbarkeit = res.verfgbarkeit;
+          }
         }
         return res;
        }));
@@ -173,7 +178,7 @@ export class AddEditProductComponent implements OnInit {
       if(!product.verfgbarkeit )
         product.verfgbarkeit = 0;
 
-      if(this.data.verfgbarkeit)
+      if(this.data && this.data.verfgbarkeit)
         product.verfgbarkeit = this.data.verfgbarkeit;
 
       const curDate =  this.dpipe.transform(this.productForm.get('datumHinzugefuegt')?.getRawValue(), 'yyyy-MM-dd');

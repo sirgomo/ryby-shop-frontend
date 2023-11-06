@@ -48,7 +48,7 @@ export class EbayOffersComponent implements OnInit{
       iProduct.sku = this.group.groupIds![0];
 
 
-
+      if(itemGroup.variantSKUs)
       for(let i = 0; i < itemGroup.variantSKUs.length; i++) {
         const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.variantSKUs[i]));
         const offer = await firstValueFrom(this.inventoryService.getInventoryItemBySku(itemGroup.variantSKUs[i]));

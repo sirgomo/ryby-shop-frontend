@@ -37,6 +37,7 @@ export class EbayInventoryService {
                     ...res.inventoryItems[i],
                     groupIds : ['null/'+i]
                   }
+
                 }
 
                 const index = list.findIndex(item => item.groupIds![0] === res.inventoryItems[i].groupIds![0]);
@@ -56,7 +57,8 @@ export class EbayInventoryService {
             return of(res);
 
           const items$ = forkJoin(res.inventoryItems.map((item) => {
-            const gruopSplit = item.groupIds![0].split('/')[0];
+
+            const gruopSplit = item.groupIds ?  item.groupIds![0].split('/')[0] : 'null';
 
 
             if(gruopSplit === 'null')
@@ -103,12 +105,6 @@ export class EbayInventoryService {
     return this.httpClinet.post<iEbayImportListingRes[]>(`${this.#api}/listing`, tmp).pipe(
       catchError((err) => {
         return [];
-      }),
-      tap(res => {
-        if(res.length === undefined) {
-          this.errorServ.newMessage(JSON.stringify(res));
-        }
-
       })
     )
   }

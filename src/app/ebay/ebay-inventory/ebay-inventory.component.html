@@ -1,9 +1,9 @@
 <mat-tab-group>
   <mat-tab label="Ebay Listings">
+    <div class="content">
     <div class="err" *ngIf="errorService.message() && errorService.message().length > 3">
    <app-error></app-error>
     </div>
-    <div class="content" >
       <div class="selector">
         <div class="items">
           Items pro Site:
@@ -50,10 +50,11 @@
     </div>
   </mat-tab>
     <mat-tab label="Import Ebay Listing">
+      <div class="content">
       <ng-template matTabContent>
         <app-import-ebay-listings></app-import-ebay-listings>
       </ng-template>
+    </div>
     </mat-tab>
-
   </mat-tab-group>
 

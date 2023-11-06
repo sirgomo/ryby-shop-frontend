@@ -32,15 +32,14 @@ export class ImportEbayListingsComponent implements OnDestroy {
 
       this.inventoryService.postListingsString(this.items).subscribe(res => {
         const error: string[] = [];
-
-            if(res.length > 0) {
+            if(Object(res).responses.length > 0) {
               const items: string[] = [];
 
-                for(let i = 0; i < res.length; i++) {
-                  if(res[i].statusCode == 200) {
-                    items.push('ok, item with id '+res[i].listingId + ' wurde Erfolgreich hinzugefügt\n');
+                for(let i = 0; i < Object(res).responses.length; i++) {
+                  if(Object(res).responses[i].statusCode == 200) {
+                    items.push('ok, item with id '+Object(res).responses[i].listingId + ' wurde Erfolgreich hinzugefügt\n');
                   } else {
-                    error.push(JSON.stringify(res[i]));
+                    error.push(JSON.stringify(Object(res).responses[i]));
                   }
 
                 }

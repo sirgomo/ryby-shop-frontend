@@ -1,14 +1,15 @@
-<div class="content">
-  <div class="err" *ngIf="erroRService.message() && erroRService.message().length > 3">
+<div class="content-listing">
+    <div class="err" *ngIf="erroRService.message() && erroRService.message().length > 3">
     <app-error></app-error>
      </div>
+     <div *ngIf="succesList().length > 0">
+      <div class="added" *ngFor="let item of succesList()">
+        <div>{{item}}</div>
+      </div>
+    </div>
     <div>Gib die Einträge ein, getrennt durch ein Komma (,)</div>
     <textarea name="" id="" cols="40" rows="5" [(ngModel)]="items" ></textarea>
 
-  <button mat-raised-button (click)="sendItems()" color="primary">Import</button>
-  <div *ngIf="succesList().length > 0">
-    <div class="added" *ngFor="let item of succesList()">
-      <div>{{item}}</div>
-    </div>
-  </div>
+  <button mat-raised-button (click)="sendItems()" color="primary" class="butt">Import</button>
+
 </div>

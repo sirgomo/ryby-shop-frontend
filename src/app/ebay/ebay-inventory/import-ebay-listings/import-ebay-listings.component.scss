@@ -1,13 +1,16 @@
-.content {
+.content-listing {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
   flex-direction: column;
-  width: 100%;
-  gap: 1rem;
+  gap: .5rem;
+  height: inherit;
+  align-items: center;
+  margin-top: 1rem;
 }
 .added {
   display: flex;
   justify-content: space-between;
 }
+.butt {
+  margin-bottom: .5rem;
+}
+

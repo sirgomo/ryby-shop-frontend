@@ -16,6 +16,6 @@ export class EbayOffersService {
     if(!sku)
       return of({} as iEbayOfferListingRes);
 
-   return this.httpClient.get<iEbayOfferListingRes>(`${this.API}/${sku}`);
+     return this.httpClient.get<iEbayOfferListingRes>(`${this.API}/${sku}`);
   }
 }

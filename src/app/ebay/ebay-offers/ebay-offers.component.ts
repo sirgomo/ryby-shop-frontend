@@ -36,40 +36,82 @@ export class EbayOffersComponent implements OnInit{
   }
   async getOffers() {
     const iProduct: iProduct = {} as iProduct;
-    const itemGroup: iEbayGroupItem = await firstValueFrom(this.inventoryService.getInventoryItemGroup(this.group.groupIds![0]));
-    if(itemGroup) {
-      iProduct.artid = this.getRandomArtikelId();
-      iProduct.beschreibung = itemGroup.description;
-      iProduct.datumHinzugefuegt = new Date(Date.now()).toISOString();
-      iProduct.ebay = 1;
-      iProduct.mehrwehrsteuer = 0;
-      iProduct.variations = [];
-      iProduct.name = itemGroup.title;
-      iProduct.sku = this.group.groupIds![0];
+
+    const itemGroup: iEbayGroupItem | iEbayInventoryItem = this.group.groupIds ? await firstValueFrom(this.inventoryService.getInventoryItemGroup(this.group.groupIds![0])) :
+    await firstValueFrom(this.inventoryService.getInventoryItemBySku(this.group.sku!));
 
 
-      if(itemGroup.variantSKUs)
-      for(let i = 0; i < itemGroup.variantSKUs.length; i++) {
+    if(itemGroup && this.isEbayInvntoryItem(itemGroup)) {
+      await this.ebayGroup(iProduct, itemGroup);
+     this.openDialog(iProduct);
+    } else {
+      await this.ebayInvntoryItem(iProduct, itemGroup);
+      this.openDialog(iProduct);
+    }
+  }
+  private async ebayGroup(iProduct: iProduct, itemGroup: iEbayGroupItem) {
+    iProduct.artid = this.getRandomArtikelId();
+    iProduct.beschreibung = itemGroup.description;
+    iProduct.datumHinzugefuegt = new Date(Date.now()).toISOString();
+    iProduct.ebay = 1;
+    iProduct.mehrwehrsteuer = 0;
+    iProduct.variations = [];
+    iProduct.name = itemGroup.title;
+    iProduct.sku = this.group.groupIds![0];
+
+
+    if (itemGroup.variantSKUs)
+      for (let i = 0; i < itemGroup.variantSKUs.length; i++) {
         const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.variantSKUs[i]));
         const offer = await firstValueFrom(this.inventoryService.getInventoryItemBySku(itemGroup.variantSKUs[i]));
-          const variation: iProduktVariations = {} as iProduktVariations;
-            if(offer.product && offer.product.imageUrls)
-            variation.image = offer.product.imageUrls[0];
-            variation.price = Number(offerP.offers[0].pricingSummary.price.value);
-            variation.sku = offerP.offers[0].sku;
-            if(offer.product && offer.product.aspects)
-            variation.variations_name = Object.keys((offer.product.aspects))[0]
-            if(offer.product && offer.product.aspects)
-            variation.value = Object.values(offer.product.aspects)[0];
-            if(Object(itemGroup.aspects).Gewicht)
-            variation.unit = Object(itemGroup.aspects).Gewicht;
+        const variation: iProduktVariations = {} as iProduktVariations;
+        if (offer.product && offer.product.imageUrls)
+          variation.image = offer.product.imageUrls[0];
+        variation.price = Number(offerP.offers[0].pricingSummary.price.value);
+        variation.sku = offerP.offers[0].sku;
+        if (offer.product && offer.product.aspects)
+          variation.variations_name = Object.keys((offer.product.aspects))[0];
+        if (offer.product && offer.product.aspects)
+          variation.value = Object.values(offer.product.aspects)[0];
+        if (Object(itemGroup.aspects).Gewicht)
+          variation.unit = Object(itemGroup.aspects).Gewicht;
 
 
-          iProduct.variations.push(variation);
+        iProduct.variations.push(variation);
       }
+  }
+  private async ebayInvntoryItem(iProduct: iProduct, itemGroup: iEbayInventoryItem) {
+    iProduct.artid = this.getRandomArtikelId();
 
-     this.openDialog(iProduct);
-    }
+
+        const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.sku));
+        iProduct.beschreibung = offerP.offers[0].listingDescription;
+        iProduct.datumHinzugefuegt = new Date(Date.now()).toISOString();
+        iProduct.ebay = 1;
+        iProduct.mehrwehrsteuer = 0;
+        iProduct.variations = [];
+        iProduct.name = itemGroup.product?.title ? itemGroup.product.title : 'No title';
+        iProduct.sku = itemGroup.sku!;
+        const offer = itemGroup;
+        const variation: iProduktVariations = {} as iProduktVariations;
+        if (offer.product && offer.product.imageUrls)
+          variation.image = offer.product.imageUrls[0];
+        variation.price = Number(offerP.offers[0].pricingSummary.price.value);
+        variation.sku = offerP.offers[0].sku;
+        if (offer.product && offer.product.aspects)
+          variation.variations_name = Object.keys((offer.product.aspects))[0];
+        if (offer.product && offer.product.aspects)
+          variation.value = Object.values(offer.product.aspects)[0];
+        if (itemGroup.product && Object(itemGroup.product.aspects).Gewicht)
+          variation.unit = Object(itemGroup.product.aspects).Gewicht;
+
+
+        iProduct.variations.push(variation);
+
+  }
+
+  isEbayInvntoryItem(item: any) : item is iEbayGroupItem {
+    return 'description' in item;
   }
   openDialog(iProduct: iProduct) {
     const conf: MatDialogConfig = new MatDialogConfig();

@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, combineLatest, forkJoin, map, mergeMap, of, tap } from 'rxjs';
-import { observeNotification } from 'rxjs/internal/Notification';
 import { ErrorService } from 'src/app/error/error.service';
 import { iEbayGroupItem } from 'src/app/model/ebay/iEbayGroupItem';
 import { iEbayImportListingRes } from 'src/app/model/ebay/iEbayImportListingRes';
@@ -117,10 +116,18 @@ export class EbayInventoryService {
    return this.httpClinet.get<iEbayGroupItem>(`${this.#api}/ebay/groupid/${groupid}`).pipe(
     catchError((err) => {
       return of({} as iEbayGroupItem);
-    }))
+    }),
+    map((res) => {
+      if(Object(res).errors) {
+        this.errorServ.newMessage(Object(res).errors[0].message);
+        return {} as iEbayGroupItem;
+      }
+      return res;
+    })
+    )
   }
     //get inventoryItem by sku
-    getInventoryItemBySku(sku: string): Observable<iEbayInventoryItem> {
+    getInventoryItemBySku(sku: string | undefined): Observable<iEbayInventoryItem> {
       if(sku === undefined)
       return of({} as iEbayInventoryItem);
 

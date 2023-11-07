@@ -60,7 +60,7 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<AddEditProductComponent>,
     private readonly prodService: ProductService,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: iProduct | null,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: iProduct,
     private readonly liferantService: LiferantsService,
     private readonly katService: KategorieService,
     public readonly helperService: HelperService,
@@ -91,7 +91,7 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy(): void {
-    this.data = null;
+    this.data = {} as iProduct;
   }
   ngOnInit(): void {
     if(this.data && this.data.id) {
@@ -121,10 +121,10 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
           if(this.images().length > 0)
            this.getImage(this.images()[0]);
 
-          if(this.data ) {
+
             this.data.variations = res.variations;
             this.data.verfgbarkeit = res.verfgbarkeit;
-          }
+
         }
         return res;
        }));

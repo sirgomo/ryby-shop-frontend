@@ -1,4 +1,4 @@
-<div *ngIf="err?.message && err.message().length > 2">
+<div *ngIf="err?.message() && err.message().length > 2">
   <app-error></app-error>
 </div>
 <div *ngIf="helperService.showLoaderSig() && helperService.showLoaderSig() === true" class="loader-spinner">

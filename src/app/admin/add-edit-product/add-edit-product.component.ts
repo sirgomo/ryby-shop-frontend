@@ -94,11 +94,11 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
     this.data = {} as iProduct;
   }
   ngOnInit(): void {
+    this.variationService.images.set([]);
     if(this.data && this.data.id) {
 
       this.create$ = this.prodService.getProductById(this.data.id).pipe(map((res) => {
         if(res.id) {
-
 
           this.productForm.patchValue(res);
 
@@ -193,6 +193,7 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
       this.create$ = this.prodService.createProduct(product).pipe(tap((res) => {
         if(res.id) {
           this.snackBar.open('Das Produkt wurde hinzugefügt', '', {duration: 1500 });
+          this.data = {} as iProduct;
           this.dialogRef.close();
           return res;
         }
@@ -217,6 +218,7 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
+    this.data = {} as iProduct;
     this.dialogRef.close();
   }
 

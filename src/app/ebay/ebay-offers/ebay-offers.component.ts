@@ -62,7 +62,8 @@ export class EbayOffersComponent implements OnInit{
 
     if (itemGroup.variantSKUs)
       for (let i = 0; i < itemGroup.variantSKUs.length; i++) {
-        const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.variantSKUs[i]));
+    if(itemGroup.variantSKUs[i]) {
+      const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.variantSKUs[i]));
         const offer = await firstValueFrom(this.inventoryService.getInventoryItemBySku(itemGroup.variantSKUs[i]));
         const variation: iProduktVariations = {} as iProduktVariations;
         if (offer.product && offer.product.imageUrls)
@@ -78,6 +79,7 @@ export class EbayOffersComponent implements OnInit{
 
 
         iProduct.variations.push(variation);
+        }
       }
   }
   private async ebayInvntoryItem(iProduct: iProduct, itemGroup: iEbayInventoryItem) {

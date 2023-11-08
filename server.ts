@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import 'localstorage-polyfill'
 import { bootstrapApplication, provideClientHydration } from '@angular/platform-browser';
 import { AppComponent } from 'src/app/app.component';
-import {  provideHttpClient, withInterceptors } from '@angular/common/http';
+import {  provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import {  MatSnackBarModule } from '@angular/material/snack-bar';
 import { importProvidersFrom } from '@angular/core';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -37,7 +37,7 @@ export function app(): express.Express {
   server.engine('html', ngExpressEngine({
     bootstrap: () => bootstrapApplication(AppComponent, {
       providers: [
-        provideHttpClient(withInterceptors([jwtInterceptorFn])),
+        provideHttpClient(withInterceptors([jwtInterceptorFn]), withFetch()),
         {
           provide: MAT_DATE_FORMATS, useValue: MY_FORMATS
         },

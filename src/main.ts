@@ -1,6 +1,6 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { JwtModule } from '@auth0/angular-jwt';
 import { MY_FORMATS } from './app/const';
@@ -16,7 +16,7 @@ import { LoaderInterceptorFn } from './app/interceptors/loader.interceptorFn';
 
   bootstrapApplication(AppComponent, {
     providers: [
-      provideHttpClient(withInterceptors([jwtInterceptorFn, LoaderInterceptorFn])),
+      provideHttpClient(withInterceptors([jwtInterceptorFn, LoaderInterceptorFn]), withFetch()),
       {
         provide: DateAdapter,
         useClass: MomentDateAdapter,

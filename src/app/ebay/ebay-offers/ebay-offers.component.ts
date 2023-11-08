@@ -66,8 +66,12 @@ export class EbayOffersComponent implements OnInit{
       const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.variantSKUs[i]));
         const offer = await firstValueFrom(this.inventoryService.getInventoryItemBySku(itemGroup.variantSKUs[i]));
         const variation: iProduktVariations = {} as iProduktVariations;
+
         if (offer.product && offer.product.imageUrls)
           variation.image = offer.product.imageUrls[0];
+        else if(itemGroup.imageUrls[0])
+        variation.image = itemGroup.imageUrls[0];
+
         variation.price = Number(offerP.offers[0].pricingSummary.price.value);
         variation.sku = offerP.offers[0].sku;
         if (offer.product && offer.product.aspects)
@@ -77,17 +81,17 @@ export class EbayOffersComponent implements OnInit{
         if (Object(itemGroup.aspects).Gewicht)
           variation.unit = Object(itemGroup.aspects).Gewicht;
 
-
         iProduct.variations.push(variation);
         }
       }
   }
   private async ebayInvntoryItem(iProduct: iProduct, itemGroup: iEbayInventoryItem) {
     iProduct.artid = this.getRandomArtikelId();
-
+      if(!itemGroup.sku)
+        return;
 
         const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.sku));
-        iProduct.beschreibung = offerP.offers[0].listingDescription;
+        iProduct.beschreibung =  offerP.offers[0].listingDescription;
         iProduct.datumHinzugefuegt = new Date(Date.now()).toISOString();
         iProduct.ebay = 1;
         iProduct.mehrwehrsteuer = 0;
@@ -106,7 +110,6 @@ export class EbayOffersComponent implements OnInit{
           variation.value = Object.values(offer.product.aspects)[0];
         if (itemGroup.product && Object(itemGroup.product.aspects).Gewicht)
           variation.unit = Object(itemGroup.product.aspects).Gewicht;
-
 
         iProduct.variations.push(variation);
 

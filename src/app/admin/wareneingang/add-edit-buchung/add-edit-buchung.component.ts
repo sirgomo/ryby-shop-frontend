@@ -59,7 +59,7 @@ export class AddEditBuchungComponent implements OnInit{
       this.warenEingangForm =  this.fb.group({
         id: [data?.id || null],
         lieferant: [data?.lieferant.id || null, Validators.required],
-        empfangsdatum: [data?.empfangsdatum || null, Validators.required],
+        empfangsdatum: [data?.empfangsdatum || new Date(Date.now()), Validators.required],
         rechnung: [data?.rechnung || null, Validators.required],
         lieferscheinNr: [data?.lieferscheinNr || null ],
         datenEingabe: [{ value:  data?.datenEingabe || null, disabled: true }],
@@ -100,17 +100,15 @@ export class AddEditBuchungComponent implements OnInit{
 
       if(this.products.length > 1)
         buchung.products = this.products;
-        const eD = this.datePipe.transform(this.warenEingangForm.get('empfangsdatum')?.getRawValue(), 'yyyy-MM-dd');
+        const eD = this.datePipe.transform(this.warenEingangForm.get('empfangsdatum')?.getRawValue(), 'yyyy-MM-dd HH:mm:ss');
         if(eD)
         buchung.empfangsdatum =  eD;
 
-        const buchungs_Datum = this.datePipe.transform(new Date(Date.now()).toISOString(), 'yyyy-MM-dd');;
+        const buchungs_Datum = this.datePipe.transform(new Date(Date.now()).toISOString(), 'yyyy-MM-dd HH:mm:ss');
         if(this.warenEingangForm.get('gebucht')?.getRawValue() == true && buchungs_Datum)
         buchung.datenEingabe = buchungs_Datum;
       if(this.warehousesSig() !== undefined)
         buchung.location = this.warehousesSig()!.filter((tmo) => tmo.id == this.warenEingangForm.get('location')?.getRawValue())[0];
-
-
 
         if(!this.data) {
         this.act$ = this.warenService.createWareneingangBuchung(buchung).pipe(

@@ -30,12 +30,12 @@
 
     <ng-container matColumnDef="empfangsdatum">
       <mat-header-cell *matHeaderCellDef>Empfangsdatum</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.empfangsdatum}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{element.empfangsdatum | date: 'dd/MM/YYYY'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="datenEingabe">
       <mat-header-cell *matHeaderCellDef>Buchungs Datum</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.datenEingabe}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{element.datenEingabe | date: 'dd/MM/YYYY HH:mm:ss'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="gebucht">

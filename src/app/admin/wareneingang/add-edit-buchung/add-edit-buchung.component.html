@@ -1,12 +1,15 @@
+
 <div *ngIf="err.message() && err.message().length > 2">
   <app-error></app-error>
 </div>
+<div class="close">
+  <h2>Order: <span>{{data ? data.id : 'Neue'}}</span></h2>
+  <button mat-icon-button (click)="closeGoodsReceipt()" color="warn">
+      <mat-icon>close</mat-icon>
+  </button>
+</div>
 <div class="content-buch">
-  <div class="close">
-    <button mat-icon-button (click)="closeGoodsReceipt()" color="warn">
-        <mat-icon>close</mat-icon>
-    </button>
-  </div>
+
   <form [formGroup]="warenEingangForm" >
     <div class="row">
       <mat-form-field>
@@ -71,6 +74,15 @@
   <div *ngIf="!data">
     <span class="info-warn">Du solltest zuerst die Buchung speichern!</span>
   </div>
+  <div class="stat" *ngIf="data">
+    <div class="stat-row">
+      <div class="item" >Artikles im Buchung: <span>{{productQuanitySig().length}}</span></div>
+      <div class="item">Total Items: <span>{{getItemsData().quanity}}</span></div>
+      <div class="item">Total: <span>{{getItemsData().price.toFixed(2)}}</span></div>
+      <div class="item">Mwst: <span>{{getItemsData().tax.toFixed(2)}}</span></div>
+      <div class="item">Total(Brutto): <span>{{(getItemsData().tax + getItemsData().price).toFixed(2)}}</span></div>
+    </div>
+  </div>
   <mat-tab-group dynamicHeight class="tabs">
     <mat-tab label="Products">
       <ng-template matTabContent >
@@ -83,6 +95,7 @@
       </ng-template>
     </mat-tab>
   </mat-tab-group>
+
 </div>
 <div class="action">
   <button mat-button (click)="saveGoodsReceipt()" [disabled]="!warenEingangForm.valid">Save<span *ngIf="act$ | async"></span></button>

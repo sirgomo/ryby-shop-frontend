@@ -43,6 +43,7 @@ export class AddEditBuchungComponent implements OnInit{
   act$ = new Observable();
   liferants$ = this.lieferants.liferants$;
   warehousesSig = toSignal(this.warehaouses.warehouses$);
+  productQuanitySig = this.warenService.currentProductsInBuchungSig;
 
   constructor (private readonly dialRef: MatDialogRef<AddEditBuchungComponent>,
     private readonly warenService: WareneingangService,
@@ -161,5 +162,23 @@ export class AddEditBuchungComponent implements OnInit{
   }
   onSelectionChange(liferantId: number) {
    this.warenService.lieferantIdSig.set(liferantId);
+  }
+
+  getItemsData() {
+    let quanity = 0;
+    let price = 0;
+    let tax = 0;
+    if(this.warenService.currentProductsInBuchungSig().length === 0)
+    return { quanity, price, tax };
+
+    for (let i = 0; i < this.warenService.currentProductsInBuchungSig().length; i++) {
+      for (let j = 0; j < this.warenService.currentProductsInBuchungSig()[i].product_variation.length; j++ ) {
+        quanity += this.warenService.currentProductsInBuchungSig()[i].product_variation[j].quanity;
+        price += Number(this.warenService.currentProductsInBuchungSig()[i].product_variation[j].price) * Number(this.warenService.currentProductsInBuchungSig()[i].product_variation[j].quanity);
+        tax += Number((this.warenService.currentProductsInBuchungSig()[i].product_variation[j].price * this.warenService.currentProductsInBuchungSig()[i].product_variation[j].mwst / 100) * this.warenService.currentProductsInBuchungSig()[i].product_variation[j].quanity);
+      }
+    }
+
+    return { quanity, price, tax };
   }
 }

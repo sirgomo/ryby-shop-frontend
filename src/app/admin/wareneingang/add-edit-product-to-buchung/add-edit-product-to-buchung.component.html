@@ -17,7 +17,7 @@
         <input matInput formControlName="produkt" placeholder="Produkt">
       </mat-form-field>
     </div>
-    <div formArrayName="color">
+    <div formArrayName="product_variation">
       <div *ngFor="let item of product_variation.controls; let i = index">
         <div [formGroup]="getItem(item)" class="row">
           <mat-form-field>

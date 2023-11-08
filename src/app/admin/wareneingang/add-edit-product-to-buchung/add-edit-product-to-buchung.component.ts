@@ -129,7 +129,7 @@ export class AddEditProductToBuchungComponent {
         if(res.id) {
           this.data.id = res.id;
           res.produkt = this.data.produkt;
-          this.wEingService.currentProductsInBuchungSig().push(res);
+          this.wEingService.currentProductsInBuchungSig.update((alt) => [...alt, res]);
           this.snackBar.open('Gespichert', 'Ok', { duration: 1500 })
           this.dialRef.close();
         }

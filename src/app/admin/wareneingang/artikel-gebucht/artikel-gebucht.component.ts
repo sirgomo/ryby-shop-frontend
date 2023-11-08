@@ -8,8 +8,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { iWarenEingang } from 'src/app/model/iWarenEingang';
-import { iWarenEingangProdVariation } from 'src/app/model/iWarenEingangProdVariation';
+
 
 @Component({
   selector: 'app-artikel-gebucht',
@@ -29,7 +28,7 @@ export class ArtikelGebuchtComponent {
   });
   constructor(private readonly wEingService: WareneingangService, private dialog: MatDialog) {}
   editProduct(product: iWareneingangProduct) {
-    console.log(product)
+
     const conf: MatDialogConfig = new MatDialogConfig();
     conf.width = '80%';
     conf.height = '80%';

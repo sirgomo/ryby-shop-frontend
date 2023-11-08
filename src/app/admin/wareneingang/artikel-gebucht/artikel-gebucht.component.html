@@ -7,8 +7,8 @@
     <table mat-table [dataSource]="productsSig()" class="mat-elevation-z8">
 
       <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> ID </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        <th mat-header-cell *matHeaderCellDef> Sku: </th>
+        <td mat-cell *matCellDef="let element"> {{element.produkt[0].sku}} </td>
       </ng-container>
 
       <ng-container matColumnDef="pname">

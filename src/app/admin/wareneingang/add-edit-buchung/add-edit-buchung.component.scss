@@ -9,19 +9,19 @@
 .content-buch {
   display: flex;
   flex-direction: column;
-  margin: 0 .5rem;
+
   align-items: center;
-  height: calc( 95% - .5rem );
+  height: calc( 90% - 1rem );
   overflow-y: auto;
 }
 .action {
   display: flex;
   justify-content: center;
   height: 5%;
-  width: 80%;
-  position: fixed;
+  width: 100%;
+  position: bottom;
   z-index: 1000;
-
+  margin-bottom: .5rem;
 }
 .tabs {
   width: 100%;
@@ -31,7 +31,33 @@
 }
 .close {
   display: flex;
-  width: 100%;
-  justify-content: flex-end;
+  width: 95%;
+  justify-content: space-between;
+  height: 5%;
+  position: top;
+  margin: auto;
+  z-index: 1000;
+}
+.stat {
+  border: 1px solid brown;
+  border-radius: .2rem;
+  margin: .6rem .1rem;
+  width: 95%;
+}
+.stat-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  :last-child {
+    border-right: 0px;
+  }
+}
+.item {
+  display: flex;
+  border-right: 1px solid brown;
+
+  justify-content: space-between;
+  flex: 1;
+  padding: 0 .5rem;
 }
 

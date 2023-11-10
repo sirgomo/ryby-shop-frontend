@@ -60,6 +60,7 @@ export class AddEditProductToBuchungComponent {
           tmp.id = this.data.product_variation[y].id;
           tmp.quanity = this.data.product_variation[y].quanity;
           tmp.price = this.data.product_variation[y].price;
+          tmp.wholesale_price = this.data.product_variation[y].wholesale_price;
           tmp.mwst = this.data.product_variation[y].mwst;
           tmp.quanity_stored = this.data.product_variation[y].quanity_stored;
           tmp.sku = this.data.product_variation[y].sku;
@@ -74,6 +75,7 @@ export class AddEditProductToBuchungComponent {
                 tmp.quanity = 0;
                 tmp.price = 0;
                 tmp.mwst = 0;
+                tmp.wholesale_price = 0;
                 tmp.quanity_stored = 0;
                 tmp.sku = this.data.produkt[0].variations[i].sku;
                 tmp.waren_eingang_product = this.data;
@@ -99,6 +101,7 @@ export class AddEditProductToBuchungComponent {
       sku: [ item ? { value: item.sku, disabled: true } : null],
       quanity: [item?.quanity ? item.quanity : 0],
       price: [item?.price ? item.price : 0],
+      wholesale_price: [item?.wholesale_price ? item.wholesale_price : 0],
       mwst: [item?.mwst ? item.mwst: 0],
       quanity_stored: [item?.quanity_stored ? item.quanity_stored : 0],
     });

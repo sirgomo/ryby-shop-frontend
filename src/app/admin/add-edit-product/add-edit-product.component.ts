@@ -30,6 +30,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { VariationsComponent } from './variations/variations.component';
 import { VariationsService } from './variations/variations.service';
 import { environment } from 'src/environments/environment';
+import { ImageComponent } from './image/image.component';
 
 
 @Component({
@@ -41,7 +42,7 @@ import { environment } from 'src/environments/environment';
   standalone: true,
   imports: [CommonModule, ErrorComponent, MatIconModule, MatButtonModule, FormsModule, ReactiveFormsModule,
   MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule,
-   MatProgressSpinnerModule, MatInputModule, MatCheckboxModule, VariationsComponent]
+   MatProgressSpinnerModule, MatInputModule, MatCheckboxModule, VariationsComponent, ImageComponent]
 })
 export class AddEditProductComponent implements OnInit, OnDestroy {
 
@@ -88,6 +89,7 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
       promocje: [this.data ? this.data.promocje : []],
       bewertung: [this.data ? this.data.bewertung : []],
       eans: this.formBuilder.array<iEan>([]),
+      produkt_image: [this.data ? this.data.produkt_image: '']
     });
   }
   ngOnDestroy(): void {
@@ -117,9 +119,12 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
                 images.push(res.variations[i].image);
           }
           this.variationService.images.set(images);
+          if(res.produkt_image && res.produkt_image.length > 5)
+            this.images().unshift(res.produkt_image);
 
-          if(this.images().length > 0)
-           this.getImage(this.images()[0]);
+           if(this.images().length > 0)
+            this.getImage(this.images()[0]);
+
 
 
             this.data.variations = res.variations;
@@ -130,6 +135,18 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
        }));
 
     }
+  }
+  //emit image in image component or delete image when image is deleted
+  emitImage(image: string) {
+      if(image === 'deleted')  {
+        this.images().splice(0, 1);
+        this.data.produkt_image = '';
+        if(this.images().length > 0)
+        this.getImage(this.images()[0]);
+        return;
+      }
+    this.images().unshift(image);
+    this.getImage(image);
   }
   get ean() {
     return this.productForm.get('eans') as FormArray;

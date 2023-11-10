@@ -26,7 +26,7 @@ import { environment } from 'src/environments/environment';
     kategorySig = signal<iKategorie>({} as iKategorie);
     artikelProSiteSig = signal<number> (0);
     isLogged = signal(false);
-    uploadProgersSig = signal<{signal: number, index: number}>({ signal: 0, index: -1});
+    uploadProgersSig = signal<number>(0);
     appComponenet!: AppComponent;
     buyerAcc: iUserData = {} as iUserData;
     VersandAndKost = signal('');

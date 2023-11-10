@@ -1,0 +1,16 @@
+.imginput {
+  flex: 1;
+  z-index: 9999;
+  .upload {
+    display: flex;
+    gap: .1rem;
+    height: inherit;
+  }
+
+  .upload-btn {
+    margin-top: .2rem;
+  }
+  .progress-bar {
+    margin-top: .1rem;
+  }
+}

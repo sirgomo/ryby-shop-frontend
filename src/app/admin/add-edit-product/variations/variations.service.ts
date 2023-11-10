@@ -88,7 +88,7 @@ export class VariationsService {
     return this.httpClient.put<iProduktVariations>(`${this.#api}/${sku}`, produktVariations);
   }
 // upload image
-uploadPhoto(file: File, productid: string, index: number) {
+uploadPhoto(file: File, productid: string) {
   const formData = new FormData();
   formData.append('photo', file);
 
@@ -99,9 +99,10 @@ uploadPhoto(file: File, productid: string, index: number) {
     }),
     finalize(() => this.resetFotoUpload()),
     tap((event) => {
-      if(event.type == HttpEventType.UploadProgress && event.total) {
-         this.helper.uploadProgersSig.set({ signal: Math.round(100 * (event.loaded / event.total)), index: index});
 
+      if(event.type == HttpEventType.UploadProgress && event.total || event.type == 3 && event.total) {
+        //console.log('dupa ' + event.loaded / event.total) ;
+         this.helper.uploadProgersSig.set( Math.round(100 * (event.loaded / event.total)));
       }
     }),
     map(res => {
@@ -115,7 +116,7 @@ uploadPhoto(file: File, productid: string, index: number) {
 }
 //reset upload and break
 resetFotoUpload() {
-  this.helper.uploadProgersSig.set({ signal: 0, index : -1});
+  this.helper.uploadProgersSig.set(0);
   this.break.next(EMPTY);
 }
 //get image
@@ -145,14 +146,16 @@ getThumbnails(id: string) {
     );
 }
 deleteImage(image: iDelete) {
-  console.log(image)
+
   return this.httpClient.post(`${this.#api}/file-delete`, image).pipe(
     catchError((err) => {
       this.errorService.newMessage(err.message);
       return throwError(()=> err);
     }),
     map((res) => {
-      this.images.update((arr) => arr.filter((img) => img !== image.fileid));
+      if(!image.product)
+        this.images.update((arr) => arr.filter((img) => img !== image.fileid));
+
       return res;
     })
   )

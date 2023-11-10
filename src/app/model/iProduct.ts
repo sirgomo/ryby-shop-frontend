@@ -28,4 +28,5 @@ export interface iProduct {
   bewertung: iKundenbewertung[];
   eans: iEan[];
   variations: iProduktVariations[];
+  produkt_image: string;
 }

@@ -40,6 +40,15 @@
           </mat-form-field>
         </td>
       </ng-container>
+            <!-- Price Column BB-->
+      <ng-container matColumnDef="pricebb">
+            <th mat-header-cell *matHeaderCellDef> Preis (BB) </th>
+            <td mat-cell *matCellDef="let element">
+              <mat-form-field appearance="outline" class="form-field">
+                <input type="number" matInput [(ngModel)]="element.wholesale_price" autocomplete="off" (keyup)="changesInVariation(element)">
+              </mat-form-field>
+            </td>
+      </ng-container>
      <!-- Quanity Column -->
         <ng-container matColumnDef="quanity">
            <th mat-header-cell *matHeaderCellDef> Menge </th>
@@ -72,8 +81,7 @@
       <ng-container matColumnDef="image">
         <th mat-header *matHeaderCellDef> Image </th>
         <td mat-cell *matCellDef="let element; let i = index" >
-          <ng-container [ngTemplateOutlet]="!element.image ? noimage : imageok" [ngTemplateOutletContext]="{element : element, index: i}"></ng-container>
-
+          <app-image [element]="element"></app-image>
          </td>
       </ng-container>
 
@@ -110,32 +118,4 @@
     Es gibt kein Variationen!
   </div>
 </ng-template>
-<ng-template #imageok let-element="element" let-index="index">
-  <div class="upload">
-    <div class="img">
-      {{element.image}}
-    </div>
-    <button mat-stroked-button color="warn" (click)="deleteImage(element, index)">Löschen</button>
-    <span *ngIf="send$[index] | async"></span>
-  </div>
 
-</ng-template>
-<ng-template #noimage let-element="element" let-index="index">
-  <div class="imginput">
-    <div class="upload">
-      <input type="file" id="img" (change)="onFileChange($event)" accept="image/*"  />
-      <button mat-mini-fab color="primary" class="upload-btn" *ngIf=" helperService.uploadProgersSig().index !== index"
-      (click)="uploadPhoto(element, index)">
-        <mat-icon>attach_file</mat-icon>
-      </button>
-      <button mat-mini-fab color="warn" class="upload-btn" *ngIf="helperService.uploadProgersSig().signal > 0 && helperService.uploadProgersSig().index === index"
-      (click)="cancelUpload()">
-        <mat-icon>delete_forever</mat-icon>
-      </button>
-    </div>
-      <mat-progress-bar class="progress-bar" mode="determinate"
-      [value]="helperService.uploadProgersSig().signal" *ngIf="helperService.uploadProgersSig().signal > 0 && helperService.uploadProgersSig().signal < 100 && helperService.uploadProgersSig().index === index">
-      </mat-progress-bar>
-      <span *ngIf="send$[index] | async"></span>
-  </div>
-</ng-template>

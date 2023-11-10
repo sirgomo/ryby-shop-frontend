@@ -95,7 +95,9 @@
               <div class="verfug">
                 <mat-checkbox id="verfgbarkeit" formControlName="verfgbarkeit">Verfügbarkeit</mat-checkbox>
               </div>
-
+              <div>
+                <app-image [element]="data" (send)="emitImage($event)"></app-image>
+              </div>
             </div>
           </mat-tab>
           <mat-tab label="Eans" >

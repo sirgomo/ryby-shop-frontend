@@ -9,6 +9,7 @@ export interface iProduktVariations {
   unit: string;
   image: string;
   price: number;
+  wholesale_price: number;
   thumbnail: string;
   quanity: number;
   quanity_sold: number;

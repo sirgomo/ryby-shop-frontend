@@ -37,8 +37,13 @@ export class EbayOffersComponent implements OnInit{
   async getOffers() {
     const iProduct: iProduct = {} as iProduct;
 
-    const itemGroup: iEbayGroupItem | iEbayInventoryItem = this.group.groupIds ? await firstValueFrom(this.inventoryService.getInventoryItemGroup(this.group.groupIds![0])) :
-    await firstValueFrom(this.inventoryService.getInventoryItemBySku(this.group.sku!));
+    let itemGroup : iEbayInventoryItem | iEbayGroupItem;
+    if(!this.group.groupIds || this.group.groupIds[0].split('/')[0] === 'null') {
+      itemGroup  = await firstValueFrom(this.inventoryService.getInventoryItemBySku(this.group.sku));
+    } else {
+      itemGroup = await firstValueFrom(this.inventoryService.getInventoryItemGroup(this.group.groupIds![0]));
+    }
+
 
 
     if(itemGroup && this.isEbayInvntoryItem(itemGroup)) {
@@ -58,6 +63,7 @@ export class EbayOffersComponent implements OnInit{
     iProduct.variations = [];
     iProduct.name = itemGroup.title;
     iProduct.sku = this.group.groupIds![0];
+    iProduct.produkt_image = itemGroup.imageUrls[0];
 
 
     if (itemGroup.variantSKUs)

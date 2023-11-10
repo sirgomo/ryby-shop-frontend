@@ -24,7 +24,7 @@ export class EbayInventoryService {
         this.errorServ.newMessage(err);
         return of({} as iEbayInventory);
       }),
-      //get 1 item from group of items
+      //get 1 item from groups of items
       map((res) => {
 
         if(getall && res.inventoryItems) {
@@ -109,7 +109,7 @@ export class EbayInventoryService {
   }
   //get inventoryItemgroup with items
   getInventoryItemGroup(groupid: string): Observable<iEbayGroupItem> {
-    if(groupid === undefined)
+    if(groupid === undefined || groupid.split('/')[0] === 'null')
     return of({} as iEbayGroupItem);
 
 

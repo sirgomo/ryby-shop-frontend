@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {  Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { iEbayItem } from '../model/ebay/iEbayItem';
-import { iEbaySubscriptionsPayload } from '../model/ebay/iEbaySubscriptionsPayload';
+import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +14,10 @@ export class EbayService {
   getLinkForUserConsent() {
     return this.httpService.get<{address: string}>(this.#api+'/consent');
   }
-  getItemsSoldBeiEbay() {
-    return this.httpService.get<iEbayItem>(this.#api).pipe(map((res) => {
-      console.log(res.orders)
+  getItemsSoldBeiEbay(): Observable<iEbayAllOrders> {
+    return this.httpService.get<iEbayAllOrders>(this.#api).pipe(map((res) => {
+     console.log(res);
       return res;
-
     }));
   }
 

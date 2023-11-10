@@ -34,9 +34,12 @@ export class InoviceComponent {
   columns: string[] = [ 'name','varia','rabat', 'stpreis', 'mwst', 'preis', 'brutto'];
   item$ = forkJoin([this.orderService.getBestellungById(this.itemid), this.companyService.getAllCompanies()]).pipe(tap(([best, comp]) => {
     this.currentItem = best;
+    //ebay order have no id
+    if(!this.currentItem.id)
+    this.currentItem = this.data;
+
     this.company = comp;
     this.isPromotion();
-
   }));
 
 

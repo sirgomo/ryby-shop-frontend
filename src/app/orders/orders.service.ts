@@ -69,6 +69,9 @@ export class OrdersService {
     return of([]);
   }
   getBestellungById(id: number): Observable<iBestellung> {
+    if(id === 0)
+      return of({} as iBestellung);
+
     return this.http.get<iBestellung>(this.#api+'/'+id).pipe(map((res) => {
       return res;
     }),

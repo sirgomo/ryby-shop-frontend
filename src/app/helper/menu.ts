@@ -9,7 +9,7 @@ export function getMenu(role: string) {
     menu[5] = { name: 'Waren Eingang', link: 'waren-eingang' };
     menu[6] = { name: 'Company', link: 'company' };
     menu[7] = { name: 'Bestellungen', link: 'admin-order'};
-    menu[8] = { name: 'Ebay', link: 'ebay'};
+    menu[8] = { name: 'Ebay-Verkauf/Login', link: 'ebay'};
     menu[9] = {name: 'Ebay - Subscriptions', link: 'ebay-subs'};
     menu[10] = { name: 'Ebay - Inventory', link: 'ebay-items' };
     menu[11] = { name: 'Lager', link: 'lager'};

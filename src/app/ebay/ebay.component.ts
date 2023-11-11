@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EbayService } from './ebay.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { tap } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { InoviceComponent } from '../inovice/inovice.component';
@@ -51,22 +50,32 @@ export class EbayComponent {
       land: item.buyer.buyerRegistrationAddress.contactAddress.countryCode,
       hausnummer: item.buyer.buyerRegistrationAddress.contactAddress.addressLine2,
     }
-
+    if(item.buyer.buyerRegistrationAddress.email)
+    userD.email = item.buyer.buyerRegistrationAddress.email;
+    userD.vorname = item.buyer.buyerRegistrationAddress.fullName.split(' ')[0];
+    userD.nachname = item.buyer.buyerRegistrationAddress.fullName.split(' ')[1];
     itemB.kunde = userD;
     itemB.gesamtwert = Number(item.pricingSummary.total.value);
     itemB.bestelldatum = new Date(item.creationDate);
+    //it canotbe id, because id is number and need to be null
+    itemB.varsandnr = item.orderId;
     const items : iProductBestellung[] = [];
     for (let i = 0; i < item.lineItems.length; i++) {
       const newItem = {} as iProductBestellung;
       const prod : iProduct = {} as iProduct;
       prod.name = item.lineItems[i].title;
+
       prod.promocje = [];
       if(!item.lineItems[i].taxes[0])
         prod.mehrwehrsteuer = 0;
+
+      newItem.verkauf_steuer = prod.mehrwehrsteuer;
       newItem.menge = Number(item.lineItems[i].quantity);
       newItem.verkauf_price = Number(item.lineItems[i].lineItemCost.value);
-      newItem.color = item.lineItems[i].sku;
+      newItem.color = item.lineItems[i].variationAspects[0].name+' '+item.lineItems[i].variationAspects[0].value;
       newItem.produkt = [prod];
+
+      items.push(newItem);
     }
     itemB.produkte = items;
     itemB.versandprice = Number(item.pricingSummary.deliveryCost.value);

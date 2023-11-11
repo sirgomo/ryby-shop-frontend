@@ -16,7 +16,7 @@ export class EbayService {
   }
   getItemsSoldBeiEbay(): Observable<iEbayAllOrders> {
     return this.httpService.get<iEbayAllOrders>(this.#api).pipe(map((res) => {
-     console.log(res);
+
       return res;
     }));
   }

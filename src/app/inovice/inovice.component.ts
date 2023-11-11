@@ -35,8 +35,12 @@ export class InoviceComponent {
   item$ = forkJoin([this.orderService.getBestellungById(this.itemid), this.companyService.getAllCompanies()]).pipe(tap(([best, comp]) => {
     this.currentItem = best;
     //ebay order have no id
-    if(!this.currentItem.id)
-    this.currentItem = this.data;
+    if(!this.currentItem.id) {
+      this.currentItem = this.data;
+      //i need to set id to get the right invoice
+      this.currentItem.id = this.data.varsandnr as any;
+    }
+
 
     this.company = comp;
     this.isPromotion();
@@ -49,7 +53,9 @@ export class InoviceComponent {
   private isPromotion() {
     let isPromoted = false;
     for (let i = 0; i < this.currentItem.produkte.length; i++) {
-      if (this.currentItem.produkte[i].produkt[0].promocje && this.currentItem.produkte[i].produkt[0].promocje[0].id)
+      if (this.currentItem.produkte[i].produkt[0].promocje
+        && this.currentItem.produkte[i].produkt[0].promocje.length > 0
+         && this.currentItem.produkte[i].produkt[0].promocje[0].id)
           isPromoted = true;
     }
     if (!isPromoted && this.company.isKleinUnternehmen) {

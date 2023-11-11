@@ -7,6 +7,11 @@ import { ProductsComponent } from './products/products.component';
 
 export const routes: Routes = [
 {
+  path: 'shipping',
+  canActivate: [routeGuard],
+  loadComponent: () => import('./admin/shipping-cost/shipping-cost.component').then(m => m.ShippingCostComponent),
+},
+{
   path: 'lager',
   canActivate: [routeGuard],
   loadComponent: () => import('./admin/warehouse/warehouse.component').then(m => m.WarehouseComponent),

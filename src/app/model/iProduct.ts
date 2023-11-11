@@ -5,6 +5,7 @@ import { iKundenbewertung } from "./iKundenbewertung";
 import { iLieferant } from "./iLieferant";
 import { iProductBestellung } from "./iProductBestellung";
 import { iProduktVariations } from "./iProduktVariations";
+import { IShippingCost } from "./iShippingCost";
 import { iStellplatze } from "./iStellplatze";
 import { iWareneingangProduct } from "./iWareneingangProduct";
 
@@ -29,4 +30,5 @@ export interface iProduct {
   eans: iEan[];
   variations: iProduktVariations[];
   produkt_image: string;
+  shipping_costs: IShippingCost[];
 }

@@ -31,6 +31,7 @@ import { VariationsComponent } from './variations/variations.component';
 import { VariationsService } from './variations/variations.service';
 import { environment } from 'src/environments/environment';
 import { ImageComponent } from './image/image.component';
+import { ShippingCostService } from '../shipping-cost/shipping-cost.service';
 
 
 @Component({
@@ -53,6 +54,7 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
   actionsSig = signal<iAktion[]>([]);
   liferantSignal = toSignal<iLieferant[], iLieferant[]>(this.liferantService.liferants$, { initialValue: [] });
   kategorySignal = toSignal<iKategorie[], iKategorie[]>(this.katService.kategorie$, { initialValue: []});
+  shippingCost = this.shippingService.getAllShipping();
   act$ = new Observable().pipe(startWith(null));
   create$ = new Observable().pipe(startWith({}));
   getFoto$ = new Observable().pipe(startWith(null));
@@ -70,6 +72,7 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
     private readonly dpipe: DatePipe,
     private readonly snackBar: MatSnackBar,
     private readonly variationService: VariationsService,
+    private readonly shippingService: ShippingCostService,
   ) {
     this.productForm = this.formBuilder.group({
       id: [this.data ? this.data.id : null],
@@ -89,7 +92,8 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
       promocje: [this.data ? this.data.promocje : []],
       bewertung: [this.data ? this.data.bewertung : []],
       eans: this.formBuilder.array<iEan>([]),
-      produkt_image: [this.data ? this.data.produkt_image: '']
+      produkt_image: [this.data ? this.data.produkt_image: ''],
+      shipping_costs: [this.data ? this.data.shipping_costs : []],
     });
   }
   ngOnDestroy(): void {
@@ -219,6 +223,7 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
         return res;
       }));
       } else {
+        console.log(product);
        // product.verfgbarkeit = this.productForm.get('verfgbarkeit')?.getRawValue() == 1 ? true : false;
       this.create$ = this.prodService.updateProduct(product.id, product).pipe(tap((res) => {
         if(res && res.id && isFinite(res.id)) {

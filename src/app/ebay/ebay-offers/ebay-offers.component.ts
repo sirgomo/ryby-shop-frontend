@@ -64,6 +64,8 @@ export class EbayOffersComponent implements OnInit{
     iProduct.name = itemGroup.title;
     iProduct.sku = this.group.groupIds![0];
     iProduct.produkt_image = itemGroup.imageUrls[0];
+    if(Object(itemGroup.aspects).Modell)
+    iProduct.product_sup_id = Object(itemGroup.aspects).Modell[0];
 
 
     if (itemGroup.variantSKUs)
@@ -97,6 +99,10 @@ export class EbayOffersComponent implements OnInit{
         return;
 
         const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.sku));
+        if(itemGroup.product && Object(itemGroup.product.aspects).Modell)
+        iProduct.product_sup_id = Object(itemGroup.product.aspects).Modell[0];
+
+
         iProduct.beschreibung =  offerP.offers[0].listingDescription;
         iProduct.datumHinzugefuegt = new Date(Date.now()).toISOString();
         iProduct.ebay = 1;

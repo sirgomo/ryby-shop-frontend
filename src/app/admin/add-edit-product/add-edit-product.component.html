@@ -97,7 +97,13 @@
               </div>
             </div>
             <div class="row">
-              <app-image [element]="data" (send)="emitImage($event)"></app-image>
+              <div><app-image [element]="data" (send)="emitImage($event)"></app-image></div>
+              <mat-form-field>
+                <mat-label>Versand Service</mat-label>
+                <mat-select required formControlName="shipping_costs" [compareWith]="getSelected" multiple>
+                  <mat-option *ngFor="let shipping of (shippingCost | async ) " [value]="shipping" >{{shipping.shipping_name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
           </mat-tab>
           <mat-tab label="Eans" >

@@ -53,7 +53,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     this.titleSig.update((title) => {
       this.title = title;
 
-      return title + ' ' + this.data.name
+      return title + ' - ' + this.data.name
      })
   }
   ngOnDestroy(): void {

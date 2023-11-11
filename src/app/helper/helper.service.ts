@@ -20,7 +20,7 @@ import { environment } from 'src/environments/environment';
     cardSig = signal<iProduct[]>([]);
     cardSigForMengeControl = signal<iProduct[]>([]);
     menu$ = this.menuSub.asObservable();
-    titelSig = signal('Ryby');
+    titelSig = signal(environment.site_title);
     searchSig = signal<string>('');
     pageNrSig = signal<number>(1);
     kategorySig = signal<iKategorie>({} as iKategorie);

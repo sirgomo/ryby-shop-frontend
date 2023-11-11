@@ -1,4 +1,4 @@
-import { AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { HelperService } from './helper/helper.service';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
@@ -16,7 +16,7 @@ import { CoockieInfoComponent } from './admin/company/coockie-info/coockie-info.
 import { Subscription, filter } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-declare let gtag: Function;
+declare const gtag: Function;
 
 
 @Component({
@@ -39,7 +39,6 @@ export class AppComponent  implements OnInit, OnDestroy{
   routerEventAnaliticsSub = new Subscription();
   currentRouterSub = new Subscription();
 
-  defaultTitile = '';
   constructor(private readonly helper: HelperService, private readonly dialog: MatDialog, private readonly katService: KategorieService,
   private readonly router: Router, @Inject(PLATFORM_ID) private readonly platformId: any) {
     this.helper.setApp(this);
@@ -147,13 +146,12 @@ export class AppComponent  implements OnInit, OnDestroy{
 
   updateTitle(name: string) {
     this.helper.titelSig.update((title) => {
-      if(this.defaultTitile.length < 2)
-        this.defaultTitile = title;
+
 
         if(name.length < 2)
-        return this.defaultTitile
+        return title = environment.site_title;
 
-        return this.defaultTitile + ' '+ name;
+        return title = environment.site_title + ' - '+ name;
     })
   }
 }

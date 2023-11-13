@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, signal } from '@angular/core';
 import { HelperService } from '../helper/helper.service';
 import { iProduct } from '../model/iProduct';
 import { CompanyService } from '../admin/company/company.service';
@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { IShippingCost } from '../model/iShippingCost';
 
 
 @Component({
@@ -21,18 +22,22 @@ import { MatButtonModule } from '@angular/material/button';
   standalone: true,
   imports: [MatProgressSpinnerModule, ShippingAddressComponent, MatSelectModule, MatTableModule, MatIconModule, CommonModule, MatButtonModule]
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, OnDestroy {
 
   products = this.helper.cardSig;
-
   company = {} as iCompany;
   act$ = new Observable();
 
+
   columns: string[] = ['sku', 'name', 'color', 'toTmenge', 'priceSt', 'mwst', 'totalPrice', 'remove'];
-    constructor (private readonly helper: HelperService, private companyService: CompanyService) {}
+    constructor (public readonly helper: HelperService, private companyService: CompanyService) {}
+  ngOnDestroy(): void {
+    this.helper.selectedVersandMethod = {} as IShippingCost;
+  }
   ngOnInit(): void {
-    this.helper.VersandAndKost.set('0|0');
+
     this.act$ = this.companyService.getCompanyById(1).pipe(map((res) => {
+      this.setInitialVersandKosten();
       this.company = res;
       if(res && res.isKleinUnternehmen === 1)
       this.columns = ['sku', 'name', 'color', 'toTmenge', 'priceSt', 'totalPrice', 'remove'];
@@ -42,6 +47,15 @@ export class CardComponent implements OnInit {
 
         return this.company;
     }))
+  }
+  setInitialVersandKosten() {
+    for (let i = 0; i < this.products().length; i++) {
+      for(let j = 0; j < this.products()[i].shipping_costs.length; j++) {
+        if(this.products()[i].shipping_costs[j].shipping_price > this.helper.versandAndKost()[this.helper.versandAndKost().length -1].shipping_price) {
+          this.helper.versandAndKost().push(this.products()[i].shipping_costs[j]);
+        }
+      }
+    }
   }
 
 
@@ -156,8 +170,8 @@ export class CardComponent implements OnInit {
   getTotalBrutto() {
     return (Number(this.getTotalPriceNetto()) + Number(this.getTotalMwst())).toFixed(2);
   }
-  setVersandKosten(value: string) {
-    this.helper.VersandAndKost.set(value);
+  setVersandKosten(value: IShippingCost) {
+    this.helper.selectedVersandMethod = value;
   }
   doWeHaveEnough(index: number) :boolean {
     if(this.products().length === 0)
@@ -180,6 +194,9 @@ export class CardComponent implements OnInit {
 
   }
   getTotalPriceWithShipping() {
-    return (Number(this.getTotalBrutto()) + Number(this.helper.VersandAndKost().split('|')[1])).toFixed(2);
+    if(this.products().length === 0)
+    return 0;
+
+    return (Number(this.getTotalBrutto()) + Number(this.helper.selectedVersandMethod.shipping_price)).toFixed(2);
   }
 }

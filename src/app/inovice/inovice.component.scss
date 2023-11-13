@@ -16,18 +16,19 @@
 .logo{
   display: flex;
   justify-content: center;
-  height: 70px;
+  height: 100px;
   scale: auto;
   margin-bottom: .5rem;
   img {
     border-radius: .5rem;
-    width: 210px;
+    width: 270px;
   }
 }
 .header {
   display: flex;
   width: 100%;
   font-size: medium;
+  padding-top: 2rem;
 }
 .company {
   display: flex;
@@ -52,12 +53,12 @@
   flex: 1;
   padding: 0 .1rem 0 .2rem;
   min-width: 30%;
-  font-size: small;
+  font-size: medium;
 }
 .mat-column-varia {
   width: 15%;
   padding: 0 .1rem 0 .2rem;
-  font-size: small;
+  font-size: medium;
 }
 
 .mat-column-preis,
@@ -67,7 +68,7 @@
 .mat-column-brutto {
   padding: 0 .1rem 0 .2rem;
   width: 10%;
-  font-size: small;
+  font-size: medium;
 }
 
 
@@ -75,7 +76,7 @@
 {
   padding: 0 .1rem 0 .2rem;
   width: 3%;
-  font-size: small;
+  font-size: medium;
 }
 .tab {
   width: 100%;
@@ -88,7 +89,7 @@
 .versand {
   display: flex;
   justify-content: space-between;
-  font-size: small;
+  font-size: medium;
   width: 100%;
 
   .preise {
@@ -98,6 +99,6 @@
 }
 .kunternehmen {
   margin-top: .5rem;
-  font-size: small;
+  font-size: medium;
   font-weight: 550;
 }

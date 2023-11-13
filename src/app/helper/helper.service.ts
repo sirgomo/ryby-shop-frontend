@@ -8,6 +8,7 @@ import { iUserData } from '../model/iUserData';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { getMenu } from './menu';
 import { environment } from 'src/environments/environment';
+import { IShippingCost } from '../model/iShippingCost';
 
   @Injectable({
     providedIn: 'root'
@@ -29,7 +30,8 @@ import { environment } from 'src/environments/environment';
     uploadProgersSig = signal<number>(0);
     appComponenet!: AppComponent;
     buyerAcc: iUserData = {} as iUserData;
-    VersandAndKost = signal('');
+    versandAndKost = signal<IShippingCost[]>([{ shipping_name: 'Selbstabholung', shipping_price: 0, average_material_price: 0 }]);
+    selectedVersandMethod : IShippingCost = {} as IShippingCost;
     paginationCountSig = signal(0);
     constructor() { }
     setApp(app: AppComponent) {

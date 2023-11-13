@@ -86,9 +86,8 @@
   <div>Versandkosten: </div>
   <mat-form-field>
     <mat-select placeholder="Versand art" (selectionChange)="setVersandKosten($event.value)">
-      <mat-option [value]="'Selbstabholung|0'">Selbstabholung</mat-option>
-      <mat-option [value]="'DHL|3.99'">DHL(Päckchen S) ( 3.99 &euro;)</mat-option>
-      <mat-option [value]="'DHL|5.49'">DHL ( 5.49 &euro;)</mat-option>
+      <mat-option *ngFor="let item of helper.versandAndKost()" [value]="item">{{item.shipping_price === 0 ? item.shipping_name : item.shipping_name + ' : ' +item.shipping_price}}</mat-option>
+
 
   </mat-select>
   </mat-form-field>

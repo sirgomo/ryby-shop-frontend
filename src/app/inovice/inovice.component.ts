@@ -149,7 +149,7 @@ export class InoviceComponent {
             const ctx = newCanvas.getContext('2d');
 
             let imgStart = 0;
-            pdf.setFontSize(24)
+
             for (let i = 1; i <= totalPages; i++) {
              if (i > 1)
               pdf.addPage();
@@ -161,7 +161,11 @@ export class InoviceComponent {
                 ctx.drawImage(canvas, 0,imgStart,canvas.width ,imgHight, 0,0,pdfWidth  - 10 * leftMargin, pdfHeigh  - 14* leftMargin);
 
                 pdf.addImage(newCanvas.toDataURL('image/jpeg', 1.0), 'PNG', leftMargin *5, leftMargin*5 , pdfWidth, pdfHeigh,'', 'FAST');
+                pdf.setFont("arial");
+                pdf.setFontSize(40);
                 pdf.text('Page ' + i + ' of ' + totalPages, leftMargin*4, pdfHeigh - leftMargin *4);
+                pdf.text('www.fischfang-profi.de', leftMargin* 53, pdfHeigh - leftMargin *4);
+
               }
               imgStart += imgHight;
            //  pdf.addImage(imageData, 'PNG', leftMargin, - (pdfHeigh * i) + leftMargin , canvasImageWidth, canvasImageHeight,'', 'MEDIUM');

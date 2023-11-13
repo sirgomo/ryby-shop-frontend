@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -18,7 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { ProductService } from 'src/app/admin/product/product.service';
-import { iProduct } from 'src/app/model/iProduct';
+
 
 
 @Component({
@@ -32,7 +32,7 @@ import { iProduct } from 'src/app/model/iProduct';
 export class ShippingAddressComponent {
   isLogged = this.helperService.isLogged();
   data$ = new Observable();
-  versand = this.helperService.VersandAndKost;
+  versand = this.helperService.versandAndKost;
   act$ = combineLatest([ toObservable(this.helperService.isLogged), this.data$.pipe(startWith(null))]).pipe(concatMap(([log, res]) => this.getShippingAddress(log)),
   map((resp) => {
 
@@ -122,8 +122,8 @@ export class ShippingAddressComponent {
       products.push(item);
     }
     newBestellung.produkte = products;
-    newBestellung.versandprice = Number(this.helperService.VersandAndKost().split('|')[1]);
-    newBestellung.versandart = this.helperService.VersandAndKost().split('|')[0];
+    newBestellung.versandprice = Number(this.helperService.selectedVersandMethod.shipping_price);
+    newBestellung.versandart = this.helperService.selectedVersandMethod.shipping_name;
 
     const conf: MatDialogConfig = new MatDialogConfig();
     conf.width = '50%'

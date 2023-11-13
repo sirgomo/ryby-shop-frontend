@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { ChangeDetectionStrategy,  Component,  OnDestroy, OnInit, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -19,6 +18,7 @@ import { iProduktVariations } from 'src/app/model/iProduktVariations';
 import { doWeHaveEnough } from '../functions';
 import { SelectComponent } from '../select/select.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { ActivatedRoute  } from '@angular/router';
 
 
 @Component({
@@ -36,36 +36,34 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
   act$ = new Observable();
   titleSig = this.helperService.titelSig;
   title = '';
-
+  id : string | null = null;
   currentImage!: SafeResourceUrl;
   currentVariation!: iProduktVariations;
   currentItems!: iProduktVariations[];
   currentItemQuanity: number = 0;
-  constructor (@Inject(MAT_DIALOG_DATA) public readonly data: iProduct,
+  constructor (
   private readonly service: ProductService,
   private helperService: HelperService,
   private santizier: DomSanitizer,
   private snackBar: MatSnackBar,
-  private dialogRef: MatDialogRef<ItemDetailsComponent>,
   private variationService: VariationsService,
-  ) {
-
-    this.titleSig.update((title) => {
-      this.title = title;
-
-      return title + ' - ' + this.data.name
-     })
-  }
+  private route: ActivatedRoute,
+  private location: Location
+  ) {}
   ngOnDestroy(): void {
     this.titleSig.set(this.title);
   }
   ngOnInit(): void {
-
-    if(this.data.id)
-    this.act$ = this.service.getProductById(this.data.id).pipe(map((res) => {
+    this.id = this.route.snapshot.paramMap.get('id');
+    if(this.id)
+    this.act$ = this.service.getProductById(+this.id).pipe(map((res) => {
       if(res.id) {
         this.item = res;
+        this.titleSig.update((title) => {
+          this.title = title;
 
+          return title + ' - ' + res.name.replace(/[^a-zA-Z0-9üöäÜÖÄ]/g,' ').replace(/-+/g, '-').replace(/^-|-$/g, '')
+         })
 
         if(res.variations.length > 0) {
           this.currentVariation = res.variations[0];
@@ -133,7 +131,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
   }
 
   close() {
-    this.dialogRef.close();
+    this.location.back();
   }
   getItemQuanity() {
     let quanityInCard = 0;

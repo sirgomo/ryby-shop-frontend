@@ -44,7 +44,7 @@ export class ShippingAddressComponent {
   rechnungAddress: FormGroup;
   isRechnungAddress = false;
 
-  constructor (private helperService: HelperService, private readonly userService: UserService, private readonly fb: FormBuilder,
+  constructor (public readonly helperService: HelperService, private readonly userService: UserService, private readonly fb: FormBuilder,
     private readonly snack: MatSnackBar, private readonly dialog: MatDialog, private reouter: Router, private readonly producService: ProductService) {
     this.shippingAddres = this.fb.group({
       shipping_name: ['', Validators.required],
@@ -104,11 +104,7 @@ export class ShippingAddressComponent {
         const shipAddress = {} as iShippingAddress;
         Object.assign(shipAddress, this.rechnungAddress.value);
         user.lieferadresse = shipAddress;
-      } /* else {
-        const address = {} as iShippingAddress;
-        Object.assign(address, this.shippingAddres.value);
-        user.lieferadresse = address;
-      }*/
+      }
 
     const newBestellung = {} as iBestellung;
       newBestellung.kunde = user;
@@ -117,13 +113,17 @@ export class ShippingAddressComponent {
 
     for (let i = 0; i < this.helperService.cardSig().length; i++) {
       const item = {} as iProductBestellung;
-     // item.color = this.helperService.cardSig()[i].color;
       item.produkt = [this.helperService.cardSig()[i]];
       products.push(item);
     }
     newBestellung.produkte = products;
-    newBestellung.versandprice = Number(this.helperService.selectedVersandMethod.shipping_price);
-    newBestellung.versandart = this.helperService.selectedVersandMethod.shipping_name;
+    if(this.helperService.selectedVersandMethod !== null) {
+      newBestellung.versandprice = Number(this.helperService.selectedVersandMethod.shipping_price);
+      newBestellung.versandart = this.helperService.selectedVersandMethod.shipping_name;
+    } else {
+      this.snack.open('Bitte wählen Sie eine Versandart', 'Ok', { duration: 3000 });
+    }
+
 
     const conf: MatDialogConfig = new MatDialogConfig();
     conf.width = '50%'

@@ -35,7 +35,7 @@ export class CardComponent implements OnInit, OnDestroy {
     this.helper.selectedVersandMethod = {} as IShippingCost;
   }
   ngOnInit(): void {
-
+    this.helper.isShippingCostSelected.set(false);
     this.act$ = this.companyService.getCompanyById(1).pipe(map((res) => {
       this.setInitialVersandKosten();
       this.company = res;
@@ -52,7 +52,10 @@ export class CardComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.products().length; i++) {
       for(let j = 0; j < this.products()[i].shipping_costs.length; j++) {
         if(this.products()[i].shipping_costs[j].shipping_price > this.helper.versandAndKost()[this.helper.versandAndKost().length -1].shipping_price) {
-          this.helper.versandAndKost().push(this.products()[i].shipping_costs[j]);
+          if(this.helper.versandAndKost().length === 1)
+              this.helper.versandAndKost().push(this.products()[i].shipping_costs[j]);
+          else
+            this.helper.versandAndKost()[this.helper.versandAndKost().length -1] = this.products()[i].shipping_costs[j];
         }
       }
     }
@@ -172,6 +175,7 @@ export class CardComponent implements OnInit, OnDestroy {
   }
   setVersandKosten(value: IShippingCost) {
     this.helper.selectedVersandMethod = value;
+    this.helper.isShippingCostSelected.set(true);
   }
   doWeHaveEnough(index: number) :boolean {
     if(this.products().length === 0)
@@ -196,7 +200,9 @@ export class CardComponent implements OnInit, OnDestroy {
   getTotalPriceWithShipping() {
     if(this.products().length === 0)
     return 0;
-
-    return (Number(this.getTotalBrutto()) + Number(this.helper.selectedVersandMethod.shipping_price)).toFixed(2);
+    if(this.helper.selectedVersandMethod !== null)
+     return (Number(this.getTotalBrutto()) + Number(this.helper.selectedVersandMethod.shipping_price)).toFixed(2);
+    else
+    return 0;
   }
 }

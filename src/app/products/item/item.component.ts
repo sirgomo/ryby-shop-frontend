@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { iSordedVariation } from 'src/app/model/iSortedVariation';
 import { SelectComponent } from '../select/select.component';
 import { getSortedVariation, doWeHaveEnough } from '../functions';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class ItemComponent implements OnInit {
   current!: iProduktVariations;
   sortedVarations: iSordedVariation[] = [];
   constructor( private santizier: DomSanitizer,
-    private readonly dialog: MatDialog,
+    private router: Router,
     private helper: HelperService,
     private snackBar: MatSnackBar, @Inject(PLATFORM_ID) private readonly platformId: any,
     private readonly variationService: VariationsService) {}
@@ -69,11 +70,8 @@ export class ItemComponent implements OnInit {
   openDetails() {
     if(isPlatformServer(this.platformId))
     return;
-  const conf : MatDialogConfig = new MatDialogConfig();
-  conf.width = '90%';
-  conf.height= '90%';
-  conf.data = this.item;
-    this.dialog.open(ItemDetailsComponent, conf);
+
+    this.router.navigate(['products', this.item.id, this.item.name.replace(/[^a-zA-Z0-9üöäÜÖÄ]/g,'-').replace(/-+/g, '-').replace(/^-|-$/g, '')]);
  }
 changeSelection(item: iProduktVariations) {
   this.current = item;

@@ -35,7 +35,9 @@
   align-items: center;
   width: 90%;
 }
-
+.toolbar {
+  border-radius: .5rem;
+}
 .itemdesc {
   display: flex;
   flex-direction: column;

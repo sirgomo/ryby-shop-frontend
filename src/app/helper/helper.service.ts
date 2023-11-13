@@ -31,8 +31,9 @@ import { IShippingCost } from '../model/iShippingCost';
     appComponenet!: AppComponent;
     buyerAcc: iUserData = {} as iUserData;
     versandAndKost = signal<IShippingCost[]>([{ shipping_name: 'Selbstabholung', shipping_price: 0, average_material_price: 0 }]);
-    selectedVersandMethod : IShippingCost = {} as IShippingCost;
+    selectedVersandMethod : IShippingCost | null = null;
     paginationCountSig = signal(0);
+    isShippingCostSelected = signal(false);
     constructor() { }
     setApp(app: AppComponent) {
       this.appComponenet = app;

@@ -1,18 +1,16 @@
-
-
 <div>
     <span id="result-message"></span>
-  </div>
-
-    <div class="paypal" id="paypal-container">
-
-    </div>
+</div>
+<div *ngIf="spinner()" class="spinner">
+  <mat-spinner></mat-spinner>
+</div>
+<div class="paypal" id="paypal-container">
+</div>
 
 
 
 <mat-dialog-actions align="center">
     <button mat-button matDialogClose>Schliessen</button>
-
 
 </mat-dialog-actions>
 

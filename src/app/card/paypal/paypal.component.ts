@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -13,10 +13,11 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatProgressSpinnerModule, MatButtonModule]
+  imports: [CommonModule, MatDialogModule, MatProgressSpinnerModule, MatButtonModule, MatProgressSpinnerModule]
 })
 export class PaypalComponent implements OnInit{
   paypal! :PayPalNamespace | null;
+  spinner = signal(true);
   constructor (private readonly dialRef: MatDialogRef<PaypalComponent>, @Inject(MAT_DIALOG_DATA) public data: iBestellung) {}
   ngOnInit(): void {
     this.loadPaypal(this.data, this.dialRef);
@@ -31,6 +32,7 @@ export class PaypalComponent implements OnInit{
 
     if(this.paypal?.Buttons) {
       try {
+        this.spinner.set(false);
         await this.paypal.Buttons({
           async createOrder() {
             try {

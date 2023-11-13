@@ -1,12 +1,13 @@
-<mat-toolbar color="primary">
+<div class="content">
+<mat-toolbar color="accent" class="toolbar">
   <div class="header">
     <div class="h1">
       <h1>{{item.name}}</h1>
     </div>
     <div class="act">
-      <button mat-raised-button matDialogClose color="accent" (click)="close()">
-          <mat-icon>close</mat-icon>
-          Schließen
+      <button mat-raised-button matDialogClose color="primary" (click)="close()">
+          <mat-icon>arrow_back</mat-icon>
+          Zuruck
       </button>
     </div>
   </div>
@@ -79,3 +80,4 @@
     </div>
   </div>
   </div>
+</div>

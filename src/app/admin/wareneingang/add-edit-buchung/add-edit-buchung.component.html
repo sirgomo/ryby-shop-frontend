@@ -1,11 +1,10 @@
-
 <div *ngIf="err.message() && err.message().length > 2">
   <app-error></app-error>
 </div>
 <div class="close">
   <h2>Order: <span>{{data ? data.id : 'Neue'}}</span></h2>
   <button mat-icon-button (click)="closeGoodsReceipt()" color="warn">
-      <mat-icon>close</mat-icon>
+      <mat-icon matPrefix>close</mat-icon>
   </button>
 </div>
 <div class="content-buch">
@@ -17,31 +16,36 @@
         <mat-select formControlName="lieferant" (selectionChange)="onSelectionChange($event.value)">
           <mat-option *ngFor="let lieferant of liferants$ | async" [value]="lieferant.id">{{ lieferant.name }}</mat-option>
         </mat-select>
+        <mat-icon matPrefix>person</mat-icon>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Empfangsdatum</mat-label>
+        <mat-label>Rechnungseingang am</mat-label>
         <input matInput [matDatepicker]="picker" formControlName="empfangsdatum" autocomplete="off">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        <mat-icon matPrefix>calendar_today</mat-icon>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Rechnung</mat-label>
         <input matInput formControlName="rechnung" autocomplete="off">
+        <mat-icon matPrefix>receipt</mat-icon>
       </mat-form-field>
     </div>
     <div class="row">
       <mat-form-field>
         <mat-label>Lieferschein Nr</mat-label>
         <input matInput formControlName="lieferscheinNr" autocomplete="off">
+        <mat-icon matPrefix>local_shipping</mat-icon>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Buchungs Datum</mat-label>
+        <mat-label>Gebucht</mat-label>
         <input matInput [matDatepicker]="pickero" formControlName="datenEingabe" autocomplete="off">
         <mat-datepicker-toggle matSuffix [for]="pickero"></mat-datepicker-toggle>
         <mat-datepicker #pickero></mat-datepicker>
+        <mat-icon matPrefix>calendar_today</mat-icon>
       </mat-form-field>
       <div>
         <mat-checkbox formControlName="gebucht" labelPosition='before' (change)="SaveReceiptCompletely()" >Gebucht ?</mat-checkbox>
@@ -49,26 +53,48 @@
       </div>
 
       <mat-checkbox formControlName="eingelagert">Eingelagert</mat-checkbox>
+      <mat-icon matPrefix>store</mat-icon>
     </div>
     <div class="row">
       <mat-form-field>
         <mat-label>Versand Kosten</mat-label>
         <input type="number" matInput formControlName="shipping_cost">
+        <mat-icon matPrefix>local_shipping</mat-icon>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Bemerkungen</mat-label>
         <textarea name="" id="" cols="30" rows="2" matInput formControlName="remarks"></textarea>
+        <mat-icon matPrefix>notes</mat-icon>
       </mat-form-field>
     <mat-form-field>
-     <mat-label>Andre Kosten</mat-label>
+     <mat-label>Andere Kosten</mat-label>
       <input type="number" name="" id="" formControlName="other_cost" matInput>
+      <mat-icon matPrefix>money_off</mat-icon>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Lagerort</mat-label>
       <mat-select formControlName="location" placeholder="" required>
         <mat-option *ngFor="let item of warehousesSig()" [value]="item.id">{{item.name}}</mat-option>
     </mat-select>
+    <mat-icon matPrefix>location_on</mat-icon>
     </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Buchungs Währung</mat-label>
+        <input type="text" name="" formControlName="wahrung" matInput>
+        <mat-icon matPrefix>attach_money</mat-icon>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Rechnungs Währung</mat-label>
+        <input type="text" name="" formControlName="wahrung2" matInput>
+        <mat-icon matPrefix>attach_money</mat-icon>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Währungsrate</mat-label>
+        <input type="number" name="" formControlName="wahrung_rate" id="wahrung_rate" matInput>
+        <mat-icon matPrefix matPrefix>trending_up</mat-icon>
+      </mat-form-field>
     </div>
   </form>
   <div *ngIf="!data">
@@ -76,20 +102,20 @@
   </div>
   <div class="stat" *ngIf="data">
     <div class="stat-row">
-      <div class="item" >Artikles im Buchung: <span>{{productQuanitySig().length}}</span></div>
-      <div class="item">Total Items: <span>{{getItemsData().quanity}}</span></div>
-      <div class="item">Total: <span>{{getItemsData().price.toFixed(2)}}</span></div>
+      <div class="item" >Artikel in der Buchung: <span>{{productQuanitySig().length}}</span></div>
+      <div class="item">Gesamt Artikel: <span>{{getItemsData().quanity}}</span></div>
+      <div class="item">Gesamt: <span>{{getItemsData().price.toFixed(2)}}</span></div>
       <div class="item">Mwst: <span>{{getItemsData().tax.toFixed(2)}}</span></div>
-      <div class="item">Total(Brutto): <span>{{(getItemsData().tax + getItemsData().price).toFixed(2)}}</span></div>
+      <div class="item">Gesamt (Brutto): <span>{{(getItemsData().tax + getItemsData().price).toFixed(2)}}</span></div>
     </div>
   </div>
   <mat-tab-group dynamicHeight class="tabs">
-    <mat-tab label="Products">
+    <mat-tab label="Produkte">
       <ng-template matTabContent >
        <app-artikel-list></app-artikel-list>
       </ng-template>
     </mat-tab>
-    <mat-tab label="Products in Bestellung">
+    <mat-tab label="Produkte in der Bestellung">
       <ng-template matTabContent>
         <app-artikel-gebucht></app-artikel-gebucht>
       </ng-template>
@@ -98,7 +124,5 @@
 
 </div>
 <div class="action">
-  <button mat-button (click)="saveGoodsReceipt()" [disabled]="!warenEingangForm.valid">Save<span *ngIf="act$ | async"></span></button>
+  <button mat-button (click)="saveGoodsReceipt()" [disabled]="!warenEingangForm.valid">Speichern<span *ngIf="act$ | async"></span></button>
 </div>
-
-

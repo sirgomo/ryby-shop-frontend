@@ -68,7 +68,10 @@ export class AddEditBuchungComponent implements OnInit{
         shipping_cost: [data?.shipping_cost || 0],
         remarks: [data?.remarks || ''],
         other_cost: [data?.other_cost || 0],
-        location: [data?.location?.id || null, Validators.required]
+        location: [data?.location?.id || null, Validators.required],
+        wahrung: [data?.wahrung || 'EUR'],
+        wahrung2: [data?.wahrung2 || 'EUR'],
+        wahrung_rate: [data?.wahrung_rate || '1.0000']
       });
     }
 

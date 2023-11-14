@@ -18,4 +18,7 @@ export interface iWarenEingang {
   remarks: string,
   other_cost: number,
   location: iLager,
+  wahrung: string;
+  wahrung2: string;
+  wahrung_rate: number;
 }

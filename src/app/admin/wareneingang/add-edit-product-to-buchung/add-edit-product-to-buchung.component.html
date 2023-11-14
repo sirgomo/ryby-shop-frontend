@@ -29,8 +29,12 @@
             <input matInput type="number" formControlName="quanity" autocomplete="off">
           </mat-form-field>
           <mat-form-field>
-            <mat-label>Preis</mat-label>
-            <input matInput type="number" formControlName="price" autocomplete="off">
+            <mat-label>Preis (im Rechnung)</mat-label>
+            <input matInput type="number" formControlName="price" autocomplete="off" (keyup)="priceChanged(i)">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Preis (EUR)</mat-label>
+            <input matInput type="number" formControlName="price_in_euro" autocomplete="off">
           </mat-form-field>
           <mat-form-field>
             <mat-label>Preis (BB)</mat-label>

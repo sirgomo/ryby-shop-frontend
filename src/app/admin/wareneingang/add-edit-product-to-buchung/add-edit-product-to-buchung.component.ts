@@ -60,6 +60,7 @@ export class AddEditProductToBuchungComponent {
           tmp.id = this.data.product_variation[y].id;
           tmp.quanity = this.data.product_variation[y].quanity;
           tmp.price = this.data.product_variation[y].price;
+          tmp.price_in_euro = this.data.product_variation[y].price_in_euro;
           tmp.wholesale_price = this.data.product_variation[y].wholesale_price;
           tmp.mwst = this.data.product_variation[y].mwst;
           tmp.quanity_stored = this.data.product_variation[y].quanity_stored;
@@ -74,6 +75,7 @@ export class AddEditProductToBuchungComponent {
                 tmp.id = undefined;
                 tmp.quanity = 0;
                 tmp.price = 0;
+                tmp.price_in_euro = 0;
                 tmp.mwst = 0;
                 tmp.wholesale_price = 0;
                 tmp.quanity_stored = 0;
@@ -101,6 +103,7 @@ export class AddEditProductToBuchungComponent {
       sku: [ item ? { value: item.sku, disabled: true } : null],
       quanity: [item?.quanity ? item.quanity : 0],
       price: [item?.price ? item.price : 0],
+      price_in_euro: [ {value: item?.price_in_euro ? item.price_in_euro : 0, disabled: true}],
       wholesale_price: [item?.wholesale_price ? item.wholesale_price : 0],
       mwst: [item?.mwst ? item.mwst: 0],
       quanity_stored: [item?.quanity_stored ? item.quanity_stored : 0],
@@ -176,5 +179,21 @@ export class AddEditProductToBuchungComponent {
 
     }
     return products;
+  }
+  getEuroPrice(price: number) {
+    if(this.wareneingang === undefined || this.wareneingang === null ||  this.wareneingang.data === null)
+      return -1;
+
+    if(this.wareneingang.data.wahrung === this.wareneingang.data.wahrung2 )
+      return price;
+
+    return price * this.wareneingang.data.wahrung_rate;
+  }
+  priceChanged(index: number) {
+    const tmp = this.product_variation.getRawValue()[index];
+    if(tmp.price > 0 && tmp.quanity > 0) {
+      tmp.price_in_euro = this.getEuroPrice(tmp.price);
+      this.product_variation.controls[index].patchValue(tmp);
+    }
   }
 }

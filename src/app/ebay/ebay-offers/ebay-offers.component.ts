@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { iEbayInventoryItem } from 'src/app/model/ebay/iEbayInventoryItem';
-import { EbayOffersService } from '../ebay-offers.service';
+import { EbayOffersService } from './ebay-offers.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
@@ -14,6 +14,9 @@ import { iProduktVariations } from 'src/app/model/iProduktVariations';
 import { environment } from 'src/environments/environment';
 import { AddEditProductComponent } from 'src/app/admin/add-edit-product/add-edit-product.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { iEbayFulfillmentPolicy } from 'src/app/model/ebay/iEbayFulfillmentPolicy';
+import { ShippingCostService } from 'src/app/admin/shipping-cost/shipping-cost.service';
+import { IShippingCost } from 'src/app/model/iShippingCost';
 
 @Component({
   selector: 'app-ebay-offers',
@@ -24,9 +27,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EbayOffersComponent implements OnInit{
-
+  shippingServices: IShippingCost[] = [];
   constructor(private readonly offerService: EbayOffersService, @Optional() @Inject(MAT_DIALOG_DATA) private group: iEbayInventoryItem,
-  public errMessage: ErrorService, private dialRef: MatDialogRef<EbayOffersComponent>, private readonly inventoryService: EbayInventoryService, private dialog: MatDialog) {}
+  public errMessage: ErrorService, private dialRef: MatDialogRef<EbayOffersComponent>, private readonly inventoryService: EbayInventoryService, private dialog: MatDialog,
+  private shippingService: ShippingCostService) {}
 
   ngOnInit(): void {
      this.getOffers();
@@ -36,6 +40,9 @@ export class EbayOffersComponent implements OnInit{
   }
   async getOffers() {
     const iProduct: iProduct = {} as iProduct;
+    if(this.shippingServices.length === 0) {
+      this.shippingServices = await firstValueFrom(this.shippingService.getAllShipping());
+    }
 
     let itemGroup : iEbayInventoryItem | iEbayGroupItem;
     if(!this.group.groupIds || this.group.groupIds[0].split('/')[0] === 'null') {
@@ -66,7 +73,7 @@ export class EbayOffersComponent implements OnInit{
     iProduct.produkt_image = itemGroup.imageUrls[0];
     if(Object(itemGroup.aspects).Modell)
     iProduct.product_sup_id = Object(itemGroup.aspects).Modell[0];
-
+    let fulfillment_policy: iEbayFulfillmentPolicy | undefined;
 
     if (itemGroup.variantSKUs)
       for (let i = 0; i < itemGroup.variantSKUs.length; i++) {
@@ -74,6 +81,22 @@ export class EbayOffersComponent implements OnInit{
       const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.variantSKUs[i]));
         const offer = await firstValueFrom(this.inventoryService.getInventoryItemBySku(itemGroup.variantSKUs[i]));
         const variation: iProduktVariations = {} as iProduktVariations;
+      if(fulfillment_policy === undefined)
+        fulfillment_policy = await firstValueFrom(this.offerService.getEbayFulfillmentPolicyById(offerP.offers[0].listingPolicies.fulfillmentPolicyId));
+
+
+      if(fulfillment_policy)
+        for(let i = 0; i < fulfillment_policy.shippingOptions.length; i++) {
+          for(let j = 0; j < fulfillment_policy.shippingOptions[i].shippingServices.length; j++) {
+            for (let z = 0; z < this.shippingServices.length; z++) {
+              if(fulfillment_policy!.shippingOptions[i].shippingServices[j].shippingCarrierCode !==  'GENERIC' as string) {
+                if(+fulfillment_policy!.shippingOptions[i].shippingServices[j].shippingCost.value == this.shippingServices[z].shipping_price) {
+                  iProduct.shipping_costs = [this.shippingServices[z]];
+                }
+              }
+            }
+          }
+        }
 
         if (offer.product && offer.product.imageUrls)
           variation.image = offer.product.imageUrls[0];
@@ -97,11 +120,27 @@ export class EbayOffersComponent implements OnInit{
     iProduct.artid = this.getRandomArtikelId();
       if(!itemGroup.sku)
         return;
-
+        let fulfillment_policy: iEbayFulfillmentPolicy | undefined;
         const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.sku));
         if(itemGroup.product && Object(itemGroup.product.aspects).Modell)
         iProduct.product_sup_id = Object(itemGroup.product.aspects).Modell[0];
+        if(fulfillment_policy === undefined)
+        fulfillment_policy = await firstValueFrom(this.offerService.getEbayFulfillmentPolicyById(offerP.offers[0].listingPolicies.fulfillmentPolicyId));
 
+
+
+        if(fulfillment_policy)
+        for(let i = 0; i < fulfillment_policy.shippingOptions.length; i++) {
+          for(let j = 0; j < fulfillment_policy.shippingOptions[i].shippingServices.length; j++) {
+            for (let z = 0; z < this.shippingServices.length; z++) {
+              if(fulfillment_policy!.shippingOptions[i].shippingServices[j].shippingCarrierCode !==  'GENERIC' as string) {
+                if(+fulfillment_policy!.shippingOptions[i].shippingServices[j].shippingCost.value == this.shippingServices[z].shipping_price) {
+                  iProduct.shipping_costs = [this.shippingServices[z]];
+                }
+              }
+            }
+          }
+        }
 
         iProduct.beschreibung =  offerP.offers[0].listingDescription;
         iProduct.datumHinzugefuegt = new Date(Date.now()).toISOString();

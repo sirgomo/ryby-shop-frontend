@@ -58,12 +58,13 @@ export class EbayInventoryService {
           const items$ = forkJoin(res.inventoryItems.map((item) => {
 
             const gruopSplit = item.groupIds ?  item.groupIds![0].split('/')[0] : 'null';
-
+            if(!gruopSplit)
+              return of(item);
 
             if(gruopSplit === 'null')
               return this.httpClinet.get<iProduct>(`${this.#api}/sku/${item.sku}`).pipe(
                 map((res) => {
-                  if(res.toString().length > 2) {
+                  if(res.sku !== 'null') {
                     return {
                       ...item,
                       inebay: res.sku
@@ -72,22 +73,31 @@ export class EbayInventoryService {
 
 
                   return item;
+                }), catchError((err) => {
+                  console.log(err)
+                  return of(item);
                 })
             );
 
-              return this.httpClinet.get<iProduct>(`${this.#api}/group/${item.groupIds![0]}`).pipe(
-                map((res) => {
 
-                  if(res && res.sku) {
-                    return {
-                      ...item,
-                      inebay: res.sku
+                return this.httpClinet.get<iProduct>(`${this.#api}/group/${item.groupIds![0]}`).pipe(
+                  map((res) => {
+                    if(res && res.sku !== 'null') {
+                      return {
+                        ...item,
+                        inebay: res.sku
+                      }
                     }
-                  }
 
-                  return item;
-                })
-            );
+                    return item;
+                  }), catchError((err) => {
+                    console.log(err)
+                    return of(item);
+                  })
+              );
+
+
+
           }))
           //return the result
           return combineLatest([of(res), items$]).pipe(map(([res, itemy]) => {

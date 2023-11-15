@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, WritableSignal, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EbayInventoryService } from './ebay-inventory.service';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';

@@ -21,4 +21,6 @@ export interface iWarenEingang {
   wahrung: string;
   wahrung2: string;
   wahrung_rate: number;
+  shipping_cost_eur: number;
+  other_cost_eur: number;
 }

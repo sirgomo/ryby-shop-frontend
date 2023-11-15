@@ -58,7 +58,7 @@
     <div class="row">
       <mat-form-field>
         <mat-label>Versand Kosten</mat-label>
-        <input type="number" matInput formControlName="shipping_cost">
+        <input type="number" matInput formControlName="shipping_cost" (keyup)="shippingcostChange()">
         <mat-icon matPrefix>local_shipping</mat-icon>
       </mat-form-field>
       <mat-form-field>
@@ -68,7 +68,7 @@
       </mat-form-field>
     <mat-form-field>
      <mat-label>Andere Kosten</mat-label>
-      <input type="number" name="" id="" formControlName="other_cost" matInput>
+      <input type="number" name="" id="" formControlName="other_cost" matInput (keyup)="shippingcostChange()">
       <mat-icon matPrefix>money_off</mat-icon>
     </mat-form-field>
     <mat-form-field>
@@ -92,9 +92,19 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Währungsrate</mat-label>
-        <input type="number" name="" formControlName="wahrung_rate" id="wahrung_rate" matInput>
+        <input type="number" name="" formControlName="wahrung_rate" id="wahrung_rate" matInput (keyup)="shippingcostChange()">
         <mat-icon matPrefix matPrefix>trending_up</mat-icon>
       </mat-form-field>
+      <div class="kosten">
+        <mat-form-field>
+          <mat-label>Versand (Euro)</mat-label>
+          <input type="number" name="" formControlName="shipping_cost_eur" id="shipping_cost_eur" matInput>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Other kost (Euro)</mat-label>
+          <input type="number" name="" formControlName="other_cost_eur" id="other_cost_eur" matInput>
+        </mat-form-field>
+      </div>
     </div>
   </form>
   <div *ngIf="!data">
@@ -121,7 +131,6 @@
       </ng-template>
     </mat-tab>
   </mat-tab-group>
-
 </div>
 <div class="action">
   <button mat-button (click)="saveGoodsReceipt()" [disabled]="!warenEingangForm.valid">Speichern<span *ngIf="act$ | async"></span></button>

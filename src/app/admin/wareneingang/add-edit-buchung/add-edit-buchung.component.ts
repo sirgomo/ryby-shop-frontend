@@ -25,7 +25,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 
 
-
 @Component({
   selector: 'app-add-edit-buchung',
   templateUrl: './add-edit-buchung.component.html',
@@ -69,9 +68,11 @@ export class AddEditBuchungComponent implements OnInit{
         remarks: [data?.remarks || ''],
         other_cost: [data?.other_cost || 0],
         location: [data?.location?.id || null, Validators.required],
-        wahrung: [data?.wahrung || 'EUR'],
+        wahrung: [{value: data?.wahrung || 'EUR', disabled: true}],
         wahrung2: [data?.wahrung2 || 'EUR'],
-        wahrung_rate: [data?.wahrung_rate || '1.0000']
+        wahrung_rate: [data?.wahrung_rate || '1.0000'],
+        shipping_cost_eur: [{ value: data?.shipping_cost_eur || 0, disabled: true}],
+        other_cost_eur: [{value: data?.other_cost_eur || 0, disabled: true}],
       });
     }
 
@@ -83,6 +84,8 @@ export class AddEditBuchungComponent implements OnInit{
     if(this.data && this.data.id)
       this.act$ = this.warenService.getWareneingangBuchungbeiId(this.data.id).pipe(tap((res) => {
           if(res.id) {
+            res.shipping_cost_eur = this.getValueinEuro(res.shipping_cost);
+            res.other_cost_eur = this.getValueinEuro(res.other_cost);
             this.warenEingangForm.patchValue(res);
             this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
             this.warenEingangForm.get('location')?.patchValue(res.location.id);
@@ -112,7 +115,8 @@ export class AddEditBuchungComponent implements OnInit{
         buchung.datenEingabe = buchungs_Datum;
       if(this.warehousesSig() !== undefined)
         buchung.location = this.warehousesSig()!.filter((tmo) => tmo.id == this.warenEingangForm.get('location')?.getRawValue())[0];
-
+        buchung.other_cost_eur = this.getValueinEuro(buchung.other_cost);
+        buchung.shipping_cost_eur = this.getValueinEuro(buchung.shipping_cost);
         if(!this.data) {
         this.act$ = this.warenService.createWareneingangBuchung(buchung).pipe(
           tap((res) => {
@@ -181,5 +185,17 @@ export class AddEditBuchungComponent implements OnInit{
     }
 
     return { quanity, price, tax };
+  }
+  getValueinEuro(value: number) {
+    if(this.warenEingangForm.get('wahrung_rate'))
+    return value * Number(this.warenEingangForm.get('wahrung_rate')?.getRawValue());
+
+    return 0;
+  }
+  shippingcostChange() {
+
+      this.warenEingangForm.get('shipping_cost_eur')?.patchValue(this.getValueinEuro(this.warenEingangForm.get('shipping_cost')?.getRawValue()));
+      this.warenEingangForm.get('other_cost_eur')?.patchValue(this.getValueinEuro(this.warenEingangForm.get('other_cost')?.getRawValue()));
+
   }
 }

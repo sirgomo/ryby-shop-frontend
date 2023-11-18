@@ -112,26 +112,27 @@ export class ProductService {
     search = 'null';
     this.authServ.isTokenExpired();
     const role = localStorage.getItem('role')
-
     if( role && role === 'ADMIN') {
-      return this.http.get<iProduct[]>(`${this.API}/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
+      return this.http.get<[iProduct[], number]>(`${this.API}/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
         catchError((error) => {
           this.error.newMessage('Fehler beim Abrufen aller Produkte.');
           return [];
         }),
-        tap((res) => {
-          return res;
+        map((res) => {
+          this.helper.paginationCountSig.set(res[1]);
+          return res[0];
         })
       );
     }
 
-    return this.http.get<iProduct[]>(`${this.API}/kunde/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
+    return this.http.get<[iProduct[], number]>(`${this.API}/kunde/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
       catchError((error) => {
         this.error.newMessage('Fehler beim Abrufen aller Produkte.');
         return [];
       }),
-      tap((res) => {
-        return res;
+      map((res) => {
+        this.helper.paginationCountSig.set(res[1]);
+        return res[0];
       })
     );
   }

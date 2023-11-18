@@ -95,9 +95,10 @@ export class OrdersService {
     }))
   }
   getBestellungBeiKundeNr(kunde: number): Observable<iBestellung[]> {
-    return this.http.get<iBestellung[]>(`${this.#api}/kunde/${kunde}`).pipe(
+    return this.http.get<[iBestellung[], number]>(`${this.#api}/kunde/${kunde}`).pipe(
       map((res) => {
-      return res;
+        this.helper.paginationCountSig.set(res[1]);
+      return res[0];
     }),
     catchError((err) => {
       this.error.newMessage(err.message);

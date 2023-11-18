@@ -1,4 +1,4 @@
-<div *ngIf="error.message() && error.message().length > 3">
+<div *ngIf=" error && error.message() && error.message().length > 3">
   {{error.message()}}
 </div>
 
@@ -52,7 +52,7 @@
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let row; columns: columns;"></tr>
   </table>
-
+<app-paginator></app-paginator>
 </div>
 
 

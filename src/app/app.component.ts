@@ -16,6 +16,7 @@ import { CoockieInfoComponent } from './admin/company/coockie-info/coockie-info.
 import { Subscription, filter } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
+
 declare const gtag: Function;
 
 
@@ -25,7 +26,7 @@ declare const gtag: Function;
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ FooterComponent, PaginatorComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule, MatButtonModule, MatProgressSpinnerModule]
+  imports: [ FooterComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule, MatButtonModule, MatProgressSpinnerModule, PaginatorComponent]
 })
 export class AppComponent  implements OnInit, OnDestroy{
 

@@ -32,9 +32,10 @@ export class CardComponent implements OnInit, OnDestroy {
   columns: string[] = ['sku', 'name', 'color', 'toTmenge', 'priceSt', 'mwst', 'totalPrice', 'remove'];
     constructor (public readonly helper: HelperService, private companyService: CompanyService) {}
   ngOnDestroy(): void {
-    this.helper.selectedVersandMethod = {} as IShippingCost;
+    this.helper.selectedVersandMethod = null;
   }
   ngOnInit(): void {
+    this.helper.selectedVersandMethod = null;
     this.helper.isShippingCostSelected.set(false);
     this.act$ = this.companyService.getCompanyById(1).pipe(map((res) => {
       this.setInitialVersandKosten();
@@ -51,13 +52,15 @@ export class CardComponent implements OnInit, OnDestroy {
   setInitialVersandKosten() {
     for (let i = 0; i < this.products().length; i++) {
       for(let j = 0; j < this.products()[i].shipping_costs.length; j++) {
-        if(this.products()[i].shipping_costs[j].shipping_price > this.helper.versandAndKost()[this.helper.versandAndKost().length -1].shipping_price) {
-          if(this.helper.versandAndKost().length === 1)
-              this.helper.versandAndKost().push(this.products()[i].shipping_costs[j]);
-          else
+          if(this.helper.versandAndKost().length === 1) {
+            this.helper.versandAndKost().push(this.products()[i].shipping_costs[j]);
+          }
+
+          else if (this.products()[i].shipping_costs[j].shipping_price > this.helper.versandAndKost()[this.helper.versandAndKost().length -1].shipping_price ) {
             this.helper.versandAndKost()[this.helper.versandAndKost().length -1] = this.products()[i].shipping_costs[j];
+          }
         }
-      }
+
     }
   }
 
@@ -143,7 +146,7 @@ export class CardComponent implements OnInit, OnDestroy {
   }
 
   getTotalCount() {
-    if(!this.products() || this.products().length === 0)
+    if(!this.products() || this.products().length < 1)
     return 0;
 
     let count = 0;

@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
+import { PaginatorComponent } from '../paginator/paginator.component';
 
 @Component({
   selector: 'app-orders',
@@ -19,7 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./orders.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [OrderSelectorComponent, MatTableModule, CommonModule, MatIconModule, MatProgressSpinnerModule, MatButtonModule]
+  imports: [OrderSelectorComponent, MatTableModule, CommonModule, MatIconModule, MatProgressSpinnerModule, MatButtonModule, PaginatorComponent]
 })
 export class OrdersComponent {
 

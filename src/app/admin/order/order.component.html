@@ -1,5 +1,5 @@
 <div class="error" *ngIf="error.message().length > 3">
-{{error.message}}
+{{error.message()}}
 </div>
 <div class="content" *ngIf="ordersSig() as orders">
   <app-order-selector></app-order-selector>

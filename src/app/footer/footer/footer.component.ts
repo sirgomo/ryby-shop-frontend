@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HelperService } from 'src/app/helper/helper.service';
+import { PaginatorComponent } from 'src/app/paginator/paginator.component';
 
 @Component({
   selector: 'app-footer',

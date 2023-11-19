@@ -1,6 +1,6 @@
 import 'zone.js/node';
 import { APP_BASE_HREF, isPlatformServer } from '@angular/common';
-import { ngExpressEngine } from '@nguniversal/express-engine';
+import { CommonEngine } from '@angular/ssr';
 import * as express from 'express';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -31,26 +31,12 @@ global['localStorage'] = localStorage;
 export function app(): express.Express {
   const server = express();
   const distFolder = join(process.cwd(), 'dist/ryby-shop-frontend/browser');
-  const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
+  const indexHtml = existsSync(join(distFolder, 'index.original.html'))
+    ? join(distFolder, 'index.original.html')
+    : join(distFolder, 'index.html');
   const bodyParser = require('body-parser');
-  // Our Universal express-engine (found @ https://github.com/angular/universal/tree/main/modules/express-engine)
-  server.engine('html', ngExpressEngine({
-    bootstrap: () => bootstrapApplication(AppComponent, {
-      providers: [
-        provideHttpClient(withInterceptors([jwtInterceptorFn]), withFetch()),
-        {
-          provide: MAT_DATE_FORMATS, useValue: MY_FORMATS
-        },
-        provideRouter(routes),
-        importProvidersFrom(JwtModule.forRoot({})),
-        importProvidersFrom(BrowserAnimationsModule),
-        importProvidersFrom(AppRoutingModule),
-        importProvidersFrom(MatSnackBarModule),
-        provideClientHydration(),
-      ],
-    })
-   //bootstrap: AppServerModule
-  }));
+  const commonEngine = new CommonEngine();
+
   server.use(compression({ level: 6}));
   server.use(bodyParser.json({ limit: '10mb' }));
   server.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
@@ -65,12 +51,29 @@ export function app(): express.Express {
   }));
 
   // All regular routes use the Universal engine
-  server.get('*', (req, res) => {
-    res.render(indexHtml, { req, providers: [
-      { provide: APP_BASE_HREF, useValue: req.baseUrl },
-      { provide: 'REQUEST', useValue: req },
-      { provide: 'RESPONSE', useValue: res }
-    ] });
+  server.get('*', (req, res, next) => {
+    const { protocol, originalUrl, baseUrl, headers } = req;
+    commonEngine.render({
+      bootstrap: () => bootstrapApplication(AppComponent, {
+        providers: [
+          provideHttpClient(withInterceptors([jwtInterceptorFn]), withFetch()),
+          {
+            provide: MAT_DATE_FORMATS, useValue: MY_FORMATS
+          },
+          provideRouter(routes),
+          importProvidersFrom(JwtModule.forRoot({})),
+          importProvidersFrom(BrowserAnimationsModule),
+          importProvidersFrom(AppRoutingModule),
+          importProvidersFrom(MatSnackBarModule),
+          provideClientHydration(),
+        ],
+    }),
+    documentFilePath: indexHtml,
+    url: `${protocol}://${headers.host}${originalUrl}`,
+    publicPath: distFolder,
+    providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
+  }).then(html => res.status(200).send(html)).catch((err) => {  console.log(err); next(err); });
+
   });
 
   return server;

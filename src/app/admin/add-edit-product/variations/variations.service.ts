@@ -134,16 +134,21 @@ getImage(id: string) {
 
 //get thumbnails
 getThumbnails(id: string) {
+  try {
+    return  this.httpClient.post(`${this.#api}/thumbnails/`,{id: id}, { responseType: 'blob' }).pipe(
+      catchError((err) => {
+        this.errorService.newMessage(err.message);
+        return throwError(()=> err);
+      }),
+      map((res) => {
+        return res;
+      })
+      );
+  } catch (error) {
+    this.errorService.newMessage(Object(error).message );
+    return throwError(()=> error);
+  }
 
-  return  this.httpClient.post(`${this.#api}/thumbnails/`,{id: id}, { responseType: 'blob' }).pipe(
-    catchError((err) => {
-      this.errorService.newMessage(err.message);
-      return throwError(()=> err);
-    }),
-    map((res) => {
-      return res;
-    })
-    );
 }
 deleteImage(image: iDelete) {
 

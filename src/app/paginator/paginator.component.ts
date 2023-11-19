@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject } from '@angular/core';
 import { HelperService } from '../helper/helper.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+
+
 
 @Component({
   selector: 'app-paginator',
@@ -13,29 +15,40 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [CommonModule, MatButtonModule, MatIconModule]
 })
 export class PaginatorComponent {
+
   pagiSig = computed(() => {
     if(this.helper.artikelProSiteSig() === 0)
       return 0;
 
     return this.helper.paginationCountSig() / this.helper.artikelProSiteSig();
   })
-  constructor(public helper: HelperService) {}
+  constructor(public helper: HelperService, private readonly vps: ViewportScroller) {}
   goNext() {
     if(this.helper.pageNrSig() + 1 > Math.ceil(this.pagiSig()))
     return;
 
     this.helper.pageNrSig.update((val) => val + 1);
+    this.resetScroll();
   }
   goBack() {
     if(this.helper.pageNrSig() - 1 < 1)
       return
 
     this.helper.pageNrSig.update((val) => val -1 );
+    this.resetScroll();
   }
   canGoBack() {
     return this.helper.pageNrSig() - 1 >= 1;
   }
   canGoNext() {
     return this.helper.pageNrSig() + 1 <= Math.ceil(this.pagiSig());
+  }
+  resetScroll() {
+    if(document) {
+      const element = document.getElementById('product-list');
+      if(element)
+        element.scrollIntoView({behavior: 'smooth'});
+    }
+
   }
 }

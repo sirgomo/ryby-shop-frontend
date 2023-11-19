@@ -1,7 +1,7 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Injectable, computed, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY, Subject, catchError, combineLatest, finalize, map, of, switchMap, takeUntil, tap, throwError } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, combineLatest, finalize, map, of, switchMap, takeUntil, tap, throwError } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'
@@ -105,16 +105,30 @@ export class ProductService {
     );
   }
 
-  getAllProducts(search: string, katid: number, itemscount: number, pagenr: number) {
+  getAllProducts(search: string, katid: number, itemscount: number, pagenr: number): Observable<iProduct[]> {
     if(katid === undefined)
       katid = 0;
     if(search.length < 1)
     search = 'null';
     this.authServ.isTokenExpired();
     const role = localStorage.getItem('role')
-    if( role && role === 'ADMIN') {
-      return this.http.get<[iProduct[], number]>(`${this.API}/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
+    try {
+      if( role && role === 'ADMIN') {
+        return  this.http.get<[iProduct[], number]>(`${this.API}/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
+          catchError((error) => {
+            this.error.newMessage('Fehler beim Abrufen aller Produkte.');
+            return [];
+          }),
+          map((res) => {
+            this.helper.paginationCountSig.set(res[1]);
+            return res[0];
+          })
+        );
+      }
+
+      return this.http.get<[iProduct[], number]>(`${this.API}/kunde/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
         catchError((error) => {
+          console.log(error);
           this.error.newMessage('Fehler beim Abrufen aller Produkte.');
           return [];
         }),
@@ -123,18 +137,11 @@ export class ProductService {
           return res[0];
         })
       );
+    } catch (error) {
+      console.log(error);
+      return of([] as iProduct[]);
     }
 
-    return this.http.get<[iProduct[], number]>(`${this.API}/kunde/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
-      catchError((error) => {
-        this.error.newMessage('Fehler beim Abrufen aller Produkte.');
-        return [];
-      }),
-      map((res) => {
-        this.helper.paginationCountSig.set(res[1]);
-        return res[0];
-      })
-    );
   }
 
   getProductById(id: number) {

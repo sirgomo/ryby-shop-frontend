@@ -3,6 +3,7 @@ import { ProductService } from '../admin/product/product.service';
 import { ItemComponent } from './item/item.component';
 import { CommonModule } from '@angular/common';
 import { ProductsQuanitySelectorComponent } from './products-quanity-selector/products-quanity-selector.component';
+import { PaginatorComponent } from '../paginator/paginator.component';
 
 
 
@@ -12,11 +13,10 @@ import { ProductsQuanitySelectorComponent } from './products-quanity-selector/pr
   styleUrls: ['./products.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ItemComponent, CommonModule, ProductsQuanitySelectorComponent]
+  imports: [ItemComponent, CommonModule, ProductsQuanitySelectorComponent, PaginatorComponent]
 })
 export class ProductsComponent {
-  productsSig = this.productService.productsSig;
-
+ productsSig = this.productService.productsSig;
 
   constructor( private readonly productService: ProductService ) {}
 

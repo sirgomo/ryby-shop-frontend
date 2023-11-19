@@ -1,6 +1,6 @@
 {
   "name": "ryby-shop-frontend",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -40,7 +40,6 @@
     "jspdf": "^2.5.1",
     "localstorage-polyfill": "^1.0.1",
     "moment": "^2.29.4",
-    "ngx-cookie-service-ssr": "^16.0.1",
     "optionator": "^0.9.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

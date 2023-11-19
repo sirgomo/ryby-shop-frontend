@@ -7,7 +7,6 @@ import { KategorieService } from './admin/kategories/kategorie.service';
 import { iKategorie } from './model/iKategorie';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer/footer.component';
-import { PaginatorComponent } from './paginator/paginator.component';
 import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
 import { CommonModule, isPlatformServer } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,7 +25,7 @@ declare const gtag: Function;
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ FooterComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule, MatButtonModule, MatProgressSpinnerModule, PaginatorComponent]
+  imports: [ FooterComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule, MatButtonModule, MatProgressSpinnerModule]
 })
 export class AppComponent  implements OnInit, OnDestroy{
 

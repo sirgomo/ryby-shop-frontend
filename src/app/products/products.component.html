@@ -1,8 +1,12 @@
-<app-products-quanity-selector></app-products-quanity-selector>
-<div class="product-list">
-  <div *ngFor="let item of productsSig(); let i = index">
-    <app-item [item]="item"></app-item>
+
+  <app-products-quanity-selector></app-products-quanity-selector>
+  <div class="product-list" id="product-list">
+    <div *ngFor="let item of productsSig(); let i = index">
+      <app-item *ngIf="item" [item]="item"></app-item>
+    </div>
   </div>
-</div>
+  <app-paginator></app-paginator>
+
+
 
 

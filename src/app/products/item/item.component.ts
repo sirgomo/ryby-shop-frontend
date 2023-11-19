@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, OnInit, PLATFORM_ID, Sanitizer, ViewChild, numberAttribute } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, OnInit, PLATFORM_ID, ViewChild, } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable, map, of } from 'rxjs';
 import { iProduct } from 'src/app/model/iProduct';
-import { ItemDetailsComponent } from '../item-details/item-details.component';
+
 
 import { HelperService } from 'src/app/helper/helper.service';
 import { MatSnackBar } from '@angular/material/snack-bar';

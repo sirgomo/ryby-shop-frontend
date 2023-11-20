@@ -78,7 +78,13 @@ export class EbayComponent {
       items.push(newItem);
     }
     itemB.produkte = items;
+
     itemB.versandprice = Number(item.pricingSummary.deliveryCost.value);
+    //shipping price is 0 if refund is less than shipping price, ebay they count it as shipping price - gebuhren kost
+    //so if refund is less than shipping price, we set shipping price to 0
+    //TODO: check if it can be do in other way
+    if(item.paymentSummary.refunds.length > 0 && item.paymentSummary.refunds[0].amount.value < item.pricingSummary.deliveryCost.value)
+    itemB.versandprice = 0;
 
     const dialogConf: MatDialogConfig = new MatDialogConfig();
     dialogConf.data = itemB;

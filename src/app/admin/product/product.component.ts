@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component} from '@angular/core';
 import { ProductService } from './product.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { iProduct } from 'src/app/model/iProduct';
@@ -7,10 +7,12 @@ import { Observable } from 'rxjs';
 import { HelperService } from 'src/app/helper/helper.service';
 import { iKategorie } from 'src/app/model/iKategorie';
 import { MatTableModule } from '@angular/material/table';
-import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
+import { PaginatorComponent } from 'src/app/paginator/paginator.component';
+import { ProductsQuanitySelectorComponent } from 'src/app/products/products-quanity-selector/products-quanity-selector.component';
 
 @Component({
   selector: 'app-product',
@@ -18,7 +20,7 @@ import { ErrorService } from 'src/app/error/error.service';
   styleUrls: ['./product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatTableModule, CommonModule, MatButtonModule, ErrorComponent]
+  imports: [MatTableModule, CommonModule, MatButtonModule, ErrorComponent, PaginatorComponent, ProductsQuanitySelectorComponent]
 })
 export class ProductComponent {
   displayedColumns: string[] = ['prodid','artid', 'name', 'verfugbar', 'edit', 'delete'];

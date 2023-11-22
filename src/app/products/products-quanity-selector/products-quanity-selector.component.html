@@ -1,8 +1,8 @@
 <div class="selector">
   <span>Artikels pro Site: </span>
-  <mat-form-field >
-    <mat-select (selectionChange)="setItemProSite($event.value)" [(ngModel)]="current" >
+
+    <mat-select (selectionChange)="setItemProSite($event.value)" [(ngModel)]="current">
       <mat-option *ngFor="let item of itemProSite" [value]="item" color="primary">{{item}}</mat-option>
     </mat-select>
-  </mat-form-field>
+
 </div>

@@ -43,6 +43,7 @@ export class EbayComponent {
   openInovice(item: iEbayOrder) {
     const itemB: iBestellung = {} as iBestellung;
     const userD: iUserData = {} as iUserData;
+    console.log(item);
     userD.adresse = {
       strasse: item.buyer.buyerRegistrationAddress.contactAddress.addressLine1,
       postleitzahl: item.buyer.buyerRegistrationAddress.contactAddress.postalCode,
@@ -71,7 +72,11 @@ export class EbayComponent {
 
       newItem.verkauf_steuer = prod.mehrwehrsteuer;
       newItem.menge = Number(item.lineItems[i].quantity);
-      newItem.verkauf_price = Number(item.lineItems[i].lineItemCost.value);
+
+      newItem.verkauf_price = Number(item.lineItems[i].lineItemCost.value) / Number(item.lineItems[i].quantity);
+      if(item.pricingSummary.priceDiscount)
+      newItem.verkauf_price += (Number(item.pricingSummary.priceDiscount.value) / Number(item.lineItems.length / Number(item.lineItems[i].quantity)));
+
       newItem.color = item.lineItems[i].variationAspects[0].name+' '+item.lineItems[i].variationAspects[0].value;
       newItem.produkt = [prod];
 
@@ -80,6 +85,8 @@ export class EbayComponent {
     itemB.produkte = items;
 
     itemB.versandprice = Number(item.pricingSummary.deliveryCost.value);
+    if(item.pricingSummary.deliveryDiscount)
+    itemB.versandprice += Number(item.pricingSummary.deliveryDiscount.value);
     //shipping price is 0 if refund is less than shipping price, ebay they count it as shipping price - gebuhren kost
     //so if refund is less than shipping price, we set shipping price to 0
     //TODO: check if it can be do in other way

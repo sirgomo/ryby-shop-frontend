@@ -13,11 +13,12 @@ import { iProductBestellung } from '../model/iProductBestellung';
 import { iProduct } from '../model/iProduct';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { EbayTransactionsComponent } from './ebay-transactions/ebay-transactions.component';
 
 @Component({
   selector: 'app-ebay',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTableModule, InoviceComponent, MatDialogModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, FormsModule, MatTableModule, InoviceComponent, MatDialogModule, MatButtonModule, MatIconModule, EbayTransactionsComponent],
   templateUrl: './ebay.component.html',
   styleUrls: ['./ebay.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,7 +27,7 @@ export class EbayComponent {
   ebaySoldItems = toSignal(this.serv.getItemsSoldBeiEbay());
   ebaycode = '';
   show_input = false;
-  displayedColumns: string[] = ['orderNumber', 'buyerUsername', 'totalPrice', 'orderStatus', 'orderDate', 'shippedAm', 'invoice'];
+  displayedColumns: string[] = ['orderNumber', 'buyerUsername', 'totalPrice', 'orderStatus', 'orderDate', 'shippedAm', 'invoice', 'buchen', 'refund'];
   constructor (private readonly serv: EbayService, private readonly dialog: MatDialog) {};
 
   getLink() {
@@ -43,7 +44,7 @@ export class EbayComponent {
   openInovice(item: iEbayOrder) {
     const itemB: iBestellung = {} as iBestellung;
     const userD: iUserData = {} as iUserData;
-    console.log(item);
+
     userD.adresse = {
       strasse: item.buyer.buyerRegistrationAddress.contactAddress.addressLine1,
       postleitzahl: item.buyer.buyerRegistrationAddress.contactAddress.postalCode,
@@ -90,8 +91,9 @@ export class EbayComponent {
     //shipping price is 0 if refund is less than shipping price, ebay they count it as shipping price - gebuhren kost
     //so if refund is less than shipping price, we set shipping price to 0
     //TODO: check if it can be do in other way
+
     if(item.paymentSummary.refunds.length > 0 && item.paymentSummary.refunds[0].amount.value < item.pricingSummary.deliveryCost.value)
-    itemB.versandprice = 0;
+    itemB.versandprice = 1.5;
 
     const dialogConf: MatDialogConfig = new MatDialogConfig();
     dialogConf.data = itemB;

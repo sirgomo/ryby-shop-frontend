@@ -1,1 +1,7 @@
-<div *ngIf="isItem$ | async as isBuched ">{{isBuched.id}}</div>
+<ng-template  *ngIf="errorService.message() && errorService.message().length > 2">
+  <app-error></app-error>
+</ng-template>
+<div *ngIf="isItem$ | async as isBuched ">
+  <button mat-stroked-button *ngIf="isBuched.id === -1" (click)="transaction_booking()">Buchen</button>
+  <span *ngIf="isBuched.id !== -1">Buched</span>
+</div>

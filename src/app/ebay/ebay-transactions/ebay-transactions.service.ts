@@ -21,7 +21,6 @@ export class EbayTransactionsService {
 
   createTransaction(transaction: iEbayTransaction): Observable<iEbayTransaction> {
     return this.http.post<iEbayTransaction>(this.#api, transaction).pipe(map((res: any) => {
-      console.log(res);
       return res;
     }));
   }

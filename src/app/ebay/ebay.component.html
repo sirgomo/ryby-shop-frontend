@@ -1,3 +1,6 @@
+<ng-template  *ngIf="errorService.message() && errorService.message().length > 2">
+  <app-error></app-error>
+</ng-template>
 <div *ngIf="(ebaySoldItems() && ebaySoldItems()?.orders?.length) else show ">
   <div *ngIf="ebaySoldItems()?.orders as orders">
     <table mat-table [dataSource]="orders" class="mat-elevation-z8">

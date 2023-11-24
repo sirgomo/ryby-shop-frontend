@@ -14,11 +14,13 @@ import { iProduct } from '../model/iProduct';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { EbayTransactionsComponent } from './ebay-transactions/ebay-transactions.component';
+import { ErrorComponent } from '../error/error.component';
+import { ErrorService } from '../error/error.service';
 
 @Component({
   selector: 'app-ebay',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTableModule, InoviceComponent, MatDialogModule, MatButtonModule, MatIconModule, EbayTransactionsComponent],
+  imports: [CommonModule, FormsModule, MatTableModule, InoviceComponent, MatDialogModule, MatButtonModule, MatIconModule, EbayTransactionsComponent, ErrorComponent],
   templateUrl: './ebay.component.html',
   styleUrls: ['./ebay.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,7 +30,7 @@ export class EbayComponent {
   ebaycode = '';
   show_input = false;
   displayedColumns: string[] = ['orderNumber', 'buyerUsername', 'totalPrice', 'orderStatus', 'orderDate', 'shippedAm', 'invoice', 'buchen', 'refund'];
-  constructor (private readonly serv: EbayService, private readonly dialog: MatDialog) {};
+  constructor (private readonly serv: EbayService, private readonly dialog: MatDialog, public readonly errorService: ErrorService) {};
 
   getLink() {
    const link = this.serv.getLinkForUserConsent().subscribe((res) => {

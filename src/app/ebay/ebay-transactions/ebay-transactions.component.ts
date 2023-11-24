@@ -13,7 +13,7 @@ import { ErrorService } from 'src/app/error/error.service';
 @Component({
   selector: 'app-ebay-transactions',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, ErrorComponent],
+  imports: [CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './ebay-transactions.component.html',
   styleUrl: './ebay-transactions.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

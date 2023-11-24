@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { iEbayTransaction } from 'src/app/model/ebay/transactionsAndRefunds/iEbayTransaction';
 import { environment } from 'src/environments/environment';
 
@@ -20,7 +20,10 @@ export class EbayTransactionsService {
   }
 
   createTransaction(transaction: iEbayTransaction): Observable<iEbayTransaction> {
-    return this.http.post<iEbayTransaction>(this.#api, transaction);
+    return this.http.post<iEbayTransaction>(this.#api, transaction).pipe(map((res: any) => {
+      console.log(res);
+      return res;
+    }));
   }
 
   updateTransaction(id: number, transaction: iEbayTransaction): Observable<iEbayTransaction> {

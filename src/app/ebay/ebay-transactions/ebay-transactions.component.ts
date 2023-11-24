@@ -43,6 +43,7 @@ export class EbayTransactionsComponent implements OnInit {
     item.price_discont = this.item.pricingSummary.priceDiscount ? Number(this.item.pricingSummary.priceDiscount.value): 0;
     item.items = [];
     item.refunds = [];
+    item.sel_amount = 0;
     for (let i = 0; i < this.item.lineItems.length; i++) {
       const element = {} as iEbayTransactionItem;
       element.sku = this.item.lineItems[i].sku;
@@ -50,7 +51,9 @@ export class EbayTransactionsComponent implements OnInit {
       element.quanity = Number(this.item.lineItems[i].quantity);
       element.price = Number(this.item.lineItems[i].lineItemCost.value);
       item.items.push(element);
+      item.sel_amount += element.quanity;
     }
-    console.log(item);
+
+    this.isItem$ = this.service.createTransaction(item);
     }
 }

@@ -24,7 +24,6 @@ export class EbayTransactionsComponent implements OnInit {
   isItem$  = new Observable<iEbayTransaction>();
   constructor(private readonly service: EbayTransactionsService, public readonly errorService: ErrorService ) {}
   ngOnInit(): void {
-    console.log(this.item);
     this.isItem$ = this.service.getTransactionById(this.item.orderId);
   }
   transaction_booking() {

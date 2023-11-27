@@ -80,15 +80,15 @@
 
           <ng-container matColumnDef="rabat">
             <th mat-header-cell *matHeaderCellDef>Rabat: </th>
-            <td mat-cell *matCellDef="let item; let i = index">{{ getRabat(i) }} &euro;</td>
-            <td mat-footer-cell *matFooterCellDef>{{ getTotalRabat()}} &euro;</td>
+            <td mat-cell *matCellDef="let item; let i = index">{{ getRabat(i).toFixed(2) }} &euro;</td>
+            <td mat-footer-cell *matFooterCellDef>{{ getTotalRabat().toFixed(2)}} &euro;</td>
           </ng-container>
 
           <ng-container matColumnDef="brutto">
             <th mat-header-cell *matHeaderCellDef>Gesamtpreis:
               <mat-hint *ngIf="!company.isKleinUnternehmen">Brutto</mat-hint> </th>
-            <td mat-cell *matCellDef="let item; let i = index">{{ getBrutto(i) }} &euro;</td>
-            <td mat-footer-cell *matFooterCellDef> {{getTotalBrutto()}} &euro;</td>
+            <td mat-cell *matCellDef="let item; let i = index">{{ getBrutto(i).toFixed(2) }} &euro;</td>
+            <td mat-footer-cell *matFooterCellDef> {{getTotalBrutto().toFixed(2)}} &euro;</td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="columns"></tr>
@@ -98,11 +98,11 @@
       </table>
       <div class="versand">
         <div class="art">{{currentItem.versandart}} Versandkosten: </div>
-        <div class="preise">{{currentItem.versandprice}} &euro;</div>
+        <div class="preise">{{currentItem.versandprice.toFixed(2)}} &euro;</div>
       </div>
       <div class="versand">
         <div class="art">Total:</div>
-        <div class="preise">{{getPriceWithShipping() }} &euro;</div>
+        <div class="preise">{{getPriceWithShipping().toFixed(2) }} &euro;</div>
       </div>
     </div>
     <div *ngIf="company.isKleinUnternehmen" class="kunternehmen">

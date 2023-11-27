@@ -14,6 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { OfferStatusEnum } from '../model/ebay/iEbayOffer';
 
 
 
@@ -77,26 +78,33 @@ export class InoviceComponent {
       for (let i = 0; i < this.currentItem.produkte.length; i++ ) {
         taxx += this.getTaxProStuck(i) * this.currentItem.produkte[i].menge;
       }
-      return taxx.toFixed(2);
+      return taxx;
     }
     getNetto(index: number): number {
       return Number(this.currentItem.produkte[index].verkauf_price) * this.currentItem.produkte[index].menge;
     }
     getBrutto(index: number) {
 
-      return ((Number(this.currentItem.produkte[index].verkauf_price) + Number(this.currentItem.produkte[index].verkauf_steuer))  * this.currentItem.produkte[index].menge).toFixed(2);
+      return ((Number(this.currentItem.produkte[index].verkauf_price) + Number(this.currentItem.produkte[index].verkauf_steuer))  * this.currentItem.produkte[index].menge);
     }
+
     getTotalNetto(): number {
       let netto = 0;
       for (let i = 0; i < this.currentItem.produkte.length; i++) {
         netto += this.getNetto(i);
       }
-      return Number(netto.toFixed(2));
+      return netto;
     }
     getTotalBrutto(): number {
-      return Number((this.getTotalNetto() + Number(this.getTax())).toFixed(2));
+      if(this.data.produkte[0].produkt[0].promocje)
+        return Number((this.getTotalNetto() + Number(this.getTax()) + Number(this.getTotalRabat())));
+
+      return Number((this.getTotalNetto() + Number(this.getTax())));
     }
     getRabat(index: number) : number {
+      if(this.data.produkte[index].rabatt)
+        return this.data.produkte[index].rabatt *this.data.produkte[index].menge;
+
       return Number(this.currentItem.produkte[index].verkauf_rabat) * this.currentItem.produkte[index].menge;
     }
     getTotalRabat() {
@@ -104,10 +112,10 @@ export class InoviceComponent {
       for (let i = 0; i < this.currentItem.produkte.length; i++) {
         rabat += this.getRabat(i);
       }
-      return rabat.toFixed(2);
+      return rabat;
     }
     getPriceWithShipping() {
-      return (Number(this.currentItem.versandprice) + this.getTotalBrutto()).toFixed(2);
+      return (Number(this.currentItem.versandprice) + this.getTotalBrutto());
     }
     getVariations(index: number) {
       let variation = '';
@@ -162,9 +170,9 @@ export class InoviceComponent {
 
                 pdf.addImage(newCanvas.toDataURL('image/jpeg', 1.0), 'PNG', leftMargin *5, leftMargin*5 , pdfWidth, pdfHeigh,'', 'FAST');
                 pdf.setFont("arial");
-                pdf.setFontSize(40);
+                pdf.setFontSize(46);
                 pdf.text('Page ' + i + ' of ' + totalPages, leftMargin*4, pdfHeigh - leftMargin *4);
-                pdf.text('www.fischfang-profi.de', leftMargin* 30, pdfHeigh - leftMargin *4);
+                pdf.text('www.fischfang-profi.de', leftMargin* 45, pdfHeigh - leftMargin *4);
 
               }
               imgStart += imgHight;

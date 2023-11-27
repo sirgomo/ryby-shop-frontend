@@ -1,1 +1,15 @@
-<p>refund works!</p>
+<ng-template *ngIf="error.message() && error.message().length > 2" >
+  <app-error></app-error>
+</ng-template>
+<div class="close">
+  <h2>Order: <span>{{data ? data.orderId : 'Order not found'}}</span></h2>
+  <button mat-icon-button (click)="close()" color="warn">
+      <mat-icon matPrefix>close</mat-icon>
+  </button>
+</div>
+<div *ngIf="act$ | async else loader">
+
+</div>
+<ng-template #loader>
+  Loading....
+</ng-template>

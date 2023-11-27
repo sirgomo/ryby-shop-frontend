@@ -1,4 +1,4 @@
-import { iEbayRefunds } from "./iEbayRefund";
+import { iRefunds } from "../../iRefund";
 import { iEbayTransactionItem } from "./iEbayTransactionItem";
 
 export interface iEbayTransaction {
@@ -12,5 +12,5 @@ export interface iEbayTransaction {
   sel_amount: number;
   payment_status: string;
   items: iEbayTransactionItem[];
-  refunds: iEbayRefunds[];
+  refunds: iRefunds[];
 }

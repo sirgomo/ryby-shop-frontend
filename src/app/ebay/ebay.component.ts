@@ -16,16 +16,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { EbayTransactionsComponent } from './ebay-transactions/ebay-transactions.component';
 import { ErrorComponent } from '../error/error.component';
 import { ErrorService } from '../error/error.service';
+import { RefundComponent } from '../refund/refund.component';
+import { iAktion } from '../model/iAktion';
 
 @Component({
   selector: 'app-ebay',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTableModule, InoviceComponent, MatDialogModule, MatButtonModule, MatIconModule, EbayTransactionsComponent, ErrorComponent],
+  imports: [CommonModule, FormsModule, MatTableModule, InoviceComponent, MatDialogModule, MatButtonModule, MatIconModule, EbayTransactionsComponent, ErrorComponent, RefundComponent],
   templateUrl: './ebay.component.html',
   styleUrls: ['./ebay.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EbayComponent {
+
   ebaySoldItems = toSignal(this.serv.getItemsSoldBeiEbay());
   ebaycode = '';
   show_input = false;
@@ -69,7 +72,7 @@ export class EbayComponent {
       const prod : iProduct = {} as iProduct;
       prod.name = item.lineItems[i].title;
 
-      prod.promocje = [];
+
       if(!item.lineItems[i].taxes[0])
         prod.mehrwehrsteuer = 0;
 
@@ -77,14 +80,22 @@ export class EbayComponent {
       newItem.menge = Number(item.lineItems[i].quantity);
 
       newItem.verkauf_price = Number(item.lineItems[i].lineItemCost.value) / Number(item.lineItems[i].quantity);
-      if(item.pricingSummary.priceDiscount)
-      newItem.verkauf_price += (Number(item.pricingSummary.priceDiscount.value) / Number(item.lineItems.length / Number(item.lineItems[i].quantity)));
+      if(item.pricingSummary.priceDiscount) {
+        let rabatProStuck = Number(item.pricingSummary.priceDiscount.value) / Number(item.lineItems[i].quantity);
+        if(item.lineItems.length > 1)
+        rabatProStuck = rabatProStuck / Number(item.lineItems.length);
+        newItem.rabatt = Number(rabatProStuck);
+        prod.promocje =  [{id: 1} as iAktion];
+      }
+
+
 
       newItem.color = item.lineItems[i].variationAspects[0].name+' '+item.lineItems[i].variationAspects[0].value;
       newItem.produkt = [prod];
 
       items.push(newItem);
     }
+
     itemB.produkte = items;
 
     itemB.versandprice = Number(item.pricingSummary.deliveryCost.value);
@@ -107,5 +118,12 @@ export class EbayComponent {
 
 
   }
+  refund(order: iEbayOrder) {
+    const dialogConf: MatDialogConfig = new MatDialogConfig();
+    dialogConf.data = order;
+    dialogConf.width = '100%';
+    dialogConf.height = '100%';
 
+    this.dialog.open(RefundComponent, dialogConf);
+    }
 }

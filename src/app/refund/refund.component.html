@@ -1,15 +1,52 @@
-<ng-template *ngIf="error.message() && error.message().length > 2" >
-  <app-error></app-error>
-</ng-template>
 <div class="close">
   <h2>Order: <span>{{data ? data.orderId : 'Order not found'}}</span></h2>
   <button mat-icon-button (click)="close()" color="warn">
       <mat-icon matPrefix>close</mat-icon>
   </button>
 </div>
-<div *ngIf="act$ | async else loader">
-
+<div *ngIf="error.message() && error.message().length > 2" >
+  <app-error></app-error>
 </div>
+
+  <div *ngIf="act$ | async else loader"  class="refund">
+    <form [formGroup]="refundForm" (ngSubmit)="submitRefund()">
+      <div class="reason">
+        <mat-form-field>
+          <mat-label>Reason</mat-label>
+          <mat-select formControlName="reason">
+              <mat-option *ngFor="let item of refund_reason" [value]="item">{{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+        <mat-label>Comment</mat-label>
+        <textarea matInput formControlName="comment" placeholder="Comment" required></textarea>
+        <mat-error *ngIf="refundForm.get('comment')?.hasError('required')">Reason is required</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Amount</mat-label>
+        <input matInput formControlName="amount" placeholder="Amount" type="number" autocomplete="off">
+      </mat-form-field>
+      </div>
+
+
+      <div formArrayName="refund_items" class="items">
+        <div *ngFor="let item of refund_items.controls; let i=index" [formGroupName]="i">
+          <mat-form-field>
+            <mat-label>Amount</mat-label>
+            <input matInput formControlName="amount" placeholder="Amount" type="number">
+          </mat-form-field>
+          <span>
+            {{getTitle(i)}}
+          </span>
+        </div>
+      </div>
+      <div class="actions">
+        <button mat-stroked-button type="button" color="primary" (click)="close()">Cancel</button>
+        <button mat-stroked-button type="submit" [disabled]="refundForm.invalid">Submit</button>
+      </div>
+    </form>
+  </div>
+
 <ng-template #loader>
   Loading....
 </ng-template>

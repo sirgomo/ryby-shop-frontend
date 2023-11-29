@@ -15,7 +15,6 @@
       <div class="company">
         <div class="logo"> <img src="../../../assets/img/logo.png" alt="logo fischfang-profi.de"></div>
 
-          <div>{{company.company_name}}</div>
           <div>{{company.name}}</div>
           <div>{{company.address}}</div>
           <div> {{company.postleitzahl}} {{company.city}}</div>
@@ -40,6 +39,12 @@
     </div>
     <div class="prod">
       <table mat-table [dataSource]="currentItem.produkte" class="tab">
+
+        <ng-container matColumnDef="sku">
+          <th mat-header-cell *matHeaderCellDef>Sku</th>
+          <td mat-cell *matCellDef="let item">{{ item.produkt[0].sku }}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
 
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>

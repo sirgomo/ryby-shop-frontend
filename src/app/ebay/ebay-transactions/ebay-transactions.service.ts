@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
+import { ErrorService } from 'src/app/error/error.service';
 import { iEbayTransaction } from 'src/app/model/ebay/transactionsAndRefunds/iEbayTransaction';
 import { environment } from 'src/environments/environment';
 
@@ -9,18 +10,32 @@ import { environment } from 'src/environments/environment';
 })
 export class EbayTransactionsService {
   #api =  environment.api + 'ebay-sold';
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private errorService: ErrorService) { }
 
   getAllTransactions(): Observable<iEbayTransaction[]> {
     return this.http.get<iEbayTransaction[]>(this.#api);
   }
 
   getTransactionById(id: string): Observable<iEbayTransaction> {
-    return this.http.get<iEbayTransaction>(`${this.#api}/${id}`);
+    return this.http.get<iEbayTransaction>(`${this.#api}/${id}`).pipe(
+      tap((res: any) => {
+       if(Object(res).message) {
+         this.errorService.newMessage(res.message);
+       }
+       return res;
+      }),
+      catchError((err) => {
+        this.errorService.newMessage(err.message);
+        return of({id: -1} as iEbayTransaction);
+      })
+    );
   }
 
   createTransaction(transaction: iEbayTransaction): Observable<iEbayTransaction> {
     return this.http.post<iEbayTransaction>(this.#api, transaction).pipe(map((res: any) => {
+      if(res.message) {
+        this.errorService.newMessage(res.message);
+      }
       return res;
     }));
   }

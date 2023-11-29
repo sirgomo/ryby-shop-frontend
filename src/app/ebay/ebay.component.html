@@ -1,8 +1,8 @@
-<ng-template  *ngIf="errorService.message() && errorService.message().length > 2">
+<div *ngIf="errorService.message() && errorService.message().length > 2">
   <app-error></app-error>
-</ng-template>
-<div *ngIf="(ebaySoldItems() && ebaySoldItems()?.orders?.length) else show ">
-  <div *ngIf="ebaySoldItems()?.orders as orders">
+</div>
+<div *ngIf="(ebaySoldItems$() | async) as items else show ">
+  <div *ngIf="items.orders as orders">
     <table mat-table [dataSource]="orders" class="mat-elevation-z8">
       <!-- Order Number Column -->
       <ng-container matColumnDef="orderNumber">
@@ -19,7 +19,7 @@
       <!-- Total Price Column -->
       <ng-container matColumnDef="totalPrice">
         <th mat-header-cell *matHeaderCellDef> Total Price </th>
-        <td mat-cell *matCellDef="let order"> {{order.pricingSummary.total.value}} </td>
+        <td mat-cell *matCellDef="let order"> {{order.refund ? order.pricingSummary.total.value - order.refund.amount : order.pricingSummary.total.value}} </td>
       </ng-container>
 
       <!-- Order Status Column -->

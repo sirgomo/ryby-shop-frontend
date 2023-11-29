@@ -14,7 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { OfferStatusEnum } from '../model/ebay/iEbayOffer';
+
 
 
 
@@ -60,13 +60,13 @@ export class InoviceComponent {
           isPromoted = true;
     }
     if (!isPromoted && this.company.isKleinUnternehmen) {
-      this.columns = [ 'name','varia','menge' ,'stpreis', 'brutto'];
+      this.columns = [ 'sku','name','varia','menge' ,'stpreis', 'brutto'];
     } else if ( !isPromoted && !this.company.isKleinUnternehmen) {
-      this.columns = [ 'name','varia','menge' , 'stpreis', 'mwst', 'preis', 'brutto'];
+      this.columns = [ 'sku','name','varia','menge' , 'stpreis', 'mwst', 'preis', 'brutto'];
     } else if (isPromoted && this.company.isKleinUnternehmen ) {
-     this.columns = [ 'name','varia','menge' ,'rabat', 'stpreis',  'brutto'];
+     this.columns = [ 'sku','name','varia','menge' ,'rabat', 'stpreis',  'brutto'];
     } else {
-      this.columns = [ 'name','varia','menge' ,'rabat', 'stpreis', 'mwst', 'preis', 'brutto'];
+      this.columns = [ 'sku','name','varia','menge' ,'rabat', 'stpreis', 'mwst', 'preis', 'brutto'];
     }
 
   }
@@ -96,9 +96,6 @@ export class InoviceComponent {
       return netto;
     }
     getTotalBrutto(): number {
-      if(this.data.produkte[0].produkt[0].promocje)
-        return Number((this.getTotalNetto() + Number(this.getTax()) + Number(this.getTotalRabat())));
-
       return Number((this.getTotalNetto() + Number(this.getTax())));
     }
     getRabat(index: number) : number {
@@ -115,6 +112,9 @@ export class InoviceComponent {
       return rabat;
     }
     getPriceWithShipping() {
+      if(this.data.produkte[0].produkt[0].promocje)
+      return (Number(this.currentItem.versandprice) + this.getTotalBrutto()) + Number(this.getTotalRabat());
+
       return (Number(this.currentItem.versandprice) + this.getTotalBrutto());
     }
     getVariations(index: number) {
@@ -170,9 +170,9 @@ export class InoviceComponent {
 
                 pdf.addImage(newCanvas.toDataURL('image/jpeg', 1.0), 'PNG', leftMargin *5, leftMargin*5 , pdfWidth, pdfHeigh,'', 'FAST');
                 pdf.setFont("arial");
-                pdf.setFontSize(46);
+                pdf.setFontSize(50);
                 pdf.text('Page ' + i + ' of ' + totalPages, leftMargin*4, pdfHeigh - leftMargin *4);
-                pdf.text('www.fischfang-profi.de', leftMargin* 45, pdfHeigh - leftMargin *4);
+                pdf.text('www.fischfang-profi.de', leftMargin* 60, pdfHeigh - leftMargin *4);
 
               }
               imgStart += imgHight;

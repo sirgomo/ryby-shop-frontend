@@ -4,6 +4,34 @@
   justify-content: space-between;
   height: 5%;
   position: top;
-  margin: auto;
+  margin: .1rem .5rem;
   z-index: 1000;
+}
+.refund {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+}
+.reason {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+}
+.items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  padding-left: .5rem;
+}
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
 }

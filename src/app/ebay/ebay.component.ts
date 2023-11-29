@@ -29,7 +29,7 @@ import { iAktion } from '../model/iAktion';
 })
 export class EbayComponent {
 
-  ebaySoldItems = toSignal(this.serv.getItemsSoldBeiEbay());
+  ebaySoldItems$ = this.serv.itemsSoldByEbaySig//toSignal(this.serv.getItemsSoldBeiEbay());
   ebaycode = '';
   show_input = false;
   displayedColumns: string[] = ['orderNumber', 'buyerUsername', 'totalPrice', 'orderStatus', 'orderDate', 'shippedAm', 'invoice', 'buchen', 'refund'];
@@ -47,9 +47,10 @@ export class EbayComponent {
    })
   }
   openInovice(item: iEbayOrder) {
+
     const itemB: iBestellung = {} as iBestellung;
     const userD: iUserData = {} as iUserData;
-
+    console.log(item);
     userD.adresse = {
       strasse: item.buyer.buyerRegistrationAddress.contactAddress.addressLine1,
       postleitzahl: item.buyer.buyerRegistrationAddress.contactAddress.postalCode,
@@ -67,11 +68,12 @@ export class EbayComponent {
     //it canotbe id, because id is number and need to be null
     itemB.varsandnr = item.orderId;
     const items : iProductBestellung[] = [];
+    itemB.versandprice = Number(item.pricingSummary.deliveryCost.value);
     for (let i = 0; i < item.lineItems.length; i++) {
       const newItem = {} as iProductBestellung;
       const prod : iProduct = {} as iProduct;
       prod.name = item.lineItems[i].title;
-
+      prod.sku = item.lineItems[i].sku;
 
       if(!item.lineItems[i].taxes[0])
         prod.mehrwehrsteuer = 0;
@@ -88,6 +90,9 @@ export class EbayComponent {
         prod.promocje =  [{id: 1} as iAktion];
       }
 
+      if(item.pricingSummary.deliveryDiscount) {
+        itemB.versandprice += Number(item.pricingSummary.deliveryDiscount.value);
+      }
 
 
       newItem.color = item.lineItems[i].variationAspects[0].name+' '+item.lineItems[i].variationAspects[0].value;
@@ -98,15 +103,7 @@ export class EbayComponent {
 
     itemB.produkte = items;
 
-    itemB.versandprice = Number(item.pricingSummary.deliveryCost.value);
-    if(item.pricingSummary.deliveryDiscount)
-    itemB.versandprice += Number(item.pricingSummary.deliveryDiscount.value);
-    //shipping price is 0 if refund is less than shipping price, ebay they count it as shipping price - gebuhren kost
-    //so if refund is less than shipping price, we set shipping price to 0
-    //TODO: check if it can be do in other way
 
-    if(item.paymentSummary.refunds.length > 0 && item.paymentSummary.refunds[0].amount.value < item.pricingSummary.deliveryCost.value)
-    itemB.versandprice = 1.5;
 
     const dialogConf: MatDialogConfig = new MatDialogConfig();
     dialogConf.data = itemB;

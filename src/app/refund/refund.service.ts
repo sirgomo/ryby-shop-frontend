@@ -7,6 +7,9 @@ import { Observable, catchError, tap } from 'rxjs';
 import { iRefunds } from '../model/iRefund';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EbayService } from '../ebay/ebay.service';
+import { iEbayOrder } from '../model/ebay/orders/iEbayOrder';
+import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
+import { HelperService } from '../helper/helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,17 +18,17 @@ export class RefundService {
 
   #api = environment.api + 'refund';
 
-  constructor(private readonly httpClient: HttpClient, private readonly errorService: ErrorService, private snackService: MatSnackBar, private readonly ebayService: EbayService) { }
+  constructor(private readonly httpClient: HttpClient, private readonly errorService: ErrorService, private snackService: MatSnackBar) { }
 
-  createRefund(refundDto: iRefunds, refundOnEbay: iEbayRefunds): Observable<any> {
-    return this.httpClient.post<iRefunds>(`${this.#api}`,{ refundDto, refundOnEbay } )
+  createRefund(refundDto: iRefunds, refundOnEbay: iEbayRefunds): Observable<iRefunds[]> {
+    return this.httpClient.post<iRefunds[]>(`${this.#api}`,{ refundDto, refundOnEbay } )
       .pipe(
         tap(res => {
           if (Object(res).message) {
             this.errorService.newMessage(Object(res).message);
           }
 
-          if(res.id) {
+          if(res[0].id) {
             this.snackService.open('Die Zahlung wurde erfolgreich abgeschlossen', 'OK', { duration: 3000 });
         }}),
         catchError(error => {

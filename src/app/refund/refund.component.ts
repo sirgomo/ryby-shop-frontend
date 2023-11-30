@@ -1,15 +1,15 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { iEbayOrder } from '../model/ebay/orders/iEbayOrder';
 import { ErrorService } from '../error/error.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { AbstractControl, Form, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorComponent } from '../error/error.component';
 import { EbayTransactionsService } from '../ebay/ebay-transactions/ebay-transactions.service';
 import { iEbayTransaction } from '../model/ebay/transactionsAndRefunds/iEbayTransaction';
 import { iRefundItem } from '../model/iRefundItem';
-import { Observable, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { iRefunds } from '../model/iRefund';
 import { iEbayTransactionItem } from '../model/ebay/transactionsAndRefunds/iEbayTransactionItem';
 import { MatInputModule } from '@angular/material/input';
@@ -20,6 +20,7 @@ import { ReasonForRefundEnum, iEbayRefunds } from '../model/ebay/transactionsAnd
 import { MatSelectModule } from '@angular/material/select';
 import { CurrencyCodeEnum, iEbayRefundItem } from '../model/ebay/transactionsAndRefunds/iEbayRefundItem';
 
+
 @Component({
   selector: 'app-refund',
   standalone: true,
@@ -28,8 +29,10 @@ import { CurrencyCodeEnum, iEbayRefundItem } from '../model/ebay/transactionsAnd
   templateUrl: './refund.component.html',
   styleUrl: './refund.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [EbayTransactionsService, RefundService]
 })
 export class RefundComponent implements OnInit{
+
 
   refund_reason = Object.values(ReasonForRefundEnum).filter((val) => typeof val === 'string');
   refundForm: FormGroup;
@@ -68,8 +71,8 @@ export class RefundComponent implements OnInit{
       this.refundForm.patchValue({transaction: this.currentTransaction});
     }));
   }
-  close() {
-    this.dialRef.close();
+  close(res?: iRefunds[]) {
+      this.dialRef.close(res);
   }
   get refund_items() {
     return this.refundForm.controls['refund_items'] as FormArray;
@@ -80,6 +83,7 @@ export class RefundComponent implements OnInit{
     const item = this.fb.group({
       refund_item: this.refund,
       amount: 0,
+      sku: transactionItem.sku,
     })
 
     this.refund_items.push(item);
@@ -98,7 +102,7 @@ export class RefundComponent implements OnInit{
       currency : CurrencyCodeEnum.EUR
     };
 
-
+    console.log(refund)
     for (let i = 0; i < refund.refund_items.length; i++) {
       if(refund.refund_items[i].amount > 0) {
         if(!ebayRefund.refundItems)
@@ -119,6 +123,14 @@ export class RefundComponent implements OnInit{
       }
     }
 
-       this.act$ = this.refundService.createRefund(refund, ebayRefund);
+       this.act$ = this.refundService.createRefund(refund, ebayRefund).pipe(
+        map(
+          (res) => {
+            if(res[0].id) {
+              this.close(res);
+            }
+          }
+        )
+       );
   }
 }

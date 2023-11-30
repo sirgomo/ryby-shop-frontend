@@ -9,6 +9,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { getMenu } from './menu';
 import { environment } from 'src/environments/environment';
 import { IShippingCost } from '../model/iShippingCost';
+import { EbayService } from '../ebay/ebay.service';
 
   @Injectable({
     providedIn: 'root'
@@ -34,6 +35,7 @@ import { IShippingCost } from '../model/iShippingCost';
     selectedVersandMethod : IShippingCost | null = null;
     paginationCountSig = signal(0);
     isShippingCostSelected = signal(false);
+
     constructor() { }
     setApp(app: AppComponent) {
       this.appComponenet = app;
@@ -50,6 +52,7 @@ import { IShippingCost } from '../model/iShippingCost';
     showCookiesPolitics() {
       this.appComponenet.askCookies();
     }
+
   }
   //return random string of two characters or zifern + -_
 export function getUniqueSymbol(): string {

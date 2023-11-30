@@ -7,7 +7,6 @@ import { iEbayTransaction } from 'src/app/model/ebay/transactionsAndRefunds/iEba
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { iEbayTransactionItem } from 'src/app/model/ebay/transactionsAndRefunds/iEbayTransactionItem';
-import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
 
 @Component({

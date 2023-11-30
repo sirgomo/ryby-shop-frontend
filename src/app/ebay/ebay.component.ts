@@ -18,6 +18,9 @@ import { ErrorComponent } from '../error/error.component';
 import { ErrorService } from '../error/error.service';
 import { RefundComponent } from '../refund/refund.component';
 import { iAktion } from '../model/iAktion';
+import { map, tap } from 'rxjs';
+import { iRefunds } from '../model/iRefund';
+import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
 
 @Component({
   selector: 'app-ebay',
@@ -50,7 +53,7 @@ export class EbayComponent {
 
     const itemB: iBestellung = {} as iBestellung;
     const userD: iUserData = {} as iUserData;
-    console.log(item);
+
     userD.adresse = {
       strasse: item.buyer.buyerRegistrationAddress.contactAddress.addressLine1,
       postleitzahl: item.buyer.buyerRegistrationAddress.contactAddress.postalCode,
@@ -104,6 +107,12 @@ export class EbayComponent {
     itemB.produkte = items;
 
 
+    const current = this.serv.ebayItems.value;
+    if(current) {
+      const index = current.orders.findIndex((tmp) => tmp.orderId === item.orderId);
+
+    }
+
 
     const dialogConf: MatDialogConfig = new MatDialogConfig();
     dialogConf.data = itemB;
@@ -117,10 +126,58 @@ export class EbayComponent {
   }
   refund(order: iEbayOrder) {
     const dialogConf: MatDialogConfig = new MatDialogConfig();
-    dialogConf.data = order;
+    dialogConf.data = order
     dialogConf.width = '100%';
     dialogConf.height = '100%';
 
-    this.dialog.open(RefundComponent, dialogConf);
+    const subs = this.dialog.open(RefundComponent, dialogConf).afterClosed().pipe(
+      map((res) => {
+
+        if(res) {
+          const current = this.serv.ebayItems.value;
+        const length = res.length;
+         if(current) {
+          const index = current.orders.findIndex((item) => item.orderId === res[length-1].orderId);
+
+          if(index !== -1) {
+            const newItems = {} as iEbayAllOrders;
+            Object.assign(newItems, current);
+            const tmporders = newItems.orders.slice(0);
+          console.log(this.getRefundValue(res))
+            res[0].amount = Object(this.getRefundValue(res)).count;
+           tmporders[index] = {
+              ...current.orders[index],
+              refund: res[0],
+             } as iEbayOrder;
+             newItems.orders = tmporders;
+
+            this.serv.ebayItems.next(newItems);
+
+            }
+         }
+        }
+
+        subs.unsubscribe();
+        return res;
+      })
+    ).subscribe();
     }
+
+  private getRefundValue(res: any) {
+    let count = {};
+
+    for (let i = 0; i < res.length; i++) {
+      if(Object(count).count === undefined)
+        Object(count).count = 0;
+
+      if (res[i].amount > 0)
+        Object(count).count += Number(res[i].amount);
+
+      for (let j = 0; j < res[i].refund_items; j++) {
+        if (res[i].refund_items[j].amount > 0)
+          Object(count).count += Number(res[i].refund_items[j].amount);
+      }
+    }
+    return count;
+  }
 }

@@ -21,6 +21,7 @@ import { iAktion } from '../model/iAktion';
 import { map, tap } from 'rxjs';
 import { iRefunds } from '../model/iRefund';
 import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
+import { ReasonForRefundEnum } from '../model/ebay/transactionsAndRefunds/iEbayRefunds';
 
 @Component({
   selector: 'app-ebay',
@@ -32,7 +33,7 @@ import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
 })
 export class EbayComponent {
 
-  ebaySoldItems$ = this.serv.itemsSoldByEbaySig//toSignal(this.serv.getItemsSoldBeiEbay());
+  ebaySoldItems$ = this.serv.itemsSoldByEbaySig
   ebaycode = '';
   show_input = false;
   displayedColumns: string[] = ['orderNumber', 'buyerUsername', 'totalPrice', 'orderStatus', 'orderDate', 'shippedAm', 'invoice', 'buchen', 'refund'];
@@ -110,7 +111,8 @@ export class EbayComponent {
     const current = this.serv.ebayItems.value;
     if(current) {
       const index = current.orders.findIndex((tmp) => tmp.orderId === item.orderId);
-
+      const refunds = Object(current.orders[index]).refunds;
+      console.log(this.getRefundValue(refunds))
     }
 
 
@@ -143,11 +145,11 @@ export class EbayComponent {
             const newItems = {} as iEbayAllOrders;
             Object.assign(newItems, current);
             const tmporders = newItems.orders.slice(0);
-          console.log(this.getRefundValue(res))
-            res[0].amount = Object(this.getRefundValue(res)).count;
+
+         //   res[0].amount = Object(getRefundValue(res)).count;
            tmporders[index] = {
               ...current.orders[index],
-              refund: res[0],
+              refunds: res,
              } as iEbayOrder;
              newItems.orders = tmporders;
 
@@ -161,23 +163,45 @@ export class EbayComponent {
         return res;
       })
     ).subscribe();
-    }
+  }
+  getRefundValue(res: iRefunds[]) {
+    let count = { count : 0 };
 
-  private getRefundValue(res: any) {
-    let count = {};
+
+    if(!res.length || res.length === 0 )
+    return count;
 
     for (let i = 0; i < res.length; i++) {
-      if(Object(count).count === undefined)
-        Object(count).count = 0;
 
-      if (res[i].amount > 0)
-        Object(count).count += Number(res[i].amount);
+      if(res[i].id === -1)
+        break;
 
-      for (let j = 0; j < res[i].refund_items; j++) {
-        if (res[i].refund_items[j].amount > 0)
-          Object(count).count += Number(res[i].refund_items[j].amount);
+        console.log(res[i])
+      if (res[i].amount && +res[i].amount > 0)
+        count.count += Number(res[i].amount);
+
+      const reasons = Object.values(ReasonForRefundEnum).filter((reason) => typeof reason === 'string');
+
+
+      for(let z = 0; z < reasons.length; z++) {
+
+        if(Object(count).reasons[z] === undefined)
+          Object(count).reasons[z] = 0;
+
+
+        console.log(' oa ' +Object(count).reason[z])
+        Object(count).reasons[z] += res[i].amount;
       }
+
+
+      if(res[i].refund_items)
+        for (let j = 0; j < res[i].refund_items.length; j++) {
+          if (res[i].refund_items[j].amount > 0)
+            Object(count).count += Number(res[i].refund_items[j].amount);
+        }
     }
     return count;
   }
+
 }
+

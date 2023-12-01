@@ -59,10 +59,10 @@ export class EbayService {
             if(refunds[index][0].id === -1)
               return item;
 
-              refunds[index][0].amount = amount;
+           //   refunds[index][0].amount = amount;
               return {
                 ...item,
-                refund: refunds[index][0]
+                refunds: refunds
               } as unknown as iEbayOrder;
             })
             res.orders = items;

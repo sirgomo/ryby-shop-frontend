@@ -4,7 +4,7 @@ import { Observable, map, of } from 'rxjs';
 import { iProduct } from 'src/app/model/iProduct';
 
 
-import { HelperService } from 'src/app/helper/helper.service';
+import { HelperService, getProductUrl } from 'src/app/helper/helper.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule, isPlatformServer } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -70,7 +70,7 @@ export class ItemComponent implements OnInit {
     if(isPlatformServer(this.platformId))
     return;
 
-    this.router.navigate(['products', this.item.id, this.item.name.replace(/[^a-zA-Z0-9üöäÜÖÄ]/g,'-').replace(/-+/g, '-').replace(/^-|-$/g, '')]);
+    this.router.navigate(getProductUrl('products', this.item.id!, this.item.name));
  }
 changeSelection(item: iProduktVariations) {
   this.current = item;

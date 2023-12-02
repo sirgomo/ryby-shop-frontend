@@ -59,4 +59,7 @@ export function getUniqueSymbol(): string {
   const sequence = 'abcdefghijklmnoprstuwxyzABCDEFGHIJKLMNOPRSTUWXYZ1234567890-_';
     return sequence[(Math.floor(Math.random() * sequence.length))]+sequence[(Math.floor(Math.random() * sequence.length))];
 }
+export function getProductUrl(path: string, itemid: number, itemName: string) {
+  return [path, itemid, itemName.replace(/[^a-zA-Z0-9üöäÜÖÄ]/g,'-').replace(/-+/g, '-').replace(/^-|-$/g, '')];
+}
 

@@ -180,4 +180,14 @@ export class ProductService {
       return throwError(()=> err);
     }))
   }
+  getProductsForSiteMap() {
+
+    return this.http.get<{id: number, name: string}[]>(`${this.API}/map/map`).pipe(
+      catchError((err) => {
+
+        this.error.newMessage('Produkt List konnte nicht heruntegeladen werden');
+        return [];
+      })
+    )
+  }
 }

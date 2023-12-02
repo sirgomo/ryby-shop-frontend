@@ -7,7 +7,12 @@ import { ProductsComponent } from './products/products.component';
 
 export const routes: Routes = [
 {
-  'path': 'products/:id/:name',
+  path: 'sitemap',
+  loadComponent: () => import('./sitemap/sitemap.component').then(m => m.SitemapComponent),
+  canActivate: [routeGuard]
+},
+{
+  path: 'products/:id/:name',
   loadComponent: () => import('./products/item-details/item-details.component').then(m => m.ItemDetailsComponent),
 },
 {

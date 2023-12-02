@@ -180,14 +180,10 @@ export class ProductService {
       return throwError(()=> err);
     }))
   }
-  getProductsForSiteMap() {
-
-    return this.http.get<{id: number, name: string}[]>(`${this.API}/map/map`).pipe(
-      catchError((err) => {
-
-        this.error.newMessage('Produkt List konnte nicht heruntegeladen werden');
-        return [];
-      })
-    )
+  async getProductsForSiteMap() {
+    //TODO its not working like i want, componenet seend request one by one and i dont know why ?
+    /*return await fetch(`${environment.url}sitemap.xml`, { method: 'GET'}).then((res) => {
+        return res.text()
+      })*/
   }
 }

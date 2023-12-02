@@ -2,6 +2,8 @@ import 'zone.js/node';
 import { APP_BASE_HREF, isPlatformServer } from '@angular/common';
 import { CommonEngine } from '@angular/ssr';
 import * as express from 'express';
+import * as fs from 'fs';
+import * as path from 'path';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import 'localstorage-polyfill'
@@ -17,6 +19,10 @@ import { provideRouter } from '@angular/router';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_FORMATS } from 'src/app/const';
 import { jwtInterceptorFn } from 'src/app/interceptors/jwtInterceptorFn';
+import { environment } from 'src/environments/environment';
+import { getProductUrl } from 'src/app/helper/helper.service';
+import { log } from 'console';
+
 
 
 const compression = require('compression')
@@ -42,7 +48,69 @@ export function app(): express.Express {
   server.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
   server.set('view engine', 'html');
   server.set('views', distFolder);
+  server.get('/sitemap.xml', async (req, res) => {
 
+
+    try {
+      const api = environment.api+'product'+'/map/map';
+      const paath = path.join(process.cwd(), './src/sitemap.xml');
+      let send = false;
+      fs.readFile(paath, (err, data) => {
+        if(err) {
+          if (err.code === 'ENOENT') {
+            console.error('myfile does not exist');
+            return;
+          }
+          return;
+        }
+        res.header('Content-Type', 'application/xml');
+        send = true;
+       res.status(200).sendFile(paath);
+      })
+      if(!send) {
+        const products = await fetch(api, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/xml',
+          }
+        });
+        const items: {id: number, name: string}[] = await products.json();
+
+
+        let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`.concat(
+        items.map(
+          (prod, index) => (
+            `<url>\n<loc>${environment.url+getProductUrl('products', prod.id, prod.name).join('/')}</loc>\n
+            <lastmod>${new Date(Date.now()).getFullYear()+'-'+( Number(new Date(Date.now()).getMonth()) + 1 )+'-'+new Date(Date.now()).getDay()}</lastmod>\n</url>`
+          )
+        ).join('\n')
+      ).concat('\n</urlset>');
+
+      fs.writeFileSync(paath, sitemap);
+
+        res.sendStatus(201).end();
+      }
+
+    } catch (e) {
+        console.error(e);
+        res.status(500).end();
+    }
+});
+server.get('/deletexml', async (req, res) => {
+  const paath = path.join(process.cwd(), './src/sitemap.xml');
+  try {
+    fs.unlink(paath, (err) => {
+      if(err)
+      throw err;
+
+      res.sendStatus(200).end();
+    })
+  } catch (err) {
+    console.error(err);
+    res.status(500).end();
+  }
+})
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser

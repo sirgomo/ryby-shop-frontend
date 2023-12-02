@@ -1,8 +1,5 @@
 <div *ngIf="productsSig() as products;">
-  <div *ngFor="let item of products; let i=index" class="items">
-    <div class="item">{{i}}</div>
-    <div class="item">| {{item.id}}</div>
-    <div class="item">| {{item.name}}</div>
-    <div class="item">| {{getUrl(i)}}</div>
+  <div  class="items">
+    {{products}}
   </div>
 </div>

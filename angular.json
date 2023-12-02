@@ -28,7 +28,8 @@
             "assets": [
               "src/assets",
               "src/robots.txt",
-              "src/sitemap.xml"
+              "src/sitemap.xml",
+              "src/deletexml"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/purple-green.css",

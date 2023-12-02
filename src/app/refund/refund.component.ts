@@ -101,17 +101,19 @@ export class RefundComponent implements OnInit{
       value : refund.amount.toFixed(2),
       currency : CurrencyCodeEnum.EUR
     };
+    let isItem = false;
 
-    console.log(refund)
-    for (let i = 0; i < refund.refund_items.length; i++) {
-      if(refund.refund_items[i].amount > 0) {
-        if(!ebayRefund.refundItems)
+    for (let i = 0; i < this.refund_items.getRawValue().length; i++) {
+      console.log(this.refund_items.getRawValue())
+      if(this.refund_items.getRawValue()[i].amount > 0) {
+        isItem = true;
+        if(ebayRefund.refundItems === undefined)
           ebayRefund.refundItems = [];
 
         const item : iEbayRefundItem = {} as iEbayRefundItem;
         item.lineItemId = this.data.lineItems[i].lineItemId;
         item.refundAmount = {
-          value : refund.refund_items[i].amount.toFixed(2) as "string",
+          value : this.refund_items.getRawValue()[i].amount.toFixed(2) as "string",
           currency : CurrencyCodeEnum.EUR
         };
         item.legacyReference = {
@@ -120,8 +122,11 @@ export class RefundComponent implements OnInit{
         };
 
         ebayRefund.refundItems.push(item);
+
       }
     }
+    if(!isItem)
+      Object(refund).refund_items = undefined;
 
        this.act$ = this.refundService.createRefund(refund, ebayRefund).pipe(
         map(

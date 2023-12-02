@@ -19,7 +19,7 @@
       <!-- Total Price Column -->
       <ng-container matColumnDef="totalPrice">
         <th mat-header-cell *matHeaderCellDef> Total Price </th>
-        <td mat-cell *matCellDef="let order"> {{order.refunds ? (order.pricingSummary.total.value - getRefundValue(order.refunds).count).toFixed(2) : order.pricingSummary.total.value}} </td>
+        <td mat-cell *matCellDef="let order"> {{order.refunds ? (order.pricingSummary.total.value - getRefundValue(order.refunds, order)['count']).toFixed(2) : order.pricingSummary.total.value}} </td>
       </ng-container>
 
       <!-- Order Status Column -->

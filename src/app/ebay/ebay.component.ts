@@ -21,7 +21,7 @@ import { iAktion } from '../model/iAktion';
 import { map, tap } from 'rxjs';
 import { iRefunds } from '../model/iRefund';
 import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
-import { ReasonForRefundEnum } from '../model/ebay/transactionsAndRefunds/iEbayRefunds';
+
 
 @Component({
   selector: 'app-ebay',
@@ -52,7 +52,7 @@ export class EbayComponent {
   }
   openInovice(item: iEbayOrder) {
 
-    const itemB: iBestellung = {} as iBestellung;
+    let itemB: iBestellung = {} as iBestellung;
     const userD: iUserData = {} as iUserData;
 
     userD.adresse = {
@@ -71,6 +71,7 @@ export class EbayComponent {
     itemB.bestelldatum = new Date(item.creationDate);
     //it canotbe id, because id is number and need to be null
     itemB.varsandnr = item.orderId;
+
     const items : iProductBestellung[] = [];
     itemB.versandprice = Number(item.pricingSummary.deliveryCost.value);
     for (let i = 0; i < item.lineItems.length; i++) {
@@ -98,7 +99,6 @@ export class EbayComponent {
         itemB.versandprice += Number(item.pricingSummary.deliveryDiscount.value);
       }
 
-
       newItem.color = item.lineItems[i].variationAspects[0].name+' '+item.lineItems[i].variationAspects[0].value;
       newItem.produkt = [prod];
 
@@ -106,14 +106,6 @@ export class EbayComponent {
     }
 
     itemB.produkte = items;
-
-
-    const current = this.serv.ebayItems.value;
-    if(current) {
-      const index = current.orders.findIndex((tmp) => tmp.orderId === item.orderId);
-      const refunds = Object(current.orders[index]).refunds;
-      console.log(this.getRefundValue(refunds))
-    }
 
 
     const dialogConf: MatDialogConfig = new MatDialogConfig();
@@ -146,10 +138,10 @@ export class EbayComponent {
             Object.assign(newItems, current);
             const tmporders = newItems.orders.slice(0);
 
-         //   res[0].amount = Object(getRefundValue(res)).count;
+
            tmporders[index] = {
               ...current.orders[index],
-              refunds: res,
+              refunds: [res],
              } as iEbayOrder;
              newItems.orders = tmporders;
 
@@ -164,43 +156,43 @@ export class EbayComponent {
       })
     ).subscribe();
   }
-  getRefundValue(res: iRefunds[]) {
-    let count = { count : 0 };
+  getRefundValue(res: iRefunds[][], order: iEbayOrder) {
+    let count: { [key: string] : any} = { 'count' : 0 };
 
-
-    if(!res.length || res.length === 0 )
-    return count;
+    if(!res)
+      return count;
 
     for (let i = 0; i < res.length; i++) {
+      for(let j = 0; j < res[i].length; j++) {
+          if(res[i][j].orderId != order.orderId)
+            break;
 
-      if(res[i].id === -1)
-        break;
+          if(res[i][j].id === -1)
+            break;
 
-        console.log(res[i])
-      if (res[i].amount && +res[i].amount > 0)
-        count.count += Number(res[i].amount);
+          if (res[i][j].amount > 0)
+            count['count'] += Number(res[i][j].amount);
 
-      const reasons = Object.values(ReasonForRefundEnum).filter((reason) => typeof reason === 'string');
+          if(count[res[i][j].reason] === undefined)
+            count[res[i][j].reason] = 0;
 
+            count[res[i][j].reason] += Number(res[i][j].amount);
 
-      for(let z = 0; z < reasons.length; z++) {
+          if(res[i][j].refund_items)
+            for (let x = 0; x < res[i][j].refund_items.length; x++) {
+              if (res[i][j].refund_items[x].amount > 0) {
+                count['count'] += Number(res[i][j].refund_items[x].amount);
+                count[res[i][j].reason] += Number(res[i][j].refund_items[x].amount);
 
-        if(Object(count).reasons[z] === undefined)
-          Object(count).reasons[z] = 0;
+                if(res[i][j].refund_items[x].sku)
+                count['sku'] = res[i][j].refund_items[x].sku
+              }
 
-
-        console.log(' oa ' +Object(count).reason[z])
-        Object(count).reasons[z] += res[i].amount;
-      }
-
-
-      if(res[i].refund_items)
-        for (let j = 0; j < res[i].refund_items.length; j++) {
-          if (res[i].refund_items[j].amount > 0)
-            Object(count).count += Number(res[i].refund_items[j].amount);
-        }
+            }
     }
+  }
     return count;
+
   }
 
 }

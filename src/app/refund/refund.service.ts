@@ -38,7 +38,7 @@ export class RefundService {
       );
   }
 
-  getRefundById(id: string): Observable<iRefunds> {
+  getRefundById(id: string): Observable<iRefunds[]> {
     return this.httpClient.get<any>(`${this.#api}/${id}`)
       .pipe(
         catchError(error => {

@@ -70,7 +70,7 @@
   padding: 0 .2rem 0 .3rem;
   width: 7%;
   font-size: medium;
-
+  text-align: right;
 }
 
 
@@ -93,10 +93,10 @@
   justify-content: space-between;
   font-size: medium;
   width: 100%;
-
+  margin-bottom: .2rem;
   .preise {
     width: 13%;
-
+    text-align: right;
   }
 }
 .kunternehmen {

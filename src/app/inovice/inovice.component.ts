@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, PLATFORM_ID, ViewChild, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { iBestellung } from '../model/iBestellung';
 import { OrdersService } from '../orders/orders.service';
@@ -14,8 +14,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-
-
+import { RefundService } from '../refund/refund.service';
+import { iRefunds } from '../model/iRefund';
 
 
 
@@ -29,11 +29,13 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class InoviceComponent {
 
+
   itemid = this.data.id ? this.data.id : 0;
   currentItem: iBestellung = {} as iBestellung;
   company: iCompany = {} as iCompany;
+  refunds = signal<iRefunds[]>([]);
   columns: string[] = [ 'name','varia','rabat', 'stpreis', 'mwst', 'preis', 'brutto'];
-  item$ = forkJoin([this.orderService.getBestellungById(this.itemid), this.companyService.getAllCompanies()]).pipe(tap(([best, comp]) => {
+  item$ = forkJoin([this.orderService.getBestellungById(this.itemid), this.companyService.getAllCompanies(), this.refundService.getRefundById(this.data.id ? this.data.id : this.data.varsandnr as any)]).pipe(tap(([best, comp, refund]) => {
     this.currentItem = best;
     //ebay order have no id
     if(!this.currentItem.id) {
@@ -41,7 +43,8 @@ export class InoviceComponent {
       //i need to set id to get the right invoice
       this.currentItem.id = this.data.varsandnr as any;
     }
-
+    if(refund[0].id !== -1)
+    this.refunds.set(refund);
 
     this.company = comp;
     this.isPromotion();
@@ -49,9 +52,10 @@ export class InoviceComponent {
 
 
     constructor(@Inject(MAT_DIALOG_DATA) public data: iBestellung, private readonly dialoRef: MatDialogRef<InoviceComponent>, private orderService: OrdersService,
-    public errorService: ErrorService, private companyService: CompanyService, @Inject(PLATFORM_ID) private readonly platformId: any){}
+    public errorService: ErrorService, private companyService: CompanyService, @Inject(PLATFORM_ID) private readonly platformId: any, private refundService: RefundService){}
 
   private isPromotion() {
+
     let isPromoted = false;
     for (let i = 0; i < this.currentItem.produkte.length; i++) {
       if (this.currentItem.produkte[i].produkt[0].promocje
@@ -112,10 +116,23 @@ export class InoviceComponent {
       return rabat;
     }
     getPriceWithShipping() {
+      let totalCost = 0;
       if(this.data.produkte[0].produkt[0].promocje)
-      return (Number(this.currentItem.versandprice) + this.getTotalBrutto()) + Number(this.getTotalRabat());
+      totalCost = (Number(this.currentItem.versandprice) + this.getTotalBrutto()) + Number(this.getTotalRabat());
 
-      return (Number(this.currentItem.versandprice) + this.getTotalBrutto());
+      if(totalCost === 0)
+      totalCost =  (Number(this.currentItem.versandprice) + this.getTotalBrutto());
+
+      if(this.refunds().length > 0)
+      for(let i = 0; i < this.refunds().length; i++) {
+      totalCost -= this.refunds()[i].amount;
+        if(this.refunds()[i].refund_items)
+          for (let j = 0; j < this.refunds()[i].refund_items.length; j++) {
+        totalCost -= Number(this.refunds()[i].refund_items[j].amount);
+        }
+      }
+
+      return totalCost;
     }
     getVariations(index: number) {
       let variation = '';
@@ -184,6 +201,15 @@ export class InoviceComponent {
         })
       }
 
+    }
+    getItemRefund(item: iRefunds) :string {
+      let conut = 0;
+
+      for (let i = 0; i < item.refund_items.length; i++) {
+        if(item.refund_items[i].amount !== 0)
+        conut += Number(item.refund_items[i].amount);
+      }
+      return conut.toFixed(2);
     }
 
 }

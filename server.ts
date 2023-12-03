@@ -89,7 +89,7 @@ server.get('/gen-map', async (req, res, next) => {
     items.map(
       (prod, index) => (
         `<url>\n<loc>${environment.url+getProductUrl('products', prod.id, prod.name).join('/')}</loc>\n
-        <lastmod>${new Date(Date.now()).getFullYear()+'-'+( Number(new Date(Date.now()).getMonth()) + 1 )+'-'+new Date(Date.now()).getDay()}</lastmod>\n</url>`
+        <lastmod>${new Date(Date.now()).toISOString().split('T')[0]}</lastmod>\n</url>`
       )
     ).join('\n')
   ).concat('\n</urlset>');

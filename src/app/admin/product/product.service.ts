@@ -180,10 +180,5 @@ export class ProductService {
       return throwError(()=> err);
     }))
   }
-  async getProductsForSiteMap() {
-    //TODO its not working like i want, componenet seend request one by one and i dont know why ?
-    /*return await fetch(`${environment.url}sitemap.xml`, { method: 'GET'}).then((res) => {
-        return res.text()
-      })*/
-  }
+
 }

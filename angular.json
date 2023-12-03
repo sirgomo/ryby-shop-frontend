@@ -27,9 +27,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/assets",
-              "src/robots.txt",
-              "src/sitemap.xml",
-              "src/deletexml"
+              "src/robots.txt"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/purple-green.css",

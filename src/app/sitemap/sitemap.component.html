@@ -1,5 +1,20 @@
-<div *ngIf="productsSig() as products;">
-  <div  class="items">
-    {{products}}
-  </div>
+<div *ngIf="errorService.message() && errorService.message().length > 2">
+  <app-error></app-error>
 </div>
+
+
+<mat-card>
+  <mat-card-header class="head">
+      <mat-card-title>SiteMap</mat-card-title>
+      <mat-card-subtitle>Generate Sitemap für Products</mat-card-subtitle>
+      <div class="butt">
+        <button mat-stroked-button color="primary" (click)="deleteMap()">Sitemap Löschen</button>
+        <button mat-stroked-button color="primary" (click)="genMap()">Neu Sitemap Erstellen</button>
+      </div>
+  </mat-card-header>
+
+  <mat-card-content class="sitemap">
+{{productsSig()}}
+
+  </mat-card-content>
+</mat-card>

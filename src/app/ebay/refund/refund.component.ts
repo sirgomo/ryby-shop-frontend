@@ -1,24 +1,24 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { iEbayOrder } from '../model/ebay/orders/iEbayOrder';
-import { ErrorService } from '../error/error.service';
+import { iEbayOrder } from '../../model/ebay/orders/iEbayOrder';
+import { ErrorService } from '../../error/error.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ErrorComponent } from '../error/error.component';
-import { EbayTransactionsService } from '../ebay/ebay-transactions/ebay-transactions.service';
-import { iEbayTransaction } from '../model/ebay/transactionsAndRefunds/iEbayTransaction';
-import { iRefundItem } from '../model/iRefundItem';
+import { ErrorComponent } from '../../error/error.component';
+import { EbayTransactionsService } from '../ebay-transactions/ebay-transactions.service';
+import { iEbayTransaction } from '../../model/ebay/transactionsAndRefunds/iEbayTransaction';
+import { iRefundItem } from '../../model/iRefundItem';
 import { Observable, map, tap } from 'rxjs';
-import { iRefunds } from '../model/iRefund';
-import { iEbayTransactionItem } from '../model/ebay/transactionsAndRefunds/iEbayTransactionItem';
+import { iRefunds } from '../../model/iRefund';
+import { iEbayTransactionItem } from '../../model/ebay/transactionsAndRefunds/iEbayTransactionItem';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RefundService } from './refund.service';
-import { ReasonForRefundEnum, iEbayRefunds } from '../model/ebay/transactionsAndRefunds/iEbayRefunds';
+import { ReasonForRefundEnum, iEbayRefunds } from '../../model/ebay/transactionsAndRefunds/iEbayRefunds';
 import { MatSelectModule } from '@angular/material/select';
-import { CurrencyCodeEnum, iEbayRefundItem } from '../model/ebay/transactionsAndRefunds/iEbayRefundItem';
+import { CurrencyCodeEnum, iEbayRefundItem } from '../../model/ebay/transactionsAndRefunds/iEbayRefundItem';
 
 
 @Component({

@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { ErrorService } from '../error/error.service';
-import { iEbayRefunds } from '../model/ebay/transactionsAndRefunds/iEbayRefunds';
+import { ErrorService } from '../../error/error.service';
+import { iEbayRefunds } from '../../model/ebay/transactionsAndRefunds/iEbayRefunds';
 import { Observable, catchError, tap } from 'rxjs';
-import { iRefunds } from '../model/iRefund';
+import { iRefunds } from '../../model/iRefund';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EbayService } from '../ebay/ebay.service';
-import { iEbayOrder } from '../model/ebay/orders/iEbayOrder';
-import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
-import { HelperService } from '../helper/helper.service';
+import { EbayService } from '../ebay.service';
+import { iEbayOrder } from '../../model/ebay/orders/iEbayOrder';
+import { iEbayAllOrders } from '../../model/ebay/orders/iEbayAllOrders';
+import { HelperService } from '../../helper/helper.service';
 
 @Injectable({
   providedIn: 'root'

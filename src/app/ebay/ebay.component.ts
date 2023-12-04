@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { EbayTransactionsComponent } from './ebay-transactions/ebay-transactions.component';
 import { ErrorComponent } from '../error/error.component';
 import { ErrorService } from '../error/error.service';
-import { RefundComponent } from '../refund/refund.component';
+import { RefundComponent } from './refund/refund.component';
 import { iAktion } from '../model/iAktion';
 import { map, tap } from 'rxjs';
 import { iRefunds } from '../model/iRefund';

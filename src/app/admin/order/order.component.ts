@@ -12,8 +12,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RefundService } from 'src/app/refund/refund.service';
-import { RefundComponent } from 'src/app/refund/refund.component';
+import { RefundService } from 'src/app/ebay/refund/refund.service';
+import { RefundComponent } from 'src/app/ebay/refund/refund.component';
 
 @Component({
   selector: 'app-order',

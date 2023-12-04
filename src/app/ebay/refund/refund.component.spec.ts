@@ -11,7 +11,7 @@ describe('RefundComponent', () => {
       imports: [RefundComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(RefundComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

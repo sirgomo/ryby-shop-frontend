@@ -15,6 +15,7 @@ export interface iBestellung {
   versandart: string;
   versandprice: number;
   varsandnr: string;
+  paypal_order_id: string;
 }
 
 export enum BESTELLUNGSSTATUS {

@@ -12,6 +12,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RefundService } from 'src/app/refund/refund.service';
+import { RefundComponent } from 'src/app/refund/refund.component';
 
 @Component({
   selector: 'app-order',
@@ -22,10 +24,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [CommonModule, OrderSelectorComponent, MatTableModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule]
 })
 export class OrderComponent implements OnDestroy{
+
   ordersSig = this.oderService.ordersSig;
 
-  columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt', 'inovice'];
-  constructor(private readonly oderService: OrdersService, public error: ErrorService, private readonly dialog: MatDialog, private helperService: HelperService) {}
+  columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt', 'inovice', 'refund'];
+  constructor(private readonly oderService: OrdersService, public error: ErrorService, private readonly dialog: MatDialog, private helperService: HelperService,
+  private readonly refundService: RefundService) {}
   ngOnDestroy(): void {
     this.helperService.artikelProSiteSig.set(0);
   }
@@ -39,10 +43,17 @@ export class OrderComponent implements OnDestroy{
   }
   openInovice(item: iBestellung) {
     const conf: MatDialogConfig = new MatDialogConfig();
-    conf.width = '210mm';
-    conf.maxWidth = '210mm'
-    conf.height = '90%';
+    conf.height = '100%';
+    conf.width = '100%';
     conf.data = item;
     this.dialog.open(InoviceComponent, conf);
   }
+  refund(order: iBestellung) {
+    const conf : MatDialogConfig = new MatDialogConfig();
+    conf.width = '100%';
+    conf.height = '100%';
+    conf.data = order;
+
+    this.dialog.open(RefundComponent, conf);
+    }
 }

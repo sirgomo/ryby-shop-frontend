@@ -43,6 +43,7 @@ export class InoviceComponent {
       //i need to set id to get the right invoice
       this.currentItem.id = this.data.varsandnr as any;
     }
+
     if(refund[0].id !== -1)
     this.refunds.set(refund);
 
@@ -117,7 +118,8 @@ export class InoviceComponent {
     }
     getPriceWithShipping() {
       let totalCost = 0;
-      if(this.data.produkte[0].produkt[0].promocje)
+
+      if(this.currentItem.produkte[0].produkt && this.currentItem.produkte[0].produkt[0].promocje)
       totalCost = (Number(this.currentItem.versandprice) + this.getTotalBrutto()) + Number(this.getTotalRabat());
 
       if(totalCost === 0)

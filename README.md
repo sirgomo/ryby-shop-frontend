@@ -25,3 +25,5 @@ Continuous application development
 5. Item on the homepage, direct addition to the cart, changing the variant and adding one piece to the cart
 6. Item details - details of the item as well as the possibility of adding quantities for each item variant.
 7. Get items listed on eBay (first import them using listingId)
+8. sitemap on the server site
+9. Shipping or other things refund, refund info in invoice

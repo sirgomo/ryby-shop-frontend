@@ -13,6 +13,8 @@ export interface iProduktRueckgabe{
   amount: number;
   paypal_refund_id:string;
   paypal_refund_status: string;
+  corrective_refund_nr: number;
+  is_corrective: number;
 }
 export enum RUECKGABESTATUS {
   FULL_REFUND = 'FULL_REFUND',

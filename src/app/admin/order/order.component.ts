@@ -12,8 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RefundService } from 'src/app/ebay/refund/refund.service';
-import { RefundComponent } from 'src/app/ebay/refund/refund.component';
+import { OrderRefundsComponent } from './order-refunds/order-refunds.component';
 
 @Component({
   selector: 'app-order',
@@ -28,8 +27,7 @@ export class OrderComponent implements OnDestroy{
   ordersSig = this.oderService.ordersSig;
 
   columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt', 'inovice', 'refund'];
-  constructor(private readonly oderService: OrdersService, public error: ErrorService, private readonly dialog: MatDialog, private helperService: HelperService,
-  private readonly refundService: RefundService) {}
+  constructor(private readonly oderService: OrdersService, public error: ErrorService, private readonly dialog: MatDialog, private helperService: HelperService) {}
   ngOnDestroy(): void {
     this.helperService.artikelProSiteSig.set(0);
   }
@@ -51,9 +49,9 @@ export class OrderComponent implements OnDestroy{
   refund(order: iBestellung) {
     const conf : MatDialogConfig = new MatDialogConfig();
     conf.width = '100%';
-    conf.height = '100%';
+
     conf.data = order;
 
-    this.dialog.open(RefundComponent, conf);
+    this.dialog.open(OrderRefundsComponent, conf);
     }
 }

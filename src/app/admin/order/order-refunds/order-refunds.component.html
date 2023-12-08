@@ -1,20 +1,112 @@
 <div *ngIf="errorService.message() && errorService.message().length > 5">
 <app-error></app-error>
 </div>
-<<mat-card>
-    <mat-card-header>
-        <mat-card-title>Title</mat-card-title>
-        <mat-card-subtitle>Subtitle</mat-card-subtitle>
+<mat-card>
+    <mat-card-header class="header">
+      <div>
+        <mat-card-title>Refund für {{this.currentRefund.bestellung.id}}</mat-card-title>
+        <mat-card-subtitle>Rückerstattung </mat-card-subtitle>
+      </div>
+      <div class="close">
+          <button mat-icon-button (click)="cancel()" color="warn">
+              <mat-icon>close</mat-icon>
+          </button>
+      </div>
+
     </mat-card-header>
 
     <mat-card-content>
-        Text content
-    </mat-card-content>
-    <mat-card-actions align="start">
-        <button mat-button (click)="saveRefund()">Action1</button>
+      <form [formGroup]="refund" (ngSubmit)="saveRefund()" class="refund">
+      <mat-form-field>
+        <mat-label>Rückgabegrund</mat-label>
+        <input formControlName="rueckgabegrund" matInput type="text" required autocomplete="off" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Paypal TransactionId</mat-label>
+        <input formControlName="paypal_refund_id" matInput type="text" autocomplete="off" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="rueckgabestatus" required>
+          <mat-option *ngFor="let item of status" [value]="item">{{item}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Amount</mat-label>
+        <input formControlName="amount" matInput type="number" required />
+      </mat-form-field>
+      <ng-container formArrayName="produkte">
+        <ng-container *ngFor="let item of produkte.controls; let i = index" >
+          <div class="row" [formGroupName]="i">
+            <div class="row-item">
+              {{item.get('color')?.getRawValue()}}
+            </div>
+            <div class="row-item-name">
+              {{item.get('produkt')?.getRawValue()[0].name}}
+            </div>
+            <div class="row-item">
+             <mat-form-field>
+              <mat-label>Price refund</mat-label>
+              <input matInput type="number" required formControlName="verkauf_price">
+             </mat-form-field>
+            </div>
+            <div class="row-item">
+              <mat-form-field>
+               <mat-label>Menge</mat-label>
+               <input matInput type="number" required formControlName="menge">
+              </mat-form-field>
+             </div>
+             <div class="row-item">
+              <button mat-stroked-button color="warn" (click)="removeProdukt(i)"><mat-icon>remove</mat-icon></button>
+             </div>
+          </div>
+        </ng-container>
+      </ng-container>
+      <mat-checkbox formControlName="is_corrective" (change)="isCorrective()">Korrektur ?</mat-checkbox>
+      </form>
+      <div *ngIf="bestellungSig() && bestellungSig()?.produkte as produkts">
+        <table mat-table [dataSource]="produkts" class="mat-elevation-z8">
+          <!-- Color column -->
+          <ng-container matColumnDef="color">
+            <th mat-header-cell *matHeaderCellDef> Sku </th>
+            <td mat-cell *matCellDef="let element"> {{element.color}} </td>
+          </ng-container>
 
+          <!-- Name column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.produkt[0].name}} </td>
+          </ng-container>
+
+          <!-- Price column -->
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef> Price </th>
+            <td mat-cell *matCellDef="let element"> {{element.verkauf_price}} </td>
+          </ng-container>
+
+          <!-- Menge column -->
+          <ng-container matColumnDef="menge">
+            <th mat-header-cell *matHeaderCellDef> Menge </th>
+            <td mat-cell *matCellDef="let element"> {{element.menge}} </td>
+          </ng-container>
+            <!-- Refund column -->
+          <ng-container matColumnDef="refund">
+            <th mat-header-cell *matHeaderCellDef> Refund </th>
+            <td mat-cell *matCellDef="let element"> <button mat-stroked-button color="accent" (click)="addProdukt(element)">Refund</button> </td>
+          </ng-container>
+
+          <!-- Table header row -->
+          <tr mat-header-row *matHeaderRowDef="produktTable"></tr>
+
+          <!-- Table data rows -->
+          <tr mat-row *matRowDef="let row; columns: produktTable;"></tr>
+        </table>
+      </div>
+
+    </mat-card-content>
+    <mat-card-actions class="acctions">
+       <span *ngIf="act$ | async"></span>
+       <button mat-stroked-button color="primary" *ngIf="refund.valid" (click)="saveRefund()">{{currentRefund.is_corrective ? 'Korrektur  Speichern' : 'Rückerstattung Schicken'}}</button>
+        <button mat-stroked-button color="primary" disabled *ngIf="refund.invalid" (click)="saveRefund()">{{currentRefund.is_corrective ? 'Korrektur  Speichern' : 'Rückerstattung Schicken'}}</button>
     </mat-card-actions>
-    <mat-card-footer>
-        Footer
-    </mat-card-footer>
 </mat-card>

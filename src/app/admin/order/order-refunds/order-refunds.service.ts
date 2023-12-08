@@ -27,4 +27,5 @@ export class OrderRefundsService {
     )
   }
   getRefundById(id: number) {}
+  deleteRefundById(id: number) {}
 }

@@ -1,5 +1,5 @@
 import 'zone.js/node';
-import { APP_BASE_HREF, isPlatformServer } from '@angular/common';
+import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr';
 import * as express from 'express';
 import * as fs from 'fs';
@@ -21,8 +21,7 @@ import { MY_FORMATS } from 'src/app/const';
 import { jwtInterceptorFn } from 'src/app/interceptors/jwtInterceptorFn';
 import { environment } from 'src/environments/environment';
 import { getProductUrl } from 'src/app/helper/helper.service';
-import { log } from 'console';
-import { nextTick } from 'process';
+
 
 
 

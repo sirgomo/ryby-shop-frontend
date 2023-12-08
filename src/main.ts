@@ -12,6 +12,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { jwtInterceptorFn } from './app/interceptors/jwtInterceptorFn';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { LoaderInterceptorFn } from './app/interceptors/loader.interceptorFn';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 
   bootstrapApplication(AppComponent, {
@@ -30,7 +31,12 @@ import { LoaderInterceptorFn } from './app/interceptors/loader.interceptorFn';
       importProvidersFrom(BrowserAnimationsModule),
       importProvidersFrom(AppRoutingModule),
       importProvidersFrom(MatSnackBarModule),
-
+      {
+        provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+        useValue: {
+          subscriptSizing: 'dynamic',
+        }
+      }
     ]
   }).catch(err => {
     console.log(err);

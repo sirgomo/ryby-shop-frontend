@@ -1,0 +1,50 @@
+.refund {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .4rem;
+  height: 100%;
+}
+mat-form-field {
+  width: 50%;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  div {
+    width: 50%;
+  }
+}
+.close {
+  display: flex;
+
+  justify-content: flex-end;
+}
+.acctions {
+  display: flex;
+  justify-content: center;
+}
+.row {
+  display: flex;
+
+  font-size: small;
+
+  align-items: center;
+  border: 1px solid brown;
+  border-radius: .3rem;
+  width: 85%;
+  .row-item {
+    padding: .2rem .3rem;
+    flex: 1;
+    }
+  .row-item-name {
+    display: flex;
+    flex: 3;
+    flex-wrap: wrap;
+    padding: .2rem .3rem;
+  }
+  mat-form-field {
+    scale: 0.8;
+  }
+}

@@ -1,4 +1,5 @@
 import { iProductBestellung } from "./iProductBestellung";
+import { iProduktRueckgabe } from "./iProduktRueckgabe";
 import { iUserData } from "./iUserData";
 
 export interface iBestellung {
@@ -16,6 +17,7 @@ export interface iBestellung {
   versandprice: number;
   varsandnr: string;
   paypal_order_id: string;
+  refunds: iProduktRueckgabe[];
 }
 
 export enum BESTELLUNGSSTATUS {

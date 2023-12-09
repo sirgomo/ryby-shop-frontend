@@ -68,7 +68,6 @@ export class OrderRefundsComponent implements OnInit {
       //produkt: [prod.produkt],
       menge: [0, Validators.required],
       color: [prod.color, Validators.required],
-      //productRucgabe: this.currentRefund,
       verkauf_price: [0, Validators.required]
     });
 
@@ -81,10 +80,11 @@ export class OrderRefundsComponent implements OnInit {
     Object.assign(this.currentRefund, this.refund.value);
     this.currentRefund.bestellung.paypal_order_id = this.currentRefund.paypal_refund_id;
     this.currentRefund.paypal_refund_id = '';
-//TODO full refund auto fill!
-   console.log(this.currentRefund)
+
+
     this.act$ = this.refundService.createRefund(this.currentRefund).pipe(tap((res) => {
       console.log(res);
+      this.dialogRef.close();
     }))
   }
   cancel() {
@@ -93,4 +93,7 @@ export class OrderRefundsComponent implements OnInit {
   isCorrective() {
     this.currentRefund.is_corrective = this.refund.get('is_corrective')?.getRawValue();
   }
+
+
 }
+

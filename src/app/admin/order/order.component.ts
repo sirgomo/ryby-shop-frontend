@@ -24,6 +24,7 @@ import { OrderRefundsComponent } from './order-refunds/order-refunds.component';
 })
 export class OrderComponent implements OnDestroy{
 
+
   ordersSig = this.oderService.ordersSig;
 
   columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt', 'inovice', 'refund'];
@@ -54,4 +55,15 @@ export class OrderComponent implements OnDestroy{
 
     this.dialog.open(OrderRefundsComponent, conf);
     }
+  getWertMinRefunds(best: iBestellung) {
+    let wert = 0;
+    for (let i = 0; i < best.refunds.length; i++) {
+      wert += +best.refunds[i].amount;
+      if(best.refunds[i].produkte)
+      for (let j = 0; j < best.refunds[i].produkte.length; j++) {
+        wert += +best.refunds[i].produkte[j].verkauf_price;
+      }
+    }
+    return best.gesamtwert + ' (-'+ wert.toFixed(2) + ') ';
+  }
 }

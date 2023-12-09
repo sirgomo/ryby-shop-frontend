@@ -63,8 +63,7 @@ export class OrdersService {
       catchError((err) => {
         this.error.newMessage(err.message);
         return [];
-      }),
-      shareReplay(1)
+      })
       )}
     return of([]);
   }

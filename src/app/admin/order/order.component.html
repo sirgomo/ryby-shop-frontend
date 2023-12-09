@@ -28,7 +28,7 @@
     </ng-container>
     <ng-container matColumnDef="vert">
       <th mat-header-cell *matHeaderCellDef>Wert</th>
-      <td mat-cell *matCellDef="let item"> {{item.gesamtwert}}</td>
+      <td mat-cell *matCellDef="let item"> {{item.refunds.length < 1 ? item.gesamtwert : getWertMinRefunds(item) }}</td>
     </ng-container>
     <ng-container matColumnDef="bestDate">
       <th mat-header-cell *matHeaderCellDef>Bestellung Eingegangen</th>

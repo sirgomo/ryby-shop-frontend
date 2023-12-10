@@ -1,9 +1,7 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, OnInit, PLATFORM_ID, ViewChild, } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, OnInit, PLATFORM_ID, ViewChild, signal, } from '@angular/core';
+import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable, map, of } from 'rxjs';
 import { iProduct } from 'src/app/model/iProduct';
-
-
 import { HelperService, getProductUrl } from 'src/app/helper/helper.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule, isPlatformServer } from '@angular/common';
@@ -16,7 +14,6 @@ import { iSordedVariation } from 'src/app/model/iSortedVariation';
 import { SelectComponent } from '../select/select.component';
 import { getSortedVariation, doWeHaveEnough } from '../functions';
 import { Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
 
 
 @Component({
@@ -34,7 +31,6 @@ export class ItemComponent implements OnInit {
   image!: SafeResourceUrl | undefined;
 
   images: string[] = [];
-
   current!: iProduktVariations;
   sortedVarations: iSordedVariation[] = [];
   constructor( private santizier: DomSanitizer,
@@ -48,6 +44,7 @@ export class ItemComponent implements OnInit {
       this.current = this.item.variations[0];
       this.getImage(this.item.variations[0].image)
       this.sortedVarations = getSortedVariation(this.item);
+
     }
   }
 

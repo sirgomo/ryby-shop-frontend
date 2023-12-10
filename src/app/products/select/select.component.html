@@ -1,5 +1,4 @@
 <div class="color" *ngFor="let item of sortedVarations; let is = index" >
-  <label for="farbe"> {{item.name}} : </label>
   <select id="farbe" (change)="colorChange($event.target)" #select>
     <option *ngIf="sortedVarations.length > 1 && is > 0" selected>{{getSelected(is)}}</option>
     <option *ngFor="let items of item.item; let i = index"  [value]="items.sku">{{items.value}}</option>

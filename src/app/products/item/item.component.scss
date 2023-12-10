@@ -2,50 +2,65 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 300px;
-  min-height: 600px;
-  max-height: 600px;
+  width: 300px;
+  height: 600px;
+  border-radius: .5rem;
+  border: 1px solid rgb(128, 77, 30);
+
 }
 .product-details {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 2rem;
-  border: 1px solid rgb(128, 77, 30);
-  padding: .3rem .3rem;
-  min-width: 300px;
-  max-width: 300px;
-  min-height: 250px;
-  max-height: 250px;
-  line-height: 1rem;
-  margin-top: .2rem;
+    display: block;
+    width: 300px;
+    height: 280px;
+    padding-left: .5rem;
+    padding-bottom: .5rem;
+
+  .head {
+    height: 25%;
+  }
+  .besch {
+    display: block;
+    height: 50%;
+    margin: .1rem .3rem;
+  }
+  .sel {
+    display: flex;
+    justify-content:space-between;
+    height: 12%;
+    margin: .2rem .8rem;
+  }
+  .act {
+    display: flex;
+    justify-content: center;
+    gap: .4rem;
+    height: 12%;
+    margin-bottom: .6rem;
+    button {
+      font-size: .8rem;
+      line-height: .6rem;
+      height: 1.8rem;
+    }
+
+  }
 }
 
 .product-image {
   min-width: 300px;
-  min-height: 300px;
+  min-height: calc(300px - .3rem);
   width: 300px;
-  height: 300px;
+  height: calc(300px - .3rem);
   .image {
-  border-radius: 2rem;
+  border-top-right-radius: .4rem;
+  border-top-left-radius: .4rem;
   width: 100%;
   height: 100%;
   object-fit:fill;
   }
+  margin-bottom: .3rem;
 }
 .prop {
   display: flex;
   gap: .2rem;
 }
-.act {
-  display: flex;
-  gap: .4rem;
-  button {
-    font-size: .8rem;
-    line-height: .6rem;
-    height: 2rem;
-  }
 
-}
 

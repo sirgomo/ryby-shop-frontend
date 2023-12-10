@@ -5,6 +5,7 @@ import { iProduct } from 'src/app/model/iProduct';
 import { iProduktVariations } from 'src/app/model/iProduktVariations';
 import { getSortedVariation } from '../functions';
 
+
 @Component({
   selector: 'app-select',
   standalone: true,

@@ -13,4 +13,5 @@ export interface iProduktVariations {
   thumbnail: string;
   quanity: number;
   quanity_sold: number;
+  quanity_sold_at_once: number;
 }

@@ -16,6 +16,7 @@ import { iSordedVariation } from 'src/app/model/iSortedVariation';
 import { SelectComponent } from '../select/select.component';
 import { getSortedVariation, doWeHaveEnough } from '../functions';
 import { Router } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 
 
 @Component({

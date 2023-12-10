@@ -9,5 +9,6 @@ export interface iWarenEingangProdVariation {
   wholesale_price: number;
   mwst: number;
   quanity_stored: number;
+  quanity_sold_at_once: number;
   waren_eingang_product: iWareneingangProduct;
 }

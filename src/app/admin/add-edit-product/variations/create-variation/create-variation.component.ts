@@ -39,6 +39,7 @@ export class CreateVariationComponent {
       image: [ data.vari ? data.vari.image: ''],
       quanity: [ { value: data.vari ? data.vari.quanity : 0, disabled: true}],
       quanity_sold: [{ value: data.vari ? data.vari.quanity_sold: 0, disabled: true}],
+      quanity_sold_at_once: [data.vari ? data.vari.quanity_sold_at_once : 1]
     });
 
     if(data.prod === undefined)

@@ -29,6 +29,10 @@
             <input matInput type="number" formControlName="quanity" autocomplete="off">
           </mat-form-field>
           <mat-form-field>
+          <mat-label>Menge pro Transaktion: </mat-label>
+          <input matInput type="number" formControlName="quanity_sold_at_once" autocomplete="off">
+        </mat-form-field>
+          <mat-form-field>
             <mat-label>Preis (im Rechnung)</mat-label>
             <input matInput type="number" formControlName="price" autocomplete="off" (keyup)="priceChanged(i)">
           </mat-form-field>

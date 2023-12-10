@@ -64,6 +64,7 @@ export class AddEditProductToBuchungComponent {
           tmp.wholesale_price = this.data.product_variation[y].wholesale_price;
           tmp.mwst = this.data.product_variation[y].mwst;
           tmp.quanity_stored = this.data.product_variation[y].quanity_stored;
+          tmp.quanity_sold_at_once = this.data.product_variation[y].quanity_sold_at_once;
           tmp.sku = this.data.product_variation[y].sku;
           tmp.waren_eingang_product = this.data;
           this.product_variation.push(this.colorForm(tmp));
@@ -79,6 +80,7 @@ export class AddEditProductToBuchungComponent {
                 tmp.mwst = 0;
                 tmp.wholesale_price = 0;
                 tmp.quanity_stored = 0;
+                tmp.quanity_sold_at_once = 1;
                 tmp.sku = this.data.produkt[0].variations[i].sku;
                 tmp.waren_eingang_product = this.data;
 
@@ -107,6 +109,7 @@ export class AddEditProductToBuchungComponent {
       wholesale_price: [item?.wholesale_price ? item.wholesale_price : 0],
       mwst: [item?.mwst ? item.mwst: 0],
       quanity_stored: [item?.quanity_stored ? item.quanity_stored : 0],
+      quanity_sold_at_once: [item?.quanity_sold_at_once ? item.quanity_sold_at_once : 1]
     });
   }
   getItem(item: AbstractControl) {

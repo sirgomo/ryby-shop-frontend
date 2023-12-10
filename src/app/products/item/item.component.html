@@ -4,7 +4,7 @@
   </div>
   <div class="product-details">
     <h3>{{item.name.length < 65 ? item.name : (item.name | slice:0:65) + '...'}}</h3>
-    <p>{{ item.beschreibung.length < 150 ? item.beschreibung : (item.beschreibung | slice:0:150) + '...'}}</p>
+    <p [innerHTML]="item.beschreibung.length < 150 ? item.beschreibung : (item.beschreibung | slice:0:150) + '...'"></p>
     <p *ngIf="item.mehrwehrsteuer < 1">Preis:  {{getPriceBrutto()}} &euro; </p>
     <p *ngIf="item.mehrwehrsteuer > 0">Preis (Brutto): {{getPriceBrutto()}} &euro;</p>
     <app-select [item]="item" (current)="changeSelection($event)"></app-select>

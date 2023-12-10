@@ -52,25 +52,23 @@
       </div>
       <div class="right">
         <div class="item-input">
-          <div>
-            <mat-label >Menge: </mat-label>
-            <mat-form-field class="input" >
+
+            <mat-form-field>
               <mat-label *ngIf="currentVariation">{{currentVariation.value}} {{currentVariation.unit}}</mat-label>
               <input type="number" matInput [(ngModel)]="currentItemQuanity" autocomplete="off">
             </mat-form-field>
-          </div>
-          <div>
+
+
             <button mat-stroked-button color="primary" (click)="addItem()">
             <mat-icon>add_shopping_cart</mat-icon>
             In den Warenkorb
         </button>
-        </div>
+
 
         </div>
         </div>
       </div>
-      <div class="desc">
-        {{item.beschreibung}}
+      <div class="desc" [innerHTML]="item.beschreibung">
       </div>
     </div>
     <div class="farbe">

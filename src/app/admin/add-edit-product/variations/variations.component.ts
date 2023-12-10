@@ -37,7 +37,7 @@ export class VariationsComponent implements AfterViewInit {
   variationsSig = toSignal(this.variationService.variations$, { initialValue: []});
   selectedVariation: iProduktVariations = {} as iProduktVariations;
   productVarationsSig = toSignal(this.variationService.variations.asObservable(), { initialValue: []});
-  columns : string[] = ['sk', 'name', 'val', 'val2','price', 'pricebb', 'quanity', 'quanity_sold', 'del','hint', 'image'];
+  columns : string[] = ['sk', 'name', 'val', 'val2','price', 'pricebb', 'quanity', 'quanity_sold','at_once', 'del','hint', 'image'];
   send$ = [new Observable()];
 
   constructor (public readonly variationService: VariationsService, private dialog: MatDialog, public errorServi: ErrorService,

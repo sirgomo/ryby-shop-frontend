@@ -19,6 +19,7 @@ import { doWeHaveEnough } from '../functions';
 import { SelectComponent } from '../select/select.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute  } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 
 
 @Component({
@@ -27,7 +28,8 @@ import { ActivatedRoute  } from '@angular/router';
   styleUrls: ['./item-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatFormFieldModule, CommonModule, MatIconModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, MatInputModule, FormsModule, SelectComponent, MatToolbarModule]
+  imports: [MatFormFieldModule, CommonModule, MatIconModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, MatInputModule,
+  FormsModule, SelectComponent, MatToolbarModule]
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy{
 
@@ -137,7 +139,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     let quanityInCard = 0;
     for (let i = 0; i < this.helperService.cardSig().length; i++) {
         if(this.helperService.cardSig()[i].variations[0].sku  === this.currentVariation.sku)
-          quanityInCard += this.helperService.cardSig()[i].variations[0].quanity;
+          quanityInCard += this.helperService.cardSig()[i].variations[0].quanity * this.helperService.cardSig()[i].variations[0].quanity_sold_at_once;
     }
     return this.currentVariation.quanity - quanityInCard;
   }

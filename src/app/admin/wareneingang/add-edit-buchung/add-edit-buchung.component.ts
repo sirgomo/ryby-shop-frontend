@@ -85,7 +85,6 @@ export class AddEditBuchungComponent implements OnInit{
       this.act$ = this.warenService.getWareneingangBuchungbeiId(this.data.id).pipe(tap((res) => {
           if(res.id) {
             res.shipping_cost_eur = this.getValueinEuro(res.shipping_cost);
-            res.other_cost_eur = this.getValueinEuro(res.other_cost);
             this.warenEingangForm.patchValue(res);
             this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
             this.warenEingangForm.get('location')?.patchValue(res.location.id);

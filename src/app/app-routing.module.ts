@@ -9,7 +9,12 @@ export const routes: Routes = [
 {
   path: 'sitemap',
   loadComponent: () => import('./sitemap/sitemap.component').then(m => m.SitemapComponent),
-  canActivate: [routeGuard]
+  canActivate: [routeGuard],
+},
+{
+  path: 'refunds',
+  loadComponent: () => import('./admin/all-refunds/all-refunds.component').then(m => m.AllRefundsComponent),
+  canActivate: [routeGuard],
 },
 {
   path: 'products/:id/:name',

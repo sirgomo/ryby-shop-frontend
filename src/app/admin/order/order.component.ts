@@ -58,10 +58,10 @@ export class OrderComponent {
   getWertMinRefunds(best: iBestellung) {
     let wert = 0;
     for (let i = 0; i < best.refunds.length; i++) {
-      wert += +best.refunds[i].amount;
+      wert += Number(best.refunds[i].amount);
       if(best.refunds[i].produkte)
       for (let j = 0; j < best.refunds[i].produkte.length; j++) {
-        wert += +best.refunds[i].produkte[j].verkauf_price;
+        wert += Number(best.refunds[i].produkte[j].verkauf_price);
       }
     }
     return best.gesamtwert + ' (-'+ wert.toFixed(2) + ') ';

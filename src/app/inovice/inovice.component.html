@@ -112,6 +112,11 @@
               <div class="preise" *ngIf="item.amount != 0"> -{{item.amount}} &euro;</div>
               <div class="preise" *ngIf="item.amount == 0 "> -{{getItemRefund(item)}} &euro;</div>
           </div>
+          <div class="versand" *ngFor="let item of shopRefunds()">
+            <div class="art" > {{item.rueckgabegrund}} </div>
+            <div class="preise" *ngIf="item.amount != 0"> -{{item.amount}} &euro;</div>
+            <div class="preise" *ngIf="item.amount == 0 "> -{{getShopProduktRefund(item)}} &euro;</div>
+        </div>
           <div class="versand">
             <div class="art">Total:</div>
             <div class="preise"> {{getPriceWithShipping().toFixed(2) }} &euro;</div>

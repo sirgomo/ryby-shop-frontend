@@ -62,6 +62,9 @@ export class OrderRefundsComponent implements OnInit {
   }
   ngOnInit(): void {
     this.currentRefund.bestellung = this.data;
+    if(this.currentRefund.bestellung.refunds[0].id)
+      this.currentRefund.id = this.currentRefund.bestellung.refunds[0].id;
+
     this.currentRefund.is_corrective = 0;
 
   }
@@ -73,7 +76,7 @@ export class OrderRefundsComponent implements OnInit {
   addProdukt(prod: iProductBestellung) {
     const produktForm = this.fb.group({
       //produkt: [prod.produkt],
-      menge: [0, Validators.required],
+      menge: [prod.menge !== 0 ? prod.menge : 0, Validators.required],
       color: [prod.color, Validators.required],
       verkauf_price: [prod.verkauf_price  !== 0 ? prod.verkauf_price : 0, Validators.required]
     });
@@ -87,13 +90,19 @@ export class OrderRefundsComponent implements OnInit {
     Object.assign(this.currentRefund, this.refund.value);
     this.currentRefund.bestellung.paypal_order_id = this.currentRefund.paypal_refund_id;
     this.currentRefund.paypal_refund_id = '';
+    if(this.currentRefund.id && !this.currentRefund.is_corrective ) {
+      this.snack.open('Das Bestätigungskästchen, dass Sie die Rücksendung korrigieren möchten, muss aktiv sein, um dies zu tun.', 'Ok', { duration: 3000 });
+      return;
+    }
     if(this.currentRefund.is_corrective) {
       if(this.currentRefund.id) {
         this.currentRefund.corrective_refund_nr = this.currentRefund.id;
         this.currentRefund.id = undefined;
+        this.currentRefund = this.changeToNegative(this.currentRefund);
+        console.log(this.currentRefund);
       } else {
        this.snack.open('Es gibt kein id für der Refund!', 'Ok', {duration: 2500 });
-       this.refund;
+       return;
       }
 
     }
@@ -108,7 +117,15 @@ export class OrderRefundsComponent implements OnInit {
   isCorrective() {
     this.currentRefund.is_corrective = this.refund.get('is_corrective')?.getRawValue();
   }
+  private changeToNegative(item: iProduktRueckgabe) {
 
+    item.amount = -Math.abs(Number(item.amount));
+    for (let i = 0; i < item.produkte.length; i++) {
+      item.produkte[i].verkauf_price = -Math.abs(Number( item.produkte[i].verkauf_price));
+      item.produkte[i].menge = -Math.abs(Number(item.produkte[i].menge));
+    }
+    return item;
+  }
 
 }
 

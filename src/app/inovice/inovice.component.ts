@@ -16,6 +16,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { RefundService } from '../ebay/refund/refund.service';
 import { iRefunds } from '../model/iRefund';
+import { OrderRefundsService } from '../admin/order/order-refunds/order-refunds.service';
+import { iProduktRueckgabe } from '../model/iProduktRueckgabe';
+
 
 
 
@@ -34,8 +37,11 @@ export class InoviceComponent {
   currentItem: iBestellung = {} as iBestellung;
   company: iCompany = {} as iCompany;
   refunds = signal<iRefunds[]>([]);
+  shopRefunds = signal<iProduktRueckgabe[]>([]);
   columns: string[] = [ 'name','varia','rabat', 'stpreis', 'mwst', 'preis', 'brutto'];
-  item$ = forkJoin([this.orderService.getBestellungById(this.itemid), this.companyService.getAllCompanies(), this.refundService.getRefundById(this.data.id ? this.data.id : this.data.varsandnr as any)]).pipe(tap(([best, comp, refund]) => {
+  item$ = forkJoin([this.orderService.getBestellungById(this.itemid), this.companyService.getAllCompanies(),
+    this.refundService.getRefundById(this.data.id ? this.data.id : this.data.varsandnr as any)
+  ]).pipe(tap(([best, comp, refund]) => {
     this.currentItem = best;
     //ebay order have no id
     if(!this.currentItem.id) {
@@ -44,8 +50,14 @@ export class InoviceComponent {
       this.currentItem.id = this.data.varsandnr as any;
     }
 
-    if(refund[0].id !== -1)
-    this.refunds.set(refund);
+    if (refund[0].id !== -1) {
+        this.refunds.set(refund );
+      }
+
+    if(best.refunds && best.refunds.length > 0) {
+      this.shopRefunds.set(best.refunds);
+    }
+
 
     this.company = comp;
     this.isPromotion();
@@ -53,7 +65,8 @@ export class InoviceComponent {
 
 
     constructor(@Inject(MAT_DIALOG_DATA) public data: iBestellung, private readonly dialoRef: MatDialogRef<InoviceComponent>, private orderService: OrdersService,
-    public errorService: ErrorService, private companyService: CompanyService, @Inject(PLATFORM_ID) private readonly platformId: any, private refundService: RefundService){}
+    public errorService: ErrorService, private companyService: CompanyService, @Inject(PLATFORM_ID) private readonly platformId: any, private refundService: RefundService,
+    private readonly shopRefundService: OrderRefundsService){}
 
   private isPromotion() {
 
@@ -131,6 +144,15 @@ export class InoviceComponent {
         if(this.refunds()[i].refund_items)
           for (let j = 0; j < this.refunds()[i].refund_items.length; j++) {
         totalCost -= Number(this.refunds()[i].refund_items[j].amount);
+        }
+      }
+      if(this.shopRefunds().length > 0) {
+        for (let i = 0; i < this.shopRefunds().length; i++) {
+          totalCost -= Number(this.shopRefunds()[i].amount);
+          if(this.shopRefunds()[i].produkte && this.shopRefunds()[i].produkte.length > 0) {
+            for (let j = 0; j < this.shopRefunds()[i].produkte.length; j++)
+              totalCost -= Number(this.shopRefunds()[i].produkte[j].verkauf_price);
+          }
         }
       }
 
@@ -213,5 +235,12 @@ export class InoviceComponent {
       }
       return conut.toFixed(2);
     }
-
+    getShopProduktRefund(item: iProduktRueckgabe) {
+     let amount = 0;
+      if(item.produkte && item.produkte.length > 0) {
+        for (let j = 0; j < item.produkte.length; j++)
+          amount += Number(item.produkte[j].verkauf_price);
+      }
+      return amount;
+    }
 }

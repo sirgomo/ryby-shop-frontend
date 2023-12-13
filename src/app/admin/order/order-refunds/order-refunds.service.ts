@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { get } from 'http';
 import { BehaviorSubject, Observable, catchError, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { HelperService } from 'src/app/helper/helper.service';
@@ -44,6 +45,7 @@ export class OrderRefundsService {
         } else {
           //refund created, we need to update order for refund updates
           refund.bestellung.refunds = [...refund.bestellung.refunds, refund];
+          //update orders
           this.setOrder(refund.bestellung);
           const ref = [...this.refunds.value, res];
           this.refunds.next(ref);
@@ -58,7 +60,9 @@ export class OrderRefundsService {
       })
     )
   }
-  getRefundById(id: number) {}
+  getRefundById(id: number): Observable<iProduktRueckgabe> {
+    return this.httpClient.get<iProduktRueckgabe>(`${this.#api}/id`);
+  }
   getAllShopRefunds(count: number, sitenr: number): Observable<iProduktRueckgabe[]> {
 
 
@@ -75,6 +79,7 @@ export class OrderRefundsService {
       })
     );
   };
+
   deleteRefundById(id: number): Observable<iProduktRueckgabe[]> {
     return this.httpClient.delete<{raw: any, affected: number| null}>(`${this.#api}/${id}`).pipe(
       map((res) => {

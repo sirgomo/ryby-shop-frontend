@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
-import { Observable, catchError, combineLatest, map, of, shareReplay, switchMap, tap } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { BehaviorSubject, Observable, catchError, combineLatest, map, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ErrorService } from '../error/error.service';
 import { BESTELLUNGSSTATE, BESTELLUNGSSTATUS, iBestellung } from '../model/iBestellung';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { iOrderGetSettings } from '../model/iOrderGetSettings';
 import { HelperService } from '../helper/helper.service';
+import { iItemActions } from '../model/iItemActions';
 
 @Injectable({
   providedIn: 'root'
@@ -17,29 +18,20 @@ export class OrdersService {
 
   currentVersandStatusSig = signal(BESTELLUNGSSTATUS.INBEARBEITUNG);
   currentOrderStateSig = signal(BESTELLUNGSSTATE.BEZAHLT);
+  bestellungen : BehaviorSubject<iBestellung[]> = new BehaviorSubject<iBestellung[]>([]);
+  bestellung = signal<iItemActions<any>>({item: null, action: 'getall' })
+  items$ = combineLatest([toObservable(this.currentVersandStatusSig), toObservable(this.currentOrderStateSig), toObservable(this.helper.artikelProSiteSig),
+     toObservable(this.helper.pageNrSig), toObservable(this.bestellung)]).pipe(
+    switchMap(([verStat, orderStat, itemsQuan, sitenr, bestellung]) => {
+      if (bestellung.action === 'donothing')
+      return this.bestellungen.asObservable();
 
-
-  items$ = combineLatest([toObservable(this.currentVersandStatusSig), toObservable(this.currentOrderStateSig), toObservable(this.helper.artikelProSiteSig), toObservable(this.helper.pageNrSig)]).pipe(
-    switchMap(([verStat, orderStat, itemsQuan, sitenr]) => this.getBestellungen(verStat, orderStat, itemsQuan, sitenr)),
+      return this.getBestellungen(verStat, orderStat, itemsQuan, sitenr);
+    }),
     map((res) => {
       return res
     })
   );
-  itemsSig = toSignal(this.items$);
-  item = signal<iBestellung>({} as iBestellung);
-  ordersSig =  computed(() => {
-
-    const tmpItems = this.itemsSig();
-    if(tmpItems && this.item() && this.item().id !== undefined) {
-      const index = tmpItems.findIndex((item) => item.id === this.item().id);
-      if(index !== -1) {
-        const newItems = tmpItems;
-        newItems[index] = this.item();
-        return newItems;
-      }
-    }
-    return tmpItems;
-  })
   constructor(private http: HttpClient, private error: ErrorService, private helper: HelperService) { }
 
   getBestellungen(versStatus: string, orderState: string, itemsQuanity: number, sitenr: number): Observable<iBestellung[]> {
@@ -57,7 +49,8 @@ export class OrdersService {
 
     if(this.#role && this.#role === 'ADMIN') {
       return this.http.post<[[], number]>(this.#api+'/all/get/'+sitenr, settings).pipe(map((res) => {
-        this.helper.paginationCountSig.set(res[1])
+        this.helper.paginationCountSig.set(res[1]);
+        this.bestellungen.next(res[0])
         return res[0];
       }),
       catchError((err) => {
@@ -84,7 +77,14 @@ export class OrdersService {
   updateOrder(order: iBestellung): Observable<iBestellung> {
     return this.http.patch<iBestellung>(`${this.#api}/update`, order).pipe(map((res) => {
       if(res.id) {
-        this.item.set(res);
+        const current = this.bestellungen.value;
+        const index = current.findIndex((tmp) => tmp.id === res.id);
+        if(index === -1)
+          this.error.newMessage('Etwas ist schiefgelaufen, Index für update wurde nicht gefunden');
+
+        const newCurrent = current.slice(0);
+        newCurrent[index] = res;
+        this.bestellungen.next(newCurrent);
       }
       return res;
     }),
@@ -97,6 +97,7 @@ export class OrdersService {
     return this.http.get<[iBestellung[], number]>(`${this.#api}/kunde/${kunde}`).pipe(
       map((res) => {
         this.helper.paginationCountSig.set(res[1]);
+        this.bestellungen.next(res[0])
       return res[0];
     }),
     catchError((err) => {

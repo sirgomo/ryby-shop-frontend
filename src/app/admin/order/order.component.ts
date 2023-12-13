@@ -13,6 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OrderRefundsComponent } from './order-refunds/order-refunds.component';
+import { PaginatorComponent } from 'src/app/paginator/paginator.component';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-order',
@@ -20,18 +22,16 @@ import { OrderRefundsComponent } from './order-refunds/order-refunds.component';
   styleUrls: ['./order.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, OrderSelectorComponent, MatTableModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule]
+  imports: [CommonModule, OrderSelectorComponent, MatTableModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, PaginatorComponent]
 })
-export class OrderComponent implements OnDestroy{
+export class OrderComponent {
 
 
-  ordersSig = this.oderService.ordersSig;
+  ordersSig = toSignal(this.oderService.items$);
 
   columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt', 'inovice', 'refund'];
-  constructor(private readonly oderService: OrdersService, public error: ErrorService, private readonly dialog: MatDialog, private helperService: HelperService) {}
-  ngOnDestroy(): void {
-    this.helperService.artikelProSiteSig.set(0);
-  }
+  constructor(private readonly oderService: OrdersService, public error: ErrorService, private readonly dialog: MatDialog) {}
+
 
   openDetailts(item: iBestellung) {
     const conf: MatDialogConfig = new MatDialogConfig();
@@ -50,7 +50,7 @@ export class OrderComponent implements OnDestroy{
   refund(order: iBestellung) {
     const conf : MatDialogConfig = new MatDialogConfig();
     conf.width = '100%';
-
+    order.refunds = [];
     conf.data = order;
 
     this.dialog.open(OrderRefundsComponent, conf);

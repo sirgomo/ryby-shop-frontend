@@ -63,6 +63,10 @@
         </ng-container>
       </ng-container>
       <mat-checkbox formControlName="is_corrective" (change)="isCorrective()">Korrektur ?</mat-checkbox>
+      <mat-form-field *ngIf="currentRefund.is_corrective">
+        <mat-label>Korrigierte Id</mat-label>
+        <input formControlName="corrective_refund_nr" matInput type="number" />
+      </mat-form-field>
       </form>
       <div *ngIf="bestellungSig() && bestellungSig()?.produkte as produkts">
         <table mat-table [dataSource]="produkts" class="mat-elevation-z8">

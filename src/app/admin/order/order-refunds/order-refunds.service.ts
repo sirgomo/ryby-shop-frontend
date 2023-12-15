@@ -19,8 +19,8 @@ export class OrderRefundsService {
   #api = environment.api + 'shop-refund';
   refunds: BehaviorSubject<iProduktRueckgabe[]> = new BehaviorSubject<iProduktRueckgabe[]>([]);
   actionsSig = signal<iItemActions<any>>({ item: null, action: 'donothing' });
-  refunds$ = combineLatest([toObservable(this.helperService.artikelProSiteSig), toObservable(this.helperService.pageNrSig), toObservable(this.actionsSig)]).pipe(
-    switchMap(([count, sitenr, act]) => {
+  refunds$ = combineLatest([toObservable(this.helperService.searchSig), toObservable(this.helperService.artikelProSiteSig), toObservable(this.helperService.pageNrSig), toObservable(this.actionsSig)]).pipe(
+    switchMap(([search, count, sitenr, act]) => {
       if( act.action === 'donothing')
         return this.refunds.asObservable();
 
@@ -29,7 +29,7 @@ export class OrderRefundsService {
       }
 
 
-      return this.getAllShopRefunds(count, sitenr);
+      return this.getAllShopRefunds(search, count, sitenr);
     }),
     map((res) => {
       return res;
@@ -63,10 +63,11 @@ export class OrderRefundsService {
   getRefundById(id: number): Observable<iProduktRueckgabe> {
     return this.httpClient.get<iProduktRueckgabe>(`${this.#api}/id`);
   }
-  getAllShopRefunds(count: number, sitenr: number): Observable<iProduktRueckgabe[]> {
+  getAllShopRefunds(search: string, count: number, sitenr: number): Observable<iProduktRueckgabe[]> {
+    if(search.length < 1)
+      search = 'null';
 
-
-    return this.httpClient.get<[iProduktRueckgabe[], number]>(`${this.#api}/${count}/${sitenr}`).pipe(
+    return this.httpClient.get<[iProduktRueckgabe[], number]>(`${this.#api}/${search}/${count}/${sitenr}`).pipe(
       map((res) => {
         this.helperService.paginationCountSig.set(res[1]);
         this.refunds.next(res[0]);

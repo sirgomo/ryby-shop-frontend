@@ -6,4 +6,5 @@ export interface iRefundItem {
   refund_item: iRefunds;
   amount: number;
   sku:string;
+  item_quanity:number;
 }

@@ -13,11 +13,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { OrderRefundsComponent } from '../order/order-refunds/order-refunds.component';
 import { iProduktRueckgabe } from 'src/app/model/iProduktRueckgabe';
+import { ShowEbayRefundsComponent } from './show-ebay-refunds/show-ebay-refunds.component';
 
 @Component({
   selector: 'app-all-refunds',
   standalone: true,
-  imports: [CommonModule, MatTabsModule, MatTableModule, ErrorComponent, PaginatorComponent, ProductsQuanitySelectorComponent, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatTabsModule, MatTableModule, ErrorComponent, PaginatorComponent, ProductsQuanitySelectorComponent, MatButtonModule, MatIconModule, ShowEbayRefundsComponent],
   templateUrl: './all-refunds.component.html',
   styleUrl: './all-refunds.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

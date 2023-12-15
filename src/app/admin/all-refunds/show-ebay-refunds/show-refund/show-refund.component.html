@@ -1,0 +1,32 @@
+<div class="dialog">
+<h1 matDialogTitle>Refund Details</h1>
+
+<mat-dialog-content>
+  <p><strong>Order ID:</strong> {{ refund()?.orderId }}</p>
+  <p><strong>Creation Date:</strong> {{ refund()?.creationDate }}</p>
+  <p><strong>Reason:</strong> {{ refund()?.reason }}</p>
+  <p><strong>Comment:</strong> {{ refund()?.comment }}</p>
+  <p><strong>Amount:</strong> {{ refund()?.amount }}</p>
+  <h3>Refund Items:</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>SKU:</th>
+        <th>Geld Amount:</th>
+        <th>Menge:</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of refund()?.refund_items">
+        <td>{{ item.sku }}</td>
+        <td>{{ item.amount }}</td>
+        <td>{{ item.item_quanity }}</td>
+      </tr>
+    </tbody>
+  </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button matDialogClose>Refund schlissen</button>
+</mat-dialog-actions>
+</div>

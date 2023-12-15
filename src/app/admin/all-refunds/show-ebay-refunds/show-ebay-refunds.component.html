@@ -1,0 +1,31 @@
+<table mat-table [dataSource]="refundSig()">
+  <ng-container matColumnDef="order">
+    <th mat-header-cell *matHeaderCellDef>Order Id</th>
+    <td mat-cell *matCellDef="let item"><button mat-stroked-button color="primary" (click)="openRefund(item)">{{item.orderId}}</button></td>
+  </ng-container>
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef>Refund Date</th>
+    <td mat-cell *matCellDef="let item"> {{ item.creationDate | date: 'dd/MM/YY'}}</td>
+  </ng-container>
+  <ng-container matColumnDef="comm">
+    <th mat-header-cell *matHeaderCellDef>Grund der Refund</th>
+    <td mat-cell *matCellDef="let item">{{ item.comment}}</td>
+  </ng-container>
+  <ng-container matColumnDef="amount">
+    <th mat-header-cell *matHeaderCellDef>Summe</th>
+    <td mat-cell *matCellDef="let item"> {{ item.amount}}</td>
+  </ng-container>
+  <ng-container matColumnDef="items">
+    <th mat-header-cell *matHeaderCellDef>Produkt zahl</th>
+    <td mat-cell *matCellDef="let item"> {{item.refund_items ? item.refund_items.length : '0'}}</td>
+  </ng-container>
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef>Refund Löschen</th>
+    <td mat-cell *matCellDef="let item">
+      <button mat-stroked-button color="warn" (click)="delete(item)">
+      <mat-icon class="mat-18">delete</mat-icon>Löschen</button>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="columns"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns"></tr>
+</table>

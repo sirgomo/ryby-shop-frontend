@@ -84,12 +84,13 @@ export class RefundComponent implements OnInit{
       refund_item: this.refund,
       amount: 0,
       sku: transactionItem.sku,
+      item_quanity: 0,
     })
 
     this.refund_items.push(item);
   }
   getTitle(_t55: number): any {
-    return this.data.lineItems[_t55].title;
+    return  this.data.lineItems ? this.data.lineItems[_t55].title : '';
   }
   submitRefund() {
     const refund = this.refundForm.value as iRefunds;

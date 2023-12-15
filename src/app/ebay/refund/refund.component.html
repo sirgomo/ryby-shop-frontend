@@ -30,7 +30,11 @@
 
 
       <div formArrayName="refund_items" class="items">
-        <div *ngFor="let item of refund_items.controls; let i=index" [formGroupName]="i">
+        <div *ngFor="let item of refund_items.controls; let i=index" [formGroupName]="i" class="row">
+          <mat-form-field>
+            <mat-label>Product Menge</mat-label>
+            <input matInput formControlName="item_quanity" placeholder="Product Menge" type="number">
+          </mat-form-field>
           <mat-form-field>
             <mat-label>Amount</mat-label>
             <input matInput formControlName="amount" placeholder="Amount" type="number">

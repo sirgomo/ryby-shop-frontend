@@ -106,7 +106,7 @@ export class EbayComponent {
     }
 
     itemB.produkte = items;
-
+    itemB.versandprice = Number(itemB.versandprice.toFixed(2));
 
     const dialogConf: MatDialogConfig = new MatDialogConfig();
     dialogConf.data = itemB;

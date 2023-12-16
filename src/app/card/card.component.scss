@@ -32,8 +32,9 @@ mat-cell {
 }
 .colorItem {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: .1rem;
+  gap: .2rem;
  .item {
   display: flex;
   align-items: center;

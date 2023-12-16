@@ -20,7 +20,8 @@ import { Observable } from 'rxjs';
 export class ShippingCostComponent {
 
 
-  columns = ['id', 'shipping_name', 'shipping_price', 'average_material_price', 'actions'];
+  columns = ['Id', 'Shipping Name', 'Shipping Price', 'Material price', 'Paushale per artikel', 'Actions'];
+
   act$ = new Observable();
   constructor(public readonly shippingService: ShippingCostService) {}
   newOrEditShipping(item?: IShippingCost) {
@@ -30,6 +31,7 @@ export class ShippingCostComponent {
       newItem.shipping_name = item.shipping_name;
       newItem.shipping_price =  +item.shipping_price;
       newItem.average_material_price = +item.average_material_price;
+      newItem.cost_per_added_stuck = +item.cost_per_added_stuck;
       this.act$ = this.shippingService.updateShipping(newItem);
       return;
     }
@@ -37,6 +39,7 @@ export class ShippingCostComponent {
     newItem.shipping_name = 'New shipping';
     newItem.shipping_price = 0;
     newItem.average_material_price = 0;
+    newItem.cost_per_added_stuck = 0;
     this.act$ = this.shippingService.createShipping(newItem);
 
   }

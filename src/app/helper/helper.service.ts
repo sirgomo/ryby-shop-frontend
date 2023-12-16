@@ -32,8 +32,8 @@ import { iItemActions } from '../model/iItemActions';
     uploadProgersSig = signal<number>(0);
     appComponenet!: AppComponent;
     buyerAcc: iUserData = {} as iUserData;
-    versandAndKost = signal<IShippingCost[]>([{ shipping_name: 'Selbstabholung', shipping_price: 0, average_material_price: 0 }]);
-    selectedVersandMethod : IShippingCost | null = null;
+    versandAndKost = signal<IShippingCost[]>([{ shipping_name: 'Selbstabholung', shipping_price: 0, average_material_price: 0, cost_per_added_stuck: 0 }]);
+    selectedVersandMethod = signal<IShippingCost | null>(null);
     paginationCountSig = signal(0);
     isShippingCostSelected = signal(false);
 

@@ -117,9 +117,9 @@ export class ShippingAddressComponent {
       products.push(item);
     }
     newBestellung.produkte = products;
-    if(this.helperService.selectedVersandMethod !== null) {
-      newBestellung.versandprice = Number(this.helperService.selectedVersandMethod.shipping_price);
-      newBestellung.versandart = this.helperService.selectedVersandMethod.shipping_name;
+    if(this.helperService.selectedVersandMethod() !== null) {
+      newBestellung.versandprice = Number(this.helperService.selectedVersandMethod()!.shipping_price);
+      newBestellung.versandart = this.helperService.selectedVersandMethod()!.shipping_name;
     } else {
       this.snack.open('Bitte wählen Sie eine Versandart', 'Ok', { duration: 3000 });
     }

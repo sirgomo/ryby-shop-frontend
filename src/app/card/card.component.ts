@@ -24,6 +24,7 @@ import { IShippingCost } from '../model/iShippingCost';
 })
 export class CardComponent implements OnInit, OnDestroy {
 
+
   products = this.helper.cardSig;
   company = {} as iCompany;
   act$ = new Observable();
@@ -32,10 +33,10 @@ export class CardComponent implements OnInit, OnDestroy {
   columns: string[] = ['sku', 'name', 'color', 'toTmenge', 'priceSt', 'mwst', 'totalPrice', 'remove'];
     constructor (public readonly helper: HelperService, private companyService: CompanyService) {}
   ngOnDestroy(): void {
-    this.helper.selectedVersandMethod = null;
+    this.helper.selectedVersandMethod.set(null);
   }
   ngOnInit(): void {
-    this.helper.selectedVersandMethod = null;
+    this.helper.selectedVersandMethod.set(null);
     this.helper.isShippingCostSelected.set(false);
     this.act$ = this.companyService.getCompanyById(1).pipe(map((res) => {
       this.setInitialVersandKosten();
@@ -51,6 +52,7 @@ export class CardComponent implements OnInit, OnDestroy {
   }
   setInitialVersandKosten() {
     for (let i = 0; i < this.products().length; i++) {
+      if(this.products()[i].shipping_costs)
       for(let j = 0; j < this.products()[i].shipping_costs.length; j++) {
           if(this.helper.versandAndKost().length === 1) {
             this.helper.versandAndKost().push(this.products()[i].shipping_costs[j]);
@@ -79,6 +81,7 @@ export class CardComponent implements OnInit, OnDestroy {
       items.splice(index, 1);
       const newtab = items.slice(0);
       this.helper.cardSig.set(newtab);
+      this.helper.selectedVersandMethod.set(null);
       return;
     }
 
@@ -94,6 +97,7 @@ export class CardComponent implements OnInit, OnDestroy {
       this.helper.cardSig.set([]);
       this.helper.cardSigForMengeControl.set([]);
       this.getTotalCount();
+      this.helper.selectedVersandMethod.set(null);
       return;
     }
     const newTab = tmp.slice(0);
@@ -102,6 +106,7 @@ export class CardComponent implements OnInit, OnDestroy {
     controlItems.splice(itemIndex,1);
     this.helper.cardSigForMengeControl.set(controlItems);
     this.getTotalCount();
+    this.helper.selectedVersandMethod.set(null);
   }
   getTotalPrice(itemIndex: number) {
     if(!this.products()[itemIndex])
@@ -177,7 +182,10 @@ export class CardComponent implements OnInit, OnDestroy {
     return (Number(this.getTotalPriceNetto()) + Number(this.getTotalMwst())).toFixed(2);
   }
   setVersandKosten(value: IShippingCost) {
-    this.helper.selectedVersandMethod = value;
+    let item: IShippingCost = {} as IShippingCost;
+    Object.assign(item, value);
+    item.shipping_price = this.getShippingCost(value.shipping_price);
+    this.helper.selectedVersandMethod.set(item);
     this.helper.isShippingCostSelected.set(true);
   }
   doWeHaveEnough(index: number) :boolean {
@@ -203,9 +211,23 @@ export class CardComponent implements OnInit, OnDestroy {
   getTotalPriceWithShipping() {
     if(this.products().length === 0)
     return 0;
-    if(this.helper.selectedVersandMethod !== null)
-     return (Number(this.getTotalBrutto()) + Number(this.helper.selectedVersandMethod.shipping_price)).toFixed(2);
+    if(this.helper.selectedVersandMethod() !== null)
+     return (Number(this.getTotalBrutto()) + Number(this.helper.selectedVersandMethod()!.shipping_price)).toFixed(2);
     else
     return 0;
   }
+
+  getShippingCost(arg0: number) {
+    let pauschalecost = 0;
+
+        for (let i = 0; i < this.products().length; i++) {
+          if(this.getTotalCount() > 1) {
+            if(this.products()[i].shipping_costs)
+            pauschalecost += Number(this.products()[i].shipping_costs[0].cost_per_added_stuck) * Number(this.products()[i].variations[0].quanity);
+          }
+        }
+
+    //TODO Tax must also be charged on shipping too.
+    return +arg0 + pauschalecost;
+    }
 }

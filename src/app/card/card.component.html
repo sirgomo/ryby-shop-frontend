@@ -86,7 +86,7 @@
   <div>Versandkosten: </div>
   <mat-form-field>
     <mat-select placeholder="Versand art" (selectionChange)="setVersandKosten($event.value)">
-      <mat-option *ngFor="let item of helper.versandAndKost()" [value]="item">{{item.shipping_price === 0 ? item.shipping_name : item.shipping_name + ' : ' +item.shipping_price}}</mat-option>
+      <mat-option *ngFor="let item of helper.versandAndKost()" [value]="item">{{item.shipping_price === 0 ? item.shipping_name : item.shipping_name + ' : ' +getShippingCost(item.shipping_price)}}</mat-option>
 
 
   </mat-select>

@@ -73,8 +73,8 @@
 
           <ng-container matColumnDef="preis">
             <th mat-header-cell *matHeaderCellDef>Umsatzsteuer</th>
-            <td mat-cell *matCellDef="let item; let i = index">{{ getTaxProStuck(i) }} &euro;</td>
-            <td mat-footer-cell *matFooterCellDef>{{getTax()}} &euro;</td>
+            <td mat-cell *matCellDef="let item; let i = index">{{ getTaxProStuck(i).toFixed(2) }} &euro;</td>
+            <td mat-footer-cell *matFooterCellDef>{{getTax().toFixed(2)}} &euro;</td>
           </ng-container>
 
           <ng-container matColumnDef="mwst">
@@ -104,7 +104,7 @@
         <tr >
           <div class="versand">
             <div class="art">{{currentItem.versandart}} Versandkosten: </div>
-            <div class="preise"> {{currentItem.versandprice}} &euro;</div>
+            <div class="preise"> {{currentItem.versandprice.toFixed(2)}} &euro;</div>
           </div>
 
             <div class="versand" *ngFor="let item of refunds()">
@@ -115,7 +115,7 @@
           <div class="versand" *ngFor="let item of shopRefunds()">
             <div class="art" > {{item.rueckgabegrund}} </div>
             <div class="preise" *ngIf="item.amount != 0"> -{{item.amount}} &euro;</div>
-            <div class="preise" *ngIf="item.amount == 0 "> -{{getShopProduktRefund(item)}} &euro;</div>
+            <div class="preise" *ngIf="item.amount == 0 "> -{{getShopProduktRefund(item).toFixed(2)}} &euro;</div>
         </div>
           <div class="versand">
             <div class="art">Total:</div>

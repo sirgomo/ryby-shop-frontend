@@ -58,6 +58,10 @@
         <mat-label>Fax</mat-label>
         <input matInput formControlName="fax">
       </mat-form-field>
+      <div class="mat-form-field">
+        <mat-label>Urlop aktiv ?</mat-label>
+        <mat-checkbox (change)="setUrlop()"></mat-checkbox>
+      </div>
     </div>
     <div class="textrow">
       <mat-form-field>

@@ -20,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [ErrorComponent, CommonModule, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatCheckboxModule, MatInputModule, MatButtonModule]
 })
 export class CompanyComponent {
+
   companyForm: FormGroup;
   companies!: iCompany;
   currentCompany = {} as iCompany;
@@ -105,4 +106,14 @@ export class CompanyComponent {
       return res;
     }))
   }
+  setUrlop() {
+    if(!this.currentCompany.is_in_urlop) {
+
+    } else {
+      if(window)
+      if(window.confirm('Möchten Sie wirklich den Urlaub ausschalten? (Der Urlaub wird auch auf eBay deaktiviert)')) {
+
+      }
+    }
+    }
 }

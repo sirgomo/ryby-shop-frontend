@@ -16,4 +16,5 @@ export interface iCompany {
   daten_schutzt: string;
   cookie_info: string;
   ebay_refresh_token?: string;
+  is_in_urlop: boolean;
 }

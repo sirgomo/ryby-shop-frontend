@@ -6,9 +6,11 @@
 .row {
   display: flex;
   gap: .5rem;
+  margin-bottom: .5rem;
 }
 .textrow {
   display: flex;
+  margin-bottom: .5rem;
   width: 100%;
   mat-form-field {
     width: 100%;

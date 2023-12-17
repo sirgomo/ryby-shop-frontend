@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of, shareReplay } from 'rxjs';
+import { Injectable, Signal, signal } from '@angular/core';
+import { Observable, catchError, map, of, shareReplay, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iCompany } from 'src/app/model/iCompany';
+import { iUrlop } from 'src/app/model/iUrlop';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -10,6 +11,8 @@ import { environment } from 'src/environments/environment';
 })
 export class CompanyService {
   private apiUrl = environment.api + 'company';
+  urlop : Observable<iUrlop[]> | null = null;
+
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
   getAllCompanies(): Observable<iCompany> {
@@ -66,4 +69,16 @@ export class CompanyService {
       shareReplay(1)
     );
   }
+getUrlop(): Observable<iUrlop[]> {
+  if(this.urlop) {
+    return this.urlop;
+  }
+  return this.http.get<iUrlop[]>(`${this.apiUrl}/urlop/get`).pipe(
+    tap(res => {
+    this.urlop = of(res);
+  }))
+}
+setUrlop(urlop: iUrlop): Observable<{raw: any, affected: number, generatedMaps: []}> {
+  return this.http.post<{raw: any, affected: number, generatedMaps: []}>(`${this.apiUrl}/urlop/post`, urlop);
+}
 }

@@ -14,6 +14,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CoockieInfoComponent } from './admin/company/coockie-info/coockie-info.component';
 import { Subscription, filter } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { CompanyService } from './admin/company/company.service';
+import { ShowUrlopComponent } from './admin/show-urlop/show-urlop.component';
 
 
 declare const gtag: Function;
@@ -25,7 +27,7 @@ declare const gtag: Function;
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ FooterComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule, MatButtonModule, MatProgressSpinnerModule]
+  imports: [ FooterComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule, MatButtonModule, MatProgressSpinnerModule, ShowUrlopComponent]
 })
 export class AppComponent  implements OnInit, OnDestroy{
 
@@ -40,7 +42,7 @@ export class AppComponent  implements OnInit, OnDestroy{
   currentRouterSub = new Subscription();
 
   constructor(private readonly helper: HelperService, private readonly dialog: MatDialog, private readonly katService: KategorieService,
-  private readonly router: Router, @Inject(PLATFORM_ID) private readonly platformId: any) {
+  private readonly router: Router, @Inject(PLATFORM_ID) private readonly platformId: any, public readonly companyService: CompanyService) {
     this.helper.setApp(this);
   }
 

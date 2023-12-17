@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { iCompany } from 'src/app/model/iCompany';
 import { CompanyService } from './company.service';
-import { Observable, map } from 'rxjs';
+import { Observable, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { CommonModule } from '@angular/common';
@@ -10,6 +10,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { AddUrlopComponent } from '../show-urlop/add-urlop/add-urlop.component';
+import { iUrlop } from 'src/app/model/iUrlop';
 
 @Component({
   selector: 'app-company',
@@ -25,7 +28,7 @@ export class CompanyComponent {
   companies!: iCompany;
   currentCompany = {} as iCompany;
   act$ = new Observable();
-  constructor(private formBuilder: FormBuilder, private companyService: CompanyService, public errorServeice: ErrorService) {
+  constructor(private formBuilder: FormBuilder, private companyService: CompanyService, public errorServeice: ErrorService, private readonly dialog: MatDialog) {
     this.companyForm = this.formBuilder.group({
       id: [''],
       name: [''],
@@ -42,7 +45,8 @@ export class CompanyComponent {
       eu_komm_hinweis: [''],
       agb: [''],
       daten_schutzt: [''],
-      cookie_info: ['']
+      cookie_info: [''],
+      is_in_urlop: [false],
     });
   }
 
@@ -77,6 +81,7 @@ export class CompanyComponent {
       agb: company.agb,
       daten_schutzt: company.daten_schutzt,
       cookie_info: company.cookie_info,
+      is_in_urlop: company.is_in_urlop,
     });
   }
   save() {
@@ -85,6 +90,7 @@ export class CompanyComponent {
    if(this.companyForm.get('isKleinUnternehmen')?.getRawValue() === false) {
     this.currentCompany.isKleinUnternehmen = 0;
    }
+
 
 
     if(!this.currentCompany.id)
@@ -107,12 +113,41 @@ export class CompanyComponent {
     }))
   }
   setUrlop() {
+    let dialogRef: MatDialogRef<AddUrlopComponent>
     if(!this.currentCompany.is_in_urlop) {
+      const conf = new MatDialogConfig();
+      conf.width = '100%';
+      conf.height = '100%';
+      conf.data = {id: this.currentCompany.id};
 
+     dialogRef = this.dialog.open(AddUrlopComponent, conf);
+     dialogRef.afterClosed().subscribe((res) => {
+      if(res === undefined)
+      this.companyForm.patchValue({ 'is_in_urlop': false});
+      else
+      this.currentCompany.is_in_urlop = true;
+     })
     } else {
       if(window)
       if(window.confirm('Möchten Sie wirklich den Urlaub ausschalten? (Der Urlaub wird auch auf eBay deaktiviert)')) {
+        const item = {} as iUrlop;
+        if(this.currentCompany.id)
+        item.id = this.currentCompany.id;
+        item.is_in_urlop = false;
 
+       this.act$ = combineLatest([this.act$, of(item)]).pipe(
+          switchMap(([curr, item]) =>  this.companyService.setUrlop(item)),
+          map((res) =>  {
+            if(res.affected === 1) {
+              this.companyForm.patchValue({ 'is_in_urlop': false});
+              this.currentCompany.is_in_urlop = false;
+            }
+
+
+            return this.currentCompany;
+
+          })
+        )
       }
     }
     }

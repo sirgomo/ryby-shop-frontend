@@ -18,6 +18,7 @@ Continuous application development
   - Order management, order status, a certain form of commissioning
   - Company profile management
   - Generating a PDF invoice based on an order (with the ability to save, print).
+  - Setting up vacation info, meaning information that shipment will take place only after returning from vacation
 
 
 3. Home page with a list of products and sorting by category, Search Functionality on item name

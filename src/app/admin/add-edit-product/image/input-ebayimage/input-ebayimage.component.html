@@ -1,0 +1,16 @@
+<div class="h2">
+  <h3>Gib der Link ein</h3>
+  <div class="close">
+    <button mat-icon-button (click)="closeDialog()" color="warn">
+        <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="content">
+  <mat-form-field>
+    <mat-label>Link:</mat-label>
+    <input type="text" [(ngModel)]="link" matInput>
+  </mat-form-field>
+  <button mat-stroked-button (click)="close()" color="primary">Link speichern</button>
+</div>
+<span *ngIf="act$ | async"></span>

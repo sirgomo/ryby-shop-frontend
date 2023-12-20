@@ -1,6 +1,7 @@
 .imginput {
   flex: 1;
   z-index: 9999;
+  margin-top: .5rem;
   .upload {
     display: flex;
     gap: .1rem;
@@ -12,5 +13,13 @@
   }
   .progress-bar {
     margin-top: .1rem;
+  }
+}
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+  button {
+    width: 60%;
   }
 }

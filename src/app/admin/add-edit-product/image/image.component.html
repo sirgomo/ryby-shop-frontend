@@ -1,6 +1,3 @@
-<div *ngIf="errorService.message() && errorService.message().length > 2">
-  <app-error></app-error>
-</div>
 <ng-container [ngTemplateOutlet]=" element.image || element.produkt_image ? imageok : noimage" [ngTemplateOutletContext]="{element : element}"></ng-container>
 <ng-template #imageok let-element="element">
   <div class="upload">
@@ -15,7 +12,10 @@
 <ng-template #noimage let-element="element">
   <div class="imginput">
     <div class="upload">
-      <input type="file" id="img" (change)="onFileChange($event)" accept="image/*"  />
+      <div class="inputs">
+        <input type="file" id="img" (change)="onFileChange($event)" accept="image/*"  />
+        <button mat-stroked-button color="primary" (click)="openLinkInput(element)">Ebay -Image link</button>
+      </div>
       <button mat-mini-fab color="primary" class="upload-btn" *ngIf=" helperService.uploadProgersSig() === 0"
       (click)="uploadPhoto(element)">
         <mat-icon>attach_file</mat-icon>

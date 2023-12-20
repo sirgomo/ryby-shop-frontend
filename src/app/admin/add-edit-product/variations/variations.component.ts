@@ -11,7 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { iProduct } from 'src/app/model/iProduct';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreateVariationComponent } from './create-variation/create-variation.component';
-import { Observable} from 'rxjs';
+import { Observable, of} from 'rxjs';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
 import { MatInputModule } from '@angular/material/input';

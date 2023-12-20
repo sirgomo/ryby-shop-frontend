@@ -149,6 +149,7 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
         this.getImage(this.images()[0]);
         return;
       }
+
     this.images().unshift(image);
     this.getImage(image);
   }

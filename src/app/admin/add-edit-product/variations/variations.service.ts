@@ -1,10 +1,12 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, EMPTY, Observable, Subject, catchError, combineLatest, finalize, map, takeUntil, tap, throwError } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject, catchError, combineLatest, finalize, map, switchMap, takeUntil, tap, throwError } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { HelperService } from 'src/app/helper/helper.service';
+import { iEbayImageLink } from 'src/app/model/ebay/iEbayImageLink';
 import { iDelete } from 'src/app/model/iDelete';
+import { iItemActions } from 'src/app/model/iItemActions';
 import { iProduktVariations } from 'src/app/model/iProduktVariations';
 import { environment } from 'src/environments/environment';
 
@@ -18,9 +20,11 @@ export class VariationsService {
 
   variations : BehaviorSubject<iProduktVariations[]> = new BehaviorSubject<iProduktVariations[]>([]);
   images = signal<string[]>([]);
+  acction: BehaviorSubject<iItemActions<any>> = new BehaviorSubject({} as iItemActions<any>);
+  variations$ = combineLatest([this.acction.asObservable()]).pipe(switchMap(([act]) => {
 
-  variations$ = combineLatest([this.findAllforSelect()]).pipe(map(([find]) => {
-      return find;
+
+    return this.findAllforSelect();
   }));
 
 
@@ -164,5 +168,11 @@ deleteImage(image: iDelete) {
       return res;
     })
   )
+}
+//save ebay link or link from other source
+saveEbayImageLink(link: iEbayImageLink) {
+  return this.httpClient.post(`${this.#api}/imagelink`, link).pipe(map( res => {
+   return res;
+  }))
 }
 }

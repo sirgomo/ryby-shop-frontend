@@ -24,7 +24,6 @@ export class SelectComponent implements OnInit{
   constructor(@Inject(PLATFORM_ID) private platformId: any) {}
   ngOnInit(): void {
     this.sortedVarations = getSortedVariation(this.item);
-    this.current.emit(this.item.variations[0]);
   }
 
   colorChange(index: any) {

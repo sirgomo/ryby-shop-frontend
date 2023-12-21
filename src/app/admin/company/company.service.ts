@@ -76,7 +76,9 @@ getUrlop(): Observable<iUrlop[]> {
   return this.http.get<iUrlop[]>(`${this.apiUrl}/urlop/get`).pipe(
     tap(res => {
     this.urlop = of(res);
-  }))
+  }),
+  shareReplay(1)
+  )
 }
 setUrlop(urlop: iUrlop): Observable<{raw: any, affected: number, generatedMaps: []}> {
   return this.http.post<{raw: any, affected: number, generatedMaps: []}>(`${this.apiUrl}/urlop/post`, urlop);

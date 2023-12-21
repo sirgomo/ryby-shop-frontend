@@ -41,13 +41,14 @@ export class ItemComponent implements OnInit {
   ngOnInit(): void {
 
     if(this.item) {
-      this.current = this.item.variations[0];
+
 
       if(this.item.produkt_image)
         this.getImage(this.item.produkt_image);
       else
         this.getImage(this.item.variations[0].image);
 
+      this.current = this.item.variations[0];
       this.sortedVarations = getSortedVariation(this.item);
 
     }
@@ -58,6 +59,7 @@ export class ItemComponent implements OnInit {
       return;
     if(!this.item.id)
       return
+
 
     this.image = undefined;
        this.act$ =  this.variationService.getThumbnails(item).pipe(map(res => {

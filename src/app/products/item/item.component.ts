@@ -28,7 +28,7 @@ export class ItemComponent implements OnInit {
   @Input() item!: iProduct;
   @ViewChild('select') select!: ElementRef;
   act$ = new Observable();
-  image!: SafeResourceUrl | undefined;
+  image: SafeResourceUrl | undefined;
 
   images: string[] = [];
   current!: iProduktVariations;
@@ -42,7 +42,12 @@ export class ItemComponent implements OnInit {
 
     if(this.item) {
       this.current = this.item.variations[0];
-      this.getImage(this.item.variations[0].image)
+
+      if(this.item.produkt_image)
+        this.getImage(this.item.produkt_image);
+      else
+        this.getImage(this.item.variations[0].image);
+
       this.sortedVarations = getSortedVariation(this.item);
 
     }

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -15,7 +15,8 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule, CommonModule, MatIconModule],
   templateUrl: './input-ebayimage.component.html',
-  styleUrl: './input-ebayimage.component.scss'
+  styleUrl: './input-ebayimage.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputEbayimageComponent {
   link: string = '';
@@ -26,8 +27,11 @@ export class InputEbayimageComponent {
   close() {
     const item = { link: this.link, id: this.data.sku}
     this.act$ = this.variService.saveEbayImageLink(item).pipe(tap(res => {
-    if(res == null)
-     return this.snack.open('Etwas ist sichefgelaufen, item wurde nicht gefunden!', 'Ok', { duration: 2000 })
+    if(res == null) {
+      this.act$ = new Observable();
+      return this.snack.open('Etwas ist sichefgelaufen, item wurde nicht gefunden!', 'Ok', { duration: 2000 })
+    }
+
 
     return  this.dialRef.close(res);
     }))

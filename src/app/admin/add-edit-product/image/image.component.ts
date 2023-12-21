@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { iProduct } from 'src/app/model/iProduct';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { InputEbayimageComponent } from './input-ebayimage/input-ebayimage.component';
-import { iEbayImageLink } from 'src/app/model/ebay/iEbayImageLink';
+
 
 @Component({
   selector: 'app-image',
@@ -42,7 +42,9 @@ export class ImageComponent {
 
             if(this.helperService.uploadProgersSig() > 99 || this.helperService.uploadProgersSig() === 0  )
             {
+              this.send$ = new Observable();
               this.variationAktualisation(act, element);
+
             }
 
           }
@@ -58,6 +60,7 @@ export class ImageComponent {
                 const tmp = act as unknown as { imageid: string };
                 element.produkt_image = tmp.imageid;
                 this.send.emit(tmp.imageid);
+                this.send$ = new Observable();
               }
             }
             return act;
@@ -68,7 +71,6 @@ export class ImageComponent {
   }
   private variationAktualisation(act: Object, element: iProduktVariations) {
     const tmp = act as unknown as { imageid: string; };
-
     const items = this.variationService.variations.value;
     const index = items.findIndex((item) => element.sku === item.sku);
     const newItems = items.slice(0);
@@ -85,7 +87,6 @@ cancelUpload() {
     this.variationService.resetFotoUpload();
     }
 deleteImage(variation: any) {
-
       const item: iDelete =  { produktid: variation.sku, fileid: variation.image};
       if(variation.produkt_image) {
         item.product = true;
@@ -106,8 +107,10 @@ deleteImage(variation: any) {
               const newItems = items.slice(0);
               newItems[index].image = '';
               this.variationService.variations.next(newItems);
+              this.del$ = new Observable();
             } else {
               this.send.emit('deleted');
+              this.del$ = new Observable();
             }
         }
       }))

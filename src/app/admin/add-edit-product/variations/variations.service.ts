@@ -114,8 +114,8 @@ uploadPhoto(file: File, productid: string) {
         return res.body
 
         return null;
-    })
-    ,takeUntil(this.break.asObservable())
+    }),
+    takeUntil(this.break.asObservable())
   );
 }
 //reset upload and break
@@ -138,7 +138,6 @@ getImage(id: string) {
 
 //get thumbnails
 getThumbnails(id: string) {
-  try {
     return  this.httpClient.post(`${this.#api}/thumbnails/`,{id: id}, { responseType: 'blob' }).pipe(
       catchError((err) => {
         this.errorService.newMessage(err.message);
@@ -148,11 +147,6 @@ getThumbnails(id: string) {
         return res;
       })
       );
-  } catch (error) {
-    this.errorService.newMessage(Object(error).message );
-    return throwError(()=> error);
-  }
-
 }
 deleteImage(image: iDelete) {
 
@@ -171,8 +165,6 @@ deleteImage(image: iDelete) {
 }
 //save ebay link or link from other source
 saveEbayImageLink(link: iEbayImageLink) {
-  return this.httpClient.post(`${this.#api}/imagelink`, link).pipe(map( res => {
-   return res;
-  }))
+  return this.httpClient.post(`${this.#api}/imagelink`, link);
 }
 }

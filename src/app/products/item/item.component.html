@@ -1,6 +1,6 @@
 <div class="product-item">
   <div class="product-image" >
-    <img [src]="image" alt="Product Image" class="image" *ngIf="act$ | async as item">
+    <img [src]="image" alt="Product Image" class="image" *ngIf="act$ | async">
   </div>
   <div class="product-details">
     <h2 class="head">{{item.name.length < 50 ? item.name : (item.name | slice:0:50) + '...'}}</h2>

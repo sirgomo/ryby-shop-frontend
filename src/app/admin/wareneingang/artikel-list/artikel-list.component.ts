@@ -40,8 +40,9 @@ export class ArtikelListComponent {
       product_variation: []
     };
     const conf: MatDialogConfig = new MatDialogConfig();
-      conf.width = '80%';
-      conf.height = '80%';
+      conf.width = '95vw';
+      conf.minWidth = '95vw';
+      conf.height = '100%';
       conf.data = item;
 
       this.dialog.open(AddEditProductToBuchungComponent, conf);

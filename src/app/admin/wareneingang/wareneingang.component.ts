@@ -28,8 +28,10 @@ export class WareneingangComponent {
     constructor( private readonly wEingangService: WareneingangService, public errService: ErrorService, private dialog: MatDialog) {}
     newOrEditGoodsReceipt(item? : iWarenEingang) {
       const conf : MatDialogConfig = new MatDialogConfig();
-      conf.width = '90%';
-      conf.height = '90%';
+      conf.width = '95vw';
+      conf.minWidth= '95vw';
+      conf.height = '100%';
+
       if(item)
         conf.data = item;
 

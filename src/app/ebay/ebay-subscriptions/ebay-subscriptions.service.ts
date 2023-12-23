@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, catchError, of, tap } from "rxjs";
+import { ErrorService } from "src/app/error/error.service";
 import { iEbaySubscriptionsPayload } from "src/app/model/ebay/iEbaySubscriptionsPayload";
 import { environment } from "src/environments/environment";
 
@@ -9,7 +10,7 @@ import { environment } from "src/environments/environment";
 })
 export class EbaySubscriptionsService {
   #api = environment.api + 'subs';
-  constructor(private readonly httpService: HttpClient) { }
+  constructor(private readonly httpService: HttpClient, private readonly errorService: ErrorService) { }
   getSubscriptions(limit: number, link: string | null): Observable<iEbaySubscriptionsPayload> {
     if(!link)
       link = 'null';
@@ -17,11 +18,12 @@ export class EbaySubscriptionsService {
 
     return this.httpService.get<iEbaySubscriptionsPayload>(this.#api+`/subscriptions/${limit}/${link}`).pipe(
       catchError((error) => {
-        console.log(error);
+        this.errorService.newMessage(error.message);
         return of({} as iEbaySubscriptionsPayload);
       }),
       tap((res) => {
-        console.log(res)
+        if(Object(res).status === 404)
+        this.errorService.newMessage(Object(res).message)
       })
     )
   }

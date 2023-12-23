@@ -17,7 +17,7 @@
           <mat-spinner></mat-spinner>
         </div>
         <div *ngIf="companyService.getUrlop() | async as urlop">
-          <app-show-urlop *ngIf="urlop[0].is_in_urlop" [urlop]="urlop[0]"></app-show-urlop>
+          <app-show-urlop *ngIf="urlop[0] && urlop[0].is_in_urlop" [urlop]="urlop[0]"></app-show-urlop>
         </div>
   <router-outlet></router-outlet>
       </mat-sidenav-content>

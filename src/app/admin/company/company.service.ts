@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class CompanyService {
   private apiUrl = environment.api + 'company';
-  urlop : Observable<iUrlop[]> | null = null;
+  urlop : Observable<iUrlop[]> | undefined = undefined;
 
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 

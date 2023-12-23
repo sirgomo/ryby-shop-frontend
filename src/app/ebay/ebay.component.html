@@ -2,8 +2,8 @@
   <app-error></app-error>
 </div>
 <div *ngIf="(ebaySoldItems$ | async) as items else show ">
-  <div *ngIf="items | async as orders">
-    <table mat-table [dataSource]="orders.orders" class="mat-elevation-z8">
+
+    <table mat-table [dataSource]="items.orders" class="mat-elevation-z8">
       <!-- Order Number Column -->
       <ng-container matColumnDef="orderNumber">
         <th mat-header-cell *matHeaderCellDef> Order Number </th>
@@ -60,7 +60,6 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-  </div>
 </div>
 <ng-template #show >
   <div class="content">

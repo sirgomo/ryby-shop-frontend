@@ -1,3 +1,6 @@
+<div *ngIf="error.message().length > 2">
+  <app-error></app-error>
+</div>
 <mat-tab-group>
   <mat-tab label="Subscriptions">
     <div class="content" *ngIf="subscriptions() as subs">

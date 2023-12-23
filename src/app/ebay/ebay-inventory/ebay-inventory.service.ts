@@ -20,12 +20,13 @@ export class EbayInventoryService {
   getCurrentInventory(limit: number, offset: number, getall: boolean): Observable<iEbayInventory> {
     return this.httpClinet.get<iEbayInventory>(`${this.#api}/${limit}/${offset}`).pipe(
       catchError((err) => {
-
-        this.errorServ.newMessage(err);
+        this.errorServ.newMessage(err.message);
         return of({} as iEbayInventory);
       }),
       //get 1 item from groups of items
       map((res) => {
+        if(Object(res).status == 404)
+        this.errorServ.newMessage(Object(res).message);
 
         if(getall && res.inventoryItems) {
           let list: iEbayInventoryItem[] = []

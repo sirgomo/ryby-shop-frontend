@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
 import { iRefunds } from '../model/iRefund';
 import { iEbayOrder } from '../model/ebay/orders/iEbayOrder';
+import { ErrorService } from '../error/error.service';
 
 
 @Injectable({
@@ -13,23 +14,33 @@ import { iEbayOrder } from '../model/ebay/orders/iEbayOrder';
 export class EbayService {
   #api = environment.api + 'ebay'
   #apiRefund = environment.api + 'refund';
-  ebayItems: BehaviorSubject<iEbayAllOrders | undefined> = new BehaviorSubject<iEbayAllOrders | undefined>(undefined);
-  itemsSoldByEbaySig = this.ebayItems.asObservable().pipe(map((res) => {
+  ebayItems: BehaviorSubject<iEbayAllOrders | null> = new BehaviorSubject<iEbayAllOrders | null>(null);
+  itemsSoldByEbaySig = this.ebayItems.asObservable().pipe(switchMap((res) => {
     if(res) {
       return of(res);
     }
     return this.getItemsSoldBeiEbay();
   }))
 
-  constructor(private readonly httpService: HttpClient) { }
+  constructor(private readonly httpService: HttpClient, private errorService: ErrorService) { }
 
   getLinkForUserConsent() {
     return this.httpService.get<{address: string}>(this.#api+'/consent');
   }
-  getItemsSoldBeiEbay(): Observable<iEbayAllOrders> {
+  getItemsSoldBeiEbay(): Observable<iEbayAllOrders | null> {
 
     return this.httpService.get<iEbayAllOrders>(this.#api).pipe(
       switchMap((res) => {
+        if(Object(res).status === 404) {
+          return of(null);
+        }
+
+        if(!res.orders) {
+          res.orders = [];
+          this.ebayItems.next(res);
+          return of(res);
+        }
+
         const refunds$: Observable<iRefunds[]>[] = [];
         for (const item of res.orders) {
          const tmp$ = this.httpService.get<iRefunds[]>(`${this.#apiRefund}/${item.orderId}`).pipe(
@@ -42,6 +53,7 @@ export class EbayService {
 
          return forkJoin(refunds$).pipe(
           map((refunds) => {
+
            const items = res.orders.map((item, index) => {
 
             let amount = 0;
@@ -66,6 +78,7 @@ export class EbayService {
               } as unknown as iEbayOrder;
             })
             res.orders = items;
+
             this.ebayItems.next(res);
             return res;
           }

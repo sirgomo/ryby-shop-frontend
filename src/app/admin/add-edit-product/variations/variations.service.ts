@@ -48,7 +48,7 @@ export class VariationsService {
   }
 
   findOne(sku: string) {
-    return this.httpClient.get<iProduktVariations>(`${this.#api}/${sku}`);
+    return this.httpClient.get<iProduktVariations>(`${this.#api}/sku/${sku}`);
   }
 
   create(produktVariations: iProduktVariations) {

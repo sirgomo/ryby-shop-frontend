@@ -30,8 +30,9 @@ export class ArtikelGebuchtComponent {
   editProduct(product: iWareneingangProduct) {
 
     const conf: MatDialogConfig = new MatDialogConfig();
-    conf.width = '80%';
-    conf.height = '80%';
+    conf.width = '95vw';
+    conf.minWidth = '95vw';
+    conf.height = '100%';
     conf.data = product;
 
     this.dialog.open(AddEditProductToBuchungComponent, conf);

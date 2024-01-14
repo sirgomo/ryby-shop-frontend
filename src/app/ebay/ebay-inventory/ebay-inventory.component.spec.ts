@@ -20,6 +20,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from 'src/environments/environment';
 import { iEbayInventory } from 'src/app/model/ebay/iEbayInventory';
 import { LocaleEnum, iEbayInventoryItem } from 'src/app/model/ebay/iEbayInventoryItem';
+import { iProduct } from 'src/app/model/iProduct';
+import { iLager } from 'src/app/model/iLager';
+import { iLieferant } from 'src/app/model/iLieferant';
+import { map } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 describe('EbayInventoryComponent', () => {
   let component: EbayInventoryComponent;
@@ -28,6 +33,8 @@ describe('EbayInventoryComponent', () => {
   let ebayInventory: iEbayInventory;
   let inventoryItem: iEbayInventoryItem;
   let inventoryItem2: iEbayInventoryItem;
+  let prod: iProduct;
+  let prod2: iProduct;
 
 
   beforeEach(() => {
@@ -57,8 +64,21 @@ describe('EbayInventoryComponent', () => {
     expect(req.request.method).toBe('GET');
     req.flush(ebayInventory)
     await fixture.whenStable();
+    const req1 = testController.expectOne(environment.api+'ebay-inventory/group/asgdhgs');
+    expect(req1.request.method).toBe('GET');
+    req1.flush(prod)
+    await fixture.whenStable();
+    const req2 = testController.expectOne(environment.api+'ebay-inventory/group/njsdg');
+    expect(req2.request.method).toBe('GET');
+    req2.flush(prod2)
+    await fixture.whenStable();
+    fixture.detectChanges();
 
+      // Query for the table rows in the rendered output
+      const tableRows = fixture.debugElement.queryAll(By.css('tr[mat-row]'));
 
+      // Assert that there are the expected number of rows
+      expect(tableRows.length).toBe(2); // Replace with the expected number of rows
   })
   function getTestData() {
     inventoryItem = {
@@ -83,5 +103,51 @@ describe('EbayInventoryComponent', () => {
       size: 0,
       total: 0
     };
+  prod  = {
+    id: 1,
+    name: 'kjdajhsdahsdhj',
+    sku: 'asgdhgs',
+    artid: 0,
+    beschreibung: 'amsdmh ashd jahsdh asdh  ',
+    lieferant: {} as iLieferant,
+    lagerorte: [],
+    bestellungen: [],
+    datumHinzugefuegt: '',
+    kategorie: [],
+    verfgbarkeit: 0,
+    product_sup_id: '',
+    ebay: 0,
+    wareneingang: [],
+    mehrwehrsteuer: 0,
+    promocje: [],
+    bewertung: [],
+    eans: [],
+    variations: [],
+    produkt_image: '',
+    shipping_costs: []
+  };
+  prod2  = {
+    id: 123,
+    name: 'akshdjasdj',
+    sku: 'njsdg',
+    artid: 0,
+    beschreibung: 'hjahsd askjdha kjsd',
+    lieferant: {} as iLieferant,
+    lagerorte: [],
+    bestellungen: [],
+    datumHinzugefuegt: '',
+    kategorie: [],
+    verfgbarkeit: 0,
+    product_sup_id: '',
+    ebay: 0,
+    wareneingang: [],
+    mehrwehrsteuer: 0,
+    promocje: [],
+    bewertung: [],
+    eans: [],
+    variations: [],
+    produkt_image: '',
+    shipping_costs: []
+  };
   }
 });

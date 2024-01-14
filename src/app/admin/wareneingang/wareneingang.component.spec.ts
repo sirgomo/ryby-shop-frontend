@@ -12,7 +12,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -20,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatSelectModule } from '@angular/material/select';
+import { iLager } from 'src/app/model/iLager';
 
 describe('WareneingangComponent', () => {
   let component: WareneingangComponent;
@@ -75,7 +75,18 @@ describe('WareneingangComponent', () => {
 
   it('should open dialog to edit existing goods receipt', () => {
     const dialogOpenSpy = jest.spyOn(dialog, 'open');
-    const goodsReceipt: iWarenEingang = { id: 1, products: [], lieferant: { name: 'piwo'} as iLieferant, empfangsdatum: '', rechnung: '', lieferscheinNr: '', datenEingabe: '', gebucht: false, eingelagert: false };
+    const goodsReceipt: iWarenEingang = {
+      id: 1, products: [], lieferant: { name: 'piwo' } as iLieferant, empfangsdatum: '', rechnung: '', lieferscheinNr: '', datenEingabe: '', gebucht: false, eingelagert: false,
+      shipping_cost: 0,
+      remarks: '',
+      other_cost: 0,
+      location: {} as iLager,
+      wahrung: '',
+      wahrung2: '',
+      wahrung_rate: 0,
+      shipping_cost_eur: 0,
+      other_cost_eur: 0
+    };
 
     component.newOrEditGoodsReceipt(goodsReceipt);
 

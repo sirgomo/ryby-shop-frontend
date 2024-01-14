@@ -23,13 +23,13 @@
       "ES2022",
       "dom"
     ],
-    "types": ["node"],
+    "types": ["jest", "node"],
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
-    "types": ["node"],
+    "types": ["jest", "node"],
   }
 }

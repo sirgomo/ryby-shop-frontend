@@ -8,22 +8,22 @@ import { environment } from 'src/environments/environment';
 export class SitemapService {
 
   constructor() { }
-  async getProductsForSiteMap() {
+  getProductsForSiteMap() {
 
-    return await fetch(`${environment.url}sitemap.xml`, { method: 'GET'}).then((res) => {
+    return fetch(`${environment.url}sitemap.xml`, { method: 'GET'}).then((res) => {
         return res.text()
       })
   }
-  async generateSiteMap() {
+ generateSiteMap() {
 
-    return await fetch(`${environment.url}gen-map`, { method: 'GET'}).then((res) => {
+    return fetch(`${environment.url}gen-map`, { method: 'GET'}).then((res) => {
 
         return res.text()
       })
   }
-  async deleteSiteMap() {
+  deleteSiteMap() {
 
-    return await fetch(`${environment.url}deletexml`, { method: 'DELETE'}).then((res) => {
+    return fetch(`${environment.url}deletexml`, { method: 'DELETE'}).then((res) => {
 
         return res.text()
       })

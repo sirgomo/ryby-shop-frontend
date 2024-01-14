@@ -1,7 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild, signal } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { ProductService } from '../admin/product/product.service';
-import { CommonModule, isPlatformBrowser, isPlatformServer,  } from '@angular/common';
+import { CommonModule, isPlatformBrowser  } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ErrorComponent } from '../error/error.component';
 import { ErrorService } from '../error/error.service';
@@ -28,23 +27,23 @@ export class SitemapComponent implements OnInit {
     }
 
   }
-  async getData() {
-    await this.siteService.getProductsForSiteMap().then((res) => {
+   getData() {
+    this.siteService.getProductsForSiteMap().then((res) => {
       this.productsSig.set(res);
       if(this.sitemap)
       this.sitemap.nativeElement.innerHTML = this.productsSig();
     });
   }
-  async genMap() {
-    await this.siteService.generateSiteMap().then((res) => {
+   genMap() {
+   this.siteService.generateSiteMap().then((res) => {
       this.getData();
     })
   }
-  async deleteMap() {
+   deleteMap() {
     if(this.productsSig().length < 10)
     return;
 
-    await this.siteService.deleteSiteMap().then((res) => {
+    this.siteService.deleteSiteMap().then((res) => {
       this.productsSig.set('');
       if(this.sitemap)
       this.sitemap.nativeElement.innerHTML = this.productsSig();

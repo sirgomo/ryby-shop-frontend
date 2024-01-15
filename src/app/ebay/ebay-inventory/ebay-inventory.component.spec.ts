@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { EbayInventoryComponent } from './ebay-inventory.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { CommonModule } from '@angular/common';
@@ -21,9 +20,7 @@ import { environment } from 'src/environments/environment';
 import { iEbayInventory } from 'src/app/model/ebay/iEbayInventory';
 import { LocaleEnum, iEbayInventoryItem } from 'src/app/model/ebay/iEbayInventoryItem';
 import { iProduct } from 'src/app/model/iProduct';
-import { iLager } from 'src/app/model/iLager';
 import { iLieferant } from 'src/app/model/iLieferant';
-import { map } from 'rxjs';
 import { By } from '@angular/platform-browser';
 
 describe('EbayInventoryComponent', () => {
@@ -71,7 +68,6 @@ describe('EbayInventoryComponent', () => {
     const req2 = testController.expectOne(environment.api+'ebay-inventory/group/njsdg');
     expect(req2.request.method).toBe('GET');
     req2.flush(prod2)
-    await fixture.whenStable();
     fixture.detectChanges();
 
       // Query for the table rows in the rendered output

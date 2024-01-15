@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { get } from 'http';
 import { BehaviorSubject, Observable, catchError, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { HelperService } from 'src/app/helper/helper.service';

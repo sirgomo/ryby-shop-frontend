@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ErrorService } from 'src/app/error/error.service';
 import { iBestellung } from 'src/app/model/iBestellung';
 import { OrdersService } from 'src/app/orders/orders.service';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { InoviceComponent } from 'src/app/inovice/inovice.component';
-import { HelperService } from 'src/app/helper/helper.service';
 import { CommonModule } from '@angular/common';
 import { OrderSelectorComponent } from './order-selector/order-selector.component';
 import { MatTableModule } from '@angular/material/table';
@@ -24,7 +23,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   standalone: true,
   imports: [CommonModule, OrderSelectorComponent, MatTableModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, PaginatorComponent]
 })
-export class OrderComponent {
+export class OrderComponent  {
 
 
   ordersSig = toSignal(this.oderService.items$);

@@ -36,7 +36,7 @@ export class PaginatorComponent implements OnInit{
   }
   goBack() {
     if(this.helper.pageNrSig() - 1 < 1)
-      return
+      return;
 
     this.helper.pageNrSig.update((val) => val -1 );
     this.resetScroll();

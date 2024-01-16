@@ -15,6 +15,9 @@ import { iUserData } from 'src/app/model/iUserData';
 import { ErrorService } from 'src/app/error/error.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { iCompany } from 'src/app/model/iCompany';
+import { iRefunds } from 'src/app/model/iRefund';
+import { iEbayTransaction } from 'src/app/model/ebay/transactionsAndRefunds/iEbayTransaction';
 
 
 
@@ -26,6 +29,8 @@ describe('OrderComponent', () => {
   let order: iBestellung;
   let order2: iBestellung;
   let changeDetector: ChangeDetectorRef;
+  let company: iCompany;
+  let refunds: iRefunds;
 
   beforeEach(() => {
     Storage.prototype.getItem = jest.fn(() => 'ADMIN');
@@ -53,20 +58,80 @@ describe('OrderComponent', () => {
     requ.flush([]);
     expect(component).toBeTruthy();
   });
-  it( 'should get orders from api', fakeAsync( () => {
+  it('it should get orders from api', async () => {
 
     fixture.detectChanges();
 
     const requ = testController.expectOne(environment.api+'order/all/get/1');
     expect(requ.request.method).toBe('POST');
     requ.flush([orders, 1]);
-    tick(1000);
+    await fixture.whenStable();
     changeDetector.detectChanges();
     const items = fixture.debugElement.queryAll(By.css('tr[mat-row]'));
 
     expect(component.ordersSig()).toEqual(orders);
     expect(items.length).toBe(2);
-  }))
+  })
+  it( 'it should click open details', async () => {
+
+    fixture.detectChanges();
+
+    const requ = testController.expectOne(environment.api+'order/all/get/1');
+    expect(requ.request.method).toBe('POST');
+    requ.flush([orders, 1]);
+    await fixture.whenStable();
+    changeDetector.detectChanges();
+    const items = fixture.debugElement.queryAll(By.css('tr[mat-row]'));
+    const butt = fixture.nativeElement.querySelectorAll('button')[0];
+    jest.spyOn(component, 'openDetailts');
+    butt.click();
+
+    const requ2 = testController.expectOne(environment.api+'order/1');
+    expect(requ2.request.method).toBe('GET');
+    requ2.flush(order);
+    await fixture.whenStable();
+
+
+    expect(component.openDetailts).toHaveBeenCalledTimes(1);
+  });
+  it( 'it should click open invoice', async () => {
+
+    fixture.detectChanges();
+
+    const requ = testController.expectOne(environment.api+'order/all/get/1');
+    expect(requ.request.method).toBe('POST');
+    requ.flush([orders, 1]);
+    await fixture.whenStable();
+    changeDetector.detectChanges();
+    const items = fixture.debugElement.queryAll(By.css('tr[mat-row]'));
+    const butt = fixture.nativeElement.querySelectorAll('button')[1];
+    jest.spyOn(component, 'openInovice');
+    butt.click();
+
+    expect(component.openInovice).toHaveBeenCalledTimes(1);
+  })
+  it( 'it should click refund', async () => {
+
+    fixture.detectChanges();
+
+    const requ = testController.expectOne(environment.api+'order/all/get/1');
+    expect(requ.request.method).toBe('POST');
+    requ.flush([orders, 1]);
+    await fixture.whenStable();
+
+    changeDetector.detectChanges();
+    const items = fixture.debugElement.queryAll(By.css('tr[mat-row]'));
+    const butt = fixture.nativeElement.querySelectorAll('button')[2];
+    jest.spyOn(component, 'refund');
+    butt.click();
+
+    const requ2 = testController.expectOne(environment.api+'order/1');
+    expect(requ2.request.method).toBe('GET');
+    requ2.flush(order);
+    await fixture.whenStable();
+
+    expect(component.refund).toHaveBeenCalledTimes(1);
+  })
 
   function getTestData() {
     orders = [];
@@ -83,7 +148,7 @@ describe('OrderComponent', () => {
       bestellungstatus: BESTELLUNGSSTATUS.INBEARBEITUNG,
       versandart: '',
       versandprice: 0,
-      varsandnr: '',
+      varsandnr: '123',
       paypal_order_id: '',
       refunds: []
     };
@@ -106,5 +171,33 @@ describe('OrderComponent', () => {
     };
     orders.push(order);
     orders.push(order2);
+
+    company  = {
+      name: 'asjdkahsd',
+      company_name: '',
+      address: '',
+      city: '',
+      postleitzahl: '',
+      country: '',
+      phone: '',
+      email: '',
+      isKleinUnternehmen: 0,
+      ustNr: '',
+      fax: '',
+      eu_komm_hinweis: '',
+      agb: '',
+      daten_schutzt: '',
+      cookie_info: '',
+      is_in_urlop: false
+    };
+    refunds  = {
+      orderId: '1',
+      creationDate: new Date('2020-01-01'),
+      reason: '',
+      comment: '',
+      amount: 1,
+      transaction: {} as iEbayTransaction,
+      refund_items: []
+    };
   }
 });

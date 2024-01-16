@@ -15,70 +15,7 @@ describe('ArtikelListComponent', () => {
   let wEingService: WareneingangService;
   let dialog: MatDialog;
 
-  const products: iProduct[] = [
-    {
-      id: 1,
-      name: 'Product 1',
-      artid: 1,
-      beschreibung: 'Description 1',
-      color: 'red',
-      foto: 'photo1.jpg',
-      thumbnail: 'thumbnail1.jpg',
-      lieferant: {
-        id: 1,
-        name: 'Lieferant 1',
-        adresse: 'Adresse 1',
-      } as unknown as iLieferant,
-      lagerorte: [],
-      bestellungen: [],
-      datumHinzugefuegt: '2021-01-01',
-      kategorie: [],
-      verfgbarkeit: true,
-      preis: Number('2,24'),
-      mindestmenge: 0,
-      currentmenge: 0,
-      product_sup_id: '',
-      lange: 0,
-      gewicht: 0,
-      verkaufteAnzahl: 0,
-      wareneingang: [],
-      warenausgang: [],
-      mehrwehrsteuer: 0,
-      promocje: [],
-      bewertung: [],
-    },
-    {
-      id: 2,
-      name: 'Product 2',
-      artid: 2,
-      beschreibung: 'Description 2',
-      color: 'blue',
-      foto: 'photo2.jpg',
-      thumbnail: 'thumbnail2.jpg',
-      lieferant: {
-        id: 2,
-        name: 'Lieferant 2',
-        adresse: 'Adresse 2',
-      } as unknown as iLieferant,
-      lagerorte: [],
-      bestellungen: [],
-      datumHinzugefuegt: '2021-01-02',
-      kategorie: [],
-      verfgbarkeit: true,
-      preis: Number('2,24'),
-      mindestmenge: 0,
-      currentmenge: 0,
-      product_sup_id: '',
-      lange: 0,
-      gewicht: 0,
-      verkaufteAnzahl: 0,
-      wareneingang: [],
-      warenausgang: [],
-      mehrwehrsteuer: 0,
-      promocje: [],
-      bewertung: [],
-    },
-  ];
+  let products: iProduct[] = [];
 
 
   const dialogMock = {
@@ -86,6 +23,7 @@ describe('ArtikelListComponent', () => {
   };
 
   beforeEach(
+
     waitForAsync( () => {
      TestBed.configureTestingModule({
       declarations: [ArtikelListComponent],
@@ -118,7 +56,7 @@ describe('ArtikelListComponent', () => {
 
     fixture.detectChanges();
 
-    expect(wEingService.getProduktsForWarenEingang).toBeCalled();
+    expect(wEingService.getProduktsForWarenEingang).toHaveBeenCalled();
     const tableRows = fixture.nativeElement.querySelectorAll('tr');
 
     expect(tableRows.length).toBe(3); // Header row + 2 product rows
@@ -151,4 +89,55 @@ describe('ArtikelListComponent', () => {
     component.addProduct(products[0]);
     expect(dialog.open).toHaveBeenCalled();
   });
+  function loadTestData() {
+    products = [];
+    const prod: iProduct = {
+      id: 1,
+      name: 'Product 1',
+      sku: 'akjsdh jha',
+      artid: 1,
+      beschreibung: 'hagsd ha asd hg ga ashd ghas',
+      lieferant: {} as iLieferant,
+      lagerorte: [],
+      bestellungen: [],
+      datumHinzugefuegt: '',
+      kategorie: [],
+      verfgbarkeit: 0,
+      product_sup_id: '',
+      ebay: 0,
+      wareneingang: [],
+      mehrwehrsteuer: 0,
+      promocje: [],
+      bewertung: [],
+      eans: [],
+      variations: [],
+      produkt_image: '',
+      shipping_costs: []
+    };
+    const prod2: iProduct = {
+      id: 2,
+      name: 'Product 2',
+      sku: 'akjsdh jha',
+      artid: 2,
+      beschreibung: 'hagsd ha asd hg ga ashd ghas',
+      lieferant: {} as iLieferant,
+      lagerorte: [],
+      bestellungen: [],
+      datumHinzugefuegt: '',
+      kategorie: [],
+      verfgbarkeit: 0,
+      product_sup_id: '',
+      ebay: 0,
+      wareneingang: [],
+      mehrwehrsteuer: 0,
+      promocje: [],
+      bewertung: [],
+      eans: [],
+      variations: [],
+      produkt_image: '',
+      shipping_costs: []
+    };
+    products.push(prod);
+    products.push(prod2);
+  }
 });

@@ -33,7 +33,7 @@ import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
 })
 export class EbayComponent {
 
-  ebaySoldItems$ = this.serv.itemsSoldByEbaySig
+  ebaySoldItems$ = this.serv.itemsSoldByEbay$;
   ebaycode = '';
   show_input = false;
   displayedColumns: string[] = ['orderNumber', 'buyerUsername', 'totalPrice', 'orderStatus', 'orderDate', 'shippedAm', 'invoice', 'buchen', 'refund'];

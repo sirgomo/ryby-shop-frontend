@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, combineLatest, forkJoin, map, of, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, combineLatest, forkJoin, map, of, startWith, switchMap, take, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
 import { iRefunds } from '../model/iRefund';
@@ -15,7 +15,7 @@ export class EbayService {
   #api = environment.api + 'ebay'
   #apiRefund = environment.api + 'refund';
   ebayItems: BehaviorSubject<iEbayAllOrders | null> = new BehaviorSubject<iEbayAllOrders | null>(null);
-  itemsSoldByEbaySig = this.ebayItems.asObservable().pipe(switchMap((res) => {
+  itemsSoldByEbay$ = this.ebayItems.asObservable().pipe(switchMap((res) => {
     if(res) {
       return of(res);
     }
@@ -46,6 +46,9 @@ export class EbayService {
          const tmp$ = this.httpService.get<iRefunds[]>(`${this.#apiRefund}/${item.orderId}`).pipe(
           catchError((err) => {
             return of([{id: -1} as iRefunds] );
+          }),
+          tap((res) => {
+            console.log(res);
           })
          );
          refunds$.push(tmp$);

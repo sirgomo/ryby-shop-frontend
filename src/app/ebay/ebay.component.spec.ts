@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks, tick, waitForAsync } from '@angular/core/testing';
 
 import { EbayComponent } from './ebay.component';
 import { CommonModule } from '@angular/common';
@@ -15,11 +15,17 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
+import { iEbayOrder } from '../model/ebay/orders/iEbayOrder';
+import { ChangeDetectorRef } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { TransitionCheckState } from '@angular/material/checkbox';
 
 describe('EbayComponent', () => {
   let component: EbayComponent;
   let fixture: ComponentFixture<EbayComponent>;
   let testController: HttpTestingController;
+  let detectChanges: ChangeDetectorRef;
 
   beforeEach(() => {
     window.open = jest.fn();
@@ -30,18 +36,24 @@ describe('EbayComponent', () => {
     fixture = TestBed.createComponent(EbayComponent);
     component = fixture.componentInstance;
     testController = TestBed.inject(HttpTestingController);
-    fixture.detectChanges();
+    detectChanges = fixture.debugElement.injector.get(ChangeDetectorRef);
+
   });
   afterEach(() => {
     testController.verify();
+    jest.resetAllMocks();
   })
   it('should create', () => {
+    fixture.detectChanges();
     const requ = testController.expectOne(environment.api+'ebay');
     expect(requ.request.method).toBe('GET');
     requ.flush([]);
+
     expect(component).toBeTruthy();
+
   });
   it('not logged, show login div to ebay and get consent link', ()=> {
+    fixture.detectChanges();
     const requ = testController.expectOne(environment.api+'ebay');
     expect(requ.request.method).toBe('GET');
     requ.flush([]);
@@ -49,7 +61,7 @@ describe('EbayComponent', () => {
     expect(contDiv).toBeDefined();
   });
   it('should click getLink for ebay Login', ()=> {
-
+    fixture.detectChanges();
     const wind = jest.spyOn(window, 'open').mockImplementationOnce(() => {
       component.show_input = true;
       return null;
@@ -72,5 +84,84 @@ describe('EbayComponent', () => {
 
     expect(wind).toHaveBeenCalled();
     expect(component.show_input).toBeTruthy();
-  })
+  });
+ /* it('should show orders and open invoice on click', fakeAsync( () => {
+    const order  = {
+      orderId: 'duap',
+      buyer: {
+        username: 'katos'
+      },
+      paymentSummary: {
+        payments: [ {
+          paymentStatus: 'payd',
+          paymentDate: new Date('2020-02-22'),
+        }]},
+        orderFulfillmentStatus: 'bleh',
+        pricingSummary: {
+          total: {
+            value: 4,
+          },
+        },
+    } as unknown as iEbayOrder;
+    const order2  = {
+      orderId: 'duapa',
+      buyer: {
+        username: 'katoss'
+      },
+      paymentSummary: {
+        payments: [ {
+          paymentStatus: 'payd',
+          paymentDate: new Date('2020-02-21'),
+        }]},
+        orderFulfillmentStatus: 'bleh',
+        pricingSummary: {
+          total: {
+            value: 2.54,
+          },
+        },
+    } as unknown as iEbayOrder;;
+    const ebayOrder: iEbayAllOrders = {
+      href: 'string',
+      limit: 'integer',
+      next: 'string',
+      offset: 'integer',
+      orders: [order, order2],
+      prev: 'string',
+      total: 'integer',
+      warnings: [{} as any],
+    };
+    fixture.detectChanges();
+     const requ = testController.expectOne(environment.api+'ebay');
+    expect(requ.request.method).toBe('GET');
+    requ.flush(ebayOrder, { status: 200, statusText: 'OK'});
+
+    tick();
+
+
+    const requ2 = testController.expectOne(environment.api + 'refund/duap');
+    expect(requ2.request.method).toBe('GET');
+
+    requ2.flush( [{id: -1}], { status: 200, statusText: 'OK'});
+    tick();
+
+    const requ3 = testController.expectOne(environment.api + 'refund/duapa');
+    expect(requ3.request.method).toBe('GET');
+    requ3.flush(  [{id: -1}], { status: 200, statusText: 'OK'});
+    tick();
+
+    //fixture.detectChanges();
+    detectChanges.detectChanges();
+    flushMicrotasks();
+    flush();
+
+
+
+    const contDev = fixture.debugElement.queryAll(By.css('.content'));
+    expect(contDev).toStrictEqual([]);
+    const itemList = fixture.debugElement.queryAll(By.css('tr'));
+    expect(itemList.length).toBe(3);
+
+
+  }))*/
+
 });

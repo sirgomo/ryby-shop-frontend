@@ -46,9 +46,6 @@ export class EbayService {
          const tmp$ = this.httpService.get<iRefunds[]>(`${this.#apiRefund}/${item.orderId}`).pipe(
           catchError((err) => {
             return of([{id: -1} as iRefunds] );
-          }),
-          tap((res) => {
-            console.log(res);
           })
          );
          refunds$.push(tmp$);

@@ -58,7 +58,6 @@ export class InoviceComponent {
       this.shopRefunds.set(best.refunds);
     }
 
-
     this.company = comp;
     this.isPromotion();
   }));
@@ -177,8 +176,7 @@ export class InoviceComponent {
         const htmlWidth = item.clientWidth *3;
         const htmlHeight = item.clientHeight *3;
 
-       const leftMargin = 40;
-
+        const leftMargin = 40;
          const pdfWidth = htmlWidth + (leftMargin *2);
          const pdfHeigh = (htmlWidth * 1.5) + (leftMargin *2);
          let pdf = new jsPDF('p', 'pt', [pdfWidth, pdfHeigh]);
@@ -211,9 +209,9 @@ export class InoviceComponent {
 
                 pdf.addImage(newCanvas.toDataURL('image/jpeg', 1.0), 'PNG', leftMargin *5, leftMargin*5 , pdfWidth, pdfHeigh,'', 'FAST');
                 pdf.setFont("arial");
-                pdf.setFontSize(50);
+                pdf.setFontSize(16 *3);
                 pdf.text('Page ' + i + ' of ' + totalPages, leftMargin*4, pdfHeigh - leftMargin *4);
-                pdf.text('www.fischfang-profi.de', leftMargin* 60, pdfHeigh - leftMargin *4);
+                pdf.text('www.fischfang-profi.de', leftMargin* 22 *3, pdfHeigh - leftMargin *4);
 
               }
               imgStart += imgHight;

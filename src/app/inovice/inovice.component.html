@@ -63,7 +63,7 @@
 
           <ng-container matColumnDef="stpreis">
             <th mat-header-cell *matHeaderCellDef>Einzelpreis</th>
-            <td mat-cell *matCellDef="let item; let i = index">{{ getFixed(item.verkauf_price) }} &euro;</td>
+            <td mat-cell *matCellDef="let item; let i = index">{{  getFixed(item.verkauf_price) }} &euro;</td>
             <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
           <ng-container matColumnDef="menge">
@@ -105,7 +105,7 @@
         <tr >
           <div class="versand">
             <div class="art">{{currentItem.versandart}} Versandkosten: </div>
-            <div class="preise"> {{currentItem.versandprice.toFixed(2) }} &euro;</div>
+            <div class="preise"> {{ getFixed(currentItem.versandprice) }} &euro;</div>
           </div>
 
             <div class="versand" *ngFor="let item of refunds()">

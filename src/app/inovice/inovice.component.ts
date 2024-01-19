@@ -211,7 +211,7 @@ export class InoviceComponent {
                 pdf.setFont("arial");
                 pdf.setFontSize(16 *3);
                 pdf.text('Page ' + i + ' of ' + totalPages, leftMargin*4, pdfHeigh - leftMargin *4);
-                pdf.text('www.fischfang-profi.de', leftMargin* 22 *3, pdfHeigh - leftMargin *4);
+                pdf.text('www.fischfang-profi.de', leftMargin* 18 *3, pdfHeigh - leftMargin *4);
 
               }
               imgStart += imgHight;
@@ -240,5 +240,8 @@ export class InoviceComponent {
           amount += Number(item.produkte[j].verkauf_price);
       }
       return amount;
+    }
+    getFixed(item: any) {
+      return Number(item).toFixed(2);
     }
 }

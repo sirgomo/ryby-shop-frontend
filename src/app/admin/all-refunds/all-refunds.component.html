@@ -34,7 +34,7 @@
           <th mat-header-cell *matHeaderCellDef> Korrektur </th>
           <td mat-cell *matCellDef="let element">
             <span *ngIf="element.is_corrective === 1"> {{element.corrective_refund_nr }} </span>
-            <button *ngIf="element.is_corrective !== 1" mat-stroked-button color="accent" (click)="add_correctur(element)">
+            <button *ngIf="element.is_corrective !== 1" mat-stroked-button color="accent" (click)="add_correctur(element)" id="corB">
                <mat-icon aria-hidden="false" aria-label="edit icon">edit</mat-icon>Korrektur</button>
           </td>
         </ng-container>
@@ -48,7 +48,7 @@
         </ng-container>
         <ng-container matColumnDef="delete">
           <th mat-header-cell *matHeaderCellDef> Löschen </th>
-          <td mat-cell *matCellDef="let element"> <button mat-stroked-button color="warn" (click)="delete(element)">
+          <td mat-cell *matCellDef="let element"> <button mat-stroked-button color="warn" (click)="delete(element)" id="delete">
             <mat-icon aria-hidden="false" aria-label="delete icon">delete</mat-icon>
             Löschen</button> </td>
         </ng-container>

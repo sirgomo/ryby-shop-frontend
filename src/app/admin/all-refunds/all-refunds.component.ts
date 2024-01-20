@@ -27,7 +27,7 @@ export class AllRefundsComponent  implements OnInit{
   refundsSig = toSignal(this.shopRefService.refunds$, { initialValue: []});
   columns = ['orderId', 'refundId','amount','itemCount', 'ground', 'date', 'corrective_nr','paypalid', 'paypalstatus', 'delete']
     constructor(private readonly shopRefService: OrderRefundsService, public errorService: ErrorService,
-      private readonly dialog: MatDialog) {}
+      public readonly dialog: MatDialog) {}
   ngOnInit(): void {
     this.shopRefService.actionsSig.set({ item: null, action: 'getall'});
   }
@@ -36,7 +36,6 @@ export class AllRefundsComponent  implements OnInit{
       this.shopRefService.actionsSig.set({ item: item, action: 'delete'})
     }
   add_correctur(item: iProduktRueckgabe) {
-
       const conf : MatDialogConfig = new MatDialogConfig();
       conf.width = '100%';
       item.bestellung.refunds = [item];

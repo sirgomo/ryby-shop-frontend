@@ -211,7 +211,7 @@ export class InoviceComponent {
                 pdf.setFont("arial");
                 pdf.setFontSize(16 *3);
                 pdf.text('Page ' + i + ' of ' + totalPages, leftMargin*4, pdfHeigh - leftMargin *4);
-                pdf.text('www.fischfang-profi.de', leftMargin* 18 *3, pdfHeigh - leftMargin *4);
+                pdf.text('www.fischfang-profi.de', leftMargin* 16 *3, pdfHeigh - leftMargin *4);
 
               }
               imgStart += imgHight;

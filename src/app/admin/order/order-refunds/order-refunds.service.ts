@@ -18,9 +18,10 @@ export class OrderRefundsService {
   #api = environment.api + 'shop-refund';
   refunds: BehaviorSubject<iProduktRueckgabe[]> = new BehaviorSubject<iProduktRueckgabe[]>([]);
   actionsSig = signal<iItemActions<any>>({ item: null, action: 'donothing' });
-  refunds$ = combineLatest([toObservable(this.helperService.searchSig), toObservable(this.helperService.artikelProSiteSig), toObservable(this.helperService.pageNrSig), toObservable(this.actionsSig)]).pipe(
+  refunds$ = combineLatest([toObservable(this.helperService.searchSig), toObservable(this.helperService.artikelProSiteSig),
+     toObservable(this.helperService.pageNrSig), toObservable(this.actionsSig)]).pipe(
     switchMap(([search, count, sitenr, act]) => {
-      if( act.action === 'donothing')
+      if( act.action === 'donothing' || count === 0)
         return this.refunds.asObservable();
 
       if ( act.action === 'delete') {

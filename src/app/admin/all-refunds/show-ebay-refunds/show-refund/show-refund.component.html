@@ -2,11 +2,11 @@
 <h1 matDialogTitle>Refund Details</h1>
 
 <mat-dialog-content>
-  <p><strong>Order ID:</strong> {{ refund()?.orderId }}</p>
-  <p><strong>Creation Date:</strong> {{ refund()?.creationDate }}</p>
-  <p><strong>Reason:</strong> {{ refund()?.reason }}</p>
-  <p><strong>Comment:</strong> {{ refund()?.comment }}</p>
-  <p><strong>Amount:</strong> {{ refund()?.amount }}</p>
+  <p data-testid="order-id"><strong>Order ID:</strong> {{ refund()?.orderId }}</p>
+  <p data-testid="creation-date"><strong>Creation Date:</strong> {{ refund()?.creationDate }}</p>
+  <p data-testid="reason"><strong>Reason:</strong> {{ refund()?.reason }}</p>
+  <p data-testid="comment"><strong>Comment:</strong> {{ refund()?.comment }}</p>
+  <p data-testid="amount"><strong>Amount:</strong> {{ refund()?.amount }}</p>
   <h3>Refund Items:</h3>
   <table>
     <thead>

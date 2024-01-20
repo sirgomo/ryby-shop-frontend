@@ -9,7 +9,7 @@
 </div>
 
   <div *ngIf="act$ | async else loader"  class="refund">
-    <form [formGroup]="refundForm" (ngSubmit)="submitRefund()">
+    <form [formGroup]="refundForm" (ngSubmit)="submitRefund()" id="form">
       <div class="reason">
         <mat-form-field>
           <mat-label>Reason</mat-label>

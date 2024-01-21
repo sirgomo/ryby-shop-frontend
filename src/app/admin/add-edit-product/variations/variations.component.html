@@ -10,7 +10,7 @@
             <mat-option *ngFor="let item of variationsSig()" [value]="item">{{item.variations_name }}</mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-stroked-button (click)="addVariation()" color="accent">Variation Hinzufügen</button>
+      <button mat-stroked-button (click)="addVariation()" color="accent" id="addVariation">Variation Hinzufügen</button>
     </div>
     <div class="right-button">
       <button mat-stroked-button (click)="addNeueVariation()" color="primary">Neue Variation hinzufügen</button>

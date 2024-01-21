@@ -21,8 +21,8 @@ import { MatIconModule } from '@angular/material/icon';
 export class InputEbayimageComponent {
   link: string = '';
   act$ = new Observable();
-  constructor( private readonly dialRef: MatDialogRef<InputEbayimageComponent>, @Inject(MAT_DIALOG_DATA) private readonly data: any, private readonly variService: VariationsService,
-  private snack: MatSnackBar) {}
+  constructor( public readonly dialRef: MatDialogRef<InputEbayimageComponent>, @Inject(MAT_DIALOG_DATA) private readonly data: any, private readonly variService: VariationsService,
+  public readonly snack: MatSnackBar) {}
 
   close() {
     const item = { link: this.link, id: this.data.sku}

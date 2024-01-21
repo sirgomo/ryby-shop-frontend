@@ -1,6 +1,6 @@
 <ng-container [ngTemplateOutlet]=" element.image || element.produkt_image ? imageok : noimage" [ngTemplateOutletContext]="{element : element}"></ng-container>
 <ng-template #imageok let-element="element">
-  <div class="upload">
+  <div class="upload"  id="imageok">
     <div class="img">
       {{element.produkt_image ? element.produkt_image : element.image}}
     </div>
@@ -10,18 +10,18 @@
 
 </ng-template>
 <ng-template #noimage let-element="element">
-  <div class="imginput">
+  <div class="imginput"  id="noimage">
     <div class="upload">
       <div class="inputs">
         <input type="file" id="img" (change)="onFileChange($event)" accept="image/*"  />
-        <button mat-stroked-button color="primary" (click)="openLinkInput(element)">Ebay -Image link</button>
+        <button mat-stroked-button color="primary" (click)="openLinkInput(element)" id="openLink">Ebay -Image link</button>
       </div>
       <button mat-mini-fab color="primary" class="upload-btn" *ngIf=" helperService.uploadProgersSig() === 0"
       (click)="uploadPhoto(element)">
         <mat-icon>attach_file</mat-icon>
       </button>
       <button mat-mini-fab color="warn" class="upload-btn" *ngIf="helperService.uploadProgersSig() > 0 "
-      (click)="cancelUpload()">
+      (click)="cancelUpload()" id="cancelUpload">
         <mat-icon>delete_forever</mat-icon>
       </button>
     </div>

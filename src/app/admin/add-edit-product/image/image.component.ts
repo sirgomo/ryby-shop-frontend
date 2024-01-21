@@ -26,7 +26,7 @@ import { InputEbayimageComponent } from './input-ebayimage/input-ebayimage.compo
 export class ImageComponent {
   @Input('element') element: any;
   @Output('send') send: EventEmitter<string> = new EventEmitter();
-  constructor (private readonly variationService: VariationsService, public readonly helperService: HelperService, public readonly errorService: ErrorService, private readonly dialog: MatDialog) {}
+  constructor (private readonly variationService: VariationsService, public readonly helperService: HelperService, public readonly errorService: ErrorService, public readonly dialog: MatDialog) {}
   photoFile!: File;
   send$ = new Observable<any>();
   del$ = new Observable<any>();

@@ -17,7 +17,6 @@ import { ErrorService } from 'src/app/error/error.service';
 import { MatInputModule } from '@angular/material/input';
 import { HelperService, getUniqueSymbol } from 'src/app/helper/helper.service';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ImageComponent } from '../image/image.component';
 
 
@@ -43,6 +42,7 @@ export class VariationsComponent implements AfterViewInit {
   constructor (public readonly variationService: VariationsService, private dialog: MatDialog, public errorServi: ErrorService,
     public readonly helperService: HelperService) {}
   ngAfterViewInit(): void {
+    if(this.product)
     this.variationService.variations.next(this.product.variations);
   }
 

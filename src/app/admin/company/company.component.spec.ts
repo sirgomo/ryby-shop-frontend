@@ -1,115 +1,306 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { CompanyComponent } from './company.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CompanyService } from './company.service';
 import { ErrorService } from 'src/app/error/error.service';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { iCompany } from 'src/app/model/iCompany';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from 'src/environments/environment';
 
 describe('CompanyComponent', () => {
   let component: CompanyComponent;
   let fixture: ComponentFixture<CompanyComponent>;
   let formBuilder: FormBuilder;
   let companyService: CompanyService;
-  let errorService: ErrorService;
-
+  let testController: HttpTestingController;
+  const company: iCompany = {
+    id: 1,
+    name: 'ashdjahskj',
+    company_name: 'asghdahs',
+    address: 'asjdhjas ',
+    city: '',
+    postleitzahl: '',
+    country: '',
+    phone: '',
+    email: '',
+    isKleinUnternehmen: 0,
+    ustNr: '',
+    fax: '',
+    eu_komm_hinweis: '',
+    agb: '',
+    daten_schutzt: '',
+    cookie_info: '',
+    is_in_urlop: false,
+  };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CompanyComponent ],
-      imports: [ ReactiveFormsModule, HttpClientTestingModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule ],
-      providers: [
-        FormBuilder,
-        CompanyService,
-        ErrorService
-      ]
-    })
-    .compileComponents();
-  });
+      imports: [
+        CompanyComponent,
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatInputModule,
+        BrowserAnimationsModule,
+      ],
+      providers: [FormBuilder, CompanyService, ErrorService],
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(CompanyComponent);
     component = fixture.componentInstance;
-    formBuilder = TestBed.inject(FormBuilder);
-    companyService = TestBed.inject(CompanyService);
-    errorService = TestBed.inject(ErrorService);
-    jest.spyOn(companyService, 'getAllCompanies').mockReturnValue(of([{ id: 1, name: 'Company 1', company_name: '', address: '', city: '', country: '', phone: '', email: '', isKleinUnternehmen: 0 } ] ));
+    testController = TestBed.inject(HttpTestingController);
+
   });
+  beforeEach(() => {
+    jest.resetAllMocks();
+    testController.verify();
+  })
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should populate the form when there are companies', fakeAsync( () => {
-
-    component.act$.subscribe();
-    tick();
+  it('should populate the form when there are companies', () => {
     fixture.detectChanges();
-    expect(component.companies.length).toBe(1);
-    expect(component.currentCompany).toEqual({ id: 1, name: 'Company 1', company_name: '', address: '', city: '', country: '', phone: '', email: '', isKleinUnternehmen: 0 });
-    expect(component.companyForm.value).toEqual({ id: 1, name: 'Company 1', company_name: '', address: '', city: '', country: '', phone: '', email: '', isKleinUnternehmen: 0 });
-  }));
+    const requ = testController.expectOne(environment.api + 'company');
+    expect(requ.request.method).toBe('GET');
+    requ.flush([{
+      id: 1,
+      name: 'ashdjahskj',
+      company_name: 'asghdahs',
+      address: 'asjdhjas ',
+      city: '',
+      postleitzahl: '',
+      country: '',
+      phone: '',
+      email: '',
+      isKleinUnternehmen: 0,
+      ustNr: '',
+      fax: '',
+      eu_komm_hinweis: '',
+      agb: '',
+      daten_schutzt: '',
+      cookie_info: '',
+      is_in_urlop: false,
+    }]);
 
-  it('should save a new company', fakeAsync( () => {
     fixture.detectChanges();
-
-    jest.spyOn(companyService, 'createCompany').mockReturnValue(of({
-    id: 1,
-    name: 'Company 3',
-    company_name: 'Company 3',
-    address: 'Address 3',
-    city: 'City 3',
-    country: 'Country 3',
-    phone: 'Phone 3',
-    email: 'Email 3',
-    isKleinUnternehmen: 0
-  }));
-    component.companyForm.setValue({ id: null,
-    name: 'Company 3',
-    company_name: 'Company 3',
-    address: 'Address 3',
-    city: 'City 3',
-    country: 'Country 3',
-    phone: 'Phone 3',
-    email: 'Email 3',
-    isKleinUnternehmen: 0
+    expect(component.currentCompany).toEqual({
+      id: 1,
+      name: 'ashdjahskj',
+      company_name: 'asghdahs',
+      address: 'asjdhjas ',
+      city: '',
+      postleitzahl: '',
+      country: '',
+      phone: '',
+      email: '',
+      isKleinUnternehmen: 0,
+      ustNr: '',
+      fax: '',
+      eu_komm_hinweis: '',
+      agb: '',
+      daten_schutzt: '',
+      cookie_info: '',
+      is_in_urlop: false,
     });
+    expect(component.companyForm.value).toEqual({
+      id: 1,
+      name: 'ashdjahskj',
+      company_name: 'asghdahs',
+      address: 'asjdhjas ',
+      city: '',
+      postleitzahl: '',
+      country: '',
+      phone: '',
+      email: '',
+      isKleinUnternehmen: 0,
+      ustNr: '',
+      fax: '',
+      eu_komm_hinweis: '',
+      agb: '',
+      daten_schutzt: '',
+      cookie_info: '',
+      is_in_urlop: false,
+    });
+  });
 
-    component.save();
-    component.act$.subscribe();
-    tick();
+  it('should update an existing company', () => {
+    fixture.detectChanges();
+    const requ = testController.expectOne(environment.api + 'company');
+    expect(requ.request.method).toBe('GET');
+    requ.flush([{
+      id: 1,
+      name: 'ashdjahskj',
+      company_name: 'asghdahs',
+      address: 'asjdhjas ',
+      city: '',
+      postleitzahl: '',
+      country: '',
+      phone: '',
+      email: '',
+      isKleinUnternehmen: 0,
+      ustNr: '',
+      fax: '',
+      eu_komm_hinweis: '',
+      agb: '',
+      daten_schutzt: '',
+      cookie_info: '',
+      is_in_urlop: false,
+    }]);
+    fixture.detectChanges();
+    const update = {
+      id: 1,
+      name: 'Company 3',
+      company_name: 'Company 3',
+      address: 'Address 3',
+      postleitzahl: '',
+      city: 'City 3',
+      country: 'Country 3',
+      phone: 'Phone 3',
+      email: 'Email 3',
+      isKleinUnternehmen: 0,
+      ustNr: '',
+      fax: '',
+      eu_komm_hinweis: '',
+      agb: '',
+      daten_schutzt: '',
+      cookie_info: '',
+      is_in_urlop: false,
+    };
+    component.companyForm.setValue(update);
+    fixture.detectChanges();
+    const butt = fixture.nativeElement.querySelector('button');
+    butt.click();
+    fixture.detectChanges();
+    const requ1 = testController.expectOne(environment.api + 'company/1');
+    expect(requ1.request.method).toBe('PUT');
+    requ1.flush(update)
     fixture.detectChanges();
 
-    expect(component.currentCompany).toEqual({ id: 1, name: 'Company 3', company_name: 'Company 3', address: 'Address 3', city: 'City 3', country: 'Country 3', phone: 'Phone 3', email: 'Email 3', isKleinUnternehmen: 0});
-    expect(component.companyForm.value).toEqual({ id: 1, name: 'Company 3', company_name: 'Company 3', address: 'Address 3', city: 'City 3', country: 'Country 3', phone: 'Phone 3', email: 'Email 3', isKleinUnternehmen: 0 });
-  }));
+    expect(component.currentCompany).toEqual({
+      id: 1,
+      name: 'Company 3',
+      company_name: 'Company 3',
+      address: 'Address 3',
+      city: 'City 3',
+      country: 'Country 3',
+      phone: 'Phone 3',
+      email: 'Email 3',
+      isKleinUnternehmen: 0,
+      postleitzahl: '',
+      ustNr: '',
+      fax: '',
+      eu_komm_hinweis: '',
+      agb: '',
+      daten_schutzt: '',
+      cookie_info: '',
+      is_in_urlop: false,
+    });
+    expect(component.companyForm.value).toEqual({
+      id: 1,
+      name: 'Company 3',
+      company_name: 'Company 3',
+      address: 'Address 3',
+      city: 'City 3',
+      country: 'Country 3',
+      phone: 'Phone 3',
+      email: 'Email 3',
+      isKleinUnternehmen: 0,
+      postleitzahl: '',
+      ustNr: '',
+      fax: '',
+      eu_komm_hinweis: '',
+      agb: '',
+      daten_schutzt: '',
+      cookie_info: '',
+      is_in_urlop: false,
+    });
+  });
 
-  it('should update an existing company', fakeAsync( () => {
+  it('should save a new company', () => {
+    fixture.detectChanges();
+    const requ = testController.expectOne(environment.api + 'company');
+    expect(requ.request.method).toBe('GET');
+    requ.flush([]);
+    fixture.detectChanges();
+    const update = {
+      name: 'Company 3',
+      company_name: 'Company 3',
+      address: 'Address 3',
+      postleitzahl: '',
+      city: 'City 3',
+      country: 'Country 3',
+      phone: 'Phone 3',
+      email: 'Email 3',
+      isKleinUnternehmen: 0,
+      ustNr: '',
+      fax: '',
+      eu_komm_hinweis: '',
+      agb: '',
+      daten_schutzt: '',
+      cookie_info: '',
+      is_in_urlop: false,
+    };
+    component.companyForm.patchValue(update);
+    fixture.detectChanges();
+    const butt = fixture.nativeElement.querySelector('button');
+    butt.click();
+    fixture.detectChanges();
+    const requ1 = testController.expectOne(environment.api + 'company');
+    expect(requ1.request.method).toBe('POST');
+    requ1.flush({...update,
+      id: 1,
+    })
     fixture.detectChanges();
 
-    jest.spyOn(companyService, 'updateCompany').mockReturnValue(of({ id: 3, name: 'Updated Company',
-    company_name: 'Updated Company',
-    address: 'Updated Address',
-    city: 'Updated City',
-    country: 'Updated Country',
-    phone: 'Updated Phone',
-    email: 'Updated Email',
-    isKleinUnternehmen: 0 }));
-
-    component.currentCompany = { id: 3, name: 'Company 3', company_name: 'Company 3', address: 'Address 3', city: 'City 3', country: 'Country 3', phone: 'Phone 3', email: 'Email 3', isKleinUnternehmen: 1 };
-
-
-
-    component.save();
-    component.act$.subscribe();
-    tick();
-    fixture.detectChanges();
-
-    expect(component.currentCompany).toEqual({  id: 3, name: 'Updated Company', company_name: 'Updated Company', address: 'Updated Address', city: 'Updated City', country: 'Updated Country', phone: 'Updated Phone', email: 'Updated Email', isKleinUnternehmen: 0  });
-    expect(component.companyForm.value).toEqual({ id: 3, name: 'Updated Company', company_name: 'Updated Company', address: 'Updated Address', city: 'Updated City', country: 'Updated Country', phone: 'Updated Phone', email: 'Updated Email', isKleinUnternehmen: 0 });
-  }));
+    expect(component.currentCompany).toEqual({
+      id: 1,
+      name: 'Company 3',
+      company_name: 'Company 3',
+      address: 'Address 3',
+      city: 'City 3',
+      country: 'Country 3',
+      phone: 'Phone 3',
+      email: 'Email 3',
+      isKleinUnternehmen: 0,
+      postleitzahl: '',
+      ustNr: '',
+      fax: '',
+      eu_komm_hinweis: '',
+      agb: '',
+      daten_schutzt: '',
+      cookie_info: '',
+      is_in_urlop: false,
+    });
+    expect(component.companyForm.value).toEqual({
+      id: 1,
+      name: 'Company 3',
+      company_name: 'Company 3',
+      address: 'Address 3',
+      city: 'City 3',
+      country: 'Country 3',
+      phone: 'Phone 3',
+      email: 'Email 3',
+      isKleinUnternehmen: 0,
+      postleitzahl: '',
+      ustNr: '',
+      fax: '',
+      eu_komm_hinweis: '',
+      agb: '',
+      daten_schutzt: '',
+      cookie_info: '',
+      is_in_urlop: false,
+    });
+  });
 });

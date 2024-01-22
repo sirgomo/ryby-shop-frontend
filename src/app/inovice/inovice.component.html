@@ -1,4 +1,4 @@
-<div *ngIf="errorService.message() && errorService.message().length > 3">
+<div *ngIf="errorService.message() && errorService.message().length > 3" id="error">
   {{errorService.message()}}
 </div>
 <div class="close">
@@ -35,8 +35,8 @@
       </div>
     </div>
     <div class="rechData">
-      <div>Rechnungsnummer: {{ currentItem.id }}</div>
-      <div>Rechnungsdatum: {{currentItem.bestelldatum | date: 'dd/MM/yyyy'}}</div>
+      <div id="rechnumm">Rechnungsnummer: {{ currentItem.id }}</div>
+      <div id="rechdate">Rechnungsdatum: {{currentItem.bestelldatum | date: 'dd/MM/yyyy'}}</div>
     </div>
     <div class="prod">
       <table mat-table [dataSource]="currentItem.produkte" class="tab">
@@ -94,7 +94,7 @@
             <th mat-header-cell *matHeaderCellDef>Gesamtpreis:
               <mat-hint *ngIf="!company.isKleinUnternehmen">Brutto</mat-hint> </th>
             <td mat-cell *matCellDef="let item; let i = index">{{ getBrutto(i).toFixed(2) }} &euro;</td>
-            <td mat-footer-cell *matFooterCellDef> {{getTotalBrutto().toFixed(2)}} &euro;</td>
+            <td mat-footer-cell *matFooterCellDef id="totalBrutto"> {{getTotalBrutto().toFixed(2)}} &euro;</td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="columns"></tr>
@@ -120,13 +120,13 @@
         </div>
           <div class="versand">
             <div class="art">Total:</div>
-            <div class="preise"> {{getPriceWithShipping().toFixed(2) }} &euro;</div>
+            <div class="preise" id="totalPricewithShipping"> {{getPriceWithShipping().toFixed(2) }} &euro;</div>
           </div>
         </tr>
       </table>
 
     </div>
-    <div *ngIf="company.isKleinUnternehmen" class="kunternehmen">
+    <div *ngIf="company.isKleinUnternehmen" class="kunternehmen" id="kleinunternehmen">
       Als Kleinunternehmer im Sinne von § 19 Abs. 1 UStG wird keine Umsatzsteuer berechnet
     </div>
     <div class="footer">

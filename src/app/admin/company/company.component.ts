@@ -25,9 +25,10 @@ import { iUrlop } from 'src/app/model/iUrlop';
 export class CompanyComponent {
 
   companyForm: FormGroup;
-  companies!: iCompany;
+
   currentCompany = {} as iCompany;
   act$ = new Observable();
+
   constructor(private formBuilder: FormBuilder, private companyService: CompanyService, public errorServeice: ErrorService, private readonly dialog: MatDialog) {
     this.companyForm = this.formBuilder.group({
       id: [''],
@@ -54,9 +55,9 @@ export class CompanyComponent {
 
     this.act$ =  this.companyService.getAllCompanies().pipe(map(companies => {
       if(companies && companies.id === 1) {
-        this.companies = companies;
-        this.populateForm(this.companies);
-        this.currentCompany = this.companies;
+
+        this.populateForm(companies);
+        this.currentCompany = companies;
         return companies;
       }
       return [];

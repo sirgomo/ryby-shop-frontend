@@ -23,7 +23,7 @@ export class AddEditWarehouseComponent {
   lagerForm: FormGroup;
   act$ = new Observable();
   constructor(private readonly formBuilder: FormBuilder, private readonly service: WarehouseService, @Optional() @Inject(MAT_DIALOG_DATA) public data: iLager, public error: ErrorService,
-  private readonly ref: MatDialogRef<AddEditWarehouseComponent>) {
+  public readonly ref: MatDialogRef<AddEditWarehouseComponent>) {
     this.lagerForm = this.formBuilder.group({
       id: [this.data ? this.data.id : undefined],
       name: [this.data ? this.data.name : '', Validators.required],
@@ -44,8 +44,8 @@ export class AddEditWarehouseComponent {
       Object.assign(this.lagerForm, res);
       this.ref.close();
       }));
+
       if(this.lagerForm.get('id')?.value) {
-        console.log(this.lagerForm.get('id'))
         return this.act$ = this.service.updateWarehouse(item);
       }
 

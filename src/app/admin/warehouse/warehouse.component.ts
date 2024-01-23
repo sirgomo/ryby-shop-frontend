@@ -20,9 +20,9 @@ import { ErrorService } from 'src/app/error/error.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WarehouseComponent {
-  warehouses = toSignal(this.service.warehouses$);
+  warehousesSig = toSignal(this.service.warehouses$);
   act$ = new Observable();
-  constructor(private readonly service: WarehouseService, private dialog: MatDialog, public readonly error: ErrorService ) {}
+  constructor(private readonly service: WarehouseService, public readonly dialog: MatDialog, public readonly error: ErrorService ) {}
 
   newWarehaouseOrEdit(item?: iLager) {
     const conf : MatDialogConfig = new MatDialogConfig();

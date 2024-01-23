@@ -17,8 +17,5 @@ import { PaginatorComponent } from '../paginator/paginator.component';
 })
 export class ProductsComponent {
  productsSig = this.productService.productsSig;
-
   constructor( private readonly productService: ProductService ) {}
-
-
 }

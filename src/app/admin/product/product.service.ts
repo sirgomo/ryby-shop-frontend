@@ -110,6 +110,9 @@ export class ProductService {
       katid = 0;
     if(search.length < 1)
     search = 'null';
+  if(itemscount === 0)
+    return of([]);
+
     this.authServ.isTokenExpired();
     const role = localStorage.getItem('role')
     try {

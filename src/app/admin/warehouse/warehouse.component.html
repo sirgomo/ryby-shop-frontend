@@ -1,4 +1,4 @@
-<div class="content" *ngIf="warehouses() else loader">
+<div class="content" *ngIf="warehousesSig() else loader">
   <div *ngIf="error.message() && error.message().length > 2">
     <app-error></app-error>
   </div>
@@ -7,7 +7,7 @@
       <h2>Lager</h2>
     </div>
     <div class="butt">
-      <button mat-stroked-button (click)="newWarehaouseOrEdit()" color="accent"> Lager hinzufügen</button>
+      <button mat-stroked-button (click)="newWarehaouseOrEdit()" color="accent" id="newWarehaouse"> Lager hinzufügen</button>
     </div>
   </div>
   <div class="tab">
@@ -18,17 +18,18 @@
       <div class="item">Lager anschrift</div>
       <div class="item">Lager entfernen</div>
     </div>
-    <div class="row" *ngFor="let item of warehouses()" >
-      <div class="item" (click)="newWarehaouseOrEdit(item)">{{item.id}}</div>
+    <div class="row" *ngFor="let item of warehousesSig()" >
+      <div class="item" (click)="newWarehaouseOrEdit(item)" id="edit">{{item.id}}</div>
       <div class="item" (click)="newWarehaouseOrEdit(item)">{{item.name}}</div>
       <div class="item" *ngIf="item.lagerorte">{{item.lagerorte.length}}</div>
       <div class="item" *ngIf="!item.lagerorte">0</div>
       <div class="item" (click)="newWarehaouseOrEdit(item)">{{item.adresse}}</div>
-      <div class="item" ><button mat-icon-button (click)="delete(item)" color="warn" *ngIf="!item.lagerorte || item.lagerorte.length == 0" ><mat-icon class="small-icon">delete</mat-icon></button></div>
+      <div class="item" ><button mat-icon-button (click)="delete(item)" color="warn" *ngIf="!item.lagerorte || item.lagerorte.length == 0" id="delbutton"><mat-icon class="small-icon">delete</mat-icon></button></div>
     </div>
   </div>
 </div>
 <span *ngIf="act$ | async"></span>
 <ng-template #loader>
-  Loading....
+  <p id="loader"> Loading....</p>
+
 </ng-template>

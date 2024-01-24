@@ -167,7 +167,7 @@ export class InoviceComponent {
     close() {
       this.dialoRef.close();
     }
-    savePdf() {
+    /*savePdf() {
 
 
       const item = document.getElementById('invoice');
@@ -223,7 +223,66 @@ export class InoviceComponent {
         })
       }
 
+    }*/
+
+    savePdf() {
+
+
+      const item = document.getElementById('invoice');
+      if(item) {
+
+        const htmlWidth = item.clientWidth;
+        const htmlHeight = item.clientHeight;
+
+        const leftMargin = 40;
+         const pdfWidth = htmlWidth + (leftMargin *2);
+         const pdfHeigh = (htmlWidth * 1.5) + (leftMargin *2);
+         let pdf = new jsPDF('p', 'pt', [pdfWidth, pdfHeigh]);
+
+
+        html2canvas(item, { allowTaint: true, scale: 1 }).then(canvas => {
+
+            let imgHight = Math.floor(canvas.width  * ( pdfHeigh / pdfWidth));
+
+            const totalPages = Math.ceil(canvas.height / imgHight);
+
+
+            const newCanvas = document.createElement('canvas');
+
+            newCanvas.width = canvas.width ;
+            newCanvas.height = imgHight;
+            const ctx = newCanvas.getContext('2d');
+
+            let imgStart = 0;
+
+            for (let i = 1; i <= totalPages; i++) {
+             if (i > 1)
+              pdf.addPage();
+
+              if(ctx !== null) {
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0,0,canvas.width, imgHight);
+
+                ctx.drawImage(canvas, 0,imgStart,canvas.width ,imgHight, 0,0,pdfWidth  - 5 * leftMargin, pdfHeigh  - 7* leftMargin);
+
+                pdf.addImage(newCanvas.toDataURL('image/jpeg', 1.0), 'PNG', leftMargin *2, leftMargin*2 , pdfWidth, pdfHeigh,'', 'MEDIUM');
+                pdf.setFont("arial");
+                pdf.setFontSize(20 );
+                pdf.text('Page ' + i + ' of ' + totalPages, leftMargin*2, pdfHeigh - leftMargin *2);
+                pdf.text('www.fischfang-profi.de', pdfWidth - 250 , pdfHeigh - leftMargin *2);
+
+              }
+              imgStart += imgHight;
+           //  pdf.addImage(imageData, 'PNG', leftMargin, - (pdfHeigh * i) + leftMargin , canvasImageWidth, canvasImageHeight,'', 'MEDIUM');
+            }
+
+              pdf.output('pdfobjectnewwindow');
+
+        })
+      }
+
     }
+
     getItemRefund(item: iRefunds) :string {
       let conut = 0;
 

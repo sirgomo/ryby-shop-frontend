@@ -2,9 +2,11 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 1.5cm 2.5cm;
-  min-width: calc(210mm - margin);
+  margin: 20pt 20pt;
+  min-width: calc(595pt  - margin);
   flex-direction: column;
+  font-weight: 400;
+  font-size:20px;
 }
 .rechData {
  display: flex;
@@ -27,7 +29,7 @@
 .header {
   display: flex;
   width: 100%;
-  font-size: large;
+
   padding-top: 2rem;
 }
 .company {
@@ -53,13 +55,15 @@
   flex: 1;
   padding: 0 .2rem 0 .2rem;
   min-width: 30%;
-  font-size: medium;
+  font-weight: 400;
+   font-size:20px;
 }
 .mat-column-sku,
 .mat-column-varia {
   width: 15%;
   padding: 0 .2rem 0 .2rem;
-  font-size: medium;
+  font-weight: 400;
+   font-size:20px;
 }
 
 .mat-column-preis,
@@ -69,7 +73,8 @@
 .mat-column-brutto {
   padding: 0 .2rem 0 .3rem;
   width: 7%;
-  font-size: medium;
+  font-weight: 400;
+   font-size:20px;
   text-align: right;
 }
 
@@ -78,7 +83,8 @@
 {
   padding: 0 .2rem 0 .2rem;
   width: 3%;
-  font-size: medium;
+  font-weight: 400;
+   font-size:20px;
 }
 .tab {
   width: 100%;
@@ -91,7 +97,6 @@
 .versand {
   display: flex;
   justify-content: space-between;
-  font-size: medium;
   width: 100%;
   margin-bottom: .2rem;
   .preise {
@@ -101,6 +106,5 @@
 }
 .kunternehmen {
   margin-top: .5rem;
-  font-size: medium;
-  font-weight: 550;
+
 }

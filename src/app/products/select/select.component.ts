@@ -31,7 +31,6 @@ export class SelectComponent implements OnInit{
     return;
 
     const getIndex = this.item.variations.findIndex((tmp) => tmp.sku === index.value);
-
     this.resetSelector(index);
 
     if(getIndex !== -1)

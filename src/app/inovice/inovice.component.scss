@@ -1,3 +1,6 @@
+$fs : 20pt;
+$lh : 21pt;
+$fw: 400;
 .invoice {
   display: flex;
   justify-content: flex-start;
@@ -5,9 +8,11 @@
   margin: 20pt 20pt;
   min-width: calc(595pt  - margin);
   flex-direction: column;
-  font-weight: 400;
-  font-size:20px;
+  font-weight: $fw;
+    font-size:$fs;
+    line-height: $lh;
 }
+
 .rechData {
  display: flex;
  justify-content: space-between;
@@ -55,15 +60,17 @@
   flex: 1;
   padding: 0 .2rem 0 .2rem;
   min-width: 30%;
-  font-weight: 400;
-   font-size:20px;
+  font-weight: $fw;
+  font-size:$fs;
+  line-height: $lh;
 }
 .mat-column-sku,
 .mat-column-varia {
   width: 15%;
   padding: 0 .2rem 0 .2rem;
-  font-weight: 400;
-   font-size:20px;
+  font-weight: $fw;
+    font-size:$fs;
+    line-height: $lh;
 }
 
 .mat-column-preis,
@@ -73,8 +80,9 @@
 .mat-column-brutto {
   padding: 0 .2rem 0 .3rem;
   width: 7%;
-  font-weight: 400;
-   font-size:20px;
+  font-weight: $fw;
+    font-size:$fs;
+    line-height: $lh;
   text-align: right;
 }
 
@@ -83,8 +91,9 @@
 {
   padding: 0 .2rem 0 .2rem;
   width: 3%;
-  font-weight: 400;
-   font-size:20px;
+  font-weight: $fw;
+    font-size:$fs;
+    line-height: $lh;
 }
 .tab {
   width: 100%;

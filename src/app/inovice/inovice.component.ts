@@ -234,7 +234,7 @@ export class InoviceComponent {
         const htmlWidth = item.clientWidth;
         const htmlHeight = item.clientHeight;
 
-        const leftMargin = 40;
+        const leftMargin = 50;
          const pdfWidth = htmlWidth + (leftMargin *2);
          const pdfHeigh = (htmlWidth * 1.5) + (leftMargin *2);
          let pdf = new jsPDF('p', 'pt', [pdfWidth, pdfHeigh]);
@@ -263,13 +263,13 @@ export class InoviceComponent {
                 ctx.fillStyle = 'white';
                 ctx.fillRect(0,0,canvas.width, imgHight);
 
-                ctx.drawImage(canvas, 0,imgStart,canvas.width ,imgHight, 0,0,pdfWidth  - 5 * leftMargin, pdfHeigh  - 7* leftMargin);
+                ctx.drawImage(canvas, 0,imgStart,canvas.width ,imgHight, 0,0,pdfWidth  - 6 * leftMargin, pdfHeigh  - 6* leftMargin);
 
-                pdf.addImage(newCanvas.toDataURL('image/jpeg', 1.0), 'PNG', leftMargin *2, leftMargin*2 , pdfWidth, pdfHeigh,'', 'MEDIUM');
+                pdf.addImage(newCanvas.toDataURL('image/jpeg', 1.0), 'PNG', leftMargin *2, leftMargin *2, pdfWidth, pdfHeigh,'', 'MEDIUM');
                 pdf.setFont("arial");
-                pdf.setFontSize(20 );
+                pdf.setFontSize(28);
                 pdf.text('Page ' + i + ' of ' + totalPages, leftMargin*2, pdfHeigh - leftMargin *2);
-                pdf.text('www.fischfang-profi.de', pdfWidth - 250 , pdfHeigh - leftMargin *2);
+                pdf.text('www.fischfang-profi.de', pdfWidth - 330 , pdfHeigh - leftMargin *2);
 
               }
               imgStart += imgHight;

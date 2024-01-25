@@ -19,7 +19,6 @@ import { doWeHaveEnough } from '../functions';
 import { SelectComponent } from '../select/select.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute  } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
 
 
 @Component({

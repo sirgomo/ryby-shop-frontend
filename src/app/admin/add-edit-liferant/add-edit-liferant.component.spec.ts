@@ -21,8 +21,7 @@ describe('AddEditLiferantComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddEditLiferantComponent],
-      imports: [ReactiveFormsModule, HttpClientTestingModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule],
+      imports: [AddEditLiferantComponent,ReactiveFormsModule, HttpClientTestingModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule],
       providers: [
         LiferantsService,
         ErrorService,

@@ -1,14 +1,10 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { of } from 'rxjs';
-
 import { ItemDetailsComponent } from './item-details.component';
-import { ProductService } from 'src/app/admin/product/product.service';
 import { HelperService } from 'src/app/helper/helper.service';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { iProduct } from 'src/app/model/iProduct';
 import { iLieferant } from 'src/app/model/iLieferant';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -17,142 +13,171 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { ProductService } from 'src/app/admin/product/product.service';
+import { environment } from 'src/environments/environment';
+import { iProduktVariations } from 'src/app/model/iProduktVariations';
+
 
 describe('ItemDetailsComponent', () => {
   let component: ItemDetailsComponent;
   let fixture: ComponentFixture<ItemDetailsComponent>;
-  let productService: ProductService;
   let helperService: HelperService;
   let snackBar: MatSnackBar;
-  let santizier: DomSanitizer;
+  let testController : HttpTestingController;
+
+  let vari:iProduktVariations = {
+    sku: 'djashdk',
+    produkt: { id: 1},
+    variations_name: 'jkasdahsd',
+    hint: '',
+    value: 'kjash',
+    unit: 'asd',
+    image: '',
+    price: 3.55,
+    wholesale_price: 0,
+    thumbnail: '',
+    quanity: 50,
+    quanity_sold: 1,
+    quanity_sold_at_once: 1,
+  };
 
 
-
-  const mockMatDialogData: iProduct = {
+  const prod: iProduct = {
     id: 1,
     name: 'Test Item',
-    preis: 10,
     artid: 1,
-    beschreibung: 'Test Description',
-    color: JSON.stringify([{ id: 'blue', menge: 5 }, { id: 'red', menge: 10 }]),
-    foto: JSON.stringify(['image1.jpg', 'image2.jpg']),
-    thumbnail: 'thumbnail.jpg',
     lieferant: { id: 1, name: 'Test Supplier' } as iLieferant,
     lagerorte: [{ id: 1, name: 'Test Storage' }],
     bestellungen: [],
     datumHinzugefuegt: '2022-01-01',
     kategorie: [{ id: 1, name: 'Test Category' } as iKategorie],
-    verfgbarkeit: true,
-    mindestmenge: 1,
-    currentmenge: 10,
+    verfgbarkeit: 1,
     product_sup_id: '12345',
-    lange: 50,
-    gewicht: 100,
-    verkaufteAnzahl: 20,
     wareneingang: [],
-    warenausgang: [],
     mehrwehrsteuer: 20,
     promocje: [],
-    bewertung: []
+    bewertung: [],
+    sku: '',
+    beschreibung: '',
+    ebay: 0,
+    eans: [],
+    variations: [vari],
+    produkt_image: '',
+    shipping_costs: []
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ItemDetailsComponent],
       imports: [
+        ItemDetailsComponent,
         HttpClientTestingModule,
         MatSnackBarModule,
         MatDialogModule,
         MatCheckboxModule,
-        JwtModule.forRoot({}),
+        JwtModule.forRoot({
+          config: {
+            tokenGetter: jest.fn(),
+          }
+        }),
         MatProgressSpinnerModule,
         MatIconModule,
         MatInputModule,
         MatFormFieldModule,
-        BrowserAnimationsModule,
+        NoopAnimationsModule,
         FormsModule,
       ],
       providers: [
-        { provide: MAT_DIALOG_DATA, useValue: mockMatDialogData },
-        { provide: DomSanitizer, useValue: {
-          bypassSecurityTrustResourceUrl: jest.fn(),
-        }},
+        { provide: MAT_DIALOG_DATA, useValue: prod },
         { provide: MatSnackBar, useValue: {
           open: jest.fn(),
         }},
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: jest.fn(() => prod.id),
+              }
+            }
+          }
+        },
+        ProductService
       ]
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(ItemDetailsComponent);
     component = fixture.componentInstance;
-    productService = TestBed.inject(ProductService);
+    testController = TestBed.inject(HttpTestingController);
     helperService = TestBed.inject(HelperService);
     snackBar = TestBed.inject(MatSnackBar);
-    santizier = TestBed.inject(DomSanitizer);
     fixture.detectChanges();
-    jest.spyOn(santizier, 'bypassSecurityTrustResourceUrl').mockReturnValue(() => 'url');
   });
 
+  afterEach(() => {
+    jest.resetAllMocks();
+    testController.verify();
+  })
   it('should create the component', () => {
+    const requ = testController.expectOne(environment.api+'product/'+prod.id);
+    expect(requ.request.method).toBe('GET');
+    requ.flush(prod);
     expect(component).toBeTruthy();
   });
 
   it('should set the title', () => {
-
-    component.ngOnInit();
-    expect(helperService.titelSig()).toBe('Ryby Test Category Test Item');
+    const requ = testController.expectOne(environment.api+'product/'+prod.id);
+    expect(requ.request.method).toBe('GET');
+    requ.flush(prod);
+    expect(helperService.titelSig()).toBe('Fischfang-Profi - '+prod.name);
   });
 
-  it('should get the product details', fakeAsync(() => {
-    jest.spyOn(productService, 'getProductById').mockReturnValue(of(mockMatDialogData));
-    component.ngOnInit();
-    component.act$.subscribe();
-    tick();
+  it('should get the product details', () => {
 
-    expect(component.item).toEqual(mockMatDialogData);
-    expect(component.fotos).toEqual(['image1.jpg', 'image2.jpg']);
-    expect(component.color).toEqual([{ id: 'blue', menge: 5 }, { id: 'red', menge: 10 }]);
-  }));
 
-  it('should change the displayed image', fakeAsync( () => {
-    component.fotos = ['image1.jpg', 'image2.jpg'];
-    component.color = [{ id: 'blue', menge: 5 }, { id: 'red', menge: 10 }];
-    jest.spyOn(productService, 'getImage').mockReturnValue(of(new Blob()));
-    global.URL.createObjectURL = jest.fn(() => 'image');
-    component.changeImage(1);
-    component.act$.subscribe();
-    tick();
+  });
 
+  it('should check current quantity',  () => {
+    const requ = testController.expectOne(environment.api+'product/'+prod.id);
+    expect(requ.request.method).toBe('GET');
+    requ.flush(prod);
     fixture.detectChanges();
-    expect(component.currentImage).toBeTruthy();
-    expect(component.colorToBuy).toEqual([{ id: 'red', menge: 0 }]);
-  }));
+    const requ2 = testController.expectOne(environment.api+'variation/uploads/');
+    expect(requ2.request.method).toBe('POST');
+    requ2.flush(new Blob([''], { }));
+    fixture.detectChanges();
+    component.currentItemQuanity = 1;
+    const additemBut = fixture.nativeElement.querySelector('#additem');
+    additemBut.click();
+    fixture.detectChanges();
+    expect( helperService.cardSig().length).toBe(1);
+    const tmpItem= {} as iProduct;
+    Object.assign(tmpItem, prod);
+    tmpItem.variations[0].quanity = 1;
+    expect(helperService.cardSig()[0]).toEqual(tmpItem);
 
-  it('should add a color to colorToBuy array', () => {
-    component.color = [{ id: 'blue', menge: 5 }, { id: 'red', menge: 10 }];
-    component.colorToBuy = [{ id: 'blue', menge: 0 }];
-    const event = { checked: true };
-    component.addColor('red', event);
-    expect(component.colorToBuy).toEqual([{ id: 'blue', menge: 0 }, { id: 'red', menge: 0 }]);
-  });
-
-  it('should remove a color from colorToBuy array', () => {
-    component.color = [{ id: 'blue', menge: 5 }, { id: 'red', menge: 10 }];
-    component.colorToBuy = [{ id: 'blue', menge: 0 }, { id: 'red', menge: 0 }];
-    const event = { checked: false };
-    component.addColor('red', event);
-    expect(component.colorToBuy).toEqual([{ id: 'blue', menge: 0 }]);
   });
 
   it('should add the item to the cart', () => {
-    jest.spyOn(helperService.cardSig, 'set');
-    jest.spyOn(snackBar, 'open');
-    component.addItem(mockMatDialogData);
-    expect(helperService.cardSig.set).toHaveBeenCalled();
-    expect(snackBar.open).toHaveBeenCalledWith('Test Item wurde zum Warenkorb hinzugefügt!', 'Ok', { duration: 1500 });
+
+    const requ = testController.expectOne(environment.api+'product/'+prod.id);
+    expect(requ.request.method).toBe('GET');
+    requ.flush(prod);
+    fixture.detectChanges();
+    const requ2 = testController.expectOne(environment.api+'variation/uploads/');
+    expect(requ2.request.method).toBe('POST');
+    requ2.flush(new Blob([''], { }));
+    fixture.detectChanges();
+    component.currentItemQuanity = 1;
+    const additemBut = fixture.nativeElement.querySelector('#additem');
+    additemBut.click();
+    fixture.detectChanges();
+    expect( helperService.cardSig().length).toBe(1);
+    const tmpItem= {} as iProduct;
+    Object.assign(tmpItem, prod);
+    tmpItem.variations[0].quanity = 1;
+    expect(helperService.cardSig()[0]).toEqual(tmpItem);
+
   });
 });

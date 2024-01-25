@@ -61,7 +61,7 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly dialogRef: MatDialogRef<AddEditProductComponent>,
+    public readonly dialogRef: MatDialogRef<AddEditProductComponent>,
     private readonly prodService: ProductService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: iProduct,
     private readonly liferantService: LiferantsService,
@@ -70,7 +70,7 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
     public readonly err: ErrorService,
     private readonly sanitizer: DomSanitizer,
     private readonly dpipe: DatePipe,
-    private readonly snackBar: MatSnackBar,
+    public readonly snackBar: MatSnackBar,
     private readonly variationService: VariationsService,
     private readonly shippingService: ShippingCostService,
   ) {
@@ -224,7 +224,6 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
         return res;
       }));
       } else {
-        console.log(product);
        // product.verfgbarkeit = this.productForm.get('verfgbarkeit')?.getRawValue() == 1 ? true : false;
       this.create$ = this.prodService.updateProduct(product.id, product).pipe(tap((res) => {
         if(res && res.id && isFinite(res.id)) {
@@ -236,6 +235,8 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
         return res;
       }));
       }
+    } else {
+      this.snackBar.open('Das Artikel Formular ist fehlerhaft ausgefüllt.', 'OK', { duration: 2000 });
     }
 
   }

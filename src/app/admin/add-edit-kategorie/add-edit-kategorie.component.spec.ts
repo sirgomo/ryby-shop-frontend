@@ -21,8 +21,7 @@ describe('AddEditKategorieComponent', () => {
   let kategorieService: KategorieService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AddEditKategorieComponent],
-      imports: [MatDialogModule, HttpClientTestingModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatSnackBarModule, MatSelectModule, MatInputModule, BrowserAnimationsModule],
+      imports: [AddEditKategorieComponent, MatDialogModule, HttpClientTestingModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatSnackBarModule, MatSelectModule, MatInputModule, BrowserAnimationsModule],
       providers: [  { provide: MatDialogRef, useClass: MatDialogRefMock },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         KategorieService],

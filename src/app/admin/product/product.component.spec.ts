@@ -16,8 +16,7 @@ describe('ProductComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProductComponent],
-      imports: [MatDialogModule],
+      imports: [ProductComponent, MatDialogModule],
       providers: [
         { provide: ProductService, useValue: { productsSig: of([]), deleteProduct: () => of() } },
         { provide: MatDialog, useValue: { open: () => {} } }

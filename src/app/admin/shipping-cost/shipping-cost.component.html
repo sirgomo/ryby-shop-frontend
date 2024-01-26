@@ -66,8 +66,8 @@
     <th mat-header-cell *matHeaderCellDef> Actions </th>
     <td mat-cell *matCellDef="let element">
       <div class="actions">
-        <button mat-stroked-button color="primary" (click)="newOrEditShipping(element)"><mat-icon>update</mat-icon></button>
-        <button mat-stroked-button color="warn" (click)="deleteShipping(element)"><mat-icon>delete_forever</mat-icon></button>
+        <button mat-stroked-button color="primary" (click)="newOrEditShipping(element)" id="update"><mat-icon>update</mat-icon></button>
+        <button mat-stroked-button color="warn" (click)="deleteShipping(element)" id="delete"><mat-icon>delete_forever</mat-icon></button>
       </div>
     </td>
   </ng-container>

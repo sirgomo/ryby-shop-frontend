@@ -132,13 +132,8 @@ describe('ItemDetailsComponent', () => {
     requ.flush(prod);
     expect(helperService.titelSig()).toBe('Fischfang-Profi - '+prod.name);
   });
-
-  it('should get the product details', () => {
-
-
-  });
-
-  it('should check current quantity',  () => {
+  it('should call get image with variations image link', () => {
+    jest.spyOn(component, 'getImage');
     const requ = testController.expectOne(environment.api+'product/'+prod.id);
     expect(requ.request.method).toBe('GET');
     requ.flush(prod);
@@ -147,20 +142,44 @@ describe('ItemDetailsComponent', () => {
     expect(requ2.request.method).toBe('POST');
     requ2.flush(new Blob([''], { }));
     fixture.detectChanges();
-    component.currentItemQuanity = 1;
+
+    expect(component.getImage).toHaveBeenCalledTimes(1);
+    expect(component.getImage).toHaveBeenCalledWith(prod.variations[0].image);
+  });
+  it('should get the product details and set current varations to first element in produkt.variations table', () => {
+    jest.spyOn(component, 'getItemQuanity');
+    const requ = testController.expectOne(environment.api+'product/'+prod.id);
+    expect(requ.request.method).toBe('GET');
+    requ.flush(prod);
+    fixture.detectChanges();
+    const requ2 = testController.expectOne(environment.api+'variation/uploads/');
+    expect(requ2.request.method).toBe('POST');
+    requ2.flush(new Blob([''], { }));
+    fixture.detectChanges();
+    expect(component.currentVariation).toEqual(prod.variations[0]);
+  });
+
+  it('should check current quantity',  () => {
+    jest.spyOn(component, 'getItemQuanity');
+    const requ = testController.expectOne(environment.api+'product/'+prod.id);
+    expect(requ.request.method).toBe('GET');
+    requ.flush(prod);
+    fixture.detectChanges();
+    const requ2 = testController.expectOne(environment.api+'variation/uploads/');
+    expect(requ2.request.method).toBe('POST');
+    requ2.flush(new Blob([''], { }));
+    fixture.detectChanges();
+    component.currentItemQuanity = 2;
     const additemBut = fixture.nativeElement.querySelector('#additem');
     additemBut.click();
     fixture.detectChanges();
-    expect( helperService.cardSig().length).toBe(1);
-    const tmpItem= {} as iProduct;
-    Object.assign(tmpItem, prod);
-    tmpItem.variations[0].quanity = 1;
-    expect(helperService.cardSig()[0]).toEqual(tmpItem);
+    expect(component.getItemQuanity).toHaveBeenCalled();
+    expect(component.getItemQuanity).toHaveLastReturnedWith(48);
 
   });
 
   it('should add the item to the cart', () => {
-
+    jest.spyOn(component, 'addItem');
     const requ = testController.expectOne(environment.api+'product/'+prod.id);
     expect(requ.request.method).toBe('GET');
     requ.flush(prod);
@@ -178,6 +197,6 @@ describe('ItemDetailsComponent', () => {
     Object.assign(tmpItem, prod);
     tmpItem.variations[0].quanity = 1;
     expect(helperService.cardSig()[0]).toEqual(tmpItem);
-
+    expect(component.addItem).toHaveBeenCalledTimes(1);
   });
 });

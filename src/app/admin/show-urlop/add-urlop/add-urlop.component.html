@@ -23,7 +23,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-    <button mat-stroked-button matDialogClose>Abbrechen</button>
-    <button mat-stroked-button (click)="save()">Urlop Speichern</button>
+    <button mat-stroked-button matDialogClose id="abort">Abbrechen</button>
+    <button mat-stroked-button (click)="save()" id="save">Urlop Speichern</button>
     <span *ngIf="act$ | async"></span>
 </mat-dialog-actions>

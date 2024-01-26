@@ -25,6 +25,7 @@ export class ShippingCostComponent {
   act$ = new Observable();
   constructor(public readonly shippingService: ShippingCostService) {}
   newOrEditShipping(item?: IShippingCost) {
+
     if(item) {
       const newItem: IShippingCost = {} as IShippingCost;
       newItem.id = item.id;

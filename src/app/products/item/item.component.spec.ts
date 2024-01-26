@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,27 +9,90 @@ import { HelperService } from 'src/app/helper/helper.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { ProductService } from 'src/app/admin/product/product.service';
 import { ItemComponent } from './item.component';
-import { iAktion } from 'src/app/model/iAktion';
-import { iKategorie } from 'src/app/model/iKategorie';
-import { iKundenbewertung } from 'src/app/model/iKundenbewertung';
 import { iLieferant } from 'src/app/model/iLieferant';
-import { iProductBestellung } from 'src/app/model/iProductBestellung';
-import { iStellplatze } from 'src/app/model/iStellplatze';
-import { iWarenausgangProduct } from 'src/app/model/iWarenausgangProduct';
-import { iWareneingangProduct } from 'src/app/model/iWareneingangProduct';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {  JwtModule } from '@auth0/angular-jwt';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { VariationsService } from 'src/app/admin/add-edit-product/variations/variations.service';
+import { iProduktVariations } from 'src/app/model/iProduktVariations';
+import { Router } from '@angular/router';
+import { SelectComponent } from '../select/select.component';
 
 describe('ItemComponent', () => {
   let component: ItemComponent;
   let fixture: ComponentFixture<ItemComponent>;
-  let productService: ProductService;
-  let dialog: MatDialog;
-  let helperService: HelperService;
+  let variationService: VariationsService;
+  let router: Router;
   let snackBar: Partial<MatSnackBar>;
   let domSanitizer: DomSanitizer;
-
+  const prodVari: iProduktVariations = {
+    sku: 'jasdhas',
+    produkt: {id :1},
+    variations_name: 'test name',
+    hint: 'kjsadjas',
+    value: 'test',
+    unit: '',
+    image: '',
+    price: 3.55,
+    wholesale_price: 0,
+    thumbnail: '',
+    quanity: 10,
+    quanity_sold: 1,
+    quanity_sold_at_once: 1,
+  };
+  const prodVari1: iProduktVariations = {
+    sku: 'jasdhasasdasd',
+    produkt: {id :1},
+    variations_name: 'test name 1',
+    hint: 'kjsadjas',
+    value: 'test',
+    unit: '',
+    image: '',
+    price: 3.55,
+    wholesale_price: 0,
+    thumbnail: '',
+    quanity: 10,
+    quanity_sold: 1,
+    quanity_sold_at_once: 1,
+  };
+  const prodVari2: iProduktVariations = {
+    sku: 'jasdhas12easd',
+    produkt: {id :1},
+    variations_name: 'test name 2',
+    hint: 'kjsadjas',
+    value: 'test',
+    unit: '',
+    image: '',
+    price: 3.55,
+    wholesale_price: 0,
+    thumbnail: '',
+    quanity: 10,
+    quanity_sold: 1,
+    quanity_sold_at_once: 1,
+  };
+  const item: iProduct = {
+    id: 1,
+    name: 'Test Item',
+    sku: 'asldlasgdasgdh',
+    artid: 0,
+    beschreibung: 'This is a test item',
+    lieferant: { id: 1} as iLieferant,
+    lagerorte: [],
+    bestellungen: [],
+    datumHinzugefuegt: '',
+    kategorie: [],
+    verfgbarkeit: 0,
+    product_sup_id: '',
+    ebay: 0,
+    wareneingang: [],
+    mehrwehrsteuer: 0,
+    promocje: [],
+    bewertung: [],
+    eans: [],
+    variations: [prodVari, prodVari1, prodVari2],
+    produkt_image: '',
+    shipping_costs: []
+  };
 
   beforeEach(async () => {
 
@@ -37,8 +100,12 @@ describe('ItemComponent', () => {
       open: jest.fn(),
     };
     await TestBed.configureTestingModule({
-      declarations: [ ItemComponent ],
-      imports: [ MatDialogModule, BrowserAnimationsModule, HttpClientTestingModule, JwtModule.forRoot({}), MatProgressSpinnerModule ],
+
+      imports: [ItemComponent, MatDialogModule, BrowserAnimationsModule, HttpClientTestingModule, JwtModule.forRoot({
+        config: {
+          tokenGetter: jest.fn(),
+        }
+      }), MatProgressSpinnerModule ],
       providers: [
         { provide: MatDialog, useValue: {
           open: jest.fn(),
@@ -50,57 +117,37 @@ describe('ItemComponent', () => {
           bypassSecurityTrustResourceUrl: jest.fn(() => ''),
         }
         },
+        ProductService,
+        VariationsService,
         {
-          provide: ProductService,
-          useClass: ProductService
-        }
+          provide: Router,
+          useValue: {
+            navigate: jest.fn(),
+          }
+        },
       ]
     })
     .compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ItemComponent);
     component = fixture.componentInstance;
-    productService = TestBed.inject(ProductService);
-    dialog = TestBed.inject(MatDialog);
-    helperService = TestBed.inject(HelperService);
+
+    router = TestBed.inject(Router);
+
+    variationService = TestBed.inject(VariationsService);
     domSanitizer = TestBed.inject(DomSanitizer);
-    global.URL = MockURL;
-    jest.spyOn(productService, 'getThumbnails').mockReturnValue(of(new Blob()));
+    Object(globalThis).global.URL = { createObjectURL: jest.fn() };
+    jest.spyOn(variationService, 'getThumbnails').mockReturnValue(of(new Blob()));
     jest.spyOn(domSanitizer, 'bypassSecurityTrustResourceUrl').mockImplementation();
 
-    const item: iProduct = {
-      id: 1,
-      name: 'Test Item',
-      preis: 10,
-      artid: 2,
-      beschreibung: 'This is a test item',
-      color: '[{"id":"1","menge":10},{"id":"2","menge":5}]',
-      foto: '["image1.jpg","image2.jpg"]',
-      thumbnail: 'thumbnail.jpg',
-      lieferant: {} as iLieferant,
-      lagerorte: [] as iStellplatze[],
-      bestellungen: [] as iProductBestellung[],
-      datumHinzugefuegt: '',
-      kategorie: [] as iKategorie[],
-      verfgbarkeit: true,
-      mindestmenge: 0,
-      currentmenge: 0,
-      product_sup_id: '',
-      lange: 0,
-      gewicht: 0,
-      verkaufteAnzahl: 0,
-      wareneingang: [] as iWareneingangProduct[],
-      warenausgang: [] as iWarenausgangProduct[],
-      mehrwehrsteuer: 0,
-      promocje: [] as iAktion[],
-      bewertung: [] as iKundenbewertung[],
-    };
+
+
 
     component.item = item;
     fixture.detectChanges();
   });
+
+
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -108,39 +155,36 @@ describe('ItemComponent', () => {
 
   it('should render the item details correctly', () => {
 
-    const itemName = fixture.debugElement.query(By.css('h3')).nativeElement;
+    const itemName = fixture.debugElement.query(By.css('h2')).nativeElement;
     expect(itemName.textContent).toEqual('Test Item');
 
-    const itemDescription = fixture.debugElement.query(By.css('p')).nativeElement;
+    const itemDescription = fixture.debugElement.query(By.css('.besch')).nativeElement;
     expect(itemDescription.textContent).toEqual('This is a test item');
 
-    const itemPrice = fixture.debugElement.query(By.css('p:nth-child(3)')).nativeElement;
-    expect(itemPrice.textContent).toEqual('Preis: 10 € ');
+    const itemPrice = fixture.debugElement.query(By.css('p')).nativeElement;
+    expect(itemPrice.textContent).toEqual('Preis: 3.55 € ');
 
-    const itemLength = fixture.debugElement.query(By.css('.prop p:nth-child(1)')).nativeElement;
-    expect(itemLength.textContent).toEqual('Lange: 0 (mm)');
-
-    const itemWeight = fixture.debugElement.query(By.css('.prop p:nth-child(2)')).nativeElement;
-    expect(itemWeight.textContent).toEqual('Gewicht: 0 (g)');
   });
 
   it('should call the openDetails method when Details button is clicked', () => {
-    jest.spyOn(dialog, 'open');
+    jest.spyOn(router, 'navigate');
 
-    const button = fixture.debugElement.query(By.css('.act button:nth-child(2)')).nativeElement;
+    const button = fixture.debugElement.query(By.css('#openD')).nativeElement;
     button.click();
-
-    expect(dialog.open).toHaveBeenCalled();
+    fixture.detectChanges();
+    expect(router.navigate).toHaveBeenCalled();
   });
 
-  it('should call the colorChange method when the color select is changed', () => {
-    jest.spyOn(component, 'colorChange');
+  it('should call the changeSelection method when the color select is changed', () => {
+    jest.spyOn(component, 'changeSelection');
 
-    const select = fixture.debugElement.query(By.css('.color select')).nativeElement;
-    select.value = '2';
-    select.dispatchEvent(new Event('change'));
+    const selectComponent = fixture.debugElement.query(By.directive(SelectComponent)).componentInstance;
 
-    expect(component.colorChange).toHaveBeenCalled();
+    // Trigger the output event manually
+    selectComponent.current.emit('new selection');
+
+    fixture.detectChanges();
+    expect(component.changeSelection).toHaveBeenCalled();
   });
 
   it('should call the addItem method when the In den Warenkorb button is clicked', () => {
@@ -153,12 +197,12 @@ describe('ItemComponent', () => {
   });
 
   it('should call the getThumbnails method when getImage is called', () => {
-
+    jest.spyOn(variationService, 'getThumbnails');
     fixture.detectChanges();
 
     component.getImage('image1.jpg');
 
-    expect(productService.getThumbnails).toHaveBeenCalledWith('image1.jpg');
+    expect(variationService.getThumbnails).toHaveBeenCalledWith('image1.jpg');
   });
 
   it('should update the image property when getThumbnails returns a blob', fakeAsync( () => {
@@ -193,7 +237,4 @@ describe('ItemComponent', () => {
   });
 
 });
-class MockURL extends global.URL {
-  static override createObjectURL = jest.fn();
-  static override revokeObjectURL = jest.fn();
-}
+

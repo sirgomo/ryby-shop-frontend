@@ -13,6 +13,48 @@ describe('ProductService', () => {
   let service: ProductService;
   let httpMock: HttpTestingController;
 
+  const product: iProduct = {
+    id: 1,
+    name: 'Test Product',
+    artid: 1,
+    beschreibung: 'Test description',
+
+    lieferant: {
+      // lieferant properties
+    } as iLieferant,
+    lagerorte: [
+      // lagerorte properties
+    ],
+    bestellungen: [
+      // bestellungen properties
+    ],
+    datumHinzugefuegt: '2021-01-01',
+    kategorie: [
+      // kategorie properties
+    ],
+
+
+
+    wareneingang: [
+      // wareneingang properties
+    ],
+
+    mehrwehrsteuer: 0.19,
+    promocje: [
+      // promocje properties
+    ],
+    bewertung: [
+      // bewertung properties
+    ],
+    product_sup_id: '',
+    sku: '',
+    verfgbarkeit: 0,
+    ebay: 0,
+    eans: [],
+    variations: [],
+    produkt_image: '',
+    shipping_costs: []
+  };
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, JwtModule.forRoot({ config: {
@@ -36,49 +78,6 @@ describe('ProductService', () => {
   describe('createProduct', () => {
     it('should send a POST request to create a product', () => {
 
-      const product: iProduct = {
-        id: 1,
-        name: 'Test Product',
-        preis: 10,
-        artid: 1,
-        beschreibung: 'Test description',
-        color: 'red',
-        foto: 'test.jpg',
-        thumbnail: 'test_thumb.jpg',
-        lieferant: {
-          // lieferant properties
-        } as iLieferant,
-        lagerorte: [
-          // lagerorte properties
-        ],
-        bestellungen: [
-          // bestellungen properties
-        ],
-        datumHinzugefuegt: '2021-01-01',
-        kategorie: [
-          // kategorie properties
-        ],
-        verfgbarkeit: true,
-        mindestmenge: 1,
-        currentmenge: 10,
-        verkaufteAnzahl: 5,
-        wareneingang: [
-          // wareneingang properties
-        ],
-        warenausgang: [
-          // warenausgang properties
-        ],
-        mehrwehrsteuer: 0.19,
-        promocje: [
-          // promocje properties
-        ],
-        bewertung: [
-          // bewertung properties
-        ],
-        product_sup_id: '',
-        lange: 0,
-        gewicht: 0
-      };
 
       service.createProduct(product).subscribe(response => {
         expect(response).toEqual(product);
@@ -90,49 +89,7 @@ describe('ProductService', () => {
     });
 
     it('should handle error when creating a product', () => {
-      const product:iProduct = {
-        id: 1,
-        name: 'Test Product',
-        preis: 10,
-        artid: 1,
-        beschreibung: 'Test description',
-        color: 'red',
-        foto: 'test.jpg',
-        thumbnail: 'test_thumb.jpg',
-        lieferant: {
-          // lieferant properties
-        } as iLieferant,
-        lagerorte: [
-          // lagerorte properties
-        ],
-        bestellungen: [
-          // bestellungen properties
-        ],
-        datumHinzugefuegt: '2021-01-01',
-        kategorie: [
-          // kategorie properties
-        ],
-        verfgbarkeit: true,
-        mindestmenge: 1,
-        currentmenge: 10,
-        verkaufteAnzahl: 5,
-        wareneingang: [
-          // wareneingang properties
-        ],
-        warenausgang: [
-          // warenausgang properties
-        ],
-        mehrwehrsteuer: 0.19,
-        promocje: [
-          // promocje properties
-        ],
-        bewertung: [
-          // bewertung properties
-        ],
-        product_sup_id: '',
-        lange: 0,
-        gewicht: 0
-      };
+
 
       service.createProduct(product).subscribe({
 
@@ -151,49 +108,7 @@ describe('ProductService', () => {
   describe('updateProduct', () => {
     it('should send a PUT request to update a product', () => {
       const id = 1;
-      const product:iProduct = {
-        id: 1,
-        name: 'Test Product',
-        preis: 10,
-        artid: 1,
-        beschreibung: 'Test description',
-        color: 'red',
-        foto: 'test.jpg',
-        thumbnail: 'test_thumb.jpg',
-        lieferant: {
-          // lieferant properties
-        } as iLieferant,
-        lagerorte: [
-          // lagerorte properties
-        ],
-        bestellungen: [
-          // bestellungen properties
-        ],
-        datumHinzugefuegt: '2021-01-01',
-        kategorie: [
-          // kategorie properties
-        ],
-        verfgbarkeit: true,
-        mindestmenge: 1,
-        currentmenge: 10,
-        verkaufteAnzahl: 5,
-        wareneingang: [
-          // wareneingang properties
-        ],
-        warenausgang: [
-          // warenausgang properties
-        ],
-        mehrwehrsteuer: 0.19,
-        promocje: [
-          // promocje properties
-        ],
-        bewertung: [
-          // bewertung properties
-        ],
-        product_sup_id: '',
-        lange: 0,
-        gewicht: 0
-      };
+
 
       service.updateProduct(id, product).subscribe(response => {
         expect(response).toEqual(product);
@@ -206,49 +121,7 @@ describe('ProductService', () => {
 
     it('should handle error when updating a product', () => {
       const id = 1;
-      const product:iProduct = {
-        id: 1,
-        name: 'Test Product',
-        preis: 10,
-        artid: 1,
-        beschreibung: 'Test description',
-        color: 'red',
-        foto: 'test.jpg',
-        thumbnail: 'test_thumb.jpg',
-        lieferant: {
-          // lieferant properties
-        } as iLieferant,
-        lagerorte: [
-          // lagerorte properties
-        ],
-        bestellungen: [
-          // bestellungen properties
-        ],
-        datumHinzugefuegt: '2021-01-01',
-        kategorie: [
-          // kategorie properties
-        ],
-        verfgbarkeit: true,
-        mindestmenge: 1,
-        currentmenge: 10,
-        verkaufteAnzahl: 5,
-        wareneingang: [
-          // wareneingang properties
-        ],
-        warenausgang: [
-          // warenausgang properties
-        ],
-        mehrwehrsteuer: 0.19,
-        promocje: [
-          // promocje properties
-        ],
-        bewertung: [
-          // bewertung properties
-        ],
-        product_sup_id: '',
-        lange: 0,
-        gewicht: 0
-      };
+
 
       service.updateProduct(id, product).subscribe({
        error: error => {
@@ -357,131 +230,4 @@ describe('ProductService', () => {
     });
   });
 
-  describe('uploadPhoto', () => {
-    it('should send a POST request to upload a photo', () => {
-      const file = new File([], 'test.jpg');
-
-      service.uploadPhoto(file, 1).subscribe(response => {
-        expect(response).toBeNull();
-      });
-
-      const req = httpMock.expectOne(`${service.API}/upload/1`);
-      expect(req.request.method).toBe('POST');
-      req.flush(null);
-    });
-
-    it('should handle error when uploading a photo', () => {
-      const file = new File([], 'test.jpg');
-
-      service.uploadPhoto(file, 1).subscribe({
-
-        error: error => {
-          expect(error).toBeTruthy();
-          expect(error.message).toBe('Fehler beim Hochladen des Fotos.');
-        }
-    });
-
-      const req = httpMock.expectOne(`${service.API}/upload/1`);
-      expect(req.request.method).toBe('POST');
-      req.flush(null, { status: 500, statusText: 'Internal Server Error' });
-    });
-  });
-
-  describe('getImage', () => {
-    it('should send a GET request to get an image', () => {
-      const id = '1';
-
-      service.getImage(id).subscribe(response => {
-        expect(response).toBeTruthy();
-      });
-
-      const req = httpMock.expectOne(`${service.API}/uploads/${id}`);
-      expect(req.request.method).toBe('GET');
-      req.flush(new Blob());
-    });
-
-    it('should handle error when getting an image', () => {
-      const id = '1';
-
-      service.getImage(id).subscribe({
-        error: error => {
-          expect(error).toBeTruthy();
-          expect(error.message).toBe('Error retrieving image.');
-        }
-    });
-
-      const req = httpMock.expectOne(`${service.API}/uploads/${id}`);
-      expect(req.request.method).toBe('GET');
-      req.flush(null, { status: 500, statusText: 'Internal Server Error' });
-    });
-  });
-
-  describe('getThumbnails', () => {
-    it('should send a GET request to get thumbnails', () => {
-      const id = '1';
-
-      service.getThumbnails(id).subscribe(response => {
-        expect(response).toBeTruthy();
-      });
-
-      const req = httpMock.expectOne(`${service.API}/thumbnails/${id}`);
-      expect(req.request.method).toBe('GET');
-      req.flush(new Blob());
-    });
-
-    it('should handle error when getting thumbnails', () => {
-      const id = '1';
-
-      service.getThumbnails(id).subscribe({
-       error: error => {
-          expect(error).toBeTruthy();
-          expect(error.message).toBe('Error retrieving thumbnails.');
-        }
-    });
-
-      const req = httpMock.expectOne(`${service.API}/thumbnails/${id}`);
-      expect(req.request.method).toBe('GET');
-      req.flush(null, { status: 500, statusText: 'Internal Server Error' });
-    });
-    describe('deleteImage', () => {
-      it('should send a POST request to delete an image', () => {
-        const image: iDelete = {
-          produktid: 0,
-          fileid: 'kosi'
-        };
-
-        service.deleteImage(image).subscribe(response => {
-          expect(response).toBeTruthy();
-        });
-
-        const req = httpMock.expectOne(`${service.API}/file-delete`);
-        expect(req.request.method).toBe('POST');
-        expect(req.request.body).toBe(image)
-        req.flush({});
-      });
-
-      it('should handle error when deleting an image', () => {
-        const image: iDelete = {
-          produktid: 0,
-          fileid: 'kosi'
-        };
-
-       service.deleteImage(image).subscribe({
-          error: error => {
-            expect(error).toBeTruthy();
-            expect(error.message).toBe('Fehler beim Löschen des Bildes.');
-          },
-          next: data => {
-            console.log(data)
-          }
-      });
-
-        const req = httpMock.expectOne(`${service.API}/file-delete`);
-
-        expect(req.request.method).toBe('POST');
-        req.flush(null, { status: 500, statusText: 'Internal Server Error' });
-
-      });
-    });
-  });
 });

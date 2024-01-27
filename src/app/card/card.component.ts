@@ -116,6 +116,7 @@ export class CardComponent implements OnInit, OnDestroy {
         let total = 0;
 
           let price = this.getPicePriceWithActions(this.products()[itemIndex]);
+
           if(this.products()[itemIndex].mehrwehrsteuer > 0 )
           {
             price += (price * this.products()[itemIndex].mehrwehrsteuer / 100);
@@ -167,6 +168,7 @@ export class CardComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.products().length; i++) {
       price += Number(this.getTotalPrice(i));
     }
+
     return price.toFixed(2);
   }
   getTotalMwst() {

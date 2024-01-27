@@ -33,7 +33,7 @@ describe('ChangePasswordComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ChangePasswordComponent],
+
       providers: [
         FormBuilder,
         ErrorService,
@@ -41,7 +41,7 @@ describe('ChangePasswordComponent', () => {
         { provide: AuthService, useValue: authServiceMock },
         { provide: MatDialogRef, useValue: dialogRefMock },
       ],
-      imports: [MatFormFieldModule, MatInputModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule]
+      imports: [ChangePasswordComponent, MatFormFieldModule, MatInputModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule]
     })
     .overrideComponent(ChangePasswordComponent, {
       set: { changeDetection: ChangeDetectionStrategy.OnPush },

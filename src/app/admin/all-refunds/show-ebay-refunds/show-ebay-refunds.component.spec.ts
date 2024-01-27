@@ -27,7 +27,8 @@ describe('ShowEbayRefundsComponent', () => {
       ],
     })
     .compileComponents();
-
+    if(window)
+      window.confirm = jest.fn(),
     fixture = TestBed.createComponent(ShowEbayRefundsComponent);
     component = fixture.componentInstance;
     testController = TestBed.inject(HttpTestingController);

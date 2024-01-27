@@ -29,7 +29,7 @@ export class OrderComponent  {
   ordersSig = toSignal(this.oderService.items$);
 
   columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt', 'inovice', 'refund'];
-  constructor(private readonly oderService: OrdersService, public error: ErrorService, private readonly dialog: MatDialog) {}
+  constructor(private readonly oderService: OrdersService, public error: ErrorService, public readonly dialog: MatDialog) {}
 
 
   openDetailts(item: iBestellung) {

@@ -13,7 +13,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { JwtModule } from '@auth0/angular-jwt';
-import { iShippingAddress } from 'src/app/model/iShippingAddress';
 
 describe('ShippingAddressComponent', () => {
   let component: ShippingAddressComponent;
@@ -24,10 +23,9 @@ describe('ShippingAddressComponent', () => {
 
   beforeEach(waitForAsync( () => {
     TestBed.configureTestingModule({
-      declarations: [ShippingAddressComponent],
-      imports: [ReactiveFormsModule, FormsModule, BrowserAnimationsModule, MatFormFieldModule, MatInputModule, MatCheckboxModule, HttpClientTestingModule, JwtModule.forRoot({})],
+      imports: [ShippingAddressComponent, ReactiveFormsModule, FormsModule, BrowserAnimationsModule, MatFormFieldModule, MatInputModule, MatCheckboxModule, HttpClientTestingModule, JwtModule.forRoot({})],
       providers: [
-        { provide: HelperService, useValue: { isLogged: jest.fn() } },
+        { provide: HelperService, useValue: { isLogged: jest.fn(), isShippingCostSelected: jest.fn().mockReturnValue(true) } },
        UserService,
         { provide: MatSnackBar, useValue: { open: jest.fn() } },
       ],
@@ -50,13 +48,19 @@ describe('ShippingAddressComponent', () => {
 
   it('should display count of the form fields', () => {
     fixture.detectChanges();
+    component.act$.subscribe();
+    fixture.detectChanges();
     const formFields = fixture.debugElement.queryAll(By.css('input[formControlName]'));
     expect(formFields.length).toBe(7);
   });
 
-  it('should display count of the form fields when isRechnungAddress is true', () => {
+  it('should display count of the form fields when isRechnungAddress is true',async () => {
     component.isRechnungAddress = true;
     fixture.detectChanges();
+    component.act$.subscribe();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
     const formFields = fixture.debugElement.queryAll(By.css('input[formControlName]'));
     expect(formFields.length).toBe(13);
   });
@@ -129,9 +133,13 @@ describe('ShippingAddressComponent', () => {
   });
 
   it('should set diabled on "Bestellen" button ', () => {
+    component.act$.subscribe();
     fixture.detectChanges();
 
-    const bestellenButton = fixture.debugElement.query(By.css('button[mat-raised-button]')).nativeElement;
+    jest.spyOn(helperService, 'isShippingCostSelected').mockReturnValue(false);
+    fixture.detectChanges();
+
+    const bestellenButton = fixture.debugElement.query(By.css('#buttDisabled')).nativeElement;
     expect(bestellenButton.disabled).toBeTruthy();
 
 

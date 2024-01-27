@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { OrderComponent } from './order.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,7 +13,6 @@ import { environment } from 'src/environments/environment';
 import { BESTELLUNGSSTATUS, iBestellung } from 'src/app/model/iBestellung';
 import { iUserData } from 'src/app/model/iUserData';
 import { ErrorService } from 'src/app/error/error.service';
-import { ChangeDetectorRef } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { iCompany } from 'src/app/model/iCompany';
 import { iRefunds } from 'src/app/model/iRefund';
@@ -28,7 +27,6 @@ describe('OrderComponent', () => {
   let orders: iBestellung[] = [];
   let order: iBestellung;
   let order2: iBestellung;
-  let changeDetector: ChangeDetectorRef;
   let company: iCompany;
   let refunds: iRefunds;
 
@@ -43,95 +41,90 @@ describe('OrderComponent', () => {
     fixture = TestBed.createComponent(OrderComponent);
     testController = TestBed.inject(HttpTestingController);
     component = fixture.componentInstance;
-    changeDetector = fixture.debugElement.injector.get(ChangeDetectorRef);
+
 
   });
   afterEach(() => {
     jest.resetAllMocks();
     testController.verify();
-  })
+  });
  it('should create', () => {
 
     fixture.detectChanges();
     const requ = testController.expectOne(environment.api+'order/all/get/1');
     expect(requ.request.method).toBe('POST');
-    requ.flush([]);
+    requ.flush([orders, 1]);
+
     expect(component).toBeTruthy();
   });
-  it('it should get orders from api', async () => {
+  it('it should get orders from api', () => {
 
     fixture.detectChanges();
-
     const requ = testController.expectOne(environment.api+'order/all/get/1');
     expect(requ.request.method).toBe('POST');
     requ.flush([orders, 1]);
-    await fixture.whenStable();
-    changeDetector.detectChanges();
-    const items = fixture.debugElement.queryAll(By.css('tr[mat-row]'));
+    fixture.detectChanges();
+    const items = fixture.debugElement.queryAll(By.css('tr'));
 
     expect(component.ordersSig()).toEqual(orders);
-    expect(items.length).toBe(2);
-  })
-  it( 'it should click open details', async () => {
+    //2 + 1 header
+    expect(items.length).toBe(3);
 
+  });
+
+  it( 'it should click open details', () => {
+    jest.spyOn(component, 'openDetailts');
     fixture.detectChanges();
 
     const requ = testController.expectOne(environment.api+'order/all/get/1');
     expect(requ.request.method).toBe('POST');
     requ.flush([orders, 1]);
-    await fixture.whenStable();
-    changeDetector.detectChanges();
+    fixture.detectChanges();
     const items = fixture.debugElement.queryAll(By.css('tr[mat-row]'));
     const butt = fixture.nativeElement.querySelectorAll('button')[0];
-    jest.spyOn(component, 'openDetailts');
-    butt.click();
 
+    butt.click();
+    fixture.detectChanges();
     const requ2 = testController.expectOne(environment.api+'order/1');
     expect(requ2.request.method).toBe('GET');
     requ2.flush(order);
-    await fixture.whenStable();
+
 
 
     expect(component.openDetailts).toHaveBeenCalledTimes(1);
   });
-  it( 'it should click open invoice', async () => {
-
+  it( 'it should click open invoice', () => {
+    jest.spyOn(component.dialog, 'open').mockReturnThis();
     fixture.detectChanges();
 
     const requ = testController.expectOne(environment.api+'order/all/get/1');
     expect(requ.request.method).toBe('POST');
     requ.flush([orders, 1]);
-    await fixture.whenStable();
-    changeDetector.detectChanges();
-    const items = fixture.debugElement.queryAll(By.css('tr[mat-row]'));
+    fixture.detectChanges();
+
     const butt = fixture.nativeElement.querySelectorAll('button')[1];
     jest.spyOn(component, 'openInovice');
     butt.click();
-
+    fixture.detectChanges();
     expect(component.openInovice).toHaveBeenCalledTimes(1);
   })
-  it( 'it should click refund', async () => {
-
+  it( 'it should click refund',  () => {
+    jest.spyOn(component.dialog, 'open').mockImplementation().mockReturnThis();
     fixture.detectChanges();
 
     const requ = testController.expectOne(environment.api+'order/all/get/1');
     expect(requ.request.method).toBe('POST');
     requ.flush([orders, 1]);
-    await fixture.whenStable();
-
-    changeDetector.detectChanges();
+    fixture.detectChanges();
     const items = fixture.debugElement.queryAll(By.css('tr[mat-row]'));
     const butt = fixture.nativeElement.querySelectorAll('button')[2];
     jest.spyOn(component, 'refund');
     butt.click();
 
-    const requ2 = testController.expectOne(environment.api+'order/1');
-    expect(requ2.request.method).toBe('GET');
-    requ2.flush(order);
-    await fixture.whenStable();
+
 
     expect(component.refund).toHaveBeenCalledTimes(1);
-  })
+  });
 
   function getTestData() {
     orders = [];

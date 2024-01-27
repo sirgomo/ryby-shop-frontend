@@ -42,7 +42,7 @@
   <ng-container matColumnDef="toTmenge">
     <mat-header-cell *matHeaderCellDef>Total Menge</mat-header-cell>
     <mat-cell *matCellDef="let product; let i = index"> {{ product.variations[0].quanity}}</mat-cell>
-    <mat-footer-cell *matFooterCellDef><span class="footer">Total Menge: {{getTotalCount()}}</span> </mat-footer-cell>
+    <mat-footer-cell *matFooterCellDef><span class="footer" id="totmenge">Total Menge: {{getTotalCount()}}</span> </mat-footer-cell>
   </ng-container>
 
   <!-- Price per St Column -->

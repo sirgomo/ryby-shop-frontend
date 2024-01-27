@@ -20,10 +20,17 @@ export class OrdersService {
   currentOrderStateSig = signal(BESTELLUNGSSTATE.BEZAHLT);
   bestellungen : BehaviorSubject<iBestellung[]> = new BehaviorSubject<iBestellung[]>([]);
   bestellung = signal<iItemActions<any>>({item: null, action: 'getall' })
-  items$ = combineLatest([toObservable(this.currentVersandStatusSig), toObservable(this.currentOrderStateSig), toObservable(this.helper.artikelProSiteSig),
-     toObservable(this.helper.pageNrSig), toObservable(this.bestellung)]).pipe(
+  items$ = combineLatest([
+    toObservable(this.currentVersandStatusSig),
+    toObservable(this.currentOrderStateSig),
+    toObservable(this.helper.artikelProSiteSig),
+    toObservable(this.helper.pageNrSig),
+    toObservable(this.bestellung)]).pipe(
     switchMap(([verStat, orderStat, itemsQuan, sitenr, bestellung]) => {
       if (bestellung.action === 'donothing')
+      return this.bestellungen.asObservable();
+
+      if(this.bestellungen.value.length > 0)
       return this.bestellungen.asObservable();
 
       return this.getBestellungen(verStat, orderStat, itemsQuan, sitenr);

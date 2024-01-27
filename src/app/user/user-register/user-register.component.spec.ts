@@ -28,9 +28,8 @@ describe('UserRegisterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BrowserModule, BrowserAnimationsModule,FormsModule, ReactiveFormsModule, HttpClientTestingModule, MatIconModule, MatInputModule,
+      imports: [UserRegisterComponent, BrowserModule, BrowserAnimationsModule,FormsModule, ReactiveFormsModule, HttpClientTestingModule, MatIconModule, MatInputModule,
         MatCheckboxModule, MatFormFieldModule, MatSnackBarModule, JwtModule.forRoot({})],
-      declarations: [UserRegisterComponent],
       providers: [
         UserService,
         DatePipe,

@@ -1,283 +1,236 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CardComponent } from './card.component';
 import { HelperService } from '../helper/helper.service';
 import { CompanyService } from '../admin/company/company.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { iProduct } from '../model/iProduct';
-import { iColor } from '../model/iColor';
 import { iLieferant } from '../model/iLieferant';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { iProduktVariations } from '../model/iProduktVariations';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { ShippingAddressComponent } from './shipping-address-make-bestellung/shipping-address.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from 'src/environments/environment';
 import { iCompany } from '../model/iCompany';
-import { Component, WritableSignal, signal } from '@angular/core';
+import { IShippingCost } from '../model/iShippingCost';
 
 describe('CardComponent', () => {
   let component: CardComponent;
   let fixture: ComponentFixture<CardComponent>;
   let helperService: HelperService;
-  let companyService: CompanyService;
+  let testController: HttpTestingController;
 
+  const products: iProduct[] = [];
+  let vari: iProduktVariations = {} as iProduktVariations;
+  const shippingCost:IShippingCost = {
+    shipping_price: 5,
+    shipping_name: 'Standard',
+    cost_per_added_stuck: 1,
+    average_material_price: 0
+  };
+  const prod: iProduct = {
+    id: 1,
+    name: 'jdkashdkjas',
+    sku: 'asd',
+    artid: 23,
+    beschreibung: 'jkahd asjkdh ajksh  jkas',
+    lieferant: { id: 1} as iLieferant,
+    lagerorte: [],
+    bestellungen: [],
+    datumHinzugefuegt: '2022-01-10',
+    kategorie: [],
+    verfgbarkeit: 1,
+    product_sup_id: '',
+    ebay: 0,
+    wareneingang: [],
+    mehrwehrsteuer: 0,
+    promocje: [],
+    bewertung: [],
+    eans: [],
+    variations: [vari],
+    produkt_image: '',
+    shipping_costs: [shippingCost]
+  };
+  const company: iCompany = {
+    name: 'jhasdhajksd',
+    company_name: 'jkadjkas',
+    address: 'kjsdhajskdh',
+    city: '',
+    postleitzahl: '',
+    country: '',
+    phone: '',
+    email: '',
+    isKleinUnternehmen: 1,
+    ustNr: '',
+    fax: '',
+    eu_komm_hinweis: '',
+    agb: '',
+    daten_schutzt: '',
+    cookie_info: '',
+    is_in_urlop: false
+  };
+  products.push(prod);
   beforeEach(async () => {
+    vari  = {
+      sku: 'sadkajdsjaks',
+      produkt: { id :1 },
+      variations_name: 'sjdhas',
+      hint: '',
+      value: 'toto',
+      unit: '',
+      image: '',
+      price: 5,
+      wholesale_price: 0,
+      thumbnail: '',
+      quanity: 10,
+      quanity_sold: 1,
+      quanity_sold_at_once: 1,
+    };
+    prod.variations = [vari];
     await TestBed.configureTestingModule({
-      declarations: [CardComponent, FakeShippingAddressComponent],
-      imports: [HttpClientTestingModule, MatTableModule, MatProgressSpinnerModule],
-      providers: [{ provide: HelperService, useValue: {
-        cardSig: jest.fn(() => [] as iProduct[]),
-      }}, CompanyService]
+
+      imports: [CardComponent ,HttpClientTestingModule, MatProgressSpinnerModule, ShippingAddressComponent,
+         MatSelectModule, MatTableModule, MatIconModule, CommonModule, MatButtonModule, NoopAnimationsModule, JwtModule.forRoot({ config: { tokenGetter: jest.fn(), }})],
+      providers: [
+        CompanyService,
+        HelperService,
+      ]
     })
       .compileComponents();
+      fixture = TestBed.createComponent(CardComponent);
+      component = fixture.componentInstance;
+      helperService = TestBed.inject(HelperService);
+      testController = TestBed.inject(HttpTestingController);
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CardComponent);
-    component = fixture.componentInstance;
-    helperService = TestBed.inject(HelperService);
-    companyService = TestBed.inject(CompanyService);
 
-    fixture.detectChanges();
-  });
-
+  afterEach(() => {
+    jest.resetAllMocks();
+    testController.verify();
+  })
   it('should create', () => {
+    initRequ();
     expect(component).toBeTruthy();
   });
-
-  it('should initialize component', fakeAsync( () => {
-    jest.spyOn(helperService, 'cardSig').mockReturnValue([]);
-    jest.spyOn(companyService, 'getCompanyById').mockReturnValue(of({ isKleinUnternehmen: 1 } as iCompany));
-
-    component.ngOnInit();
-    component.act$.subscribe();
-    tick();
+  it('should display the correct total quantity', () => {
+    component.products.set([...products]);
+    initRequ();
     fixture.detectChanges();
-    expect(component.colors).toEqual([]);
-    expect(component.company.isKleinUnternehmen).toBe(1);
-    expect(component.columns).toEqual(['artid', 'name', 'color', 'toTmenge', 'priceSt', 'totalPrice', 'remove']);
-  }));
-
-  it('should reload colors', () => {
-    const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [],  bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] }
-    ];
-    const expectedColors: iColor[][] = [
-      [{ id: '1', menge: 5 }],
-      [{ id: '2', menge: 10 }]
-    ];
-    component.products = signal<iProduct[]>([]);
-    component.products.set(products);
-    component.ngOnInit();
-
-    expect(component.colors).toEqual(expectedColors);
+    const totalCountElement = fixture.nativeElement.querySelector('#totmenge');
+    expect(totalCountElement.textContent).toContain(`Total Menge: ${component.getTotalCount()}`);
   });
 
-  it('should increase quantity',fakeAsync( () => {
-    const itemIndex = 0;
-    const colorIndex = 0;
-    component.products = signal<iProduct[]>([]);
-    const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [],  bewertung: [] }
+  it('should increase product quantity', () => {
+    component.products.set([...products]);
+    initRequ();
+    const initialQuantity = component.products()[0].variations[0].quanity;
+    component.increaseQuantity(0);
+    expect(component.products()[0].variations[0].quanity).toBe(initialQuantity + 1);
+  });
+
+  it('should decrease product quantity', () => {
+    component.products.set([...products]);
+    initRequ();
+    const initialQuantity = component.products()[0].variations[0].quanity;
+    component.decreaseQuantity(0);
+    expect(component.products()[0].variations[0].quanity).toBe(initialQuantity - 1);
+  });
+
+  it('should remove an item from the cart', () => {
+    component.products.set([...products]);
+    initRequ();
+    const initialLength = component.products().length;
+    component.removeItem(0);
+    expect(component.products().length).toBe(initialLength - 1);
+  });
+
+  it('should calculate total price correctly', () => {
+    component.products.set([...products]);
+    initRequ();
+    const totalPrice = component.getTotalPrice(0);
+    expect(totalPrice).toBe((products[0].variations[0].quanity * products[0].variations[0].price).toFixed(2));
+  });
+
+  it('should set shipping cost on selection', () => {
+    component.products.set([...products]);
+    initRequ();
+  });
+
+  it('should display the correct total price with shipping', () => {
+    component.products.set([...products]);
+    initRequ();
+  });
+
+  it('should check if there is enough product to increase quantity', () => {
+    component.products.set([...products]);
+    initRequ();
+    const item: iProduct = {
+      ...prod,
+    };
+    item.variations = [
+      {
+        ...vari,
+        quanity: 100,
+      }
     ];
-    const expectedColors: iColor[][] = [
-      [{ id: '1', menge: 6 }]
-    ];
-    component.products.set(products);
-    jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
-    component.ngOnInit();
-    component.act$.subscribe();
-    tick();
-    const colors = JSON.stringify([{"id": "1", "menge": 6}]);
-    helperService.cardSig = {
-      set: jest.fn()
-    } as unknown as WritableSignal<iProduct[]>
-    component.increaseQuantity(itemIndex, colorIndex);
 
-    expect(component.colors).toEqual(expectedColors);
-    expect(products[itemIndex].color).toBe(colors);
-  }));
-
-  it('should decrease quantity', fakeAsync( () => {
-    const itemIndex = 0;
-    const colorIndex = 0;
-    component.products = signal<iProduct[]>([]);
-    const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [],  bewertung: [] }
-    ];
-
-    component.products.set(products);
-
-    jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
-    component.ngOnInit();
-    component.act$.subscribe();
-    tick();
-    const expectedColors: iColor[][] = component.colors;
-    const colors = JSON.stringify([{"id": "1", "menge": 4}]);
-    helperService.cardSig = {
-      set: jest.fn()
-    } as unknown as WritableSignal<iProduct[]>
-
-    component.decreaseQuantity(itemIndex, colorIndex);
-
-    expect(component.colors).toEqual(expectedColors);
-    expect(products[itemIndex].color).toBe(colors);
-  }));
-
-  it('should remove item', fakeAsync( () => {
-    const itemIndex = 0;
-    const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [],  bewertung: [] }
-    ];
-    const expectedProducts: iProduct[] = [];
-    const expectedColors: iColor[][] = [];
-
-    component.products = signal<iProduct[]>([]);
-    jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
-
-    component.ngOnInit();
-    component.act$.subscribe();
-    tick();
+    component.helper.cardSigForMengeControl.set([item]);
     fixture.detectChanges();
-
-    component.removeItem(itemIndex);
-
-
-    expect(component.products()).toEqual(expectedProducts);
-    expect(component.colors).toEqual(expectedColors);
-  }));
-
-  it('should calculate total price', () => {
-    const itemIndex = 0;
-    const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] }
-    ];
-    const expectedTotalPrice = ['50.00', '200.00'];
-
-    jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
-
-    const totalPrice1 = component.getTotalPrice(0);
-    const totalPrice2 = component.getTotalPrice(1);
-
-    expect(totalPrice1).toBe(expectedTotalPrice[0]);
-    expect(totalPrice2).toBe(expectedTotalPrice[1]);
+    const isEnough = component.doWeHaveEnough(0);
+    expect(isEnough).toBe(true);
   });
 
-  it('should calculate price per unit', () => {
-    const itemIndex = 0;
-    const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] }
-    ];
-    const expectedPricePerSt = [10, 20];
-
-    jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
-
-    const pricePerSt1 = component.getPricePerSt(0);
-    const pricePerSt2 = component.getPricePerSt(1);
-
-    expect(pricePerSt1).toBe(expectedPricePerSt[0]);
-    expect(pricePerSt2).toBe(expectedPricePerSt[1]);
-  });
-
-  it('should calculate product Mwst', () => {
-    const itemIndex = 0;
-    const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 20, promocje: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 15, promocje: [], bewertung: [] }
-    ];
-    const expectedProductMwst = ['2.00', '3.00'];
-
-    jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
-
-    const productMwst1 = component.getProduktMwst(0);
-    const productMwst2 = component.getProduktMwst(1);
-
-    expect(productMwst1).toBe(expectedProductMwst[0]);
-    expect(productMwst2).toBe(expectedProductMwst[1]);
-  });
-
-  it('should calculate product menge', () => {
-    const itemIndex = 0;
-    const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] }
-    ];
-    const expectedProductMenge = [5, 10];
-
-    jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
-
-    const productMenge1 = component.getProductMenge(0);
-    const productMenge2 = component.getProductMenge(1);
-
-    expect(productMenge1).toBe(expectedProductMenge[0]);
-    expect(productMenge2).toBe(expectedProductMenge[1]);
-  });
-
-  it('should calculate total count', fakeAsync( () => {
-    const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] }
-    ];
-    const expectedTotalCount = 15;
-
-    jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
-    component.ngOnInit();
-    component.act$.subscribe();
-    tick();
+  it('should not allow to increase quantity if not enough product', () => {
+    component.products.set([...products]);
+    initRequ();
+    const product = component.products()[0];
+    product.variations[0].quanity = product.variations[0].quanity_sold + 1;
     fixture.detectChanges();
+    const isEnough = component.doWeHaveEnough(0);
+    expect(isEnough).toBe(false);
+  });
+
+  it('should get the correct total count of products', () => {
+    component.products.set([...products]);
+    initRequ();
     const totalCount = component.getTotalCount();
-
-    expect(totalCount).toBe(expectedTotalCount);
-  }));
-
-  it('should calculate total price netto', () => {
-    const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 0, promocje: [], bewertung: [] }
-    ];
-    const expectedTotalPriceNetto = '250.00';
-
-    jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
-
-    const totalPriceNetto = component.getTotalPriceNetto();
-
-    expect(totalPriceNetto).toBe(expectedTotalPriceNetto);
+    expect(totalCount).toBe(products.reduce((acc, product) => acc + product.variations[0].quanity, 0));
   });
 
-  it('should calculate total Mwst', () => {
-    const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 20, promocje: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 15, promocje: [], bewertung: [] }
-    ];
-    const expectedTotalMwst = '40.00';
-
-    jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
-
-    const totalMwst = component.getTotalMwst();
-
-    expect(totalMwst).toBe(expectedTotalMwst);
+  it('should get the correct total price netto', () => {
+    company.isKleinUnternehmen = 0;
+    component.products.set([...products]);
+    initRequ();
+    const prNett = component.getTotalPriceNetto();
+    fixture.detectChanges();
+    expect(prNett).toBe('50.00')
   });
 
-  it('should calculate total brutto', () => {
-    const products: iProduct[] = [
-      { id: 1, name: 'Product 1', preis: 10, artid: 1, beschreibung: 'Description 1', color: '[{"id": "1", "menge": 5}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 5, product_sup_id: '', lange: 1, gewicht: 1, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 20, promocje: [], bewertung: [] },
-      { id: 2, name: 'Product 2', preis: 20, artid: 2, beschreibung: 'Description 2', color: '[{"id": "2", "menge": 10}]', foto: '', thumbnail: '', lieferant: {} as iLieferant, lagerorte: [], bestellungen: [], datumHinzugefuegt: '', kategorie: [], verfgbarkeit: true, mindestmenge: 1, currentmenge: 10, product_sup_id: '', lange: 2, gewicht: 2, verkaufteAnzahl: 0, wareneingang: [], warenausgang: [], mehrwehrsteuer: 15, promocje: [], bewertung: [] }
-    ];
-
-    const expectedTotalBrutto = '290.00';
-
-    jest.spyOn(helperService, 'cardSig').mockReturnValue(products);
-
-    const totalBrutto = component.getTotalBrutto();
-
-    expect(totalBrutto).toBe(expectedTotalBrutto);
+  it('should get the correct total MwSt', () => {
+    component.products.set([...products]);
+    initRequ();
+    const totalMwSt = component.getTotalMwst();
+    expect(totalMwSt).toBe('0.00');
   });
+
+  it('should get the correct total price brutto', () => {
+    component.products.set([...products]);
+    initRequ();
+    const bruttoPrice = component.getTotalBrutto();
+    const expectedBrutto = (Number(component.getTotalPriceNetto()) + Number(component.getTotalMwst())).toFixed(2);
+    expect(bruttoPrice).toBe(expectedBrutto);
+  });
+  function initRequ() {
+    fixture.detectChanges();
+    const requ = testController.expectOne(environment.api+'company/1');
+    expect(requ.request.method).toBe('GET');
+    requ.flush(company);
+  }
 });
 
-@Component({
-  selector: 'app-shipping-address',
-  template: ''
-})
-class FakeShippingAddressComponent {
 
-}

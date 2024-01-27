@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Component, signal } from '@angular/core';
+import { iLager } from 'src/app/model/iLager';
 
 describe('AddEditBuchungComponent', () => {
   let component: AddEditBuchungComponent;
@@ -47,9 +48,9 @@ describe('AddEditBuchungComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, BrowserAnimationsModule, HttpClientTestingModule, MatFormFieldModule,
+      declarations: [FakeAppList],
+      imports: [AddEditBuchungComponent,  ReactiveFormsModule, BrowserAnimationsModule, HttpClientTestingModule, MatFormFieldModule,
         MatInputModule, MatDatepickerModule, MatMomentDateModule, MatSelectModule, MatCheckboxModule, MatTabsModule],
-      declarations: [AddEditBuchungComponent, FakeAppList],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: mockDialogRef },
@@ -89,53 +90,95 @@ describe('AddEditBuchungComponent', () => {
   it('should call saveGoodsReceipt method when warenEingangForm is valid', () => {
     component.warenEingangForm.setValue({
       id: null,
-      lieferant: 1,
-      empfangsdatum: new Date(),
+      lieferant: { id: 1 } as iLieferant,
+      empfangsdatum: new Date().toISOString(),
       rechnung: '123',
       lieferscheinNr: '456',
-      datenEingabe: new Date(),
+      datenEingabe: new Date().toISOString(),
       gebucht: true,
-      eingelagert: false
+      eingelagert: false,
+      shipping_cost: 0,
+      remarks: '',
+      other_cost: 0,
+      location: {} as iLager,
+      wahrung: '',
+      wahrung2: '',
+      wahrung_rate: 0,
+      shipping_cost_eur: 0,
+      other_cost_eur: 0
     });
-    jest.spyOn(mockWareneingangService, 'createWareneingangBuchung').mockReturnValue(of({  id: 1,
-      lieferant: { id: 1 } as iLieferant ,
+    const eingang: iWarenEingang = {
+      id: undefined,
+      lieferant: { id: 1 } as iLieferant,
       products: [],
       empfangsdatum: new Date().toISOString(),
       rechnung: '123',
       lieferscheinNr: '456',
       datenEingabe: new Date().toISOString(),
       gebucht: true,
-      eingelagert: false}));
+      eingelagert: false,
+      shipping_cost: 0,
+      remarks: '',
+      other_cost: 0,
+      location: {} as iLager,
+      wahrung: '',
+      wahrung2: '',
+      wahrung_rate: 0,
+      shipping_cost_eur: 0,
+      other_cost_eur: 0
+    }
+    jest.spyOn(mockWareneingangService, 'createWareneingangBuchung').mockReturnValue(of(eingang));
       jest.spyOn(mockSnackBar, 'open').mockImplementation();
     component.saveGoodsReceipt();
     component.act$.subscribe();
     fixture.detectChanges();
     component.saveGoodsReceipt();
     expect(mockWareneingangService.createWareneingangBuchung).toHaveBeenCalled();
-    expect(mockSnackBar.open).toHaveBeenCalledWith('Die buchung wurde gespeichert', ' Ok', { duration: 3000 });
+    expect(mockSnackBar.open).toHaveBeenCalledWith('Die buchung wurde gespeichert', ' Ok', { duration: 2000 });
   });
 
   it('should call saveGoodsReceipt method when warenEingangForm is valid and data is not null', () => {
     component.data = { id: 1 } as iWarenEingang;
     component.warenEingangForm.setValue({
       id: 1,
-      lieferant: 1,
-      empfangsdatum: new Date(),
+      lieferant: { id: 1 } as iLieferant,
+      empfangsdatum: new Date().toISOString(),
       rechnung: '123',
       lieferscheinNr: '456',
-      datenEingabe: new Date(),
+      datenEingabe: new Date().toISOString(),
       gebucht: true,
-      eingelagert: false
+      eingelagert: false,
+      shipping_cost: 0,
+      remarks: '',
+      other_cost: 0,
+      location: {} as iLager,
+      wahrung: '',
+      wahrung2: '',
+      wahrung_rate: 0,
+      shipping_cost_eur: 0,
+      other_cost_eur: 0
     });
-    jest.spyOn(mockWareneingangService, 'updateWareneingangBuchung').mockReturnValue(of({  id: 1,
-      lieferant: { id: 1 } as iLieferant ,
+    const eingang: iWarenEingang = {
+      id: 1,
+      lieferant: { id: 1 } as iLieferant,
       products: [],
       empfangsdatum: new Date().toISOString(),
       rechnung: '123',
       lieferscheinNr: '456',
       datenEingabe: new Date().toISOString(),
       gebucht: true,
-      eingelagert: false}));
+      eingelagert: false,
+      shipping_cost: 0,
+      remarks: '',
+      other_cost: 0,
+      location: {} as iLager,
+      wahrung: '',
+      wahrung2: '',
+      wahrung_rate: 0,
+      shipping_cost_eur: 0,
+      other_cost_eur: 0
+    }
+    jest.spyOn(mockWareneingangService, 'updateWareneingangBuchung').mockReturnValue(of(eingang));
       jest.spyOn(mockSnackBar, 'open').mockImplementation();
     component.saveGoodsReceipt();
     component.act$.subscribe();

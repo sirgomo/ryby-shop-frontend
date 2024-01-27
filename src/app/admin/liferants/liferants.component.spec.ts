@@ -21,8 +21,7 @@ describe('LiferantsComponent', () => {
     liferantsSubject = new BehaviorSubject<iLieferant[]>([]);
 
     await TestBed.configureTestingModule({
-      imports: [MatTableModule, MatIconModule, MatCardModule],
-      declarations: [LiferantsComponent],
+      imports: [LiferantsComponent, MatTableModule, MatIconModule, MatCardModule],
       providers: [
         {
           provide: LiferantsService,

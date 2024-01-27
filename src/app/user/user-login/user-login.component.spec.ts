@@ -29,8 +29,8 @@ describe('UserLoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserLoginComponent, UserRegisterComponent ],
-      imports: [ HttpClientTestingModule, JwtModule.forRoot({
+
+      imports: [ UserLoginComponent, UserRegisterComponent, HttpClientTestingModule, JwtModule.forRoot({
 
       }), MatDialogModule, MatFormFieldModule, MatInputModule, BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule ],
       providers: [

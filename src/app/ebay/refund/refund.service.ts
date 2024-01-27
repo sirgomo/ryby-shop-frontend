@@ -72,7 +72,7 @@ export class RefundService {
           throw error;
         }),
         map((res) => {
-          console.log(res)
+
           this.helperService.paginationCountSig.set(res[1]);
           this.currentRefunds.next(res[0]);
           return res[0];

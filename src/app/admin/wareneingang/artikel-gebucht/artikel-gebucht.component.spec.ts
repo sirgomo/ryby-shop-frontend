@@ -12,6 +12,9 @@ import { iLieferant } from 'src/app/model/iLieferant';
 import { AddEditBuchungComponent } from '../add-edit-buchung/add-edit-buchung.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { iLager } from 'src/app/model/iLager';
+import { iWarenEingangProdVariation } from 'src/app/model/iWarenEingangProdVariation';
+import { iProduct } from 'src/app/model/iProduct';
 
 describe('ArtikelGebuchtComponent', () => {
   let component: ArtikelGebuchtComponent;
@@ -21,8 +24,7 @@ describe('ArtikelGebuchtComponent', () => {
 
   beforeEach(waitForAsync( () => {
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, MatDialogModule, HttpClientTestingModule, MatTableModule, MatIconModule,],
-      declarations: [ArtikelGebuchtComponent],
+      imports: [ArtikelGebuchtComponent, BrowserAnimationsModule, MatDialogModule, HttpClientTestingModule, MatTableModule, MatIconModule,],
       providers: [WareneingangService, MatDialog],
     })
     .compileComponents()
@@ -53,16 +55,46 @@ describe('ArtikelGebuchtComponent', () => {
   });
 
   it('should display the table if there are products in the current buchung', () => {
+    const item:iWarenEingangProdVariation = {
+      sku: 'asdasd',
+      quanity: 1,
+      price: 2.2,
+      price_in_euro: 2.2,
+      wholesale_price: 0,
+      mwst: 0,
+      quanity_stored: 0,
+      quanity_sold_at_once: 0,
+      waren_eingang_product: { id: 1} as iWareneingangProduct
+    };
+    const prod:iProduct = {
+      id: undefined,
+      name: '',
+      sku: 'asdasd',
+      artid: 0,
+      beschreibung: '',
+      lieferant: {} as iLieferant,
+      lagerorte: [],
+      bestellungen: [],
+      datumHinzugefuegt: '',
+      kategorie: [],
+      verfgbarkeit: 0,
+      product_sup_id: '',
+      ebay: 0,
+      wareneingang: [],
+      mehrwehrsteuer: 0,
+      promocje: [],
+      bewertung: [],
+      eans: [],
+      variations: [],
+      produkt_image: '',
+      shipping_costs: []
+    };
     const products: iWareneingangProduct[] = [
       {
         id: 1,
-        wareneingang: null,
-        produkt: [],
-        menge: 10,
-        preis: 5,
-        mwst: 20,
-        mengeEingelagert: 10,
-        color: 'red',
+        wareneingang: { id: 1} as iWarenEingang,
+        produkt: [prod],
+        product_variation: [item],
       },
     ];
     wEingService.currentProductsInBuchungSig.set(products);
@@ -77,11 +109,7 @@ describe('ArtikelGebuchtComponent', () => {
       id: 1,
       wareneingang: null,
       produkt: [],
-      menge: 10,
-      preis: 5,
-      mwst: 20,
-      mengeEingelagert: 10,
-      color: 'red',
+      product_variation: [],
     };
     const dialogSpy = jest.spyOn(dialog, 'open').mockReturnValue({ afterClosed: () => of(true) } as any);
 
@@ -93,13 +121,9 @@ describe('ArtikelGebuchtComponent', () => {
   it('should call the deleteProductFromWarenEingang method when delete button is clicked', () => {
     const product: iWareneingangProduct = {
       id: 1,
-      wareneingang: null,
-      produkt: [],
-      menge: 10,
-      preis: 5,
-      mwst: 20,
-      mengeEingelagert: 10,
-      color: 'red',
+        wareneingang: null,
+        produkt: [],
+        product_variation: [],
     };
     const warenEin: iWarenEingang = {
       id: 1,
@@ -110,7 +134,16 @@ describe('ArtikelGebuchtComponent', () => {
       lieferscheinNr: '',
       datenEingabe: '',
       gebucht: false,
-      eingelagert: false
+      eingelagert: false,
+      shipping_cost: 0,
+      remarks: '',
+      other_cost: 0,
+      location: {} as iLager,
+      wahrung: '',
+      wahrung2: '',
+      wahrung_rate: 0,
+      shipping_cost_eur: 0,
+      other_cost_eur: 0
     };
     const curr = { data: warenEin } as AddEditBuchungComponent;
 

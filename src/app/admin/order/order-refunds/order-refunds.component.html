@@ -62,10 +62,10 @@
           </div>
         </ng-container>
       </ng-container>
-      <mat-checkbox formControlName="is_corrective" (change)="isCorrective()">Korrektur ?</mat-checkbox>
+      <mat-checkbox formControlName="is_corrective" (change)="isCorrective()" id="is_corrective">Korrektur ?</mat-checkbox>
       <mat-form-field *ngIf="currentRefund.is_corrective">
         <mat-label>Korrigierte Id</mat-label>
-        <input formControlName="corrective_refund_nr" matInput type="number" />
+        <input formControlName="corrective_refund_nr" matInput type="number" id="corrective_refund_nr" />
       </mat-form-field>
       </form>
       <div *ngIf="bestellungSig() && bestellungSig()?.produkte as produkts">
@@ -110,7 +110,7 @@
     </mat-card-content>
     <mat-card-actions class="acctions">
        <span *ngIf="act$ | async"></span>
-       <button mat-stroked-button color="primary" *ngIf="refund.valid" (click)="saveRefund()">{{currentRefund.is_corrective ? 'Korrektur  Speichern' : 'Rückerstattung Schicken'}}</button>
-        <button mat-stroked-button color="primary" disabled *ngIf="refund.invalid" (click)="saveRefund()">{{currentRefund.is_corrective ? 'Korrektur  Speichern' : 'Rückerstattung Schicken'}}</button>
+       <button mat-stroked-button color="primary" *ngIf="refund.valid" (click)="saveRefund()" id="saveEnabled">{{currentRefund.is_corrective ? 'Korrektur  Speichern' : 'Rückerstattung Schicken'}}</button>
+        <button mat-stroked-button color="primary" disabled *ngIf="refund.invalid" (click)="saveRefund()" id="saveDisabled">{{currentRefund.is_corrective ? 'Korrektur  Speichern' : 'Rückerstattung Schicken'}}</button>
     </mat-card-actions>
 </mat-card>

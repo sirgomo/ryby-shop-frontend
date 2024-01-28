@@ -44,7 +44,7 @@ export class OrderRefundsComponent implements OnInit {
     })
   ): EMPTY);
   constructor (private readonly refundService: OrderRefundsService, @Inject(MAT_DIALOG_DATA) private readonly data: iBestellung, private readonly dialogRef: MatDialogRef<OrderRefundsComponent>,
-  public readonly errorService: ErrorService, private readonly fb : FormBuilder, private readonly orderService: OrdersService, private readonly snack: MatSnackBar) {
+  public readonly errorService: ErrorService, private readonly fb : FormBuilder, private readonly orderService: OrdersService, public readonly snack: MatSnackBar) {
     this.refund = this.fb.group ({
       produkte: this.fb.array([]),
       rueckgabegrund: [this.data.refunds[0] ? this.data.refunds[0].rueckgabegrund : '', Validators.required],

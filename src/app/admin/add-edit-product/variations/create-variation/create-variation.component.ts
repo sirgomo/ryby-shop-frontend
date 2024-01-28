@@ -25,7 +25,7 @@ export class CreateVariationComponent {
   variation: iProduktVariations = {} as iProduktVariations;
   form: FormGroup;
   send$ = new  Observable();
-  constructor(private readonly service: VariationsService, @Inject(MAT_DIALOG_DATA) public data: { prod: iProduct, vari: iProduktVariations | undefined}, private readonly ref: MatDialogRef<CreateVariationComponent>,
+  constructor(private readonly service: VariationsService, @Inject(MAT_DIALOG_DATA) public data: { prod: iProduct, vari: iProduktVariations | undefined}, public readonly ref: MatDialogRef<CreateVariationComponent>,
   private fb : FormBuilder, public readonly error: ErrorService ) {
     this.form = this.fb.group({
       sku: [ this.getSku(), Validators.required],

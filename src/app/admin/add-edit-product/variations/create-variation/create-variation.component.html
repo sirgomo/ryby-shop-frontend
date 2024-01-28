@@ -53,6 +53,6 @@
   </form>
   <span *ngIf="send$ | async"></span>
   <div class="acction">
-  <button mat-stroked-button color="primary" (click)="abort()">Abbrechen</button><button mat-stroked-button color="accent" (click)="save()">Speichern</button>
+  <button mat-stroked-button color="primary" (click)="abort()" id="abortButto">Abbrechen</button><button mat-stroked-button color="accent" (click)="save()" id="saveButt">Speichern</button>
   </div>
 </div>

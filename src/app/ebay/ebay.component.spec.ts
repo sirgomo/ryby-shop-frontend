@@ -25,7 +25,7 @@ describe('EbayComponent', () => {
   let component: EbayComponent;
   let fixture: ComponentFixture<EbayComponent>;
   let testController: HttpTestingController;
-  let detectChanges: ChangeDetectorRef;
+
 
   beforeEach(() => {
     window.open = jest.fn();
@@ -36,7 +36,7 @@ describe('EbayComponent', () => {
     fixture = TestBed.createComponent(EbayComponent);
     component = fixture.componentInstance;
     testController = TestBed.inject(HttpTestingController);
-    detectChanges = fixture.debugElement.injector.get(ChangeDetectorRef);
+
 
   });
   afterEach(() => {
@@ -85,11 +85,25 @@ describe('EbayComponent', () => {
     expect(wind).toHaveBeenCalled();
     expect(component.show_input).toBeTruthy();
   });
- /* it('should show orders and open invoice on click', fakeAsync( () => {
+  it('should show orders and open invoice on click',  () => {
+
+    jest.spyOn(component.dialog, 'open').mockReturnThis();
+    jest.spyOn(component, 'openInovice');
     const order  = {
       orderId: 'duap',
       buyer: {
-        username: 'katos'
+        username: 'katos',
+        buyerRegistrationAddress : {
+          contactAddress:   {
+              addressLine1: 'asjkdhash',
+              postalCode: '213123',
+              city: 'dsada',
+              countryCode: 'DE',
+              addressLine2: 'asdasd',
+
+            },
+            fullName: 'jkahdkha  kjashdkhashkd'
+        },
       },
       paymentSummary: {
         payments: [ {
@@ -101,7 +115,25 @@ describe('EbayComponent', () => {
           total: {
             value: 4,
           },
+          deliveryCost: {
+            value: 1,
+          },
         },
+        lineItems: [
+          {
+            title: 'hjasdghasgd',
+            sku: 'aahsdghjasg',
+            quantity: 3,
+            lineItemCost: {
+              value: 1,
+            },
+            variationAspects: [{
+              name: 'asd',
+              value: 'sadsd',
+            }],
+            taxes: [],
+          },
+        ],
     } as unknown as iEbayOrder;
     const order2  = {
       orderId: 'duapa',
@@ -133,35 +165,40 @@ describe('EbayComponent', () => {
     fixture.detectChanges();
      const requ = testController.expectOne(environment.api+'ebay');
     expect(requ.request.method).toBe('GET');
-    requ.flush(ebayOrder, { status: 200, statusText: 'OK'});
+    requ.flush(ebayOrder);
 
-    tick();
 
+    fixture.detectChanges();
 
     const requ2 = testController.expectOne(environment.api + 'refund/duap');
     expect(requ2.request.method).toBe('GET');
-
-    requ2.flush( [{id: -1}], { status: 200, statusText: 'OK'});
-    tick();
+    requ2.flush( [{id: -1}]);
+    fixture.detectChanges();
 
     const requ3 = testController.expectOne(environment.api + 'refund/duapa');
     expect(requ3.request.method).toBe('GET');
-    requ3.flush(  [{id: -1}], { status: 200, statusText: 'OK'});
-    tick();
-
-    //fixture.detectChanges();
-    detectChanges.detectChanges();
-    flushMicrotasks();
-    flush();
-
-
+    requ3.flush(  [{id: -1}]);
+    fixture.detectChanges();
+    //??? this 2 should not to be ... its like componenet loaded in dialog InoviceComponent byl zaladowany zanim jeszcze uzytkownik kliknol
+    const requ4 = testController.expectOne(environment.api + 'ebay-sold/duap');
+    expect(requ4.request.method).toBe('GET');
+    requ4.flush( [{id: -1}]);
+    const requ5 = testController.expectOne(environment.api + 'ebay-sold/duapa');
+    expect(requ5.request.method).toBe('GET');
+    requ5.flush( [{id: -1}]);
+    fixture.detectChanges();
 
     const contDev = fixture.debugElement.queryAll(By.css('.content'));
     expect(contDev).toStrictEqual([]);
     const itemList = fixture.debugElement.queryAll(By.css('tr'));
     expect(itemList.length).toBe(3);
+    const butt = fixture.nativeElement.querySelector('#openInovice');
+    butt.click();
+    fixture.detectChanges();
+    expect(component.dialog.open).toHaveBeenCalledTimes(1);
+    expect(component.openInovice).toHaveBeenLastCalledWith(order);
 
 
-  }))*/
+  });
 
 });

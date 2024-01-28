@@ -37,7 +37,7 @@ export class EbayComponent {
   ebaycode = '';
   show_input = false;
   displayedColumns: string[] = ['orderNumber', 'buyerUsername', 'totalPrice', 'orderStatus', 'orderDate', 'shippedAm', 'invoice', 'buchen', 'refund'];
-  constructor (private readonly serv: EbayService, private readonly dialog: MatDialog, public readonly errorService: ErrorService) {};
+  constructor (private readonly serv: EbayService, public readonly dialog: MatDialog, public readonly errorService: ErrorService) {};
 
   getLink() {
    const link = this.serv.getLinkForUserConsent().subscribe((res) => {

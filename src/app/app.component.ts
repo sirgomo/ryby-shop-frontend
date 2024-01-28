@@ -41,8 +41,8 @@ export class AppComponent  implements OnInit, OnDestroy{
   routerEventAnaliticsSub = new Subscription();
   currentRouterSub = new Subscription();
 
-  constructor(private readonly helper: HelperService, private readonly dialog: MatDialog, private readonly katService: KategorieService,
-  private readonly router: Router, @Inject(PLATFORM_ID) private readonly platformId: any, public readonly companyService: CompanyService) {
+  constructor(private readonly helper: HelperService, public readonly dialog: MatDialog, private readonly katService: KategorieService,
+  public readonly router: Router, @Inject(PLATFORM_ID) public readonly platformId: any, public readonly companyService: CompanyService) {
     this.helper.setApp(this);
   }
 

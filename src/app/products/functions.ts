@@ -37,8 +37,10 @@ export function getSortedVariation (item: iProduct) {
 
       const index = variations.findIndex((tmp) => tmp.name === item.variations[i].variations_name);
       if(index === -1) {
+        if(item.variations[i].quanity > 0)
         variations.push({name: item.variations[i].variations_name, item: [item.variations[i]]});
       } else {
+        if(item.variations[i].quanity > 0)
         variations[index].item.push(item.variations[i]);
       }
 

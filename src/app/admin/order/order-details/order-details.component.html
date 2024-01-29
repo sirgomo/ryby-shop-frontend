@@ -13,13 +13,13 @@
   <div class="row">
       <mat-form-field>
           <mat-label>Versand Date:</mat-label>
-          <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="data.versand_datum">
+          <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="data.versand_datum" id="versand_datum">
           <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
           <mat-datepicker #myDatepicker></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Versand Nr:</mat-label>
-        <input type="text" matInput [(ngModel)]="data.varsandnr">
+        <input type="text" matInput [(ngModel)]="data.varsandnr" id="versand_nummer">
       </mat-form-field>
   </div>
   <div class="row">
@@ -48,7 +48,7 @@
               {{item.color}} : <span class="red-icon">{{item.menge}}</span>
             </div>
             <div class="color-item-innen-input">
-              {{item.color}} : <input type="number" [(ngModel)]="item.mengeGepackt">
+              {{item.color}} : <input type="number" [(ngModel)]="item.mengeGepackt" id="mengeGepackt">
             </div>
             <div class="color-item-innen">
               <mat-icon [ngClass]="{'green-icon': item.menge === item.mengeGepackt, 'red-icon': item.menge !== item.mengeGepackt || item.mengeGepackt > item.menge }">
@@ -62,7 +62,7 @@
   </div>
 </div>
 <div mat-dialog-actions class="act">
-  <button mat-raised-button color="primary" (click)="saveOrder()" >Speichern</button>
+  <button mat-raised-button color="primary" (click)="saveOrder()" id="saveOrder">Speichern</button>
   <span *ngIf="act$ | async"></span>
 </div>
 

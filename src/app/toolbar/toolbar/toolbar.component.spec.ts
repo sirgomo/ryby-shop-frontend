@@ -1,25 +1,35 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ToolbarComponent } from './toolbar.component';
 import { AuthService } from 'src/app/auth/auth.service';
 import { HelperService } from 'src/app/helper/helper.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AppComponent } from 'src/app/app.component';
-import { signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
+import { SearchComponent } from 'src/app/search/search.component';
+import { RouterTestingModule } from '@angular/router/testing';
+
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
   let authService: AuthService;
   let helperService: HelperService;
+  let fixture: ComponentFixture<ToolbarComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
-      imports: [JwtModule.forRoot({})],
+      imports: [AppComponent, JwtModule.forRoot({ config: { tokenGetter: jest.fn() }}), MatToolbarModule, SearchComponent, MatIconModule,
+         CommonModule, MatButtonModule, RouterModule, RouterTestingModule],
       providers: [AuthService, HelperService]
     });
+    fixture = TestBed.createComponent(ToolbarComponent);
+    component = fixture.componentInstance;
     authService = TestBed.inject(AuthService);
     helperService = TestBed.inject(HelperService);
-    component = new ToolbarComponent(helperService, authService);
+
   });
 
   it('should create the component', () => {
@@ -40,13 +50,20 @@ describe('ToolbarComponent', () => {
 
   it('should call getLoginWindow method when showLoginPanel is called', () => {
     jest.spyOn(helperService, 'getLoginWindow');
-    component.showLoginPanel();
+    const logButt = fixture.nativeElement.querySelector('#showLogin');
+    logButt.click();
+    fixture.detectChanges();
+
     expect(helperService.getLoginWindow).toHaveBeenCalled();
   });
 
   it('should call logout method when logout is called', () => {
     jest.spyOn(authService, 'logout');
-    component.logout();
+    component.helper.isLogged.set(true);
+    fixture.detectChanges();
+    const logoutButt = fixture.nativeElement.querySelector('#logout');
+    logoutButt.click();
+    fixture.detectChanges();
     expect(authService.logout).toHaveBeenCalled();
   });
 });

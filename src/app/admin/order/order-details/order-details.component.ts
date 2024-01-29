@@ -17,7 +17,7 @@ import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
 import { BESTELLUNGSSTATE, BESTELLUNGSSTATUS, iBestellung } from 'src/app/model/iBestellung';
 import { OrdersService } from 'src/app/orders/orders.service';
-import { ItemComponent } from 'src/app/products/item/item.component';
+
 
 
 @Component({
@@ -36,7 +36,7 @@ export class OrderDetailsComponent implements OnInit {
 
   act$ = new Observable();
 
-    currentItem: Signal<iBestellung | undefined>  = this.data.id ? toSignal(this.orderService.getBestellungById(this.data.id).pipe(map((res) => {
+    currentItem: Signal<iBestellung | undefined>  = this.data && this.data.id ? toSignal(this.orderService.getBestellungById(this.data.id).pipe(map((res) => {
       if(res.id) {
         return res;
       }
@@ -45,7 +45,7 @@ export class OrderDetailsComponent implements OnInit {
     }))) : toSignal(of({} as iBestellung));
   constructor(private readonly orderService: OrdersService, private readonly dialRef: MatDialogRef<OrderDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data : iBestellung, private error: ErrorService,
-    private readonly snackBar: MatSnackBar) {}
+    public readonly snackBar: MatSnackBar) {}
 
     ngOnInit(): void {
         if(!this.data) {

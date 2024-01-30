@@ -18,8 +18,7 @@ describe('KategoriesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatDialogModule],
-      declarations: [KategoriesComponent],
+      imports: [KategoriesComponent, HttpClientTestingModule, MatDialogModule],
       providers: [KategorieService, ErrorService, MatDialog, MatSnackBar],
     }).compileComponents();
   });
@@ -45,6 +44,9 @@ describe('KategoriesComponent', () => {
 
   it('should call editKategoria method', () => {
     const conf: MatDialogConfig = new MatDialogConfig();
+    conf.height = '300px'
+    conf.width = '300px'
+    conf.data = {};
     const mockKategoria: iKategorie = {
       id: 1, name: 'Test', products: [],
       parent_id: null

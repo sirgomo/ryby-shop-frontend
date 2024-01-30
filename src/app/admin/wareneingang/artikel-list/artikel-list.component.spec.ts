@@ -7,12 +7,14 @@ import { iProduct } from 'src/app/model/iProduct';
 import { iLieferant } from 'src/app/model/iLieferant';
 import { MatTableModule } from '@angular/material/table';
 import { signal } from '@angular/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { environment } from 'src/environments/environment';
 
 describe('ArtikelListComponent', () => {
   let component: ArtikelListComponent;
   let fixture: ComponentFixture<ArtikelListComponent>;
-  let wEingService: WareneingangService;
+  let testController: HttpTestingController;
+
   let dialog: MatDialog;
 
   let products: iProduct[] = [];
@@ -21,13 +23,12 @@ describe('ArtikelListComponent', () => {
   const dialogMock = {
     open: jest.fn(),
   };
-
+  loadTestData();
   beforeEach(
-
     waitForAsync( () => {
      TestBed.configureTestingModule({
-      declarations: [ArtikelListComponent],
-      imports: [MatTableModule, HttpClientTestingModule],
+
+      imports: [ArtikelListComponent, MatTableModule, HttpClientTestingModule],
       providers: [
         WareneingangService,
         { provide: MatDialog, useValue: dialogMock },
@@ -37,33 +38,38 @@ describe('ArtikelListComponent', () => {
     .then( () => {
     fixture = TestBed.createComponent(ArtikelListComponent);
     component = fixture.componentInstance;
-    wEingService = TestBed.inject(WareneingangService);
+    testController = TestBed.inject(HttpTestingController);
     dialog = TestBed.inject(MatDialog);
-    wEingService.lieferantIdSig = signal<number>(0);
-    wEingService.lieferantIdSig.set(1);
-    jest.spyOn(wEingService, 'getProduktsForWarenEingang').mockReturnValue(of(products));
+
     fixture.detectChanges();
+    const requ = testController.expectOne(environment.api+'waren-eingang-buchen');
+    expect(requ.request.method).toBe('GET');
+    requ.flush(products);
+    const requ2 = testController.expectOne(environment.api+'product/lieferant/0');
+    expect(requ2.request.method).toBe('GET');
+    requ2.flush(products);
       })
     })
   );
-
+  afterEach(() => {
+    testController.verify();
+  })
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display products', () => {
-
-
+  it('should display products',  () => {
     fixture.detectChanges();
 
-    expect(wEingService.getProduktsForWarenEingang).toHaveBeenCalled();
+
+
     const tableRows = fixture.nativeElement.querySelectorAll('tr');
 
     expect(tableRows.length).toBe(3); // Header row + 2 product rows
 
-    const prodIdCells = fixture.nativeElement.querySelectorAll('td.mat-column-prodid');
-    expect(prodIdCells[0].textContent).toBe(' 1 ');
-    expect(prodIdCells[1].textContent).toBe(' 2 ');
+    const prodIdCells = fixture.nativeElement.querySelectorAll('td.mat-column-sku');
+    expect(prodIdCells[0].textContent).toBe(' akjsdh jha ');
+    expect(prodIdCells[1].textContent).toBe(' akjsdh jha a ');
 
     const artIdCells = fixture.nativeElement.querySelectorAll('td.mat-column-artid');
     expect(artIdCells[0].textContent).toBe(' 1 ');
@@ -77,12 +83,12 @@ describe('ArtikelListComponent', () => {
   });
 
   it('should call addProduct method when button is clicked', () => {
+    jest.spyOn(component, 'addProduct');
     fixture.detectChanges();
-    jest.spyOn(component, 'addProduct').mockImplementation();
       const addButton = fixture.nativeElement.querySelector('button');
       addButton.click();
-      expect(component.addProduct).toHaveBeenCalled();
-
+      fixture.detectChanges();
+    expect(component.addProduct).toHaveBeenCalledTimes(1);
   });
 
   it('should open dialog when addProduct method is called', () => {
@@ -117,7 +123,7 @@ describe('ArtikelListComponent', () => {
     const prod2: iProduct = {
       id: 2,
       name: 'Product 2',
-      sku: 'akjsdh jha',
+      sku: 'akjsdh jha a',
       artid: 2,
       beschreibung: 'hagsd ha asd hg ga ashd ghas',
       lieferant: {} as iLieferant,

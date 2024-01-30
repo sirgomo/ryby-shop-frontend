@@ -40,8 +40,7 @@ describe('WareneingangComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      declarations: [WareneingangComponent, AddEditBuchungComponent],
-      imports: [MatDialogModule, HttpClientTestingModule, MatTableModule, MatIconModule, MatTabsModule, MatCheckboxModule, MatDatepickerModule, MatInputModule, MatFormFieldModule,
+      imports: [WareneingangComponent, AddEditBuchungComponent, MatDialogModule, HttpClientTestingModule, MatTableModule, MatIconModule, MatTabsModule, MatCheckboxModule, MatDatepickerModule, MatInputModule, MatFormFieldModule,
       MatMomentDateModule, MatSelectModule, ],
       providers: [
         { provide: WareneingangService, useValue: mockWareneingangService },

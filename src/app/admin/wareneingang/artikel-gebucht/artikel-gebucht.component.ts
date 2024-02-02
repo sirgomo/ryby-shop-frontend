@@ -19,7 +19,8 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [CommonModule, MatTableModule, MatIconModule, MatButtonModule]
 })
 export class ArtikelGebuchtComponent {
-  columns = ['id', 'pname', 'menge', 'mwst', 'edit', 'del' ];
+
+  columns = ['index','id', 'pname', 'menge','price', 'mwst', 'edit', 'del' ];
   act$ = new Observable();
   productsSig = computed(() => {
    const current = this.wEingService.currentProductsInBuchungSig();
@@ -52,5 +53,11 @@ export class ArtikelGebuchtComponent {
     }
 
     }
-
+    getPrice(item: iWareneingangProduct) {
+      let price: number = 0;
+      for ( let i = 0; i < item.product_variation.length; i++) {
+        price += item.product_variation[i].price * item.product_variation[i].quanity;
+      }
+      return price;
+  }
 }

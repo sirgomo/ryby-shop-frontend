@@ -22,7 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class ArtikelListComponent {
 
   items: iProduct[] = [];
-  displayedColumns: string[] = ['sku','artid', 'name', 'add'];
+  displayedColumns: string[] = ['pos', 'sku','artid', 'name', 'add'];
 
   products$ = combineLatest([of(this.items), toObservable(this.wEingService.lieferantIdSig)]).pipe(
     switchMap(([items, lifid]) => this.wEingService.getProduktsForWarenEingang(lifid)),

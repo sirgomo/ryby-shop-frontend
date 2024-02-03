@@ -27,5 +27,14 @@ export class EbaySubscriptionsService {
       })
     )
   }
+  activateItemSoldSubscription() {
+    return this.httpService.get(this.#api+'/itemsoldon', { responseType: 'text' });
+  }
+  getEbaynotificationPreferences() {
+    return this.httpService.get(this.#api+'/noti-prefer', { responseType: 'text' });
+  }
+  deactivateItemSoldSubscription() {
+
+  }
 
 }

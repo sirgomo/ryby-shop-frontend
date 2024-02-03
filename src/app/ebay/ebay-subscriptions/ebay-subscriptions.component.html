@@ -28,6 +28,11 @@
         <tr mat-header-row *matHeaderRowDef="columns"></tr>
         <tr mat-row *matRowDef="let row; columns: columns;"></tr>
       </table>
+      <div class="ebaySubs">
+          <button mat-stroked-button (click)="itemSoldSubscription()">ItemSold Subscribtion</button>
+          <button mat-stroked-button (click)="NotifikationPreferences()">Ebay Notification Preferences</button>
+      </div>
+      <div class="ebay_respo" [innerHTML]="xmlSig()"></div>
       <div class="actions">
         <button *ngIf="previous().length > 0" mat-stroked-button color="primary" (click)="goPreviorusSite()"><</button>
         <button *ngIf="subscriptions().next" mat-stroked-button color="accent" (click)="goNextSite()">></button>

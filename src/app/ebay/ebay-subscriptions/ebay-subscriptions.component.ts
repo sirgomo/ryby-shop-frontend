@@ -11,6 +11,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { TopicsComponent } from '../topics/topics.component';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-ebay-subscriptions',
@@ -22,6 +23,7 @@ import { ErrorService } from 'src/app/error/error.service';
 })
 export class EbaySubscriptionsComponent {
 
+  xmlSig = signal('');
   subscriptions: Signal<iEbaySubscriptionsPayload> = toSignal(this.ebaySer.getSubscriptions(this.helperService.artikelProSiteSig(), null), { initialValue: {} as iEbaySubscriptionsPayload});
   previous = signal<string[]>([]);
 
@@ -52,5 +54,13 @@ export class EbaySubscriptionsComponent {
     }
     subscribe() {
     throw new Error('Method not implemented.');
+    }
+  async itemSoldSubscription() {
+     const item = await firstValueFrom(this.ebaySer.activateItemSoldSubscription());
+     this.xmlSig.set(item.toString());
+  }
+  async NotifikationPreferences() {
+    const item = await firstValueFrom(this.ebaySer.getEbaynotificationPreferences());
+    this.xmlSig.set(item.toString());
     }
 }

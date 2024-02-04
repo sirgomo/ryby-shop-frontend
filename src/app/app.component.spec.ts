@@ -52,7 +52,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     const router = TestBed.inject(Router);
-    const spy = jest.spyOn(router, 'navigateByUrl');
+    const spy = jest.spyOn(router, 'navigate');
 
     const category: iKategorie = {
       id: 1, name: 'testCategory',
@@ -60,7 +60,7 @@ describe('AppComponent', () => {
       products: []
     };
     app.changeCategorie(category);
-    expect(spy).toHaveBeenCalledWith('/' + category.name);
+    expect(spy).toHaveBeenCalledWith(['', 'testCategory']);
   });
 
   it('should call updateTitle with empty string when showAll is called', () => {

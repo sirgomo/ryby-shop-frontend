@@ -8,6 +8,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop'
 import { environment } from 'src/environments/environment';
 import { HelperService } from 'src/app/helper/helper.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { iKategorie } from 'src/app/model/iKategorie';
 
 
 
@@ -20,7 +21,7 @@ export class ProductService {
 
   item  = signal<iProduct>({} as iProduct);
   items$ = combineLatest([toObservable(this.helper.searchSig), toObservable(this.helper.kategorySig), toObservable(this.helper.artikelProSiteSig), toObservable(this.helper.pageNrSig)]).pipe(
-    switchMap(([search, kat, artpro, pagenr]) => this.getAllProducts(search, kat.id, artpro, pagenr)),
+    switchMap(([search, kat, artpro, pagenr]) => this.getAllProducts(search, kat, artpro, pagenr)),
     map((res) => {
       return res;
     })
@@ -105,9 +106,15 @@ export class ProductService {
     );
   }
 
-  getAllProducts(search: string, katid: number, itemscount: number, pagenr: number): Observable<iProduct[]> {
-    if(katid === undefined)
-      katid = 0;
+  getAllProducts(search: string, kat: iKategorie, itemscount: number, pagenr: number): Observable<iProduct[]> {
+    let katid = 0;
+
+    if(kat.id !== undefined && kat.id !== -1)
+    katid = kat.id;
+
+    if(kat.id === -1 && kat.name !== undefined && this.helper.appComponenet.kategorieSig()?.length)
+      katid = this.helper.appComponenet.kategorieSig()!.filter((item) => item.name === kat.name)[0].id;
+
     if(search.length < 1)
     search = 'null';
   if(itemscount === 0)

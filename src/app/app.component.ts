@@ -16,6 +16,7 @@ import { Subscription, filter } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CompanyService } from './admin/company/company.service';
 import { ShowUrlopComponent } from './admin/show-urlop/show-urlop.component';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 
 declare const gtag: Function;
@@ -29,14 +30,14 @@ declare const gtag: Function;
   standalone: true,
   imports: [ FooterComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule, MatButtonModule, MatProgressSpinnerModule, ShowUrlopComponent]
 })
-export class AppComponent  implements OnInit, OnDestroy{
+export class AppComponent  implements OnInit, OnDestroy {
 
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;
   showLoaderSig = this.helper.showLoaderSig;
   title = this.helper.titelSig;
   currentCategory = -1;
   currentButtonActive = -1;
-  kategorie$ = this.katService.kategorie$;
+  kategorieSig = toSignal(this.katService.kategorie$);
   menu$ = this.helper.menu$;
   routerEventAnaliticsSub = new Subscription();
   currentRouterSub = new Subscription();
@@ -45,6 +46,7 @@ export class AppComponent  implements OnInit, OnDestroy{
   public readonly router: Router, @Inject(PLATFORM_ID) public readonly platformId: any, public readonly companyService: CompanyService) {
     this.helper.setApp(this);
   }
+
 
 
 
@@ -63,12 +65,12 @@ export class AppComponent  implements OnInit, OnDestroy{
     this.helper.showLoader.next(true);
   }
   changeCategorie(item: iKategorie) {
-    if(item.id === this.currentCategory)
+    if (!item || item.id === this.currentCategory)
       return;
 
     this.helper.kategorySig.set(item);
     this.currentCategory = item.id;
-    this.router.navigateByUrl('/'+item.name);
+    this.router.navigate(['',item.name]);
     this.updateTitle(item.name);
     this.helper.showLoader.next(true);
   }
@@ -81,7 +83,6 @@ export class AppComponent  implements OnInit, OnDestroy{
   ngOnInit(): void {
     if(isPlatformServer(this.platformId))
     return;
-
 
     if(localStorage.getItem('cookies') && localStorage.getItem('analitiks') && localStorage.getItem('analitiks') == 'yes')
       this.setGoogleAnalitics();

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { routeGuard } from './auth/route.guard';
 import { userGuard } from './auth/user.guard';
 import { ProductsComponent } from './products/products.component';
+import { AppComponent } from './app.component';
 
 
 export const routes: Routes = [
@@ -120,11 +121,11 @@ export const routes: Routes = [
 },
 {
   component: ProductsComponent,
-  path: ''
+  path: ':category'
 },
 {
   path: '**',
-  redirectTo: ''
+  component: ProductsComponent,
 }
 ];
 

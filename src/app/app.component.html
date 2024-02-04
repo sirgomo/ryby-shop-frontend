@@ -8,8 +8,8 @@
             </div>
             <div class="menuItem" ><button mat-stroked-button color="accent" (click)="showAll()" >Home</button></div>
           </div>
-          <div *ngIf="kategorie$ | async as kategories" class="menu">
-            <div class="menuItem" *ngFor="let item of kategories"><button mat-stroked-button color="accent" (click)="changeCategorie(item)" >{{item.name}}</button></div>
+          <div *ngIf="kategorieSig() as kategories" class="menu">
+            <div class="menuItem" *ngFor="let item of kategories"><button mat-stroked-button color="accent" (click)="changeCategorie(item)" routerLink="{{item.name}}" >{{item.name}}</button></div>
           </div>
       </mat-sidenav>
       <mat-sidenav-content>
@@ -19,7 +19,7 @@
         <div *ngIf="companyService.getUrlop() | async as urlop">
           <app-show-urlop *ngIf="urlop[0] && urlop[0].is_in_urlop" [urlop]="urlop[0]"></app-show-urlop>
         </div>
-  <router-outlet></router-outlet>
+  <router-outlet *ngIf="kategorieSig()?.length"></router-outlet>
       </mat-sidenav-content>
 </mat-sidenav-container>
 <app-footer></app-footer>

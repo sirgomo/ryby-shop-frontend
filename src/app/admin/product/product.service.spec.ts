@@ -8,6 +8,7 @@ import { iLieferant } from 'src/app/model/iLieferant';
 import { iProduct } from 'src/app/model/iProduct';
 import { iDelete } from 'src/app/model/iDelete';
 import { JwtModule } from '@auth0/angular-jwt';
+import { iKategorie } from 'src/app/model/iKategorie';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -56,6 +57,7 @@ describe('ProductService', () => {
     shipping_costs: []
   };
   beforeEach(() => {
+    localStorage.clear();
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, JwtModule.forRoot({ config: {
         tokenGetter: jest.fn(),
@@ -168,7 +170,7 @@ describe('ProductService', () => {
   describe('getAllProducts', () => {
     it('should send a GET request to get all products', () => {
       const search = 'null';
-      const katid = 1;
+      const katid = { id: 1} as iKategorie;
       const itemscount = 10;
       const pagenr = 1;
 
@@ -176,14 +178,14 @@ describe('ProductService', () => {
         expect(response).toBeTruthy();
       });
 
-      const req = httpMock.expectOne(`${service.API}/kunde/${search}/${katid}/${itemscount}/${pagenr}`);
+      const req = httpMock.expectOne(`${service.API}/kunde/${search}/${katid.id}/${itemscount}/${pagenr}`);
       expect(req.request.method).toBe('GET');
       req.flush([]);
     });
 
     it('should handle error when getting all products ', () => {
       const search = 'null';
-      const katid = 1;
+      const katid = {id: 1 } as iKategorie;
       const itemscount = 10;
       const pagenr = 1;
       localStorage.setItem('role', 'ADMIN')
@@ -193,7 +195,7 @@ describe('ProductService', () => {
         expect(error.message).toBe('Fehler beim Abrufen aller Produkte.');
       }});
 
-      const req = httpMock.expectOne(`${service.API}/${search}/${katid}/${itemscount}/${pagenr}`);
+      const req = httpMock.expectOne(`${service.API}/${search}/${katid.id}/${itemscount}/${pagenr}`);
       expect(req.request.method).toBe('GET');
       req.flush(null, { status: 500, statusText: 'Internal Server Error' });
 

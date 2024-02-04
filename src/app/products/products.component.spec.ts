@@ -12,6 +12,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ProductComponent', () => {
   let component: ProductsComponent;
@@ -46,13 +47,13 @@ describe('ProductComponent', () => {
 
 
     TestBed.configureTestingModule({
-      imports: [ItemComponent, CommonModule, ProductsQuanitySelectorComponent, PaginatorComponent, HttpClientTestingModule, NoopAnimationsModule, JwtModule.forRoot({
+      imports: [ItemComponent, CommonModule, ProductsQuanitySelectorComponent, PaginatorComponent, HttpClientTestingModule, NoopAnimationsModule, RouterTestingModule, JwtModule.forRoot({
         config: {
           tokenGetter: jest.fn(),
         }
       })],
       providers: [
-        ProductService
+        ProductService,
       ],
     });
     fixture = TestBed.createComponent(ProductsComponent);

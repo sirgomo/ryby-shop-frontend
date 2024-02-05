@@ -1,6 +1,13 @@
+.select {
+  display: flex;
+  margin-bottom: 1rem;
+}
+.innenSel {
+width: 50%;
+}
 .selector {
   display: flex;
-  justify-content: space-between;
+  justify-content: stretch;
   align-items: center;
   border: solid 1px brown;
   border-radius: .4rem;
@@ -28,8 +35,3 @@ mat-option {
   padding-right: 1rem;
   width: 100%;
 }
-
-
-
-
-

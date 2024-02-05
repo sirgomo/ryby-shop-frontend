@@ -1,0 +1,79 @@
+<div *ngIf="errorService.message() && errorService.message().length > 5">
+  <app-error></app-error>
+</div>
+<div *ngIf="logsService.logs$ | async as items" class="content">
+  <div class="select" >
+    <div class="innenSel">
+      <app-products-quanity-selector></app-products-quanity-selector>
+    </div>
+    <div class="innenSel">
+      <div class="selector">
+        <span>Log class</span>
+        <mat-select [(ngModel)]="current_log" placeholder="" (selectionChange)="change()">
+            <mat-option *ngFor="let item of error_class" [value]="item">{{item}}</mat-option>
+        </mat-select>
+       </div>
+      </div>
+    </div>
+  <div>
+   <table mat-table [dataSource]="logsService.logsSub.value">
+
+  <!-- ID Column -->
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+  </ng-container>
+
+  <!-- eBay Transaction ID Column -->
+  <ng-container matColumnDef="ebay_transaction_id">
+    <mat-header-cell *matHeaderCellDef> eBay Transaction ID </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.ebay_transaction_id}} </mat-cell>
+  </ng-container>
+
+  <!-- User Email Column -->
+  <ng-container matColumnDef="user_email">
+    <mat-header-cell *matHeaderCellDef> User Email </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.user_email}} </mat-cell>
+  </ng-container>
+
+  <!-- PayPal Transaction ID Column -->
+  <ng-container matColumnDef="paypal_transaction_id">
+    <mat-header-cell *matHeaderCellDef> PayPal Transaction ID </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.paypal_transaction_id}} </mat-cell>
+  </ng-container>
+
+  <!-- Error Class Column -->
+  <ng-container matColumnDef="error_class">
+    <mat-header-cell *matHeaderCellDef> Log Class </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.error_class}} </mat-cell>
+  </ng-container>
+
+  <!-- Created At Column -->
+  <ng-container matColumnDef="created_at">
+    <mat-header-cell *matHeaderCellDef> Created At </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.created_at | date: 'dd/MM/yyyy'}} </mat-cell>
+  </ng-container>
+  <!-- Delete Column -->
+  <ng-container matColumnDef="open">
+    <mat-header-cell *matHeaderCellDef> Aufmachen </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button mat-icon-button color="accent" (click)="openLog(element)">
+      <mat-icon class="mat-18">assignment</mat-icon></button>
+    </mat-cell>
+  </ng-container>
+  <!-- Delete Column -->
+  <ng-container matColumnDef="delete">
+    <mat-header-cell *matHeaderCellDef> Entfernen </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button mat-icon-button color="warn" (click)="deleteLog(element)">
+      <mat-icon class="mat-18">delete</mat-icon></button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: columns;"></mat-row>
+  </table>
+  </div>
+  <app-paginator></app-paginator>
+</div>
+

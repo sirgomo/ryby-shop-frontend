@@ -114,6 +114,11 @@ export const routes: Routes = [
   loadComponent: () => import('./admin/kategories/kategories.component').then(m => m.KategoriesComponent),
 },
 {
+  path: 'logs',
+  canActivate: [routeGuard],
+  loadComponent: () => import('./admin/logs/logs.component').then(m => m.LogsComponent),
+},
+{
  // component: UserComponent,
   path: 'user',
   canActivate: [userGuard],

@@ -1,0 +1,11 @@
+<div class="h2">
+  <h2>Logs</h2>
+  <div class="close">
+    <button mat-icon-button (click)="cancel()" color="warn">
+        <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="content" *ngIf="log() !== null">
+  {{log()?.error_message}}
+</div>

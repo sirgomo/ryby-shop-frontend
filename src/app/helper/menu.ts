@@ -16,6 +16,7 @@ export function getMenu(role: string) {
     menu[12] = { name: 'Lager', link: 'lager'};
     menu[13] = { name: 'Shipping-cost', link: 'shipping'};
     menu[14] = { name: 'Sitemap', link: 'sitemap'};
+    menu[15] = { name: 'Logs', link : 'logs'};
 
   } else if (role === 'USER') {
     menu[0] = { name: 'User Profil', link: 'user' };

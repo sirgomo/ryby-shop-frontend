@@ -10,6 +10,8 @@ export interface iEbayTransaction {
   price_tax: number;
   price_discont: number;
   sel_amount: number;
+  ebay_fee: number;
+  ebay_advertising_cost: number;
   payment_status: string;
   items: iEbayTransactionItem[];
   refunds: iRefunds[];

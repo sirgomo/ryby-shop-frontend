@@ -17,6 +17,7 @@ export function getMenu(role: string) {
     menu[13] = { name: 'Shipping-cost', link: 'shipping'};
     menu[14] = { name: 'Sitemap', link: 'sitemap'};
     menu[15] = { name: 'Logs', link : 'logs'};
+    menu[16] = { name: 'Aktion-Rabat', link: 'aktion' };
 
   } else if (role === 'USER') {
     menu[0] = { name: 'User Profil', link: 'user' };

@@ -135,6 +135,8 @@ describe('RefundComponent', () => {
       price_tax: 0,
       price_discont: 0,
       sel_amount: 1,
+      ebay_advertising_cost: 0,
+      ebay_fee: 0,
       payment_status: 'DONE',
       items: [transItem],
       refunds: []

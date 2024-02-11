@@ -121,4 +121,7 @@ export class KategorieService {
   removeProductFromCategory(categoryId: number, productId: number): Observable<iKategorie | undefined> {
     return this.http.delete<iKategorie>(`${this.apiUrl}/${categoryId}/products/${productId}`);
   }
+  getKategorieWithArtikles(): Observable<iKategorie[]> {
+    return this.http.get<iKategorie[]>(this.apiUrl+'/products');
+  }
 }

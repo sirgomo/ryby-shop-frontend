@@ -47,6 +47,8 @@ describe('EbayTransactionsComponent', () => {
     price_shipping: 10,
     price_tax: 15,
     price_discont: 20,
+    ebay_advertising_cost: 0,
+    ebay_fee: 0,
     items: [],
     refunds: [],
     sel_amount: 2,

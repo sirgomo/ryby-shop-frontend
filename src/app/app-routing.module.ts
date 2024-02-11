@@ -8,6 +8,11 @@ import { AppComponent } from './app.component';
 
 export const routes: Routes = [
 {
+   path: 'aktion',
+   loadComponent: () => import('./aktion/aktion.component').then(m => m.AktionComponent),
+   canActivate: [routeGuard],
+},
+{
   path: 'sitemap',
   loadComponent: () => import('./sitemap/sitemap.component').then(m => m.SitemapComponent),
   canActivate: [routeGuard],

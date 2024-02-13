@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Inject, PLATFORM_ID, ViewChild, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, PLATFORM_ID, ViewChild, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { iBestellung } from '../model/iBestellung';
 import { OrdersService } from '../orders/orders.service';
@@ -32,11 +32,12 @@ import { iProduktRueckgabe } from '../model/iProduktRueckgabe';
 })
 export class InoviceComponent {
 
-
+  promoHtml='<span>Vielen Dank für Ihren Einkauf!</span> <span>Besuchen Sie unseren Online-Shop unter <b>www.fischfang-profi.de</b> und nutzen Sie</span><span> den Rabattcode <b>fischfang-profi.de</b> bei Ihrem Einkauf, um einen Rabatt von <b>10%</b> auf jeden Artikel zu erhalten.</span>';
   itemid = this.data.id ? this.data.id : 0;
   currentItem: iBestellung = {} as iBestellung;
   company: iCompany = {} as iCompany;
   refunds = signal<iRefunds[]>([]);
+  isPromoted= signal(false);
   shopRefunds = signal<iProduktRueckgabe[]>([]);
   columns: string[] = [ 'name','varia','rabat', 'stpreis', 'mwst', 'preis', 'brutto'];
   item$ = forkJoin([this.orderService.getBestellungById(this.itemid), this.companyService.getAllCompanies(),
@@ -46,8 +47,9 @@ export class InoviceComponent {
     //ebay order have no id
     if(!this.currentItem.id) {
       this.currentItem = this.data;
-      //i need to set id to get the right invoice
+      //i need to set id to get the right invoice, data.versandnr to get orderid from ebay
       this.currentItem.id = this.data.varsandnr as any;
+      this.isPromoted.set(true);
     }
 
     if (refund[0].id !== -1) {
@@ -68,24 +70,24 @@ export class InoviceComponent {
     private readonly shopRefundService: OrderRefundsService){}
 
   private isPromotion() {
-
     let isPromoted = false;
     for (let i = 0; i < this.currentItem.produkte.length; i++) {
-      if (this.currentItem.produkte[i].produkt[0].promocje
-        && this.currentItem.produkte[i].produkt[0].promocje.length > 0
-         && this.currentItem.produkte[i].produkt[0].promocje[0].id)
+      if(!this.currentItem.produkte[i].verkauf_rabat)
+      this.currentItem.produkte[i].verkauf_rabat = 0;
+
+      if (this.currentItem.produkte[i].verkauf_rabat > 0)
           isPromoted = true;
     }
-    if (!isPromoted && this.company.isKleinUnternehmen) {
-      this.columns = [ 'sku','name','varia','menge' ,'stpreis', 'brutto'];
-    } else if ( !isPromoted && !this.company.isKleinUnternehmen) {
-      this.columns = [ 'sku','name','varia','menge' , 'stpreis', 'mwst', 'preis', 'brutto'];
-    } else if (isPromoted && this.company.isKleinUnternehmen ) {
-     this.columns = [ 'sku','name','varia','menge' ,'rabat', 'stpreis',  'brutto'];
-    } else {
-      this.columns = [ 'sku','name','varia','menge' ,'rabat', 'stpreis', 'mwst', 'preis', 'brutto'];
-    }
 
+    if (!isPromoted && this.company.isKleinUnternehmen) {
+      this.columns = [ 'sku','name','menge' ,'stpreis', 'brutto'];
+    } else if ( !isPromoted && !this.company.isKleinUnternehmen) {
+      this.columns = [ 'sku','name','menge' , 'stpreis', 'mwst', 'preis', 'brutto'];
+    } else if (isPromoted && this.company.isKleinUnternehmen ) {
+     this.columns = [ 'sku','name','menge' ,'rabat', 'stpreis',  'brutto'];
+    } else {
+      this.columns = [ 'sku','name','menge' ,'rabat', 'stpreis', 'mwst', 'preis', 'brutto'];
+    }
   }
     getTaxProStuck(index: number) {
       return this.currentItem.produkte[index].verkauf_steuer;
@@ -116,8 +118,8 @@ export class InoviceComponent {
       return Number((this.getTotalNetto() + Number(this.getTax())));
     }
     getRabat(index: number) : number {
-      if(this.data.produkte[index].rabatt)
-        return this.data.produkte[index].rabatt *this.data.produkte[index].menge;
+      if(this.data.produkte && this.data.produkte[index].rabatt)
+        return this.data.produkte[index].verkauf_rabat *this.data.produkte[index].menge;
 
       return Number(this.currentItem.produkte[index].verkauf_rabat) * this.currentItem.produkte[index].menge;
     }
@@ -300,7 +302,10 @@ export class InoviceComponent {
       }
       return amount;
     }
-    getFixed(item: any) {
-      return Number(item).toFixed(2);
+    getFixed(item: any, rabt: any | undefined) {
+      if(!rabt)
+        rabt = 0;
+
+      return (Number(item) + Number(rabt)).toFixed(2);
     }
 }

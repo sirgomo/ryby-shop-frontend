@@ -51,7 +51,6 @@ export class EbayComponent {
    })
   }
   openInovice(item: iEbayOrder) {
-    console.log(item);
     let itemB: iBestellung = {} as iBestellung;
     const userD: iUserData = {} as iUserData;
 

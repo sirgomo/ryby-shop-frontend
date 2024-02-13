@@ -1,12 +1,12 @@
-$fs : 20pt;
-$lh : 21pt;
-$fw: 400;
+$fs : 15pt;
+$lh : 15pt;
+$fw: 500;
 .invoice {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin: 20pt 20pt;
-  min-width: calc(595pt  - margin);
+  min-width: calc(595pt  - 10pt);
   flex-direction: column;
   font-weight: $fw;
     font-size:$fs;
@@ -64,8 +64,7 @@ $fw: 400;
   font-size:$fs;
   line-height: $lh;
 }
-.mat-column-sku,
-.mat-column-varia {
+.mat-column-sku {
   width: 15%;
   padding: 0 .2rem 0 .2rem;
   font-weight: $fw;
@@ -75,17 +74,23 @@ $fw: 400;
 
 .mat-column-preis,
 .mat-column-rabat,
-.mat-column-menge,
 .mat-column-stpreis,
 .mat-column-brutto {
-  padding: 0 .2rem 0 .3rem;
-  width: 7%;
+  padding: 0 .2rem 0 .2rem;
+  width: 8%;
   font-weight: $fw;
     font-size:$fs;
     line-height: $lh;
   text-align: right;
 }
-
+.mat-column-menge {
+  padding: 0 .2rem 0 .2rem;
+  width: 6%;
+  font-weight: $fw;
+    font-size:$fs;
+    line-height: $lh;
+  text-align: center;
+}
 
 .mat-column-mwst
 {
@@ -104,16 +109,29 @@ $fw: 400;
   z-index: 100;
 }
 .versand {
+  border-bottom: solid 1px black;
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: .2rem;
+  margin-bottom: .5rem;
   .preise {
     width: 13%;
     text-align: right;
-  }
+  };
 }
 .kunternehmen {
   margin-top: .5rem;
 
 }
+.promo {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  font-weight: $fw - 100;
+  font-size:$fs;
+  line-height: $lh;
+}
+

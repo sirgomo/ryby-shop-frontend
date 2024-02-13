@@ -30,8 +30,6 @@ export class OrdersService {
       if (bestellung.action === 'donothing')
       return this.bestellungen.asObservable();
 
-      if(this.bestellungen.value.length > 0)
-      return this.bestellungen.asObservable();
 
       return this.getBestellungen(verStat, orderStat, itemsQuan, sitenr);
     }),

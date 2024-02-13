@@ -16,8 +16,9 @@ mat-cell {
 .mat-column-toTmenge,
 .mat-column-mwst,
 .mat-column-priceSt,
+.mat-column-rabat,
 .mat-column-sku {
-  flex: 1 1 8%;
+  flex: 1 1 7%;
 }
 @media only screen and (max-width: 600px) {
   .mat-column-toTmenge,

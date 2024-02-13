@@ -68,7 +68,7 @@
     <!-- Total Rabat Column -->
     <ng-container matColumnDef="rabat">
       <mat-header-cell *matHeaderCellDef>Rabat</mat-header-cell>
-      <mat-cell *matCellDef="let product; let i = index">{{ getRabat(product) }}  &euro;</mat-cell>
+      <mat-cell *matCellDef="let product; let i = index">{{ getRabat(product) }}&euro; ({{product.promocje[0].rabattProzent}}%)</mat-cell>
       <mat-footer-cell *matFooterCellDef><span> &euro;</span></mat-footer-cell>
     </ng-container>
 
@@ -98,10 +98,10 @@
 </div>
 <div class="rabat">
   <mat-form-field>
-    <mat-label>Promo</mat-label>
+    <mat-label>Rabatte - Code</mat-label>
         <input matInput [(ngModel)]="promo"
                type="text"
-               placeholder=" Haben Sie Promotion Code ?" (change)="setPromoCode()" autocomplete="off">
+               placeholder=" Haben Sie Gutscheincode ?" (change)="setPromoCode()" autocomplete="off">
   </mat-form-field>
 </div>
 <div>

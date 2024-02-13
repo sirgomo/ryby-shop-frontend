@@ -120,6 +120,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
      }
      this.currentItemQuanity = 0;
         tmpItem.variations = [tmpVari];
+        tmpItem.beschreibung = '';
           this.helperService.cardSigForMengeControl().push(this.item);
 
         const items = this.helperService.cardSig();

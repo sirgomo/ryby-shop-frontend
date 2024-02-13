@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, } from '@angular/core';
 import { HelperService } from '../helper/helper.service';
 import { iProduct } from '../model/iProduct';
 import { CompanyService } from '../admin/company/company.service';
 import { iCompany } from '../model/iCompany';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, delay, firstValueFrom, lastValueFrom, map } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ShippingAddressComponent } from './shipping-address-make-bestellung/shipping-address.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -12,6 +12,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { IShippingCost } from '../model/iShippingCost';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { AktionService } from '../aktion/aktion.service';
+
+
 
 
 @Component({
@@ -20,18 +26,20 @@ import { IShippingCost } from '../model/iShippingCost';
   styleUrls: ['./card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatProgressSpinnerModule, ShippingAddressComponent, MatSelectModule, MatTableModule, MatIconModule, CommonModule, MatButtonModule]
+  imports: [MatProgressSpinnerModule, ShippingAddressComponent, MatSelectModule, MatTableModule, MatIconModule, CommonModule, MatButtonModule, MatInputModule,
+  MatFormFieldModule, FormsModule]
 })
 export class CardComponent implements OnInit, OnDestroy {
+
 
 
   products = this.helper.cardSig;
   company = {} as iCompany;
   act$ = new Observable();
-
+  promo = '';
 
   columns: string[] = ['sku', 'name', 'color', 'toTmenge', 'priceSt', 'mwst', 'totalPrice', 'remove'];
-    constructor (public readonly helper: HelperService, private companyService: CompanyService) {}
+    constructor (public readonly helper: HelperService, private companyService: CompanyService, public readonly aktionService: AktionService) {}
   ngOnDestroy(): void {
     this.helper.selectedVersandMethod.set(null);
   }
@@ -70,6 +78,8 @@ export class CardComponent implements OnInit, OnDestroy {
 
   increaseQuantity(index: number) {
     this.products()[index].variations[0].quanity +=1;
+    if(this.helper.selectedVersandMethod() !== null)
+    this.helper.totalShippingCost.set(this.getShippingCost(this.helper.selectedVersandMethod()!.shipping_price));
   }
   decreaseQuantity(index: number) {
     if(this.products()[index].variations[0].quanity === 1) {
@@ -81,12 +91,17 @@ export class CardComponent implements OnInit, OnDestroy {
       items.splice(index, 1);
       const newtab = items.slice(0);
       this.helper.cardSig.set(newtab);
-      this.helper.selectedVersandMethod.set(null);
+      if(this.helper.selectedVersandMethod() !== null)
+      this.helper.totalShippingCost.set(this.getShippingCost(this.helper.selectedVersandMethod()!.shipping_price));
       return;
     }
 
-
     this.products()[index].variations[0].quanity -=1;
+    if(this.products().length === 0)
+      this.helper.selectedVersandMethod.set(null);
+
+  if(this.helper.selectedVersandMethod() !== null)
+    this.helper.totalShippingCost.set(this.getShippingCost(this.helper.selectedVersandMethod()!.shipping_price));
   }
   removeItem(itemIndex: number) {
 
@@ -98,6 +113,7 @@ export class CardComponent implements OnInit, OnDestroy {
       this.helper.cardSigForMengeControl.set([]);
       this.getTotalCount();
       this.helper.selectedVersandMethod.set(null);
+
       return;
     }
     const newTab = tmp.slice(0);
@@ -106,7 +122,7 @@ export class CardComponent implements OnInit, OnDestroy {
     controlItems.splice(itemIndex,1);
     this.helper.cardSigForMengeControl.set(controlItems);
     this.getTotalCount();
-    this.helper.selectedVersandMethod.set(null);
+
   }
   getTotalPrice(itemIndex: number) {
     if(!this.products()[itemIndex])
@@ -119,7 +135,7 @@ export class CardComponent implements OnInit, OnDestroy {
 
           if(this.products()[itemIndex].mehrwehrsteuer > 0 )
           {
-            price += (price * this.products()[itemIndex].mehrwehrsteuer / 100);
+            price += Number((price * this.products()[itemIndex].mehrwehrsteuer / 100).toFixed(2));
           }
            total += price * this.products()[itemIndex].variations[0].quanity;
 
@@ -130,10 +146,15 @@ export class CardComponent implements OnInit, OnDestroy {
     let price = 0;
     price = Number(item.variations[0].price);
     if(item.promocje && item.promocje[0]) {
-      price -= price * item.promocje[0].rabattProzent / 100;
+      price -= Number((price * item.promocje[0].rabattProzent / 100).toFixed(2));
     }
 
     return price;
+  }
+  getRabat(item: iProduct): number {
+    let price = 0;
+    price = Number(item.variations[0].price);
+    return Number((price * item.promocje[0].rabattProzent / 100) .toFixed(2)) * item.variations[0].quanity;
   }
   getPricePerSt(itemIndex: number) {
     if(!this.products()[itemIndex])
@@ -184,10 +205,8 @@ export class CardComponent implements OnInit, OnDestroy {
     return (Number(this.getTotalPriceNetto()) + Number(this.getTotalMwst())).toFixed(2);
   }
   setVersandKosten(value: IShippingCost) {
-    let item: IShippingCost = {} as IShippingCost;
-    Object.assign(item, value);
-    item.shipping_price = this.getShippingCost(value.shipping_price);
-    this.helper.selectedVersandMethod.set(item);
+    this.helper.totalShippingCost.set(this.getShippingCost(value.shipping_price));
+    this.helper.selectedVersandMethod.set(value);
     this.helper.isShippingCostSelected.set(true);
   }
   doWeHaveEnough(index: number) :boolean {
@@ -214,7 +233,7 @@ export class CardComponent implements OnInit, OnDestroy {
     if(this.products().length === 0)
     return 0;
     if(this.helper.selectedVersandMethod() !== null)
-     return (Number(this.getTotalBrutto()) + Number(this.helper.selectedVersandMethod()!.shipping_price)).toFixed(2);
+     return (Number(this.getTotalBrutto()) + this.getShippingCost(this.helper.selectedVersandMethod()!.shipping_price)).toFixed(2);
     else
     return 0;
   }
@@ -224,7 +243,9 @@ export class CardComponent implements OnInit, OnDestroy {
 
         for (let i = 0; i < this.products().length; i++) {
           if(this.getTotalCount() > 1) {
-            if(this.products()[i].shipping_costs)
+            if(this.products()[i].shipping_costs && i === 0 && this.products()[i].variations[0].quanity > 1)
+            pauschalecost += Number(this.products()[i].shipping_costs[0].cost_per_added_stuck) * (Number(this.products()[i].variations[0].quanity - 1 ));
+            if(this.products()[i].shipping_costs && i > 0)
             pauschalecost += Number(this.products()[i].shipping_costs[0].cost_per_added_stuck) * Number(this.products()[i].variations[0].quanity);
           }
         }
@@ -232,4 +253,28 @@ export class CardComponent implements OnInit, OnDestroy {
     //TODO Tax must also be charged on shipping too.
     return +arg0 + pauschalecost;
     }
+   async setPromoCode() {
+    console.log(this.promo)
+      if(this.promo.length >= 4) {
+        await delay(500);
+        this.getCode();
+      }
+  }
+  getCode() {
+    firstValueFrom(this.aktionService.getPromotionOnCode(this.promo)).then((res) => {
+      if(res.produkt && res.produkt.length > 0) {
+        this.helper.cardSig.update((prod) => {
+          const items = [];
+          for (let i = 0; i < prod.length; i++) {
+            prod[i].promocje = [res];
+            items.push(prod[i]);
+          }
+          this.columns[this.columns.length-1] = 'rabat';
+          this.columns.push('remove');
+          return items;
+        })
+      }
+    });
+
+  }
 }

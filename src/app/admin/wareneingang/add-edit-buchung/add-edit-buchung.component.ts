@@ -22,6 +22,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { WarehouseService } from '../../warehouse/warehouse.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 
 
@@ -32,7 +33,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DatePipe],
   standalone: true,
-  imports: [ MatIconModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatSelectModule, ErrorComponent,
+  imports: [ MatIconModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatSelectModule, ErrorComponent, MatMomentDateModule,
      MatDatepickerModule, MatTabsModule, ArtikelListComponent, ArtikelGebuchtComponent, CommonModule, MatButtonModule, MatCheckboxModule,
     MatInputModule]
 })

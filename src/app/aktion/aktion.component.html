@@ -17,8 +17,7 @@
             <div></div>
            <mat-form-field>
             <mat-label>Products in: {{ item && item.get('produkt') ? item.get('produkt')?.getRawValue().length : 0 }}</mat-label>
-            <mat-select placeholder="" (selectionChange)="selectfromKategorie(i, item, $event)" multiple="true">
-              <mat-option [value]="[]">All Artikles</mat-option>
+            <mat-select placeholder="Default are all Products" (selectionChange)="selectfromKategorie(i, item, $event)" multiple="true">
                 <mat-option *ngFor="let katItem of katgorySig()" [value]="katItem"> {{katItem.name +' ('+katItem.products.length+')'}}</mat-option>
             </mat-select>
            </mat-form-field>
@@ -55,4 +54,3 @@
   </div>
 </div>
 
-<span *ngIf="servis.items$ | async"></span>

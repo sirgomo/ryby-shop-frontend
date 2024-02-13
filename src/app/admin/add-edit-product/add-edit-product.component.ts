@@ -32,6 +32,7 @@ import { VariationsService } from './variations/variations.service';
 import { environment } from 'src/environments/environment';
 import { ImageComponent } from './image/image.component';
 import { ShippingCostService } from '../shipping-cost/shipping-cost.service';
+import { MomentDateModule } from '@angular/material-moment-adapter';
 
 
 @Component({
@@ -39,10 +40,10 @@ import { ShippingCostService } from '../shipping-cost/shipping-cost.service';
   templateUrl: './add-edit-product.component.html',
   styleUrls: ['./add-edit-product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DatePipe, MatDatepickerModule],
+  providers: [DatePipe],
   standalone: true,
   imports: [CommonModule, ErrorComponent, MatIconModule, MatButtonModule, FormsModule, ReactiveFormsModule,
-  MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule,
+  MatFormFieldModule, MatSelectModule, MomentDateModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule,
    MatProgressSpinnerModule, MatInputModule, MatCheckboxModule, VariationsComponent, ImageComponent]
 })
 export class AddEditProductComponent implements OnInit, OnDestroy {

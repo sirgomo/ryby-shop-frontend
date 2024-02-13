@@ -133,5 +133,5 @@
   </mat-tab-group>
 </div>
 <div class="action">
-  <button mat-button (click)="saveGoodsReceipt()" [disabled]="!warenEingangForm.valid">Speichern<span *ngIf="act$ | async"></span></button>
+  <button mat-stroked-button (click)="saveGoodsReceipt()" [disabled]="!warenEingangForm.valid" color="primary">Speichern<span *ngIf="act$ | async"></span></button>
 </div>

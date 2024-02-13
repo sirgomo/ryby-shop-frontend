@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AktionService } from './aktion.service';
 import { ErrorService } from '../error/error.service';
 import { ErrorComponent } from '../error/error.component';
@@ -26,36 +26,51 @@ import { iProduct } from '../model/iProduct';
   templateUrl: './aktion.component.html',
   styleUrl: './aktion.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DatePipe]
 })
-export class AktionComponent {
+export class AktionComponent implements OnInit {
 
   aktionForm: FormGroup;
   katgorySig = toSignal(this.katgorieService.getKategorieWithArtikles());
   constructor(public readonly servis: AktionService, public errorService: ErrorService, private readonly fb: FormBuilder,
-     public readonly katgorieService: KategorieService, private detRef: ChangeDetectorRef) {
+     public readonly katgorieService: KategorieService, private detRef: ChangeDetectorRef, public readonly datePipe: DatePipe) {
     this.aktionForm = this.fb.group({
       aktions: this.fb.array([]),
     });
     this.servis.aktCompo = this;
   }
-  addAktion( aktion?: iAktion) {
-   const item = this.fb.group({
-    id: aktion && aktion.id ? aktion.id : undefined,
-    aktion_key: aktion ? aktion.aktion_key : [''],
-    produkt: aktion ? aktion.produkt : [[]],
-    startdatum: aktion ? aktion.startdatum : undefined,
-    enddatum: aktion ? aktion.enddatum : undefined,
-    rabattProzent: aktion ? aktion.rabattProzent : [0],
-   });
-   this.aktions.push(item);
+  ngOnInit(): void {
+    this.servis.actionSig.set({item: {} as iAktion, action: 'getall' });
 
+  }
+  addAktion( aktion?: iAktion) {
+    const item = this.fb.group({
+      id: aktion && aktion.id ? aktion.id : undefined,
+      aktion_key: aktion ? aktion.aktion_key : [''],
+      produkt: aktion ? aktion.produkt : [[]],
+      startdatum: aktion ? aktion.startdatum : undefined,
+      enddatum: aktion ? aktion.enddatum : undefined,
+      rabattProzent: aktion ? aktion.rabattProzent : [0],
+     });
+     this.aktions.push(item);
   }
   get aktions() {
     return this.aktionForm.controls['aktions'] as FormArray;
   }
   save(item: AbstractControl<any,any>) {
-    if(item.valid)
+    const aItem: iAktion = item.value;
+    const end = this.datePipe.transform(item.get('enddatum')?.getRawValue(), 'yyyy-MM-dd');
+    const start = this.datePipe.transform(item.get('startdatum')?.getRawValue(), 'yyyy-MM-dd')
+    if(end)
+    aItem.enddatum = end;
+    if(start)
+    aItem.startdatum = start;
+
+    if(!aItem.id)
       this.servis.actionSig.set({item: item.value, action: 'add'});
+
+    if (aItem.id)
+      this.servis.actionSig.set({ item: item.value, action : ' edit'})
   }
   delete(index: number, item: iAktion) {
     this.servis.actionSig.set({item: item, action: 'delete'});

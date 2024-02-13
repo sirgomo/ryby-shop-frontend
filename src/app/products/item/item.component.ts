@@ -95,6 +95,8 @@ changeSelection(item: iProduktVariations) {
       Object.assign(tmpVar, this.current);
       tmpVar.quanity = 1;
       tmp.variations = [tmpVar];
+      tmp.beschreibung ='';
+
       if(!doWeHaveEnough(this.helper, this.current, 1)) {
         this.snackBar.open(' Es tut uns leider, es sind nur '+this.current.quanity+' verfügbar', 'Ok', { duration: 1500 });
         return;

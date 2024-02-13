@@ -14,6 +14,7 @@ import { ErrorService } from 'src/app/error/error.service';
 import { PaginatorComponent } from 'src/app/paginator/paginator.component';
 import { ProductsQuanitySelectorComponent } from 'src/app/products/products-quanity-selector/products-quanity-selector.component';
 
+
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',

@@ -36,6 +36,7 @@ import { iItemActions } from '../model/iItemActions';
     selectedVersandMethod = signal<IShippingCost | null>(null);
     paginationCountSig = signal(0);
     isShippingCostSelected = signal(false);
+    totalShippingCost = signal(0);
 
     constructor() { }
     setApp(app: AppComponent) {

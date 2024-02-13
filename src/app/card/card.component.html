@@ -65,6 +65,12 @@
     <mat-cell *matCellDef="let product; let i = index">{{ getTotalPrice(i) }}  &euro;</mat-cell>
     <mat-footer-cell *matFooterCellDef><span>Total: {{getTotalPriceWithShipping()}} &euro;</span></mat-footer-cell>
   </ng-container>
+    <!-- Total Rabat Column -->
+    <ng-container matColumnDef="rabat">
+      <mat-header-cell *matHeaderCellDef>Rabat</mat-header-cell>
+      <mat-cell *matCellDef="let product; let i = index">{{ getRabat(product) }}  &euro;</mat-cell>
+      <mat-footer-cell *matFooterCellDef><span> &euro;</span></mat-footer-cell>
+    </ng-container>
 
   <!-- Remove Column -->
   <ng-container matColumnDef="remove">
@@ -87,9 +93,15 @@
   <mat-form-field>
     <mat-select placeholder="Versand art" (selectionChange)="setVersandKosten($event.value)">
       <mat-option *ngFor="let item of helper.versandAndKost()" [value]="item">{{item.shipping_price === 0 ? item.shipping_name : item.shipping_name + ' : ' +getShippingCost(item.shipping_price)}}</mat-option>
-
-
   </mat-select>
+  </mat-form-field>
+</div>
+<div class="rabat">
+  <mat-form-field>
+    <mat-label>Promo</mat-label>
+        <input matInput [(ngModel)]="promo"
+               type="text"
+               placeholder=" Haben Sie Promotion Code ?" (change)="setPromoCode()" autocomplete="off">
   </mat-form-field>
 </div>
 <div>

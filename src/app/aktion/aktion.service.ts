@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { EMPTY, Observable, catchError, combineLatest, lastValueFrom, of, switchMap, tap } from 'rxjs';
+import { EMPTY, Observable, catchError, combineLatest, lastValueFrom, map, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { iAktion } from '../model/iAktion';
 import { iItemActions } from '../model/iItemActions';
@@ -15,7 +15,7 @@ import { AktionComponent } from './aktion.component';
 export class AktionService {
   #api = environment.api + 'aktion';
   itemsSig = signal<iAktion[]>([]);
-  actionSig = signal<iItemActions<iAktion>>({ item: {} as iAktion, action: 'getall'});
+  actionSig = signal<iItemActions<iAktion>>({ item: {} as iAktion, action: 'donothing'});
   aktCompo: AktionComponent | undefined;
   items$ = lastValueFrom(toObservable(this.actionSig).pipe(
     switchMap((action) => {
@@ -28,17 +28,19 @@ export class AktionService {
         if(action.action === ' edit')
           return this.updatePromotionCode(action.item);
 
-
+        if(action.action === 'getall')
         return this.getAllAktions();
+
+        return this.itemsSig();
     })
   ))
   constructor(private readonly http: HttpClient, private readonly errorServicce: ErrorService, private readonly snack: MatSnackBar) { }
 
   getAllAktions(): Observable<iAktion[]> {
-    return this.http.get<iAktion[]>(this.#api).pipe(tap(res => {
-
+    return this.http.get<iAktion[]>(this.#api).pipe(map(res => {
       this.itemsSig.set(res);
       this.aktCompo?.reloadAktions(this.itemsSig());
+      return res;
     }),
     catchError((err) => {
       this.errorServicce.newMessage(err.message);
@@ -65,7 +67,26 @@ export class AktionService {
     if (!item.id)
       return this.itemsSig();
 
-      return this.itemsSig();
+      return this.http.put<{affected: number}>(this.#api+'/'+item.id, item).pipe(tap(res => {
+        if(res.affected === 1) {
+          this.itemsSig.update((tab) => {
+            const index = tab.findIndex((tmp) => tmp.id === item.id);
+            if (index === -1) {
+              this.snack.open(' Error, id wurde nicht gefunden', 'Ok', { duration: 3000 });
+              return this.itemsSig();
+            }
+              const items = tab.slice(0);
+              items[index] = item;
+
+              return items;
+          })
+        }
+      }),
+      catchError((err) => {
+        this.errorServicce.newMessage(err.message);
+        return this.itemsSig();
+      })
+      )
 
   }
   deletePromotionCode(item: iAktion) {
@@ -83,7 +104,15 @@ export class AktionService {
     }),
     catchError((err) => {
       this.errorServicce.newMessage(err.message);
-      return of({ affected: 0, raw: ''});
+      return this.itemsSig();
     }));
+  }
+  getPromotionOnCode(code: string) {
+    return this.http.get<iAktion>(this.#api+'/promo/'+code).pipe(
+      catchError(err => {
+        this.errorServicce.newMessage(err.message);
+        return of({} as iAktion);
+      })
+    )
   }
 }

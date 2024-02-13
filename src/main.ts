@@ -10,7 +10,7 @@ import { importProvidersFrom } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { jwtInterceptorFn } from './app/interceptors/jwtInterceptorFn';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter, MomentDateModule } from '@angular/material-moment-adapter';
 import { LoaderInterceptorFn } from './app/interceptors/loader.interceptorFn';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
@@ -19,8 +19,8 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     providers: [
       provideHttpClient(withInterceptors([jwtInterceptorFn, LoaderInterceptorFn]), withFetch()),
       {
-        provide: DateAdapter,
-        useClass: MomentDateAdapter,
+        provide: MomentDateAdapter,
+        useClass: MomentDateModule,
         deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
       },
       {

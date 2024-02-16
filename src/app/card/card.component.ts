@@ -254,7 +254,6 @@ export class CardComponent implements OnInit, OnDestroy {
     return +arg0 + pauschalecost;
     }
    async setPromoCode() {
-    console.log(this.promo)
       if(this.promo.length >= 4) {
         await delay(500);
         this.getCode();

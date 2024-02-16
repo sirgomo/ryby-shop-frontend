@@ -39,12 +39,12 @@
             <input matInput type="number" name="rabattProzent" id="rabattProzent" formControlName="rabattProzent">
           </mat-form-field>
           <div class="save">
-            <button mat-icon-button (click)="save(item)" color="primary">
+            <button mat-icon-button (click)="save(item)" color="primary" id="save">
                 <mat-icon class="mat-18">save</mat-icon>
             </button>
           </div>
           <div class="delete">
-            <button mat-icon-button (click)="delete(i, item.value)" color="warn">
+            <button mat-icon-button (click)="delete(i, item.value)" color="warn" id="del">
               <mat-icon class="mat-18">delete</mat-icon>
           </button>
           </div>

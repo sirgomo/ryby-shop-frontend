@@ -32,8 +32,8 @@ export class AktionComponent implements OnInit {
 
   aktionForm: FormGroup;
   katgorySig = toSignal(this.katgorieService.getKategorieWithArtikles());
-  constructor(public readonly servis: AktionService, public errorService: ErrorService, private readonly fb: FormBuilder,
-     public readonly katgorieService: KategorieService, private detRef: ChangeDetectorRef, public readonly datePipe: DatePipe) {
+  constructor(public readonly servis: AktionService, public errorService: ErrorService, public readonly fb: FormBuilder,
+     public readonly katgorieService: KategorieService, public readonly detRef: ChangeDetectorRef, public readonly datePipe: DatePipe) {
     this.aktionForm = this.fb.group({
       aktions: this.fb.array([]),
     });

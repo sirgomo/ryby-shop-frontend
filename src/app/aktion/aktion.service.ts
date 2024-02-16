@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { EMPTY, Observable, catchError, combineLatest, lastValueFrom, map, of, switchMap, tap } from 'rxjs';
+import { EMPTY, Observable, catchError, lastValueFrom, map, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { iAktion } from '../model/iAktion';
 import { iItemActions } from '../model/iItemActions';

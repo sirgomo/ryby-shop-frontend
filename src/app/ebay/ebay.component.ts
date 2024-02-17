@@ -193,6 +193,8 @@ export class EbayComponent {
     return count;
 
   }
-
+getTotalPriceString(price: any) {
+  return Number(price).toFixed(2);
+}
 }
 

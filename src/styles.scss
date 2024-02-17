@@ -105,7 +105,8 @@ mat-toolbar {
 }
 
 mat-sidenav {
-  width: 10rem;
+  width: 12rem;
+  min-width: 12rem;
   margin-top: .5rem;
   border-radius: 1rem;
 }

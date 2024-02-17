@@ -109,7 +109,7 @@ export class ProductService {
   getAllProducts(search: string, kat: iKategorie, itemscount: number, pagenr: number): Observable<iProduct[]> {
     let katid = 0;
 
-    if(kat.id !== undefined && kat.id !== -1)
+    if(kat && kat.id && kat.id !== -1)
     katid = kat.id;
 
     if(kat.id === -1 && kat.name !== undefined && this.helper.appComponenet.kategorieSig()?.length)

@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, OnInit, Signal, WritableSignal, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MomentDateModule, provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,8 +26,9 @@ import { OrdersService } from 'src/app/orders/orders.service';
   styleUrls: ['./order-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ErrorComponent, MatFormFieldModule, MatIconModule, MatDatepickerModule, MatInputModule, MatSelectModule, FormsModule, ReactiveFormsModule,
-  CommonModule, MatProgressSpinnerModule, MatMomentDateModule, MatButtonModule, MatDialogModule]
+  imports: [ErrorComponent, MatFormFieldModule, MatIconModule , MatInputModule, MatSelectModule, FormsModule, ReactiveFormsModule,
+  CommonModule, MatProgressSpinnerModule, MomentDateModule, MatButtonModule, MatDialogModule, MatDatepickerModule],
+  providers: [provideMomentDateAdapter()]
 })
 export class OrderDetailsComponent implements OnInit {
   err = this.error.message;

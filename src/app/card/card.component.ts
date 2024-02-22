@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, OnDestroy, OnInit, SimpleChanges, } from '@angular/core';
 import { HelperService } from '../helper/helper.service';
 import { iProduct } from '../model/iProduct';
 import { CompanyService } from '../admin/company/company.service';
@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { AktionService } from '../aktion/aktion.service';
+import { iAktion } from '../model/iAktion';
 
 
 
@@ -29,7 +30,7 @@ import { AktionService } from '../aktion/aktion.service';
   imports: [MatProgressSpinnerModule, ShippingAddressComponent, MatSelectModule, MatTableModule, MatIconModule, CommonModule, MatButtonModule, MatInputModule,
   MatFormFieldModule, FormsModule]
 })
-export class CardComponent implements OnInit, OnDestroy {
+export class CardComponent implements OnInit, OnDestroy, OnChanges {
 
 
 
@@ -40,8 +41,13 @@ export class CardComponent implements OnInit, OnDestroy {
 
   columns: string[] = ['sku', 'name', 'color', 'toTmenge', 'priceSt', 'mwst', 'totalPrice', 'remove'];
     constructor (public readonly helper: HelperService, private companyService: CompanyService, public readonly aktionService: AktionService) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    this.setInitialVersandKosten();
+  }
   ngOnDestroy(): void {
-    this.helper.selectedVersandMethod.set(null);
+    this.helper.selectedVersandMethod.set({ shipping_name: 'Selbstabholung', shipping_price: 0, average_material_price: 0, cost_per_added_stuck: 0 });
+    this.helper.isShippingCostSelected.set(false);
+    this.setInitialVersandKosten();
   }
   ngOnInit(): void {
     this.helper.selectedVersandMethod.set(null);
@@ -79,7 +85,7 @@ export class CardComponent implements OnInit, OnDestroy {
   increaseQuantity(index: number) {
     this.products()[index].variations[0].quanity +=1;
     if(this.helper.selectedVersandMethod() !== null)
-    this.helper.totalShippingCost.set(this.getShippingCost(this.helper.selectedVersandMethod()!.shipping_price));
+      this.helper.totalShippingCost.set(this.getShippingCost(this.helper.selectedVersandMethod()!.shipping_price));
   }
   decreaseQuantity(index: number) {
     if(this.products()[index].variations[0].quanity === 1) {
@@ -91,8 +97,9 @@ export class CardComponent implements OnInit, OnDestroy {
       items.splice(index, 1);
       const newtab = items.slice(0);
       this.helper.cardSig.set(newtab);
-      if(this.helper.selectedVersandMethod() !== null)
-      this.helper.totalShippingCost.set(this.getShippingCost(this.helper.selectedVersandMethod()!.shipping_price));
+      this.helper.selectedVersandMethod.set({ shipping_name: 'Selbstabholung', shipping_price: 0, average_material_price: 0, cost_per_added_stuck: 0 });
+      this.helper.isShippingCostSelected.set(false);
+      this.helper.totalShippingCost.set(0);
       return;
     }
 
@@ -112,8 +119,9 @@ export class CardComponent implements OnInit, OnDestroy {
       this.helper.cardSig.set([]);
       this.helper.cardSigForMengeControl.set([]);
       this.getTotalCount();
-      this.helper.selectedVersandMethod.set(null);
-
+      this.helper.selectedVersandMethod.set({ shipping_name: 'Selbstabholung', shipping_price: 0, average_material_price: 0, cost_per_added_stuck: 0 });
+      this.helper.isShippingCostSelected.set(false);
+      this.helper.totalShippingCost.set(0);
       return;
     }
     const newTab = tmp.slice(0);
@@ -260,8 +268,14 @@ export class CardComponent implements OnInit, OnDestroy {
       }
   }
   getCode() {
-    firstValueFrom(this.aktionService.getPromotionOnCode(this.promo)).then((res) => {
-      if(res.produkt && res.produkt.length > 0) {
+    let firstProdId: number =  0;
+    if (this.helper.cardSig()[0] && typeof this.helper.cardSig()[0].id === 'number') {
+      firstProdId = this.helper.cardSig()[0].id!;
+    }
+
+
+    firstValueFrom(this.aktionService.getPromotionOnCode(this.promo, firstProdId)).then((res) => {
+      if(this.isInstanceOfiAktion(res) && res.produkt.length > 0) {
         this.helper.cardSig.update((prod) => {
           const items = [];
           for (let i = 0; i < prod.length; i++) {
@@ -275,5 +289,8 @@ export class CardComponent implements OnInit, OnDestroy {
       }
     });
 
+  }
+  private isInstanceOfiAktion(obj: any) : obj is iAktion {
+    return obj !== null && obj.produkt !== null;
   }
 }

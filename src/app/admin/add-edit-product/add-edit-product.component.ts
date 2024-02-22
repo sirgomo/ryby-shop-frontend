@@ -21,7 +21,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -32,7 +31,8 @@ import { VariationsService } from './variations/variations.service';
 import { environment } from 'src/environments/environment';
 import { ImageComponent } from './image/image.component';
 import { ShippingCostService } from '../shipping-cost/shipping-cost.service';
-import { MomentDateModule } from '@angular/material-moment-adapter';
+import { MomentDateModule, provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @Component({
@@ -40,7 +40,7 @@ import { MomentDateModule } from '@angular/material-moment-adapter';
   templateUrl: './add-edit-product.component.html',
   styleUrls: ['./add-edit-product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DatePipe],
+  providers: [DatePipe, provideMomentDateAdapter()],
   standalone: true,
   imports: [CommonModule, ErrorComponent, MatIconModule, MatButtonModule, FormsModule, ReactiveFormsModule,
   MatFormFieldModule, MatSelectModule, MomentDateModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule,
@@ -106,7 +106,6 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
 
       this.create$ = this.prodService.getProductById(this.data.id).pipe(map((res) => {
         if(res.id) {
-
           this.productForm.patchValue(res);
 
           if(res.eans && res.eans.length > 0) {

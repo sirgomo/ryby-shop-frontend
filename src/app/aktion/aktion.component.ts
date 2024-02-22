@@ -5,7 +5,7 @@ import { ErrorService } from '../error/error.service';
 import { ErrorComponent } from '../error/error.component';
 import { MatButtonModule } from '@angular/material/button';
 import { iAktion } from '../model/iAktion';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { toSignal } from '@angular/core/rxjs-interop';

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { LogsService } from './logs.service';
 import { CommonModule } from '@angular/common';
 import { ProductsQuanitySelectorComponent } from 'src/app/products/products-quanity-selector/products-quanity-selector.component';
@@ -24,13 +24,17 @@ import { OpenLogsComponent } from './open-logs/open-logs.component';
   styleUrl: './logs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LogsComponent {
+export class LogsComponent implements OnInit {
 
 
   columns = ['id', 'ebay_transaction_id', 'user_email', 'paypal_transaction_id', 'error_class',  'created_at','open', 'delete'];
   current_log = LOGS_CLASS.NULL;
   error_class = Object.values(LOGS_CLASS).filter((item) => typeof item === 'string');
   constructor(public readonly logsService: LogsService, public readonly errorService: ErrorService, private readonly dialog: MatDialog) {}
+
+  ngOnInit(): void {
+    this.logsService.accSub.next({ item: {}, action: 'getall' });
+  }
   change() {
     console.log(this.current_log);
     this.logsService.errorClasSig.set(this.current_log);

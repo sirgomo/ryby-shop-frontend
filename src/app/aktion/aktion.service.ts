@@ -107,11 +107,11 @@ export class AktionService {
       return this.itemsSig();
     }));
   }
-  getPromotionOnCode(code: string) {
-    return this.http.get<iAktion>(this.#api+'/promo/'+code).pipe(
+  getPromotionOnCode(code: string, prodid: number) {
+    return this.http.get<any>(this.#api+'/promo/'+code+'/'+prodid).pipe(
       catchError(err => {
         this.errorServicce.newMessage(err.message);
-        return of({} as iAktion);
+        return of({});
       })
     )
   }

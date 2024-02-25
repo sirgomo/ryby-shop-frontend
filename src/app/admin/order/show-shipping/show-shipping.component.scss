@@ -1,0 +1,28 @@
+.shipping-address {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  max-width: 400px;
+  margin: auto;
+
+  h2 {
+      margin-bottom: 20px;
+      text-align: center;
+  }
+
+  p {
+      margin: 5px 0;
+      line-height: 1.5;
+
+      strong {
+          margin-right: 5px;
+      }
+  }
+}
+.butt {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}

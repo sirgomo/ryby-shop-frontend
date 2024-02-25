@@ -14,6 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OrderRefundsComponent } from './order-refunds/order-refunds.component';
 import { PaginatorComponent } from 'src/app/paginator/paginator.component';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { ShowShippingComponent } from './show-shipping/show-shipping.component';
 
 @Component({
   selector: 'app-order',
@@ -28,7 +29,7 @@ export class OrderComponent  {
 
   ordersSig = toSignal(this.oderService.items$);
 
-  columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt', 'inovice', 'refund'];
+  columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt','shipp', 'inovice', 'refund'];
   constructor(private readonly oderService: OrdersService, public error: ErrorService, public readonly dialog: MatDialog) {}
 
 
@@ -64,5 +65,11 @@ export class OrderComponent  {
       }
     }
     return best.gesamtwert + ' (-'+ wert.toFixed(2) + ') ';
+  }
+  showShippingAddres(best: iBestellung) {
+    const conf: MatDialogConfig = new MatDialogConfig();
+
+    conf.data = JSON.parse(best.shipping_address_json);
+    this.dialog.open(ShowShippingComponent, conf);
   }
 }

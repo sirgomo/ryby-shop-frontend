@@ -1,0 +1,12 @@
+<div  mat-dialog-content class="shipping-address">
+  <h3>Shipping Address</h3>
+  <p><strong>Name:</strong> {{shippingAddres.shipping_name}}</p>
+  <p><strong>Street:</strong> {{shippingAddres.strasse}} {{shippingAddres.hausnummer}}</p>
+  <p><strong>City:</strong> {{shippingAddres.stadt}}</p>
+  <p><strong>Postal Code:</strong> {{shippingAddres.postleitzahl}}</p>
+  <p><strong>Country:</strong> {{shippingAddres.land}}</p>
+  <div class="butt">
+    <button mat-stroked-button color="primary" (click)="onCancel()">Schlissen</button>
+  </div>
+</div>
+

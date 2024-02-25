@@ -42,6 +42,11 @@
       <th mat-header-cell *matHeaderCellDef>Versandstatus</th>
       <td mat-cell *matCellDef="let item">{{item.bestellungstatus}}</td>
     </ng-container>
+    <ng-container matColumnDef="shipp">
+      <th mat-header-cell *matHeaderCellDef>Versandstatus</th>
+      <td mat-cell *matCellDef="let item"> <ng-container *ngIf="item.shipping_address_json" [ngTemplateOutlet]="shippbutton"
+        [ngTemplateOutletContext]="{item:item}"></ng-container></td>
+    </ng-container>
     <ng-container matColumnDef="versArt">
       <th mat-header-cell *matHeaderCellDef>Versand Art:</th>
       <td mat-cell *matCellDef="let item">{{item.versandart}}</td>
@@ -62,4 +67,6 @@
   </table>
 <app-paginator></app-paginator>
 </div>
-
+<ng-template #shippbutton let-item="item">
+  <button mat-stroked-button color="primary" (click)="showShippingAddres(item)">Versand Address</button>
+</ng-template>

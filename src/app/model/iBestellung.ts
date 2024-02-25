@@ -12,7 +12,7 @@ export interface iBestellung {
   zahlungsart: string,
   gesamtwert: number,
   zahlungsstatus: string,
-  shipping_address_json: string;
+  shipping_address_json: string,
   bestellungstatus: BESTELLUNGSSTATUS,
   versandart: string;
   versandprice: number;

@@ -69,7 +69,8 @@ describe('OrdersComponent', () => {
       versandprice: 0,
       varsandnr: '',
       paypal_order_id: '',
-      refunds: []
+      refunds: [],
+      shipping_address_json: '',
     };
     orders.push(order);
   }

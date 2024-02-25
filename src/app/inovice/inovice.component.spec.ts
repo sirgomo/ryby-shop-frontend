@@ -140,6 +140,7 @@ describe('InoviceComponent', () => {
     varsandnr: '',
     paypal_order_id: '',
     refunds: [ref],
+    shipping_address_json:'',
   };
 
   beforeEach(() => {

@@ -82,7 +82,8 @@ describe('OrderDetailsComponent', () => {
       versandprice: 1.5,
       varsandnr: 'hjasgdhagsdj',
       paypal_order_id: '',
-      refunds: []
+      refunds: [],
+      shipping_address_json: '',
     };
 
     TestBed.configureTestingModule({

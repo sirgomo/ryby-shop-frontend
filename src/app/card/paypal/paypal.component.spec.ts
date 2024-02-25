@@ -30,7 +30,8 @@ describe('PaypalComponent', () => {
       versandprice: 0,
       varsandnr: '',
       paypal_order_id: '',
-      refunds: []
+      refunds: [],
+      shipping_address_json: '',
     };
     TestBed.configureTestingModule({
       imports: [PaypalComponent, MatDialogModule, MatProgressSpinnerModule, MatButtonModule, MatProgressSpinnerModule, NoopAnimationsModule, HttpClientTestingModule],

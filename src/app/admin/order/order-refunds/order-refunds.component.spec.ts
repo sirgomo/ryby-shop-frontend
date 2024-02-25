@@ -54,7 +54,8 @@ describe('OrderRefundsComponent', () => {
     versandprice: 2.5,
     varsandnr: '',
     paypal_order_id: '',
-    refunds: [refund]
+    refunds: [refund],
+    shipping_address_json: '',
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({

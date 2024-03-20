@@ -1,0 +1,58 @@
+<div class="sell-item-container">
+  <h2>Produkt: {{product.name}} (ID: {{product.id}}, SKU: {{product.sku}})</h2>
+
+  <div class="table-container">
+    <table mat-table [dataSource]="products_variations" class="mat-elevation-z8">
+
+      <!-- SKU Spalte -->
+      <ng-container matColumnDef="sku">
+        <th mat-header-cell *matHeaderCellDef> SKU </th>
+        <td mat-cell *matCellDef="let element"> {{element.sku}} </td>
+      </ng-container>
+
+      <!-- Spalte für Variationsnamen -->
+      <ng-container matColumnDef="variations_name">
+        <th mat-header-cell *matHeaderCellDef> Variationsname </th>
+        <td mat-cell *matCellDef="let element"> {{element.variations_name}} </td>
+      </ng-container>
+
+      <!-- Menge Spalte -->
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef> Menge </th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <mat-form-field>
+            <mat-label>Menge</mat-label>
+            <input matInput type="" [(ngModel)]="quanity[i]" autocomplete="off">
+            <mat-icon matSuffix>layers</mat-icon>
+            <mat-hint>Aktuell: {{element.quanity - quanity[i]}}</mat-hint>
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <!-- Preis Spalte -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef> Preis </th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <mat-form-field>
+            <mat-label>Preis</mat-label>
+            <input matInput type="number" [(ngModel)]="price[i]" autocomplete="off">
+            <mat-icon matSuffix>attach_money</mat-icon>
+            <mat-hint>Einkaufspreis (Brutto): {{getItemPrice(element)}} &euro;</mat-hint>
+          </mat-form-field>
+        </td>
+      </ng-container>
+      <!-- Aktionen Spalte -->
+      <ng-container matColumnDef="acction">
+        <th mat-header-cell *matHeaderCellDef> Zum Warenkorb hinzufügen </th>
+        <td mat-cell *matCellDef="let element; let i = index">   <button mat-raised-button color="primary" (click)="addItem(i)">Hinzufügen</button> </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="save()">Speichern</button>
+    <button mat-raised-button color="warn" (click)="abort()">Abbrechen</button>
+  </div>
+</div>

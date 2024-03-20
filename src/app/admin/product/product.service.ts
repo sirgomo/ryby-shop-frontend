@@ -190,5 +190,12 @@ export class ProductService {
       return throwError(()=> err);
     }))
   }
-
+  getProduktWithBuyPrice(productid: number) {
+    return this.http.get(`${this.API}/with-buy-price/${productid}`).pipe(
+      catchError((err) => {
+        this.error.newMessage(err.message);
+        return throwError(()=> err);
+      })
+    )
+  }
 }

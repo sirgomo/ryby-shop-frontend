@@ -47,6 +47,11 @@ export const routes: Routes = [
   loadComponent: () => import('./ebay/ebay-subscriptions/ebay-subscriptions.component').then(m => m.EbaySubscriptionsComponent),
 },
 {
+  path: 'own-order',
+  canActivate: [routeGuard],
+  loadComponent: () => import('./admin/own-order/own-order.component').then(m => m.OwnOrderComponent),
+},
+{
   path: 'ebay-items',
   canActivate: [routeGuard],
   loadComponent: () => import('./ebay/ebay-inventory/ebay-inventory.component').then(m => m.EbayInventoryComponent),

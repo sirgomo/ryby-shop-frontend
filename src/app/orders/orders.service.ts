@@ -111,4 +111,12 @@ export class OrdersService {
     }),
     )
   }
+  createOwnOrder(order: iBestellung) {
+    return this.http.post(`${this.#api}/own-order`, order).pipe(
+      catchError((err) => {
+        this.error.newMessage('Eigenesverbrauch kann nicht gespeichert werden \n' + err.message);
+        return of({});
+      })
+    );
+  }
 }

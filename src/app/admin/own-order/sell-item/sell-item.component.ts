@@ -59,6 +59,10 @@ export class SellItemComponent {
       this.dialRef.close(null);
     }
     addItem(index: number) {
+      if(this.quanity[index] < 1)
+        return;
+
+
       const item = {
         ...this.products_variations[index],
         quanity: this.quanity[index],

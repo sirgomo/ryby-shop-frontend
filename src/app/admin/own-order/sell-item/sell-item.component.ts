@@ -71,6 +71,7 @@ export class SellItemComponent {
       const prod: iProduct = {} as iProduct;
       Object.assign(prod, this.product);
       prod.variations = [item];
+      prod.beschreibung = '';
       prod.wareneingang = [];
       this.products.push(prod);
     }

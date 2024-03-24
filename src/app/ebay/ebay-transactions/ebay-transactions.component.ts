@@ -40,6 +40,7 @@ export class EbayTransactionsComponent implements OnInit {
     item.price_tax = this.item.pricingSummary.tax ? Number(this.item.pricingSummary.tax.value): 0;
     item.price_discont = this.item.pricingSummary.priceDiscount ? Number(this.item.pricingSummary.priceDiscount.value): 0;
     item.ebay_fee = this.item.totalMarketplaceFee ? Number(this.item.totalMarketplaceFee.value) : 0;
+    item.zahlungsart = this.item.paymentSummary.payments[0] ? this.item.paymentSummary.payments[0].paymentMethod: '';
     item.items = [];
     item.refunds = [];
     item.sel_amount = 0;

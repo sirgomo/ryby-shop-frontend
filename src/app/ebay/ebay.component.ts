@@ -70,6 +70,7 @@ export class EbayComponent {
     itemB.bestelldatum = new Date(item.creationDate);
     //it canotbe id, because id is number and need to be null
     itemB.varsandnr = item.orderId;
+    itemB.zahlungsart = item.paymentSummary.payments[0].paymentMethod;
 
     const items : iProductBestellung[] = [];
     itemB.versandprice = Number(item.pricingSummary.deliveryCost.value);

@@ -15,4 +15,5 @@ export interface iEbayTransaction {
   payment_status: string;
   items: iEbayTransactionItem[];
   refunds: iRefunds[];
+  zahlungsart: string;
 }

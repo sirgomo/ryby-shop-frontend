@@ -33,7 +33,10 @@ export class AllRefundsComponent  implements OnInit{
   }
 
     delete(item: iProduktRueckgabe) {
-      this.shopRefService.actionsSig.set({ item: item, action: 'delete'})
+      if(window)
+        if(window.confirm(`Bist du sicher, dass du Refund ${item.id} für bestellung ${item.bestellung.id} löschen willst`)) {
+          this.shopRefService.actionsSig.set({ item: item, action: 'delete'})
+        }
     }
   add_correctur(item: iProduktRueckgabe) {
       const conf : MatDialogConfig = new MatDialogConfig();

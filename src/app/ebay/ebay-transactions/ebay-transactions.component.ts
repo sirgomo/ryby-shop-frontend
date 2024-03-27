@@ -26,13 +26,13 @@ export class EbayTransactionsComponent implements OnInit {
     this.isItem$ = this.service.getTransactionById(this.item.orderId);
   }
   transaction_booking() {
-    if(this.item.orderPaymentStatus.toString() !== 'PAID') {
+    if(this.item.paymentSummary.payments[0].paymentStatus.toString() !== 'PAID') {
       this.errorService.message.set('Transaction not paid !');
       return;
     }
     const item: iEbayTransaction = {} as iEbayTransaction;
     item.orderId = this.item.orderId;
-    item.payment_status = this.item.orderPaymentStatus;
+    item.payment_status = this.item.paymentSummary.payments[0].paymentStatus;
     item.price_total = Number(this.item.pricingSummary.total.value);
     item.price_shipping = Number(this.item.pricingSummary.deliveryCost.value);
     if(this.item.pricingSummary.deliveryDiscount)

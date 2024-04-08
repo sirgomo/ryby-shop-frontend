@@ -1,4 +1,4 @@
-<ng-container [ngTemplateOutlet]=" element.image || element.produkt_image ? imageok : noimage" [ngTemplateOutletContext]="{element : element}"></ng-container>
+<ng-container [ngTemplateOutlet]=" element?.image || element?.produkt_image ? imageok : noimage" [ngTemplateOutletContext]="{element : element}"></ng-container>
 <ng-template #imageok let-element="element">
   <div class="upload"  id="imageok">
     <div class="img">

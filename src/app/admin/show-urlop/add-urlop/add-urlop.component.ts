@@ -9,14 +9,18 @@ import { iUrlop } from 'src/app/model/iUrlop';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { MomentDateAdapter, MomentDateModule, provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 @Component({
   selector: 'app-add-urlop',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, ReactiveFormsModule, MatDatepickerModule, MatFormFieldModule],
+  imports: [CommonModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, ReactiveFormsModule,
+     MatDatepickerModule, MatFormFieldModule, MomentDateModule],
   templateUrl: './add-urlop.component.html',
   styleUrl: './add-urlop.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideMomentDateAdapter()],
+
 })
 export class AddUrlopComponent {
   act$ = new Observable();

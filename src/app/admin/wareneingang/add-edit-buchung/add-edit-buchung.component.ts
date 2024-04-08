@@ -22,7 +22,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { WarehouseService } from '../../warehouse/warehouse.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatMomentDateModule, provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 
 
@@ -31,11 +31,12 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
   templateUrl: './add-edit-buchung.component.html',
   styleUrls: ['./add-edit-buchung.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DatePipe],
+  providers: [DatePipe, provideMomentDateAdapter()],
   standalone: true,
   imports: [ MatIconModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatSelectModule, ErrorComponent, MatMomentDateModule,
      MatDatepickerModule, MatTabsModule, ArtikelListComponent, ArtikelGebuchtComponent, CommonModule, MatButtonModule, MatCheckboxModule,
-    MatInputModule]
+    MatInputModule],
+
 })
 export class AddEditBuchungComponent implements OnInit{
   products: iWareneingangProduct[] = [];

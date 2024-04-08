@@ -36,14 +36,15 @@
             <input matInput formControlName="item_quanity" placeholder="Product Menge" type="number">
           </mat-form-field>
           <mat-form-field>
-            <mat-label>Amount</mat-label>
-            <input matInput formControlName="amount" placeholder="Amount" type="number">
+            <mat-label>Rückerstattungsbetrag</mat-label>
+            <input matInput formControlName="amount" placeholder="Rückerstattungsbetrag" type="number">
           </mat-form-field>
           <span>
             {{getTitle(i)}}
           </span>
         </div>
       </div>
+      <div>Test is On! It will send data to ebay!</div>
       <div class="actions">
         <button mat-stroked-button type="button" color="primary" (click)="close()">Cancel</button>
         <button mat-stroked-button type="submit" [disabled]="refundForm.invalid">Submit</button>

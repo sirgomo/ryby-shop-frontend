@@ -53,7 +53,6 @@ export class EbayComponent {
   openInovice(item: iEbayOrder) {
     let itemB: iBestellung = {} as iBestellung;
     const userD: iUserData = {} as iUserData;
-
     userD.adresse = {
       strasse: item.buyer.buyerRegistrationAddress.contactAddress.addressLine1,
       postleitzahl: item.buyer.buyerRegistrationAddress.contactAddress.postalCode,
@@ -94,15 +93,15 @@ export class EbayComponent {
         newItem.rabatt = Number(rabatProStuck);
         prod.promocje =  [{id: 1} as iAktion];
       }
-
-      if(item.pricingSummary.deliveryDiscount) {
-        itemB.versandprice += Number(item.pricingSummary.deliveryDiscount.value);
-      }
-
       newItem.color = item.lineItems[i].variationAspects[0].name+' '+item.lineItems[i].variationAspects[0].value;
       newItem.produkt = [prod];
 
       items.push(newItem);
+    }
+
+    if(item.pricingSummary.deliveryDiscount) {
+
+      itemB.versandprice += Number(item.pricingSummary.deliveryDiscount.value);
     }
 
     itemB.produkte = items;

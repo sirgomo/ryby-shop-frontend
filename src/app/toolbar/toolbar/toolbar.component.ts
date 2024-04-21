@@ -36,7 +36,7 @@ export class ToolbarComponent implements OnDestroy, AfterViewInit{
     })
   }
   ngAfterViewInit(): void {
-    if(typeof window === 'undefined' )
+    if(typeof window === 'undefined' || typeof document === 'undefined' )
       return;
 
     const button = document.getElementById('menu_button');

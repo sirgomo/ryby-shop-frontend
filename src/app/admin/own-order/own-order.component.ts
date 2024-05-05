@@ -20,12 +20,13 @@ import { ShowItemsComponent } from './show-items/show-items.component';
 import { iProductBestellung } from 'src/app/model/iProductBestellung';
 import { IShippingCost } from 'src/app/model/iShippingCost';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DestructionProtocolComponent } from '../destruction-protocol/destruction-protocol.component';
 
 @Component({
   selector: 'app-own-order',
   standalone: true,
   imports: [ErrorComponent, CommonModule, ProductsQuanitySelectorComponent, MatTableModule, PaginatorComponent, MatButtonModule, MatDialogModule, SellItemComponent,
-   MatTabsModule, ShowItemsComponent],
+   MatTabsModule, ShowItemsComponent, DestructionProtocolComponent],
   templateUrl: './own-order.component.html',
   styleUrl: './own-order.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,0 +1,71 @@
+<div class="form">
+  <form [formGroup]="protocol" class="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Produkt-ID</mat-label>
+      <input matInput formControlName="produktId" required>
+      <mat-error *ngIf="protocol.get('produktId')?.hasError('required')">Produkt-ID ist erforderlich</mat-error>
+      <mat-icon matSuffix>info</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Variations-ID</mat-label>
+      <input matInput formControlName="variationId" required>
+      <mat-error *ngIf="protocol.get('variationId')?.hasError('required')">Variations-ID ist erforderlich</mat-error>
+     <mat-icon matSuffix>info</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Artikelname</mat-label>
+      <input matInput formControlName="produkt_name" required>
+      <mat-error *ngIf="protocol.get('produkt_name')?.hasError('required')">Artikelname ist erforderlich</mat-error>
+      <mat-icon matSuffix>info</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Menge</mat-label>
+      <input matInput type="number" formControlName="quantity" required>
+      <mat-error *ngIf="protocol.get('quantity')?.hasError('required')">Menge ist erforderlich</mat-error>
+      <mat-icon matSuffix>numbers</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Typ</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let type of select_type" [value]="type">{{ type }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Protokolldatum</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="destruction_date" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="protocol.get('destruction_date')?.hasError('required')">Datum ist erforderlich</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Verantwortliche Person</mat-label>
+      <input matInput formControlName="responsible_person" required>
+      <mat-error *ngIf="protocol.get('responsible_person')?.hasError('required')">Verantwortliche Person ist erforderlich</mat-error>
+      <mat-icon matSuffix>person</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let status of select_status" [value]="status">{{ status }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Beschreibung</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+      <mat-icon matSuffix>description</mat-icon>
+    </mat-form-field>
+    <div class="buttons">
+      <button mat-raised-button color="primary" (click)="onSubmit()">Speichern</button>
+      <button mat-raised-button color="acent" (click)="close()" >Close</button>
+    </div>
+
+  </form>
+</div>

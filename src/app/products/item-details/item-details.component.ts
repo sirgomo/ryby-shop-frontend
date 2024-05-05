@@ -141,6 +141,6 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
         if(this.helperService.cardSig()[i].variations[0].sku  === this.currentVariation.sku)
           quanityInCard += this.helperService.cardSig()[i].variations[0].quanity * this.helperService.cardSig()[i].variations[0].quanity_sold_at_once;
     }
-    return this.currentVariation.quanity - quanityInCard;
+    return this.currentVariation.quanity / this.currentVariation.quanity_sold_at_once - quanityInCard / this.currentVariation.quanity_sold_at_once;
   }
 }

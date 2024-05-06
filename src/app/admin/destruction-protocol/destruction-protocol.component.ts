@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { iDestructionProtocol } from 'src/app/model/iDestructionProtocol';
 import { AddEditProtocolComponent } from './add-edit-protocol/add-edit-protocol.component';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-destruction-protocol',
@@ -21,11 +22,12 @@ export class DestructionProtocolComponent implements OnInit {
     constructor(private readonly service: DestructionProtocolService, private dialo: MatDialog) {}
     ngOnInit(): void {
       this.service.actionSig.set({item: {} as any, action: 'getall'});
+      firstValueFrom(this.service.litems$);
     }
     createEditProtocol(protcol?: iDestructionProtocol) {
       const conf: MatDialogConfig = new MatDialogConfig();
-      conf.height = '100%';
-      conf.width = '100%'
+      conf.height = '80%';
+      conf.width = '50%'
       if(protcol)
         conf.data = protcol
 

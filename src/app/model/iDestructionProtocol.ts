@@ -4,6 +4,7 @@ export interface iDestructionProtocol {
     variationId: string;
     produkt_name: string;
     quantity: number;
+    quantity_at_once: number;
     type: string;
     destruction_date: Date;
     responsible_person:string;

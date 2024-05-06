@@ -10,6 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule, provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Destruction_Protocol_Status, Destruction_Protocol_Type, iDestructionProtocol } from 'src/app/model/iDestructionProtocol';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-add-edit-protocol',
@@ -24,14 +25,14 @@ export class AddEditProtocolComponent {
   protocol!: FormGroup;
   select_type = Object.values(Destruction_Protocol_Type);
   select_status = Object.values(Destruction_Protocol_Status);
-  constructor(private service: DestructionProtocolService, @Optional() @Inject(MAT_DIALOG_DATA)  data: iDestructionProtocol,
+  constructor(private service: DestructionProtocolService, @Optional() @Inject(MAT_DIALOG_DATA) public readonly data: iDestructionProtocol,
    private fb: FormBuilder, readonly dialRef: MatDialogRef<AddEditProtocolComponent>) {
       this.protocol = this.fb.group({
         id: [data?.id || null],
         produktId: [data?.produktId, [Validators.required]],
         variationId: [data?.variationId, [Validators.required]],
         produkt_name: [data?.produkt_name, [Validators.required]],
-        quantity: [data?.quantity, [Validators.required]],
+        quantity: [data ? data.quantity / data.quantity_at_once : 0, [Validators.required]],
         type: [data?.type, [Validators.required]],
         destruction_date: [data?.destruction_date, [Validators.required]],
         responsible_person: [data?.responsible_person, [Validators.required]],
@@ -41,7 +42,17 @@ export class AddEditProtocolComponent {
 
   }
   onSubmit() {
-    console.log(this.protocol.value)
+    if(this.protocol.valid) {
+      if(this.data) {
+        this.service.actionSig.set({ item: this.protocol.value, action: ' edit'});
+      }
+      else {
+        this.service.actionSig.set({ item: this.protocol.value, action: 'add'})
+      }
+
+      firstValueFrom(this.service.litems$);
+    //this.dialRef.close();
+    }
   }
   close() {
     this.dialRef.close();

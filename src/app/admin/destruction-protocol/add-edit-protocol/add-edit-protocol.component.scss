@@ -1,3 +1,9 @@
+.forma {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 1rem;
+}
 .form {
   display: flex;
   flex-direction: column;
@@ -5,9 +11,16 @@
   align-items: center;
   margin: 1rem 1rem;
   gap: .4rem;
+  width: 100%;
 }
 .buttons {
   display: flex;
   justify-content: center;
   gap: .4rem;
+}
+h1 {
+  display: flex;
+  margin-top: .5rem;
+  justify-content: center;
+  width: 100%;
 }

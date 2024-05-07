@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, EMPTY, Observable, catchError, firstValueFrom, map, of, switchMap, tap } from 'rxjs';
+import { ErrorService } from 'src/app/error/error.service';
 import { iDestructionProtocol } from 'src/app/model/iDestructionProtocol';
 import { iItemActions } from 'src/app/model/iItemActions';
 import { environment } from 'src/environments/environment';
@@ -30,7 +31,7 @@ export class DestructionProtocolService {
       return this.itemsSig();
     })
   )
-  constructor(private readonly httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient, private errorService: ErrorService) {}
 // Fetch all protocols with pagination
 getProtocols(page: number = 1, limit: number = 10): Observable<[iDestructionProtocol[], number]> {
   console.log('getProtocols...')
@@ -52,7 +53,7 @@ createProtocol(protocol: iDestructionProtocol): Observable<iDestructionProtocol>
   return this.httpClient.post<iDestructionProtocol>(this.#api, protocol).pipe(tap((res) => {
     console.log(res);
   }), catchError((err) => {
-    console.log(err);
+    this.errorService.newMessage(err.error.message);
     return of({} as iDestructionProtocol);
   })
 );

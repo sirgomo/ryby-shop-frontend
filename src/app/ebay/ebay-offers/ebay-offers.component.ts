@@ -120,12 +120,13 @@ export class EbayOffersComponent implements OnInit{
     iProduct.artid = this.getRandomArtikelId();
       if(!itemGroup.sku)
         return;
-        let fulfillment_policy: iEbayFulfillmentPolicy | undefined;
-        const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.sku));
-        if(itemGroup.product && Object(itemGroup.product.aspects).Modell)
-        iProduct.product_sup_id = Object(itemGroup.product.aspects).Modell[0];
-        if(fulfillment_policy === undefined)
-        fulfillment_policy = await firstValueFrom(this.offerService.getEbayFulfillmentPolicyById(offerP.offers[0].listingPolicies.fulfillmentPolicyId));
+
+    let fulfillment_policy: iEbayFulfillmentPolicy | undefined;
+    const offerP = await firstValueFrom(this.offerService.getOffersBeiSku(itemGroup.sku));
+    if(itemGroup.product && Object(itemGroup.product.aspects).Modell)
+    iProduct.product_sup_id = Object(itemGroup.product.aspects).Modell[0];
+    if(fulfillment_policy === undefined)
+    fulfillment_policy = await firstValueFrom(this.offerService.getEbayFulfillmentPolicyById(offerP.offers[0].listingPolicies.fulfillmentPolicyId));
 
 
 

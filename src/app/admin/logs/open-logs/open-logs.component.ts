@@ -15,6 +15,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   styleUrl: './open-logs.component.scss'
 })
 export class OpenLogsComponent  {
+
   log = toSignal(this.logService.getLogById(this.logdata.id));
   constructor(@Inject( MAT_DIALOG_DATA) public readonly logdata: iLogs, public readonly dialRef: MatDialogRef<OpenLogsComponent>,
   private readonly logService: LogsService) {}
@@ -22,4 +23,5 @@ export class OpenLogsComponent  {
 cancel() {
     this.dialRef.close();
   }
+
 }

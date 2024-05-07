@@ -203,6 +203,9 @@ export class AddEditProductComponent implements OnInit, OnDestroy {
       if(this.data && this.data.verfgbarkeit)
         product.verfgbarkeit = this.data.verfgbarkeit;
 
+      if(this.data && this.data.ebay === 1)
+        product.ebay = 1;
+
       const curDate =  this.dpipe.transform(this.productForm.get('datumHinzugefuegt')?.getRawValue(), 'yyyy-MM-dd');
 
       if(curDate)

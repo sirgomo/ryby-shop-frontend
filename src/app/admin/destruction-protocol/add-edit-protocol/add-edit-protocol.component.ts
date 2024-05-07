@@ -11,11 +11,16 @@ import { MatMomentDateModule, provideMomentDateAdapter } from '@angular/material
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Destruction_Protocol_Status, Destruction_Protocol_Type, iDestructionProtocol } from 'src/app/model/iDestructionProtocol';
 import { firstValueFrom } from 'rxjs';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { ErrorService } from 'src/app/error/error.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HelperService } from 'src/app/helper/helper.service';
 
 @Component({
   selector: 'app-add-edit-protocol',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatMomentDateModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule,
+     MatDatepickerModule, MatMomentDateModule, ErrorComponent, MatProgressSpinnerModule],
   templateUrl: './add-edit-protocol.component.html',
   styleUrl: './add-edit-protocol.component.scss',
   providers: [provideMomentDateAdapter()]
@@ -26,7 +31,7 @@ export class AddEditProtocolComponent {
   select_type = Object.values(Destruction_Protocol_Type);
   select_status = Object.values(Destruction_Protocol_Status);
   constructor(private service: DestructionProtocolService, @Optional() @Inject(MAT_DIALOG_DATA) public readonly data: iDestructionProtocol,
-   private fb: FormBuilder, readonly dialRef: MatDialogRef<AddEditProtocolComponent>) {
+   private fb: FormBuilder, readonly dialRef: MatDialogRef<AddEditProtocolComponent>, public readonly errorService: ErrorService, public readonly helperService: HelperService) {
       this.protocol = this.fb.group({
         id: [data?.id || null],
         produktId: [data?.produktId, [Validators.required]],

@@ -9,10 +9,13 @@
             <div class="menuItem" ><button mat-stroked-button color="accent" (click)="showAll()" >Home</button></div>
           </div>
           <div *ngIf="kategorieSig() as kategories" class="menu">
-            <div class="menuItem" *ngFor="let item of kategories"><button mat-stroked-button color="accent" (click)="changeCategorie(item)" routerLink="{{item.name}}" >{{item.name}}</button></div>
+            <div class="menuItem" *ngFor="let item of kategories"><button mat-stroked-button color="accent" (click)="changeCategorie(item)"><a [routerLink]="[item.name]" routerLinkActive="router-link-active" style="text-decoration: none;">{{item.name}}</a></button></div>
           </div>
       </mat-sidenav>
       <mat-sidenav-content>
+        <div class="h1Category">
+          <h1>{{h1sig()}}</h1>
+        </div>
         <div *ngIf="showLoaderSig()" class="loader-spinner">
           <mat-spinner></mat-spinner>
         </div>

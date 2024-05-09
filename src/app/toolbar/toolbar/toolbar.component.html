@@ -6,12 +6,12 @@
     </button>
     </div>
 
-     <img src="../../../assets/img/logo.png" alt="logo fischfang-profi.de">
-      </div>
+     <a [routerLink]="['/']" routerLinkActive="router-link-active" (click)="go()"><img src="../../../assets/img/logo.png" alt="logo fischfang-profi.de"></a>
+    </div>
    <div class="search"><app-search></app-search></div>
    <div class="logandcard">
     <button mat-icon-button (click)="showLoginPanel()" id="showLogin" ><mat-icon class="icon">person</mat-icon></button>
-    <button mat-icon-button routerLink="card"  (click)="go()" id="goToCard"> <mat-icon class="icon" >shopping_cart</mat-icon>
+    <button mat-icon-button [routerLink]="['card']" routerLinkActive="router-link-active" (click)="go('card')" id="goToCard"> <mat-icon class="icon" >shopping_cart</mat-icon>
       <span class="item-count" *ngIf="helper.cardSig().length > 0">{{helper.cardSig().length}}</span></button>
     <button mat-icon-button *ngIf="isLogged()" (click)="logout()" id="logout" > <mat-icon class="icon" >logout</mat-icon></button>
    </div>

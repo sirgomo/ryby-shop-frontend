@@ -69,7 +69,7 @@ export class WareneingangService {
       this.warenEingangItem.set(res);
       return res;
     }), catchError((err) => {
-      this.err.newMessage(err.message);
+      this.err.newMessage(err.error.message);
       return of({} as iWarenEingang);
     }));
   }
@@ -78,8 +78,11 @@ export class WareneingangService {
     return this.http.put<iWarenEingang>(this.API, wareneingang).pipe(tap((res) => {
       if(res.id)
       this.warenEingangItem.set(res);
+
+      if(Object(res).message)
+        this.err.newMessage(Object(res).message);
     }), catchError((err) => {
-      this.err.newMessage(err.message);
+      this.err.newMessage(err.error.message);
       return of({} as iWarenEingang);
     }));
   }

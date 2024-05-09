@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild, signal } from '@angular/core';
 import { HelperService } from './helper/helper.service';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
@@ -34,7 +34,9 @@ export class AppComponent  implements OnInit, OnDestroy {
 
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;
   showLoaderSig = this.helper.showLoaderSig;
+  h1SigDefault = 'Fischfang-profi - Kunstköder, Ruten, Rollen und viels Mehr';
   title = this.helper.titelSig;
+  h1sig = signal(this.h1SigDefault);
   currentCategory = -1;
   currentButtonActive = -1;
   kategorieSig = toSignal(this.katService.kategorie$);
@@ -71,14 +73,14 @@ export class AppComponent  implements OnInit, OnDestroy {
     this.helper.kategorySig.set(item);
     this.currentCategory = item.id;
     this.router.navigate(['',item.name]);
-    this.updateTitle(item.name);
+    this.updateTitleAndH1(item.name);
     this.helper.showLoader.next(true);
   }
   showAll() {
     this.helper.kategorySig.set({} as iKategorie);
     this.currentCategory = 0;
     this.router.navigateByUrl('');
-    this.updateTitle('');
+    this.updateTitleAndH1('');
   }
   ngOnInit(): void {
     if(isPlatformServer(this.platformId))
@@ -147,14 +149,18 @@ export class AppComponent  implements OnInit, OnDestroy {
    this.currentRouterSub.unsubscribe();
   }
 
-  updateTitle(name: string) {
+  updateTitleAndH1(name: string) {
     this.helper.titelSig.update((title) => {
-
-
         if(name.length < 2)
         return title = environment.site_title;
 
         return title = environment.site_title + ' - '+ name;
+    })
+    this.h1sig.update((val) => {
+        if(name.length < 2)
+          return val = this.h1SigDefault;
+        else
+          return val = name.charAt(0).toUpperCase()+name.slice(1)+' : '
     })
   }
 }

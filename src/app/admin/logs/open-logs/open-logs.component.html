@@ -7,5 +7,10 @@
   </div>
 </div>
 <div class="content" *ngIf="log() !== null">
-  <pre>{{log()?.error_message}}</pre>
+  <div class="header">
+    <span>Log id: {{log()?.id}}</span>
+    <span>Ebay transaction Id: {{log()?.ebay_transaction_id}}</span>
+    <span>Log created at: {{log()?.created_at | date: 'short'}}</span>
+  </div>
+  <span *ngFor="let item of getLog()">{{item}}</span>
 </div>

@@ -73,8 +73,14 @@ export class ToolbarComponent implements OnDestroy, AfterViewInit{
   logout() {
     this.authService.logout();
   }
-  go() {
-    this.helper.appComponenet.currentCategory = -1;
+  go(card?: string) {
+    if(card) {
+      this.helper.appComponenet.h1sig.set(card.charAt(0).toUpperCase()+card.slice(1)+' :')
+      this.helper.appComponenet.currentCategory = -1;
+    }
+
+    else
+      this.helper.appComponenet.showAll()
   }
   showHideMenu() {
     this.helper.appComponenet.sidenav.toggle();

@@ -112,7 +112,7 @@ export class ProductService {
     if(kat && kat.id && kat.id !== -1)
     katid = kat.id;
 
-    if(kat.id === -1 && kat.name !== undefined && this.helper.appComponenet.kategorieSig()?.length)
+    if(kat && kat.id === -1 && kat.name !== undefined && this.helper.appComponenet.kategorieSig()?.length)
       katid = this.helper.appComponenet.kategorieSig()!.filter((item) => item.name === kat.name)[0].id;
 
     if(search.length < 1)

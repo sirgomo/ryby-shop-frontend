@@ -139,8 +139,8 @@ export class AddEditBuchungComponent implements OnInit{
         this.act$ = this.warenService.updateWareneingangBuchung(buchung).pipe(
           tap((res) => {
             this.warenEingangForm.patchValue(res);
-            this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant.id);
-            this.warenEingangForm.get('location')?.patchValue(res.location.id);
+            this.warenEingangForm.get('lieferant')?.patchValue(res.lieferant?.id);
+            this.warenEingangForm.get('location')?.patchValue(res.location?.id);
             this.data = res;
             this.snackBar.open('Die buchung wurde gespeichert', ' Ok', { duration: 3000 });
             if(res.lieferant.id)

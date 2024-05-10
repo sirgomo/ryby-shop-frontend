@@ -5,6 +5,7 @@ import { BehaviorSubject, EMPTY, Observable, catchError, firstValueFrom, map, of
 import { ErrorService } from 'src/app/error/error.service';
 import { iDestructionProtocol } from 'src/app/model/iDestructionProtocol';
 import { iItemActions } from 'src/app/model/iItemActions';
+import { iProduct } from 'src/app/model/iProduct';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,6 +13,7 @@ import { environment } from 'src/environments/environment';
 })
 export class DestructionProtocolService {
   #api = environment.api + 'destruction-pro';
+  #api_prod = environment.api + 'product';
   itemsSig = signal<iDestructionProtocol[]>([])
   actionSig = signal<iItemActions<iDestructionProtocol>>({item: {} as any, action: 'donothing'});
   litems$ = toObservable(this.actionSig).pipe(
@@ -67,6 +69,12 @@ deleteProtocolById(id: number): Observable<{ affected: number, raw: string }> {
 // Update a protocol by ID
 editProtocol(id: number, protocol: any): Observable<iDestructionProtocol> {
   return this.httpClient.put<iDestructionProtocol>(`${this.#api}/${id}`, protocol);
+}
+getProductByName(name: string): Observable<[iProduct[], number]> {
+  if(name.length < 3)
+    return EMPTY;
+
+  return this.httpClient.get<[iProduct[], number]>(`${this.#api_prod}/${name}/0/10/1` );
 }
 
 }

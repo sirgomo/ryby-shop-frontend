@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { DestructionProtocolService } from './destruction-protocol.service';
@@ -14,7 +14,8 @@ import { firstValueFrom } from 'rxjs';
   standalone: true,
   imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, AddEditProtocolComponent, MatDialogModule],
   templateUrl: './destruction-protocol.component.html',
-  styleUrl: './destruction-protocol.component.scss'
+  styleUrl: './destruction-protocol.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DestructionProtocolComponent implements OnInit {
     columns= ['id', 'prod_name', 'quantity', 'type', 'person', 'date', 'status', 'delete']

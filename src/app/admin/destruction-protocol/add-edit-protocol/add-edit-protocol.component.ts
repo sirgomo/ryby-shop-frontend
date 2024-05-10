@@ -1,4 +1,4 @@
-import { Component, Inject, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Optional, signal, effect } from '@angular/core';
 import { DestructionProtocolService } from '../destruction-protocol.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -15,17 +15,22 @@ import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HelperService } from 'src/app/helper/helper.service';
+import { iProduct } from 'src/app/model/iProduct';
+import { SearchArtikelComponent } from './search-artikel/search-artikel.component';
 
 @Component({
   selector: 'app-add-edit-protocol',
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, CommonModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule,
-     MatDatepickerModule, MatMomentDateModule, ErrorComponent, MatProgressSpinnerModule],
+     MatDatepickerModule, MatMomentDateModule, ErrorComponent, MatProgressSpinnerModule, SearchArtikelComponent],
   templateUrl: './add-edit-protocol.component.html',
   styleUrl: './add-edit-protocol.component.scss',
-  providers: [provideMomentDateAdapter()]
+  providers: [provideMomentDateAdapter()],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddEditProtocolComponent {
+export class AddEditProtocolComponent  {
+
+  prod = signal<iProduct| undefined>(undefined)
 
   protocol!: FormGroup;
   select_type = Object.values(Destruction_Protocol_Type);
@@ -44,8 +49,22 @@ export class AddEditProtocolComponent {
         status: [data?.status, [Validators.required]],
         description: [data?.description, []]
       });
+      effect(() => {
+        if(this.prod()) {
+          this.protocol.get('produktId')?.patchValue(this.prod()?.id);
+          this.protocol.get('variationId')?.patchValue(this.prod()?.variations[0].sku);
+          this.protocol.get('produkt_name')?.patchValue(this.prod()?.name);
+        } else {
+          if(!data) {
+            this.protocol.get('produktId')?.patchValue('');
+            this.protocol.get('variationId')?.patchValue('');
+            this.protocol.get('produkt_name')?.patchValue('');
+          }
+        }
 
+      })
   }
+
   onSubmit() {
     if(this.protocol.valid) {
       if(this.data) {
@@ -61,5 +80,8 @@ export class AddEditProtocolComponent {
   }
   close() {
     this.dialRef.close();
+  }
+  reset() {
+    this.prod.set(undefined);
   }
 }

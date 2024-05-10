@@ -1,0 +1,17 @@
+.search {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  height: 60px;
+  margin-bottom: .4rem;
+}
+.header {
+  display: flex;
+  gap: .4rem;
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+  gap: .4rem;
+  margin-top: .2rem;
+}

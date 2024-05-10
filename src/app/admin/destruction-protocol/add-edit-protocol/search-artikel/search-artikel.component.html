@@ -1,0 +1,25 @@
+<div class="search">
+  <mat-form-field>
+    <mat-label>Find Artikel</mat-label>
+    <input type="text" matInput [(ngModel)]="name" (keyup)="getArtikels()">
+    <mat-icon class="mat-18" matPrefix >search</mat-icon>
+  </mat-form-field>
+  <button mat-raised-button (click)="getArtikels()">find</button>
+</div>
+<div *ngIf="artikels().length > 0">
+  <mat-expansion-panel *ngFor="let item of artikels()">
+    <mat-expansion-panel-header>
+      <div class="header">
+        <div class="id">{{item.id}}</div>
+        <div class="name">{{item.name}}</div>
+      </div>
+    </mat-expansion-panel-header>
+      <div *ngFor="let vari of item.variations" class="item">
+        <div class="id">{{vari.sku}}</div>
+        <div class="id">{{vari.price}}</div>
+        <div class="id">{{vari.quanity / vari.quanity_sold_at_once}}</div>
+        <button mat-raised-button color="primary" (click)="setItem(item, vari)">select</button>
+      </div>
+  </mat-expansion-panel>
+</div>
+

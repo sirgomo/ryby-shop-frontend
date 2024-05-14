@@ -34,4 +34,12 @@ export class DestructionProtocolComponent implements OnInit {
 
       this.dialo.open(AddEditProtocolComponent, conf);
     }
+    deleteProtocol(protcol?: iDestructionProtocol) {
+      if(protcol) {
+        this.service.actionSig.set({action: 'delete', item : protcol})
+        firstValueFrom(this.service.litems$);
+      }
+
+    }
+
 }

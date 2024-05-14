@@ -22,7 +22,7 @@ import { SearchArtikelComponent } from './search-artikel/search-artikel.componen
   selector: 'app-add-edit-protocol',
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, CommonModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule,
-     MatDatepickerModule, MatMomentDateModule, ErrorComponent, MatProgressSpinnerModule, SearchArtikelComponent],
+     MatDatepickerModule, MatMomentDateModule, ErrorComponent, MatProgressSpinnerModule, SearchArtikelComponent, ErrorComponent],
   templateUrl: './add-edit-protocol.component.html',
   styleUrl: './add-edit-protocol.component.scss',
   providers: [provideMomentDateAdapter()],
@@ -36,7 +36,8 @@ export class AddEditProtocolComponent  {
   select_type = Object.values(Destruction_Protocol_Type);
   select_status = Object.values(Destruction_Protocol_Status);
   constructor(private service: DestructionProtocolService, @Optional() @Inject(MAT_DIALOG_DATA) public readonly data: iDestructionProtocol,
-   private fb: FormBuilder, readonly dialRef: MatDialogRef<AddEditProtocolComponent>, public readonly errorService: ErrorService, public readonly helperService: HelperService) {
+   private fb: FormBuilder, readonly dialRef: MatDialogRef<AddEditProtocolComponent>, public readonly errorService: ErrorService,
+    public readonly helperService: HelperService) {
       this.protocol = this.fb.group({
         id: [data?.id || null],
         produktId: [data?.produktId, [Validators.required]],
@@ -49,18 +50,27 @@ export class AddEditProtocolComponent  {
         status: [data?.status, [Validators.required]],
         description: [data?.description, []]
       });
+      if(data) {
+        firstValueFrom(this.service.getProtocolById(data.id)).then((res) => {
+          const prod = { id: res.produktId, name: data.produkt_name, variations: [{sku: res.variationId}] } as unknown as iProduct;
+          this.prod.set(prod)
+        })
+
+      }
+
       effect(() => {
         if(this.prod()) {
           this.protocol.get('produktId')?.patchValue(this.prod()?.id);
           this.protocol.get('variationId')?.patchValue(this.prod()?.variations[0].sku);
           this.protocol.get('produkt_name')?.patchValue(this.prod()?.name);
-        } else {
-          if(!data) {
+        }
+
+        else if(!data && !this.prod()) {
             this.protocol.get('produktId')?.patchValue('');
             this.protocol.get('variationId')?.patchValue('');
             this.protocol.get('produkt_name')?.patchValue('');
           }
-        }
+
 
       })
   }
@@ -74,7 +84,10 @@ export class AddEditProtocolComponent  {
         this.service.actionSig.set({ item: this.protocol.value, action: 'add'})
       }
 
-      firstValueFrom(this.service.litems$);
+      firstValueFrom(this.service.litems$).then((res) => {
+        if(Object(res).id)
+          this.dialRef.close();
+      });
     //this.dialRef.close();
     }
   }

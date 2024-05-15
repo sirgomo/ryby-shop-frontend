@@ -15,11 +15,15 @@ import { environment } from 'src/environments/environment';
 export class LogsService {
   #api = environment.api + 'logs';
   errorClasSig = signal<LOGS_CLASS>(LOGS_CLASS.NULL);
+  current_error_class: LOGS_CLASS = LOGS_CLASS.NULL;
   logsSub: BehaviorSubject<iLogs[]> = new BehaviorSubject<iLogs[]>([]);
   accSub: BehaviorSubject<iItemActions<any>> = new BehaviorSubject<iItemActions<any>>({ item: {}, action: 'donothing'});
   logs$ = combineLatest([ this.accSub.asObservable(), toObservable(this.errorClasSig),
      toObservable(this.helperService.pageNrSig), toObservable(this.helperService.artikelProSiteSig) ]).pipe(
     switchMap(([act, er_class, sitenr, take]) => {
+      if(take < 10)
+        return this.logsSub.asObservable();
+
       if(act.action === 'getall')
        return this.getAllLogs(er_class, sitenr, take);
 
@@ -32,7 +36,13 @@ export class LogsService {
 
   constructor(private readonly http: HttpClient, private helperService: HelperService, private readonly snackBar: MatSnackBar, private readonly errorService: ErrorService) { }
 
-  getAllLogs(er_class: string, sitenr: number, take: number): Observable<iLogs[]> {
+  getAllLogs(er_class: LOGS_CLASS, sitenr: number, take: number): Observable<iLogs[]> {
+
+    if(er_class !== this.current_error_class) {
+      this.current_error_class = er_class;
+      this.helperService.pageNrSig.set(1);
+    }
+
     return this.http.get<[iLogs[], number]>(`${this.#api}/${er_class}/${sitenr}/${take}`).pipe(map((res) => {
       this.helperService.paginationCountSig.set(res[1]);
       this.logsSub.next(res[0]);

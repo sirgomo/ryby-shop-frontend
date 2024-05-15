@@ -36,7 +36,6 @@ export class LogsComponent implements OnInit {
     this.logsService.accSub.next({ item: {}, action: 'getall' });
   }
   change() {
-    console.log(this.current_log);
     this.logsService.errorClasSig.set(this.current_log);
     }
   deleteLog(arg: iLogs) {

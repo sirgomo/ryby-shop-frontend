@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, EMPTY, Observable, catchError, firstValueFrom, map, of, switchMap, tap } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
+import {  EMPTY, Observable, catchError,  map, of, switchMap, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iDestructionProtocol } from 'src/app/model/iDestructionProtocol';
 import { iItemActions } from 'src/app/model/iItemActions';
@@ -18,18 +18,21 @@ export class DestructionProtocolService {
   actionSig = signal<iItemActions<iDestructionProtocol>>({item: {} as any, action: 'donothing'});
   litems$ = toObservable(this.actionSig).pipe(
     switchMap((action) => {
-      if (action.action === 'getall')
-        return this.getProtocols();
-      else if (action.action === ' edit')
-        return this.editProtocol(action.item.id, action.item);
-      else if (action.action === 'add') {
-        return this.createProtocol(action.item);
+      switch(action.action) {
+        case 'donothing':
+          return this.itemsSig();
+        case 'add':
+          return this.createProtocol(action.item);
+        case ' edit':
+          return this.editProtocol(action.item.id, action.item);
+        case 'delete':
+          return this.deleteProtocolById(action.item.id);
+        case 'getall':
+          return this.getProtocols();
+
+        default:
+          return this.itemsSig();
       }
-      else if (action.action === 'delete')
-        return this.deleteProtocolById(action.item.id);
-
-
-      return this.itemsSig();
     })
   )
   constructor(private readonly httpClient: HttpClient, private errorService: ErrorService) {}
@@ -63,7 +66,6 @@ createProtocol(protocol: iDestructionProtocol): Observable<iDestructionProtocol>
 
 // Delete a protocol by ID
 deleteProtocolById(id: number): Observable<{ affected: number, raw: string }> {
-  console.log('delete id ' + id)
   return this.httpClient.delete<{affected: number, raw: string}>(`${this.#api}/${id}`).pipe(tap((res) => {
     if(res.affected === 1) {
       this.itemsSig.update((items) => {

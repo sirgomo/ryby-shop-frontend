@@ -1,6 +1,6 @@
 <div>
   <div class="protocol">
-    <button mat-stroked-button color="primary" (click)="createEditProtocol()">Neue Protokoll</button>
+    <button mat-stroked-button color="primary" (click)="createEditProtocol()" >Neue Protokoll</button>
   </div>
   <table mat-table #table [dataSource]="data()">
     <ng-container matColumnDef="id" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">

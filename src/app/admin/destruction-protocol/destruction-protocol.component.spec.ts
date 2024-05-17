@@ -105,14 +105,19 @@ describe('DestructionProtocolComponent', () => {
     reqd.flush({affected: 1, raw: ''});
 
     fixture.detectChanges();
-    const req2 = httpMock.expectOne(`${environment.api}destruction-pro?page=1&limit=10`);
-    expect(req2.request.method).toBe('GET');
-    req2.flush([]);
+    await fixture.isStable()
+
+    const reqAfterDelete = httpMock.expectOne(`${environment.api}destruction-pro?page=1&limit=10`);
+    expect(reqAfterDelete.request.method).toBe('GET');
+    if (!reqAfterDelete.cancelled) {
+      reqAfterDelete.flush([]);
+    }
+
     const buttonsNow = fixture.nativeElement.querySelectorAll('button');
 
     expect(buttonsNow.length).toBe(1);
     expect(component.data().length).toBe(0);
-    console.log('dupa')
+
 
   })
 });

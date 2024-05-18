@@ -109,7 +109,7 @@ export class ProductService {
   getAllProducts(search: string, kat: iKategorie, itemscount: number, pagenr: number): Observable<iProduct[]> {
 
     let katid = 0;
-    if(kat.name && kat.name === 'logs')
+    if(kat.name && (kat.name === 'logs'))
       return EMPTY;
 
     if(kat && kat.id && kat.id !== -1)

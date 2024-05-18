@@ -91,6 +91,6 @@
     </form>
   </div>
 
-  <div class="row" *ngIf="(shippingAddres.valid && rechnungAddress.invalid && !isRechnungAddress && helperService.isShippingCostSelected())  || shippingAddres.valid && rechnungAddress.valid && helperService.isShippingCostSelected()" ><button mat-raised-button color="primary" id="buttEnabled" (click)="makeBestellung()">Bestellen mit Paypal</button></div>
-  <div class="row" *ngIf="shippingAddres.invalid || (rechnungAddress.invalid && isRechnungAddress) || !helperService.isShippingCostSelected() " ><button mat-raised-button (click)="makeBestellung()" disabled id="buttDisabled">Bestellen mit Paypal</button></div>
+  <div class="row" *ngIf="(shippingAddres.valid && rechnungAddress.invalid && !isRechnungAddress && helperService.isShippingCostSelected())  || shippingAddres.valid && rechnungAddress.valid && helperService.isShippingCostSelected()" ><button mat-raised-button color="primary" id="buttEnabled" (click)="makeBestellung()">Kostenpflichtig bestellen</button></div>
+  <div class="row" *ngIf="shippingAddres.invalid || (rechnungAddress.invalid && isRechnungAddress) || !helperService.isShippingCostSelected() " ><button mat-raised-button (click)="makeBestellung()" disabled id="buttDisabled">Kostenpflichtig bestellen</button></div>
 </div>

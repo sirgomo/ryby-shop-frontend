@@ -9,7 +9,7 @@
     </ng-container>
     <ng-container matColumnDef="prod_name">
       <th mat-header-cell *matHeaderCellDef> Artikel </th>
-      <td mat-cell *matCellDef="let row" (click)="createEditProtocol(row)" style="cursor: pointer;"> {{row.produkt_name}} </td>
+      <td mat-cell *matCellDef="let row" (click)="createEditProtocol(row)" style="cursor: pointer;" id="edit"> {{row.produkt_name}} </td>
     </ng-container>
     <ng-container matColumnDef="quantity">
       <th mat-header-cell *matHeaderCellDef> Menge: </th>

@@ -20,7 +20,7 @@ import { firstValueFrom } from 'rxjs';
 export class DestructionProtocolComponent implements OnInit {
     columns= ['id', 'prod_name', 'quantity', 'type', 'person', 'date', 'status', 'delete']
     data = this.service.itemsSig;
-    constructor(private readonly service: DestructionProtocolService, private dialo: MatDialog) {}
+    constructor(private readonly service: DestructionProtocolService, public readonly dialo: MatDialog) {}
     ngOnInit(): void {
       this.service.actionSig.set({item: {} as any, action: 'getall'});
       firstValueFrom(this.service.litems$);
@@ -31,6 +31,9 @@ export class DestructionProtocolComponent implements OnInit {
       conf.width = '50%'
       if(protcol)
         conf.data = protcol
+
+
+
 
       this.dialo.open(AddEditProtocolComponent, conf);
     }

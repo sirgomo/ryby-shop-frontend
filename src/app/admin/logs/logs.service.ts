@@ -46,7 +46,6 @@ export class LogsService {
     return this.http.get<[iLogs[], number]>(`${this.#api}/${er_class}/${sitenr}/${take}`).pipe(map((res) => {
       this.helperService.paginationCountSig.set(res[1]);
       this.logsSub.next(res[0]);
-
       return res[0];
     }),
     catchError((err) => {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { LogsService } from './logs.service';
 import { CommonModule } from '@angular/common';
 import { ProductsQuanitySelectorComponent } from 'src/app/products/products-quanity-selector/products-quanity-selector.component';
@@ -14,6 +14,8 @@ import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { OpenLogsComponent } from './open-logs/open-logs.component';
+import { HelperService } from 'src/app/helper/helper.service';
+import { iKategorie } from 'src/app/model/iKategorie';
 
 @Component({
   selector: 'app-logs',
@@ -24,15 +26,16 @@ import { OpenLogsComponent } from './open-logs/open-logs.component';
   styleUrl: './logs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LogsComponent implements OnInit {
+export class LogsComponent implements OnInit, OnDestroy {
 
 
   columns = ['id', 'ebay_transaction_id', 'user_email', 'paypal_transaction_id', 'error_class',  'created_at','open', 'delete'];
   current_log = LOGS_CLASS.NULL;
   error_class = Object.values(LOGS_CLASS).filter((item) => typeof item === 'string');
-  constructor(public readonly logsService: LogsService, public readonly errorService: ErrorService, private readonly dialog: MatDialog) {}
+  constructor(public readonly logsService: LogsService, public readonly errorService: ErrorService, private readonly dialog: MatDialog, private helper: HelperService) {}
 
   ngOnInit(): void {
+    this.helper.kategorySig.set({id: -1, name: 'logs' } as any);
     this.logsService.accSub.next({ item: {}, action: 'getall' });
   }
   change() {
@@ -48,5 +51,8 @@ export class LogsComponent implements OnInit {
     conf.data = arg;
 
     this.dialog.open(OpenLogsComponent, conf);
+  }
+  ngOnDestroy(): void {
+      this.helper.kategorySig.set({id: -1, name: undefined } as any);
   }
 }

@@ -35,8 +35,8 @@ export class AddEditProtocolComponent  {
   protocol!: FormGroup;
   select_type = Object.values(Destruction_Protocol_Type);
   select_status = Object.values(Destruction_Protocol_Status);
-  constructor(private service: DestructionProtocolService, @Optional() @Inject(MAT_DIALOG_DATA) public readonly data: iDestructionProtocol,
-   private fb: FormBuilder, readonly dialRef: MatDialogRef<AddEditProtocolComponent>, public readonly errorService: ErrorService,
+  constructor(public readonly service: DestructionProtocolService, @Optional() @Inject(MAT_DIALOG_DATA) public readonly data: iDestructionProtocol,
+   private fb: FormBuilder, public readonly dialRef: MatDialogRef<AddEditProtocolComponent>, public readonly errorService: ErrorService,
     public readonly helperService: HelperService) {
       this.protocol = this.fb.group({
         id: [data?.id || null],
@@ -83,12 +83,10 @@ export class AddEditProtocolComponent  {
       else {
         this.service.actionSig.set({ item: this.protocol.value, action: 'add'})
       }
-
       firstValueFrom(this.service.litems$).then((res) => {
         if(Object(res).id)
           this.dialRef.close();
       });
-    //this.dialRef.close();
     }
   }
   close() {

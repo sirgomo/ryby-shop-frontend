@@ -19,10 +19,10 @@ export class DestructionProtocolService {
   litems$ = toObservable(this.actionSig).pipe(
     switchMap((action) => {
       switch(action.action) {
-        case 'donothing':
-          return this.itemsSig();
         case 'add':
           return this.createProtocol(action.item);
+        case 'get':
+          return this.getProtocolById(action.item.id);
         case ' edit':
           return this.editProtocol(action.item.id, action.item);
         case 'delete':
@@ -46,7 +46,6 @@ getProtocols(page: number = 1, limit: number = 10): Observable<[iDestructionProt
 
 // Fetch a single protocol by ID
 getProtocolById(id: number): Observable<iDestructionProtocol> {
-  console.log('getvyid')
   return this.httpClient.get<iDestructionProtocol>(`${this.#api}/${id}`);
 }
 
@@ -88,29 +87,30 @@ deleteProtocolById(id: number): Observable<{ affected: number, raw: string }> {
 
 // Update a protocol by ID
 editProtocol(id: number, protocol: any): Observable<iDestructionProtocol> {
-  return this.httpClient.put<iDestructionProtocol>(`${this.#api}/${id}`, protocol).pipe(tap((res) => {
-    if (res.id) {
-      this.itemsSig.update((items) => {
-        const index = items.findIndex((item) => item.id === res.id);
-        const itemsnew = items.slice(0);
-        itemsnew[index] = res;
-        return itemsnew;
-      })
-      this.actionSig.set({ item: {} as any, action: 'donothing'})
-    } else {
-      console.log(res)
+    return this.httpClient.put<iDestructionProtocol>(`${this.#api}/${id}`, protocol).pipe(tap((res) => {
+      if (res.id) {
+        this.itemsSig.update((items) => {
+          const index = items.findIndex((item) => item.id === res.id);
+          const itemsnew = items.slice(0);
+          itemsnew[index] = res;
+          return itemsnew;
+        })
+
+        this.actionSig.set({ item: {} as any, action: 'donothing'})
+      } else {
+        console.log(res)
+        this.errorService.newMessage('Etwas ist schiefgelaufen, Protocol wurde nicht geändert');
+        this.actionSig.set({ item: {} as any, action: 'donothing'})
+      }
+
+    }),
+    catchError((err) => {
+      console.log(err.message)
       this.errorService.newMessage('Etwas ist schiefgelaufen, Protocol wurde nicht geändert');
       this.actionSig.set({ item: {} as any, action: 'donothing'})
-    }
-
-  }),
-  catchError((err) => {
-    console.log(err.message)
-    this.errorService.newMessage('Etwas ist schiefgelaufen, Protocol wurde nicht geändert');
-    this.actionSig.set({ item: {} as any, action: 'donothing'})
-    return EMPTY
-  })
-);
+      return EMPTY
+    })
+  );
 }
 getProductByName(name: string): Observable<[iProduct[], number]> {
   if(name.length < 3)

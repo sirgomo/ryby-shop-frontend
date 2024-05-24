@@ -40,7 +40,7 @@ export class OwnOrderComponent implements OnInit {
   productsSig = this.prodService.productsSig;
   displayedColumns: string[] = ['prodid','artid', 'name', 'verfugbar', 'add_item'];
     constructor(private readonly userService: UserService, private readonly orderService: OrdersService, private readonly prodService: ProductService,
-       public errService: ErrorService, private readonly dialog: MatDialog, private readonly snack: MatSnackBar) {}
+       public errService: ErrorService,private readonly dialog: MatDialog, private readonly snack: MatSnackBar) {}
   ngOnInit(): void {
    firstValueFrom(this.userService.getUserDetails()).then((res) => {
     this.#user = res;

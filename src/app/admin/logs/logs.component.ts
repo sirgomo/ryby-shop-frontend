@@ -47,6 +47,7 @@ export class LogsComponent implements OnInit, OnDestroy {
   openLog(arg: iLogs) {
     const conf: MatDialogConfig = new MatDialogConfig();
     conf.width = '100%';
+    conf.minWidth = '100%';
     conf.height = '100%';
     conf.data = arg;
 

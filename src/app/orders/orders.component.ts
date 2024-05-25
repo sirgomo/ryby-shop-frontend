@@ -33,6 +33,7 @@ export class OrdersComponent {
     openInovice(item: iBestellung) {
       const conf: MatDialogConfig = new MatDialogConfig();
       conf.height = '100%';
+      conf.minWidth = '100%';
       conf.width = '100%';
       conf.data = item;
       this.dialog.open(InoviceComponent, conf);

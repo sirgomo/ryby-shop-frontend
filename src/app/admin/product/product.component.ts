@@ -33,7 +33,8 @@ export class ProductComponent {
 
   addEditProduct(item?: iProduct) {
     const conf : MatDialogConfig = new MatDialogConfig();
-    conf.width = '90%';
+    conf.width = '100%';
+    conf.minWidth = '100%';
     conf.height = '100%'
 
     conf.data = item ? item: null;

@@ -1,12 +1,12 @@
 <title>{{title()}}</title>
 <app-toolbar></app-toolbar>
-<mat-sidenav-container autosize="true">
+<mat-sidenav-container>
       <mat-sidenav mode="side" align="start" opened #sidenav>
           <div class="menu" *ngIf="menu$ | async as menus">
             <div class="menuItem" *ngFor="let item of menus;let i = index;" >
               <button mat-stroked-button color="accent" routerLink="{{item.link}}" (click)="buttonActive(i)" *ngIf="item.name">{{item.name}}</button>
             </div>
-            <div class="menuItem" ><button mat-stroked-button color="accent" (click)="showAll()" >Home</button></div>
+            <div class="menuItem" ><button mat-stroked-button color="primary" (click)="showAll()" >Home</button></div>
           </div>
           <div *ngIf="kategorieSig() as kategories" class="menu">
             <div class="menuItem" *ngFor="let item of kategories"><button mat-stroked-button color="accent" (click)="changeCategorie(item)"><a [routerLink]="[item.name]" routerLinkActive="router-link-active" style="text-decoration: none;">{{item.name}}</a></button></div>

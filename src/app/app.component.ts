@@ -34,7 +34,7 @@ export class AppComponent  implements OnInit, OnDestroy {
 
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;
   showLoaderSig = this.helper.showLoaderSig;
-  h1SigDefault = 'Fischfang-profi - Kunstköder, Ruten, Rollen und vieles mehr';
+  h1SigDefault = 'Kunstköder, Ruten, Rollen und vieles mehr...';
   title = this.helper.titelSig;
   h1sig = signal(this.h1SigDefault);
   currentCategory = -1;

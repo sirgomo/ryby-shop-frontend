@@ -110,6 +110,7 @@ export class EbayComponent {
     const dialogConf: MatDialogConfig = new MatDialogConfig();
     dialogConf.data = itemB;
     dialogConf.width = '100%';
+    dialogConf.minWidth = '100%';
     dialogConf.height = '100%';
 
     this.dialog.open(InoviceComponent, dialogConf);

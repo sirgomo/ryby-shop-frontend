@@ -1,8 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-@use '@angular/material' as mat;
 @use '../src/srcm3-theme.scss' as t;
+@use '@angular/material' as mat;
 @include mat.core();
-
 
 html {
   @include mat.core-theme(t.$light-theme);

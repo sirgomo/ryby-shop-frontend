@@ -26,7 +26,9 @@ export class EbayTransactionsComponent implements OnInit {
     this.isItem$ = this.service.getTransactionById(this.item.orderId);
   }
   transaction_booking() {
+
     if(this.item.paymentSummary.payments[0].paymentStatus.toString() !== 'PAID') {
+      console.log(this.item)
       this.errorService.message.set('Transaction not paid !');
       return;
     }

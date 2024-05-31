@@ -43,6 +43,7 @@ export class AppComponent  implements OnInit, OnDestroy {
   menu$ = this.helper.menu$;
   routerEventAnaliticsSub = new Subscription();
   currentRouterSub = new Subscription();
+  link = signal('');
 
   constructor(private readonly helper: HelperService, public readonly dialog: MatDialog, private readonly katService: KategorieService,
   public readonly router: Router, @Inject(PLATFORM_ID) public readonly platformId: any, public readonly companyService: CompanyService) {
@@ -157,10 +158,14 @@ export class AppComponent  implements OnInit, OnDestroy {
         return title = environment.site_title + ' - '+ name;
     })
     this.h1sig.update((val) => {
-        if(name.length < 2)
+        if(name.length < 2) {
+          this.link.set('');
           return val = this.h1SigDefault;
-        else
-          return val = name.charAt(0).toUpperCase()+name.slice(1)+' : '
+        } else {
+          this.link.set(name);
+          return val = name.charAt(0).toUpperCase()+name.slice(1)+': '
+        }
+
     })
   }
 }

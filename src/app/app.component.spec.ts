@@ -66,7 +66,7 @@ describe('AppComponent', () => {
   it('should call updateTitle with empty string when showAll is called', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    const spy = jest.spyOn(app, 'updateTitle');
+    const spy = jest.spyOn(app, 'updateTitleAndH1');
 
     app.showAll();
     expect(spy).toHaveBeenCalledWith('');

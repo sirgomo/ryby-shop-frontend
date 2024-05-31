@@ -14,7 +14,7 @@
       </mat-sidenav>
       <mat-sidenav-content>
         <div class="h1Category">
-          <h1>{{h1sig()}}</h1>
+          <a [routerLink]="link()" routerLinkActive="router-link-active"><h1>{{h1sig()}}</h1></a>
         </div>
         <div *ngIf="showLoaderSig()" class="loader-spinner">
           <mat-spinner></mat-spinner>

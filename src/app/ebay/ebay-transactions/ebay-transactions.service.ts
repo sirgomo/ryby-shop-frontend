@@ -19,7 +19,10 @@ export class EbayTransactionsService {
   getTransactionById(id: string): Observable<iEbayTransaction> {
     return this.http.get<iEbayTransaction>(`${this.#api}/${id}`).pipe(
       tap((res: any) => {
-       if(Object(res).message) {
+       if(Object(res).message || res.id === -1) {
+          if(res === -1)
+            this.errorService.newMessage('Sometnig its wrong, no transaction returned');
+
          this.errorService.newMessage(res.message);
        }
        return res;

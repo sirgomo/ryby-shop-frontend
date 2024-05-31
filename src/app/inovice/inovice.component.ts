@@ -269,7 +269,7 @@ export class InoviceComponent {
 
                 pdf.addImage(newCanvas.toDataURL('image/jpeg', 1.0), 'PNG', leftMargin *2, leftMargin *2, pdfWidth, pdfHeigh,'', 'MEDIUM');
                 pdf.setFont("arial");
-                pdf.setFontSize(28);
+                pdf.setFontSize(30);
                 pdf.text('Page ' + i + ' of ' + totalPages, leftMargin*2, pdfHeigh - leftMargin *2);
                 pdf.text('www.fischfang-profi.de', pdfWidth - 330 , pdfHeigh - leftMargin *2);
 

@@ -30,6 +30,14 @@ describe('EbayTransactionsComponent', () => {
       tax: { value: "15" },
       priceDiscount: { value: "20" }
     },
+    paymentSummary: {
+      payments: [
+        {
+          paymentStatus: "PAID",
+          paymentMethod: "Credit Card"
+        }
+      ]
+    },
     lineItems: [
       {
         sku: "item-1",
@@ -53,7 +61,8 @@ describe('EbayTransactionsComponent', () => {
     refunds: [],
     sel_amount: 2,
     id: 1,
-    creationDate: new Date('2022-05-03')
+    creationDate: new Date('2022-05-03'),
+    zahlungsart: '',
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -111,13 +120,42 @@ describe('EbayTransactionsComponent', () => {
   });
 
   it("should call errorService when transaction_booking is called and order is not paid", () => {
-    component.item = { ...mockEbayOrder, orderPaymentStatus: "NOT_PAID" };
-    fixture.detectChanges();
+    //[FAILED,PAID,PENDING]"
+    component.item = {
+      orderId: "123",
+      orderPaymentStatus: "PENDING",
+      pricingSummary: {
+        total: { value: "100" },
+        deliveryCost: { value: "10" },
+        deliveryDiscount: { value: "5" },
+        tax: { value: "15" },
+        priceDiscount: { value: "20" }
+      },
+      paymentSummary: {
+        payments: [
+          {
+            paymentStatus: "PENDING",
+            paymentMethod: "Credit Card"
+          }
+        ]
+      },
+      lineItems: [
+        {
+          sku: "item-1",
+          title: "Item 1",
+          quantity: "2",
+          lineItemCost: { value: "30" }
+        }
+      ]
+    } as any;
+
+
     const requ = testController.expectOne(environment.api+'ebay-sold/'+mockEbayOrder.orderId);
     expect(requ.request.method).toBe('GET');
     requ.flush({ id: -1 });
     fixture.detectChanges();
     component.transaction_booking();
+    fixture.detectChanges();
     expect(component.errorService.message()).toBe("Transaction not paid !");
   });
 

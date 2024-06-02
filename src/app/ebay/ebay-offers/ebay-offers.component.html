@@ -1,17 +1,23 @@
 <div class="content">
+  <!-- Display error component if there is an error message with more than 2 characters -->
   <div *ngIf="errMessage?.message && errMessage.message().length > 2">
     <app-error></app-error>
   </div>
+
+  <!-- Heading and close button section -->
   <div class="h2">
     <h2>Offer Loading...</h2>
     <div class="close">
+      <!-- Button to close the offer loading view, styled with Angular Material -->
       <button mat-icon-button (click)="close()" color="warn">
+        <!-- Close icon from Angular Material -->
           <mat-icon>close</mat-icon>
       </button>
     </div>
   </div>
+
+  <!-- Loader spinner to indicate the loading process -->
   <div class="spinner">
     <mat-spinner></mat-spinner>
   </div>
-
 </div>

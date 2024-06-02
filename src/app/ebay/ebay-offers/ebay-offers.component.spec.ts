@@ -170,3 +170,4 @@ describe('EbayOffersComponent', () => {
     shippingCost.push(shipCost2);
   }
 });
+

@@ -127,7 +127,7 @@ describe('RefundComponent', () => {
       price: 2.3,
       transaction: {} as iEbayTransaction,
     };
-    ebayTrans  = {
+    ebayTrans = {
       orderId: '1',
       creationDate: new Date(Date.now()),
       price_total: 2,
@@ -139,7 +139,8 @@ describe('RefundComponent', () => {
       ebay_fee: 0,
       payment_status: 'DONE',
       items: [transItem],
-      refunds: []
+      refunds: [],
+      zahlungsart: 'PAYPAL'
     };
   }
 });

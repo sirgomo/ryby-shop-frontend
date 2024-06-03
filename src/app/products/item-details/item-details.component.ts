@@ -19,6 +19,7 @@ import { doWeHaveEnough } from '../functions';
 import { SelectComponent } from '../select/select.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute  } from '@angular/router';
+import { SanitizeHtmlPipe } from 'src/app/pipe/sanitizeHtml';
 
 
 @Component({
@@ -28,7 +29,7 @@ import { ActivatedRoute  } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [MatFormFieldModule, CommonModule, MatIconModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule, MatInputModule,
-  FormsModule, SelectComponent, MatToolbarModule]
+  FormsModule, SelectComponent, MatToolbarModule, SanitizeHtmlPipe]
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy{
 

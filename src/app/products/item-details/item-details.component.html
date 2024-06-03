@@ -68,7 +68,7 @@
         </div>
         </div>
       </div>
-      <div class="desc" [innerHTML]="item.beschreibung">
+      <div class="desc" [innerHTML]="item.beschreibung | sanitizeHtml">
       </div>
     </div>
     <div class="farbe">

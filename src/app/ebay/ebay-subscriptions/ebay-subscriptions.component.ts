@@ -12,11 +12,12 @@ import { TopicsComponent } from '../topics/topics.component';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { ErrorService } from 'src/app/error/error.service';
 import { firstValueFrom } from 'rxjs';
+import { SanitizeHtmlPipe } from 'src/app/pipe/sanitizeHtml';
 
 @Component({
   selector: 'app-ebay-subscriptions',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatButtonModule, MatTabsModule, TopicsComponent, ErrorComponent],
+  imports: [CommonModule, MatTableModule, MatButtonModule, MatTabsModule, TopicsComponent, ErrorComponent, SanitizeHtmlPipe],
   templateUrl: './ebay-subscriptions.component.html',
   styleUrls: ['./ebay-subscriptions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

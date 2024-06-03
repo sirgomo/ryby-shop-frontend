@@ -9,6 +9,6 @@
   <div class="item">Email: {{companySig().email}}</div>
   <div class="item">Telefon: {{ companySig().phone}}</div>
   <div class="item" *ngIf="companySig().fax && companySig().fax.length > 3">Fax: {{companySig().fax}}</div>
-  <div class="hinweis" [innerHTML]="companySig().eu_komm_hinweis"></div>
+  <div class="hinweis" [innerHTML]="companySig().eu_komm_hinweis | sanitizeHtml"></div>
 
 </div>

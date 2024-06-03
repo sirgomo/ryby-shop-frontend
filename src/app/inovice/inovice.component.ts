@@ -18,6 +18,7 @@ import { RefundService } from '../ebay/refund/refund.service';
 import { iRefunds } from '../model/iRefund';
 import { OrderRefundsService } from '../admin/order/order-refunds/order-refunds.service';
 import { iProduktRueckgabe } from '../model/iProduktRueckgabe';
+import { SanitizeHtmlPipe } from '../pipe/sanitizeHtml';
 
 
 
@@ -28,7 +29,7 @@ import { iProduktRueckgabe } from '../model/iProduktRueckgabe';
   styleUrls: ['./inovice.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatIconModule, CommonModule, MatTableModule, MatFormFieldModule, MatProgressSpinnerModule, MatButtonModule]
+  imports: [MatIconModule, CommonModule, MatTableModule, MatFormFieldModule, MatProgressSpinnerModule, MatButtonModule, SanitizeHtmlPipe]
 })
 export class InoviceComponent {
 

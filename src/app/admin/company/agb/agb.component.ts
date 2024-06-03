@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { iCompany } from 'src/app/model/iCompany';
 import { CompanyService } from '../company.service';
 import { HelperService } from 'src/app/helper/helper.service';
+import { SanitizeHtmlPipe } from 'src/app/pipe/sanitizeHtml';
 
 @Component({
   selector: 'app-agb',
@@ -10,6 +11,7 @@ import { HelperService } from 'src/app/helper/helper.service';
   styleUrls: ['./agb.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  imports: [SanitizeHtmlPipe]
 })
 export class AgbComponent implements OnInit, OnDestroy{
   companySig: Signal<iCompany> = toSignal(this.companyService.getAllCompanies(), { initialValue: {} as iCompany});

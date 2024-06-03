@@ -34,7 +34,7 @@
         <div>{{currentItem.kunde.email}}</div>
       </div>
     </div>
-    <div class="promo" [innerHTML]="promoHtml" *ngIf="isPromoted()">
+    <div class="promo" [innerHTML]="promoHtml | sanitizeHtml" *ngIf="isPromoted()">
 
     </div>
     <div class="rechData">

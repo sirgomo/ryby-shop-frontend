@@ -4,6 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { iCompany } from 'src/app/model/iCompany';
 import { CommonModule } from '@angular/common';
 import { HelperService } from 'src/app/helper/helper.service';
+import { SanitizeHtmlPipe } from 'src/app/pipe/sanitizeHtml';
 
 @Component({
   selector: 'app-impressum',
@@ -11,7 +12,7 @@ import { HelperService } from 'src/app/helper/helper.service';
   styleUrls: ['./impressum.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, SanitizeHtmlPipe]
 })
 export class ImpressumComponent implements OnInit, OnDestroy{
     companySig = toSignal(this.companyService.getAllCompanies(), { initialValue: {} as iCompany})

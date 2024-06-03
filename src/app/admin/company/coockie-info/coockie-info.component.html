@@ -2,7 +2,7 @@
   <div><h2>Cookies und andere Technologien</h2></div>
 </div>
 <div class="content" >
-    <div class="cookie_info" *ngIf="cookieSig()" [innerHTML]="cookieSig()?.cookie_info">
+    <div class="cookie_info" *ngIf="cookieSig()" [innerHTML]="cookieSig().cookie_info | sanitizeHtml">
     </div>
   <div class="buttons">
     <button mat-raised-button (click)="takeAllCookies()" color="primary">Alle akzeptieren</button>

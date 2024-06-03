@@ -3,6 +3,7 @@ import { CompanyService } from '../company.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { iCompany } from 'src/app/model/iCompany';
 import { HelperService } from 'src/app/helper/helper.service';
+import { SanitizeHtmlPipe } from 'src/app/pipe/sanitizeHtml';
 
 @Component({
   selector: 'app-daten-schutzt',
@@ -10,6 +11,7 @@ import { HelperService } from 'src/app/helper/helper.service';
   styleUrls: ['./daten-schutzt.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
+  imports: [SanitizeHtmlPipe]
 })
 export class DatenSchutztComponent implements OnInit, OnDestroy{
   companySig: Signal<iCompany> = toSignal(this.companyService.getAllCompanies(), { initialValue: {} as iCompany});

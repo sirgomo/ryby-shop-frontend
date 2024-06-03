@@ -14,6 +14,7 @@ import { iSordedVariation } from 'src/app/model/iSortedVariation';
 import { SelectComponent } from '../select/select.component';
 import { getSortedVariation, doWeHaveEnough } from '../functions';
 import { Router } from '@angular/router';
+import { SanitizeHtmlPipe } from '../../pipe/sanitizeHtml';
 
 
 @Component({
@@ -22,7 +23,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./item.component.scss'],
   changeDetection:ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatProgressSpinnerModule, CommonModule, MatButtonModule, FormsModule, SelectComponent]
+  imports: [MatProgressSpinnerModule, CommonModule, MatButtonModule, FormsModule, SelectComponent, SanitizeHtmlPipe],
 })
 export class ItemComponent implements OnInit {
   @Input() item!: iProduct;

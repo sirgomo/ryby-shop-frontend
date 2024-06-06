@@ -17,6 +17,7 @@ import { VariationsService } from 'src/app/admin/add-edit-product/variations/var
 import { iProduktVariations } from 'src/app/model/iProduktVariations';
 import { Router } from '@angular/router';
 import { SelectComponent } from '../select/select.component';
+import { SanitizeHtmlPipe } from 'src/app/pipe/sanitizeHtml';
 
 describe('ItemComponent', () => {
   let component: ItemComponent;
@@ -105,7 +106,7 @@ describe('ItemComponent', () => {
         config: {
           tokenGetter: jest.fn(),
         }
-      }), MatProgressSpinnerModule ],
+      }), MatProgressSpinnerModule, SanitizeHtmlPipe ],
       providers: [
         { provide: MatDialog, useValue: {
           open: jest.fn(),
@@ -114,7 +115,8 @@ describe('ItemComponent', () => {
         { provide: MatSnackBar, useValue: snackBar },
         {
           provide: DomSanitizer, useValue: {
-          bypassSecurityTrustResourceUrl: jest.fn(() => ''),
+          bypassSecurityTrustResourceUrl: jest.fn((v: string) => v),
+          bypassSecurityTrustHtml: jest.fn((v: string) => v),
         }
         },
         ProductService,

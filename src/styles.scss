@@ -3,19 +3,30 @@
 @use '@angular/material' as mat;
 @include mat.core();
 
-html {
+html, body {
   @include mat.core-theme(t.$light-theme);
   @include mat.all-component-themes(t.$light-theme);
   @include mat.all-component-densities(t.$light-theme);
   @include mat.all-component-typographies(t.$light-theme);
+  /*@include mat.select-color(t.$light-theme, $color-variant: tertiary);
+  @include mat.select-color(t.$light-theme, $color-variant: primary);
+  @include mat.select-color(t.$light-theme, $color-variant: secondary);
+  @include mat.select-color(t.$light-theme, $color-variant: error);
+  @include mat.button-color(t.$light-theme, $color-variant: tertiary);
+  @include mat.button-color(t.$light-theme, $color-variant: primary);
+  @include mat.button-color(t.$light-theme, $color-variant: secondary);
+  @include mat.button-color(t.$light-theme, $color-variant: error);*/
+
+
+
   //@include mat.core-theme(t.$dark-theme);
   //@include mat.all-component-themes(t.$dark-theme);
   //@include mat.all-component-densities(t.$dark-theme);
   //@include mat.all-component-typographies(t.$dark-theme);
+  height: 100%; width: 100%; min-height: 100%; min-width: 100%;
 }
 
-html, body { height: 100%; width: 100%; min-height: 100%; min-width: 100%; }
-body { margin: 0; font-family: "Playfair Display", serif; }
+
 mat-sidenav-container {
   height: calc(100% - 120px);
   width: 100%;
@@ -198,3 +209,5 @@ a {
   justify-content: space-between;
   width: 98%;
 }
+@include mat.color-variants-backwards-compatibility(t.$light-theme);
+@include mat.typography-hierarchy(t.$light-theme);  

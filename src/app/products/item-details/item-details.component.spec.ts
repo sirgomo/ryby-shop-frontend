@@ -130,7 +130,7 @@ describe('ItemDetailsComponent', () => {
     const requ = testController.expectOne(environment.api+'product/'+prod.id);
     expect(requ.request.method).toBe('GET');
     requ.flush(prod);
-    expect(helperService.titelSig()).toBe('Fischfang-Profi - '+prod.name);
+    expect(helperService.titelSig()).toBe(environment.site_title + ' - '+prod.name);
   });
   it('should call get image with variations image link', () => {
     jest.spyOn(component, 'getImage');

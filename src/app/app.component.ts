@@ -28,7 +28,8 @@ declare const gtag: Function;
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ FooterComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, MatDialogModule, MatButtonModule, MatProgressSpinnerModule, ShowUrlopComponent]
+  imports: [ FooterComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, 
+    MatDialogModule, MatButtonModule, MatProgressSpinnerModule, ShowUrlopComponent]
 })
 export class AppComponent  implements OnInit, OnDestroy {
 

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 
 import { EbayOffersComponent } from './ebay-offers.component';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -19,6 +19,8 @@ import { environment } from 'src/environments/environment';
 import { iEbayGroupItem } from 'src/app/model/ebay/iEbayGroupItem';
 import { iLieferant } from 'src/app/model/iLieferant';
 import { iKategorie } from 'src/app/model/iKategorie';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('EbayOffersComponent', () => {
   let component: EbayOffersComponent;
@@ -35,12 +37,12 @@ describe('EbayOffersComponent', () => {
   beforeEach(() => {
     loadTestData();
     TestBed.configureTestingModule({
-      imports: [EbayOffersComponent, HttpClientTestingModule, CommonModule, ErrorComponent,
+      imports: [EbayOffersComponent, CommonModule, ErrorComponent,
          MatIconModule, AddEditProductComponent, MatProgressSpinnerModule, MatDialogModule, JwtModule.forRoot({
           config: {
             tokenGetter: jest.fn(),
           }
-         }), MatMomentDateModule],
+         }), MatMomentDateModule, NoopAnimationsModule],
       providers: [
         {
           provide: MatDialogRef,
@@ -55,6 +57,8 @@ describe('EbayOffersComponent', () => {
         ShippingCostService,
         EbayInventoryService,
         EbayOffersService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
       ]
     });
     fixture = TestBed.createComponent(EbayOffersComponent);
@@ -69,6 +73,7 @@ describe('EbayOffersComponent', () => {
   });
 
   it('it should open dialog with add edit produkt', async () => {
+    const called = jest.spyOn(component, 'openDialog');
     fixture.detectChanges();
     const shipCost1: IShippingCost = {
       id: 1,
@@ -86,28 +91,34 @@ describe('EbayOffersComponent', () => {
     };
     const req = httpTest.expectOne(environment.api + 'shipping');
     expect(req.request.method).toBe('GET');
-
-
     req.flush([shipCost1, shipCost2]);
     await fixture.whenStable();
     fixture.detectChanges();
+    expect(component.shippingServices.length).toBe(2);
 
     const req1 = httpTest.expectOne(environment.api + 'ebay-inventory/ebay/groupid/hgdasgdhjag217836');
 
     expect(req1.request.method).toBe('GET');
     req1.flush(itemGroup);
     await fixture.whenStable();
+    fixture.detectChanges();
 
     expect(component.shippingServices).toEqual(shippingCost);
     const req2 = httpTest.expectOne(environment.api+'liferant');
     expect(req2.request.method).toBe('GET');
     req2.flush([liferanst]);
     await fixture.whenStable();
+    fixture.detectChanges();
     const req3 = httpTest.expectOne(environment.api+'kategorie');
     expect(req3.request.method).toBe('GET');
     req3.flush([kat]);
     await fixture.whenStable();
-
+    fixture.detectChanges();
+    expect(called).toHaveBeenCalledTimes(1);
+  
+    const req22 = httpTest.expectOne(environment.api + 'shipping');
+    expect(req22.request.method).toBe('GET');
+    req22.flush([]);
 
   });
 

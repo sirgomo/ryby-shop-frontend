@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { OrdersService } from './orders.service';
 import { HelperService } from '../helper/helper.service';
 import { ErrorService } from '../error/error.service';
@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { PaginatorComponent } from '../paginator/paginator.component';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-orders',
@@ -22,13 +23,15 @@ import { PaginatorComponent } from '../paginator/paginator.component';
   standalone: true,
   imports: [OrderSelectorComponent, MatTableModule, CommonModule, MatIconModule, MatProgressSpinnerModule, MatButtonModule, PaginatorComponent]
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnInit{
 
   columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt', 'inovice'];
-  #userid = Number(localStorage.getItem('userid'));
-  orders = toSignal( this.orderService.getBestellungBeiKundeNr(this.#userid));
+  orders = toSignal(this.orderService.bestellungen.asObservable() );
   constructor (private readonly orderService: OrdersService, private readonly helper: HelperService,
     public readonly error: ErrorService, private dialog: MatDialog) {}
+  ngOnInit(): void {
+    lastValueFrom(this.orderService.items$)
+  }
 
     openInovice(item: iBestellung) {
       const conf: MatDialogConfig = new MatDialogConfig();

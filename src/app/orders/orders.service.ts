@@ -14,7 +14,9 @@ import { iItemActions } from '../model/iItemActions';
 })
 export class OrdersService {
   #role = localStorage.getItem('role');
+  #userid = Number(localStorage.getItem('userid'));
   #api = environment.api + 'order';
+  #ebay_api = environment.api + 'ebay-sold';
 
   currentVersandStatusSig = signal(BESTELLUNGSSTATUS.INBEARBEITUNG);
   currentOrderStateSig = signal(BESTELLUNGSSTATE.BEZAHLT);
@@ -27,11 +29,21 @@ export class OrdersService {
     toObservable(this.helper.pageNrSig),
     toObservable(this.bestellung)]).pipe(
     switchMap(([verStat, orderStat, itemsQuan, sitenr, bestellung]) => {
+
       if (bestellung.action === 'donothing')
-      return this.bestellungen.asObservable();
+        return this.bestellungen.asObservable();
+      
+      if(verStat === BESTELLUNGSSTATUS.EBAY_ORDERS)
+        return this.getEbayBestellungen(itemsQuan, sitenr, bestellung);
 
+   
+      if(this.#role && this.#role === 'ADMIN')
+        return this.getBestellungen(verStat, orderStat, itemsQuan, sitenr);
 
-      return this.getBestellungen(verStat, orderStat, itemsQuan, sitenr);
+      if(this.#role && this.#role !== 'ADMIN')
+        return this.getBestellungBeiKundeNr(this.#userid, verStat, orderStat, itemsQuan, sitenr);
+
+        return this.bestellungen.asObservable();
     }),
     map((res) => {
       return res
@@ -49,10 +61,7 @@ export class OrdersService {
 
     if(versStatus.length < 3)
       return of([]);
-
-
-
-    if(this.#role && this.#role === 'ADMIN') {
+    
       return this.http.post<[[], number]>(this.#api+'/all/get/'+sitenr, settings).pipe(map((res) => {
         this.helper.paginationCountSig.set(res[1]);
         this.bestellungen.next(res[0])
@@ -62,8 +71,10 @@ export class OrdersService {
         this.error.newMessage(err.message);
         return [];
       })
-      )}
-    return of([]);
+      )
+  }
+  getEbayBestellungen(itemQuanity: number, siteNr = 1, itemActions: iItemActions<iBestellung>) {
+    return of(null);
   }
   getBestellungById(id: number): Observable<iBestellung> {
     if(id === 0)
@@ -98,9 +109,16 @@ export class OrdersService {
       return of({} as iBestellung);
     }))
   }
-  getBestellungBeiKundeNr(kunde: number): Observable<iBestellung[]> {
-    return this.http.get<[iBestellung[], number]>(`${this.#api}/kunde/${kunde}`).pipe(
+  getBestellungBeiKundeNr(kunde: number, verStat: string, orderStat:string, itemsQuan:number, sitenr:number): Observable<iBestellung[]> {
+    const settings: iOrderGetSettings = {
+      state: orderStat,
+      status: verStat,
+      itemsProSite: itemsQuan,
+      sitenr: sitenr
+    };
+    return this.http.post<[iBestellung[], number]>(`${this.#api}/kunde/${kunde}`, settings).pipe(
       map((res) => {
+  
         this.helper.paginationCountSig.set(res[1]);
         this.bestellungen.next(res[0])
       return res[0];

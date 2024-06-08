@@ -22,11 +22,14 @@ export class OrderSelectorComponent implements OnInit{
   currentStatus: BESTELLUNGSSTATUS = BESTELLUNGSSTATUS.INBEARBEITUNG;
   currentState: BESTELLUNGSSTATE = BESTELLUNGSSTATE.BEZAHLT;
   currentItemProSite: number = 10;
-
+  #role = localStorage.getItem('role');
     constructor(private orderService: OrdersService, private helper: HelperService) {
       this.helper.artikelProSiteSig.set(10);
     }
   ngOnInit(): void {
+    if(this.#role !== 'ADMIN')
+      this.statusArr = this.statusArr.slice(0, 2);
+
     this.orderService.currentOrderStateSig.set(this.currentState);
     this.orderService.currentVersandStatusSig.set(this.currentStatus);
   }

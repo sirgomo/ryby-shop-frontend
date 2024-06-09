@@ -23,8 +23,9 @@ export interface iBestellung {
 
 export enum BESTELLUNGSSTATUS {
   INBEARBEITUNG = 'INBEARBEITUNG',
-  VERSCHICKT = 'VERSCHICKT',
-  EBAY_ORDERS = 'EBAY_ORDERS',
+  VERSCHICKT = 'VERSCHICKT'
+  //Do i need this ? I dont think so....
+  //EBAY_ORDERS = 'EBAY_ORDERS',
 }
 export enum BESTELLUNGSSTATE {
   ABGEBROCHEN = 'ABGEBROCHEN',

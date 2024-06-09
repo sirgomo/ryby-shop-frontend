@@ -29,12 +29,12 @@ export class OrdersService {
     toObservable(this.helper.pageNrSig),
     toObservable(this.bestellung)]).pipe(
     switchMap(([verStat, orderStat, itemsQuan, sitenr, bestellung]) => {
-
+     
       if (bestellung.action === 'donothing')
         return this.bestellungen.asObservable();
       
-      if(verStat === BESTELLUNGSSTATUS.EBAY_ORDERS)
-        return this.getEbayBestellungen(itemsQuan, sitenr, bestellung);
+      //if(verStat === BESTELLUNGSSTATUS.EBAY_ORDERS)
+      //  return this.getEbayBestellungen(itemsQuan, sitenr);
 
    
       if(this.#role && this.#role === 'ADMIN')
@@ -52,7 +52,6 @@ export class OrdersService {
   constructor(private http: HttpClient, private error: ErrorService, private helper: HelperService) { }
 
   getBestellungen(versStatus: string, orderState: string, itemsQuanity: number, sitenr: number): Observable<iBestellung[]> {
-
     const settings: iOrderGetSettings = {
       state: orderState,
       status: versStatus,
@@ -73,8 +72,37 @@ export class OrdersService {
       })
       )
   }
-  getEbayBestellungen(itemQuanity: number, siteNr = 1, itemActions: iItemActions<iBestellung>) {
-    return of(null);
+  getEbayBestellungen(itemQuanity: number, siteNr = 1) {
+    const settings: iOrderGetSettings = {
+      state: 'EBAY',
+      status: 'EBAY',
+      itemsProSite: itemQuanity,
+      sitenr: siteNr
+    };
+      return this.http.post<[any[], number]>(this.#ebay_api+'/orders/'+siteNr, settings).pipe(map((res) => {
+        console.log(res);
+        this.helper.paginationCountSig.set(res[1]);
+       const items: iBestellung[] = [];
+       res[0].forEach((item) => {
+        const tmp: any = {};
+        tmp.id = item.orderId;
+        tmp.varsandnr = item.orderId;
+        tmp.status = item.payment_status;
+        tmp.gesamtwert = item.price_total;
+        tmp.bestelldatum = item.creationDate;
+        tmp.produkte = item.items;
+        tmp.refunds = item.refunds;
+        tmp.ebay = 1;
+        items.push(tmp);
+       })
+        this.bestellungen.next(items);
+        return items;
+      }),
+      catchError((err) => {
+        this.error.newMessage(err.message);
+        return [];
+      })
+      )
   }
   getBestellungById(id: number): Observable<iBestellung> {
     if(id === 0)

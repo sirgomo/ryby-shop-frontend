@@ -29,7 +29,7 @@
     "@angular/router": "^18.0.2",
     "@angular/ssr": "^18.0.3",
     "@auth0/angular-jwt": "^5.2.0",
-    "@paypal/paypal-js": "^8.0.5",
+    "@paypal/paypal-js": "^8.1.0",
     "@schuchard/schematics-core": "^0.4.2",
     "bufferutil": "^4.0.8",
     "compression": "^1.7.4",

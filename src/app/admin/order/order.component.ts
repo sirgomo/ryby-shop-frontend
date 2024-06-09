@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ErrorService } from 'src/app/error/error.service';
 import { iBestellung } from 'src/app/model/iBestellung';
@@ -15,6 +15,7 @@ import { OrderRefundsComponent } from './order-refunds/order-refunds.component';
 import { PaginatorComponent } from 'src/app/paginator/paginator.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ShowShippingComponent } from './show-shipping/show-shipping.component';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-order',
@@ -24,13 +25,16 @@ import { ShowShippingComponent } from './show-shipping/show-shipping.component';
   standalone: true,
   imports: [CommonModule, OrderSelectorComponent, MatTableModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, PaginatorComponent]
 })
-export class OrderComponent  {
+export class OrderComponent implements OnInit  {
 
 
-  ordersSig = toSignal(this.oderService.items$);
-
+  ordersSig = toSignal(this.oderService.bestellungen.asObservable());
+ 
   columns: string[] = ['id', 'status','vert', 'bestDate', 'bestellStatus','rausDate', 'versandnr', 'versArt','shipp', 'inovice', 'refund'];
   constructor(private readonly oderService: OrdersService, public error: ErrorService, public readonly dialog: MatDialog) {}
+  ngOnInit(): void {
+    lastValueFrom(this.oderService.items$);
+  }
 
 
   openDetailts(item: iBestellung) {
@@ -41,6 +45,11 @@ export class OrderComponent  {
     this.dialog.open(OrderDetailsComponent, conf);
   }
   openInovice(item: iBestellung) {
+    if (Object(item).ebay)
+      item.id = undefined;
+
+    console.log(item)
+    
     const conf: MatDialogConfig = new MatDialogConfig();
     conf.height = '100%';
     conf.width = '100%';

@@ -31,13 +31,15 @@ export class OrderSelectorComponent implements OnInit{
       this.statusArr = this.statusArr.slice(0, 2);
 
     this.orderService.currentOrderStateSig.set(this.currentState);
-    this.orderService.currentVersandStatusSig.set(this.currentStatus);
+    this.orderService.currentVersandStatusSig.set(BESTELLUNGSSTATUS.INBEARBEITUNG);
   }
 
     changeStatus() {
+      this.helper.pageNrSig.set(1);
       this.orderService.currentVersandStatusSig.set(this.currentStatus);
     }
     changeState() {
+      this.helper.pageNrSig.set(1);
       this.orderService.currentOrderStateSig.set(this.currentState);
     }
     changeItemQuanity() {

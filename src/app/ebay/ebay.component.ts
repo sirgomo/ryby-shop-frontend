@@ -21,12 +21,14 @@ import { iAktion } from '../model/iAktion';
 import { map, tap } from 'rxjs';
 import { iRefunds } from '../model/iRefund';
 import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
+import { PaginatorComponent } from '../paginator/paginator.component';
 
 
 @Component({
   selector: 'app-ebay',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTableModule, InoviceComponent, MatDialogModule, MatButtonModule, MatIconModule, EbayTransactionsComponent, ErrorComponent, RefundComponent],
+  imports: [CommonModule, FormsModule, MatTableModule, InoviceComponent, MatDialogModule, MatButtonModule, MatIconModule, 
+    EbayTransactionsComponent, ErrorComponent, RefundComponent, PaginatorComponent],
   templateUrl: './ebay.component.html',
   styleUrls: ['./ebay.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

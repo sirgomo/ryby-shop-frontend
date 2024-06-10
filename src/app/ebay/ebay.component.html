@@ -60,6 +60,9 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <div>
+      <app-paginator></app-paginator>
+      </div>
 </div>
 <ng-template #show >
   <div class="content">

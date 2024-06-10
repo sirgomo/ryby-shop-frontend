@@ -6,6 +6,8 @@ import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
 import { iRefunds } from '../model/iRefund';
 import { iEbayOrder } from '../model/ebay/orders/iEbayOrder';
 import { ErrorService } from '../error/error.service';
+import { HelperService } from '../helper/helper.service';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 
 @Injectable({
@@ -14,23 +16,28 @@ import { ErrorService } from '../error/error.service';
 export class EbayService {
   #api = environment.api + 'ebay'
   #apiRefund = environment.api + 'refund';
+  currentPage = 0;
   ebayItems: BehaviorSubject<iEbayAllOrders | null> = new BehaviorSubject<iEbayAllOrders | null>(null);
-  itemsSoldByEbay$ = this.ebayItems.asObservable().pipe(switchMap((res) => {
-    if(res) {
-      return of(res);
+  itemsSoldByEbay$ = combineLatest([ this.ebayItems.asObservable(), toObservable(this.helperService.pageNrSig)]).pipe(switchMap(([curr, page]) => {
+ 
+    if(!curr || this.currentPage !== page) {
+      this.currentPage = page;
+      return this.getItemsSoldBeiEbay();
     }
-    return this.getItemsSoldBeiEbay();
+
+    return this.ebayItems;
   }))
 
-  constructor(private readonly httpService: HttpClient, private errorService: ErrorService) { }
+  constructor(private readonly httpService: HttpClient, private errorService: ErrorService, private helperService: HelperService) { }
 
   getLinkForUserConsent() {
     return this.httpService.get<{address: string}>(this.#api+'/consent');
   }
   getItemsSoldBeiEbay(): Observable<iEbayAllOrders | null> {
 
-    return this.httpService.get<iEbayAllOrders>(this.#api).pipe(
+    return this.httpService.get<iEbayAllOrders>(this.#api+'/50/'+this.helperService.pageNrSig()).pipe(
       switchMap((res) => {
+        
         if(Object(res).status === 404) {
           return of(null);
         }

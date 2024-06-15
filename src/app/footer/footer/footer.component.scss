@@ -1,3 +1,9 @@
+.content-foot {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
 .links {
   display: flex;
   justify-content: center;
@@ -9,9 +15,4 @@
     margin-top: .5rem;
   }
 }
-.content-foot {
-  display: flex;
 
-  justify-content: center;
-  align-items: center;
-}

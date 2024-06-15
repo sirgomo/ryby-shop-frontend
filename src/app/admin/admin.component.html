@@ -1,1 +1,22 @@
-<p>admin works!</p>
+<div class="content">
+    <div class="select">
+        <mat-form-field>
+            <mat-label>Select Jear</mat-label>
+            <mat-select  [(ngModel)]="selectedValue" name="item">
+                <mat-option *ngFor="let item of items()" [value]="item">
+                    {{item}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </div>
+    <div class="pies">
+        <div class="item"><app-ebay-shop></app-ebay-shop></div>
+        <div class="item"><app-ebay-netto></app-ebay-netto></div>
+        <div class="item"><app-shop-netto></app-shop-netto></div>
+    </div>
+    <div class="bar">
+        <app-shop-months></app-shop-months>
+    </div>
+</div>
+

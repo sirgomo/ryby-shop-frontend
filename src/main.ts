@@ -13,6 +13,7 @@ import { jwtInterceptorFn } from './app/interceptors/jwtInterceptorFn';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter, MomentDateModule } from '@angular/material-moment-adapter';
 import { LoaderInterceptorFn } from './app/interceptors/loader.interceptorFn';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 
   bootstrapApplication(AppComponent, {
@@ -36,7 +37,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
         useValue: {
           subscriptSizing: 'dynamic',
         }
-      }
+      }, provideCharts(withDefaultRegisterables())
     ]
   }).catch(err => {
     console.log(err);

@@ -1,1 +1,11 @@
-<p>ebay-netto works!</p>
+<div>
+    Ebay Netto:
+</div>
+<canvas baseChart
+  [type]="'pie'"
+  [datasets]="pieChartDatasets()"
+  [labels]="pieChartLabels"
+  [options]="pieChartOptions"
+  [plugins]="pieChartPlugins"
+  [legend]="pieChartLegend">
+</canvas>

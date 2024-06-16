@@ -1,1 +1,11 @@
-<p>ebay-shop works!</p>
+<div>
+    Umsatz:
+</div>
+<canvas baseChart
+  [type]="'pie'"
+  [datasets]="pieChartDatasets()"
+  [labels]="pieChartLabels"
+  [options]="pieChartOptions"
+  [plugins]="pieChartPlugins"
+  [legend]="pieChartLegend">
+</canvas>

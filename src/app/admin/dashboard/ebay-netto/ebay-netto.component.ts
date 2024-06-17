@@ -15,7 +15,7 @@ export class EbayNettoComponent {
   pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
   };
-  pieChartLabels = [['Ebay', 'kost' ], [ 'Shipping', 'kost' ], ['Ebay netto gewin'] ];
+  pieChartLabels = [['Ebay', 'kost' ], [ 'Shipping', 'kost' ], ['Ebay gewin'] ];
   pieChartDatasets =  this.service.ebayNettoDataSig;
   pieChartLegend = true;
   pieChartPlugins = [];

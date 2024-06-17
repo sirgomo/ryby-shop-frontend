@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, signal } from '@angular/core';
 import { EbayNettoComponent } from './dashboard/ebay-netto/ebay-netto.component';
 import { EbayShopComponent } from './dashboard/ebay-shop/ebay-shop.component';
 import { ShopMonthsComponent } from './dashboard/shop-months/shop-months.component';
@@ -19,21 +19,27 @@ import { lastValueFrom } from 'rxjs';
   standalone: true,
   imports: [EbayNettoComponent, EbayShopComponent, ShopMonthsComponent, ShopNettoComponent, MatSelectModule, MatFormFieldModule, FormsModule, CommonModule]
 })
-export class AdminComponent {
-  selectedValue = this.service.selectedYearSig();
+export class AdminComponent implements OnInit{
+  selectedValue = new Date(Date.now()).getFullYear().toString();
   items = this.service.yearsSig;
-  constructor( private readonly service: DashboardService ) {
-      lastValueFrom(this.service.getJahres());
-      lastValueFrom(this.service.getEbayShopData());
-      lastValueFrom(this.service.getEbayNettoData());
-      lastValueFrom(this.service.getStoreNettoData());
-      lastValueFrom(this.service.getMonthData());
+  constructor( private readonly service: DashboardService,  ) {}
+  ngOnInit(): void {
+    this.getCharts();
   }
-  onSelectedYearChange(year: string) {
-   lastValueFrom(this.service.getEbayShopData(year));
-   lastValueFrom(this.service.getEbayNettoData());
-   lastValueFrom(this.service.getStoreNettoData());
-   lastValueFrom(this.service.getMonthData());
+  async getCharts() {
+    await lastValueFrom(this.service.getJahres()).then((res) => {
+      this.selectedValue = res[0].years;
+    });
+    await lastValueFrom(this.service.getEbayShopData(this.selectedValue));
+    await lastValueFrom(this.service.getEbayNettoData(this.selectedValue));
+    await lastValueFrom(this.service.getStoreNettoData());
+    await lastValueFrom(this.service.getMonthData());
+  }
+  async onSelectedYearChange(year: string) {
+   await lastValueFrom(this.service.getEbayShopData(year));
+   await lastValueFrom(this.service.getEbayNettoData(year));
+   await lastValueFrom(this.service.getStoreNettoData());
+   await lastValueFrom(this.service.getMonthData());
   }
 //ebay - shop jahr, wie viel verkauft in shop und ebay
 //ebay werdint after costen

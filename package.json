@@ -63,9 +63,9 @@
     "jest-canvas-mock": "^2.5.2",
     "jest-preset-angular": "^14.1.0",
     "rxjs-marbles": "^7.0.1",
-    "ts-jest": "^29.1.4",
+    "ts-jest": "^29.1.5",
     "typescript": "^5.4.5",
-    "ws": "^8.17.0",
+    "ws": "^8.17.1",
     "xmlhttprequest": "^1.8.0"
   },
   "browser": {

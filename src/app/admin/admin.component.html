@@ -4,9 +4,12 @@
             <mat-label>Select Jear</mat-label>
             <mat-select  [(value)]="selectedValue" name="item" (selectionChange)="onSelectedYearChange($event.value)">
                 @for (jahr of items(); track jahr;) {
+   
                         <mat-option [value]="jahr">
                             {{jahr}}
-                        </mat-option>   
+                        </mat-option> 
+                    
+                        
                 }
             </mat-select>
         </mat-form-field>

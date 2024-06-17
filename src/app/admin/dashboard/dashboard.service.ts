@@ -12,16 +12,21 @@ export class DashboardService {
   ebayNettoDataSig =  signal([{ data: [] }]);
   storeNettoDataSig =  signal([{ data: [] }]);
   monthDataSig = signal({ lables: [], datasets: []})
-  selectedYearSig = signal('');
+
   
   yearsSig = signal([new Date(Date.now()).getFullYear().toString()]);
   constructor(private readonly httpClinet: HttpClient) { }
   getJahres() {
-    if(this.selectedYearSig().length < 4)
-        this.selectedYearSig.set(this.yearsSig()[0]);
+    return this.httpClinet.get<{years: string}[]>(this.#api+'/years').pipe(tap(res => {
 
-    this.yearsSig.set([this.yearsSig()[0], '2023']);
-      return of(['2024', '2023']);
+      if(res && res.length > 0) {
+       const years: string[] = [];
+       res.forEach((item) => {
+        years.push(item.years)
+       })
+       this.yearsSig.set(years);
+      }
+    }))
   }
   getEbayShopData(year?: string) {
     if(!year)
@@ -31,15 +36,19 @@ export class DashboardService {
       this.ebayshopdataSig.set(res);
     })); 
   }
-  getEbayNettoData() {
-    return of([{ data: [500, 50, 50 ]}]);
+  getEbayNettoData(year?: string) {
+    //return of([{ data: [500, 50, 50 ]}]);
+    return this.httpClinet.get<[{data: []}]>(this.#api+'/ebay-netto/'+year).pipe(tap(res => {
+      console.log(res);
+      this.ebayNettoDataSig.set(res);
+    }));
   }
   getStoreNettoData() {
     return of([{ data: [500, 50, 20 ]}]);
   }
   getMonthData() {
     return of({
-      labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
+      labels: [ 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' ],
       datasets: [
         { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Ebay' },
         { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Shop' }

@@ -37,22 +37,28 @@ export class DashboardService {
     })); 
   }
   getEbayNettoData(year?: string) {
-    //return of([{ data: [500, 50, 50 ]}]);
+    if(!year)
+      year = new Date(Date.now()).getFullYear().toString();
+
     return this.httpClinet.get<[{data: []}]>(this.#api+'/ebay-netto/'+year).pipe(tap(res => {
-      console.log(res);
       this.ebayNettoDataSig.set(res);
     }));
   }
-  getStoreNettoData() {
-    return of([{ data: [500, 50, 20 ]}]);
+  getStoreNettoData(year?: string) {
+     if(!year)
+      year = new Date(Date.now()).getFullYear().toString();
+
+    return this.httpClinet.get<[{data: []}]>(this.#api+'/shop-netto/'+year).pipe(tap(res => {
+      this.storeNettoDataSig.set(res);
+    }));
   }
-  getMonthData() {
-    return of({
-      labels: [ 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' ],
-      datasets: [
-        { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Ebay' },
-        { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Shop' }
-      ]
-    });
+  getMonthData(year?: string) {
+    if(!year)
+      year = new Date(Date.now()).getFullYear().toString();
+
+    return this.httpClinet.get<{lables: [], datasets: []}>(this.#api+'/months/'+year).pipe(tap(res => {
+     this.monthDataSig.set(res);
+    }));
+
   }
 }

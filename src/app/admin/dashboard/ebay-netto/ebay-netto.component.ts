@@ -14,8 +14,20 @@ import { DashboardService } from '../dashboard.service';
 export class EbayNettoComponent {
   pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 12 // Zmniejsz rozmiar czcionki
+          },
+          boxWidth: 10,
+        },
+        position: 'top',
+        align: 'start',
+      }
+    }
   };
-  pieChartLabels = [['Ebay', 'kost' ], [ 'Shipping', 'kost' ], ['Ebay gewin'] ];
+  pieChartLabels = [['Ebay' ], [ 'Shipping' ],['MwSt'], ['Gewin'] ];
   pieChartDatasets =  this.service.ebayNettoDataSig;
   pieChartLegend = true;
   pieChartPlugins = [];

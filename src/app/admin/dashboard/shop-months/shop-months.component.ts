@@ -1,25 +1,37 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { DashboardService } from '../dashboard.service';
-import { toSignal } from '@angular/core/rxjs-interop';
+
 
 @Component({
   selector: 'app-shop-months',
   standalone: true,
   imports: [BaseChartDirective],
   templateUrl: './shop-months.component.html',
-  styleUrl: './shop-months.component.scss'
+  styleUrl: './shop-months.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopMonthsComponent {
   public barChartLegend = true;
   public barChartPlugins = [];
-  //public barChartData: ChartConfiguration<'bar'>['data']
-  public barChartData = toSignal(this.service.getMonthData(), { initialValue: {} as any}) as any;
+  barChartData = this.service.monthDataSig;
 
   public barChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
     maintainAspectRatio: true,
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 12 // Zmniejsz rozmiar czcionki
+          },
+          boxWidth: 10,
+        },
+        position: 'top',
+        align: 'center',
+      }
+    }
   };
   constructor(private readonly service: DashboardService) {}
 }

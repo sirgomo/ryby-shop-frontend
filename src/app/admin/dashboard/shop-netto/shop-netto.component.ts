@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ChartOptions } from 'chart.js';
 import { DashboardService } from '../dashboard.service';
 import { BaseChartDirective } from 'ng2-charts';
@@ -9,14 +8,27 @@ import { BaseChartDirective } from 'ng2-charts';
   standalone: true,
   imports: [BaseChartDirective],
   templateUrl: './shop-netto.component.html',
-  styleUrl: './shop-netto.component.scss'
+  styleUrl: './shop-netto.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopNettoComponent {
   pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 12 // Zmniejsz rozmiar czcionki
+          },
+          boxWidth: 10,
+        },
+        position: 'top',
+        align: 'start',
+      }
+    }
   };
-  pieChartLabels = [['Store', 'sales' ], [ 'Store', 'Shipping'  ], [ 'Store', 'Netto'] ];
-  pieChartDatasets =  toSignal(this.service.getStoreNettoData(), { initialValue: [{ data: [] }]} ); 
+  pieChartLabels = [['Sales' ], ['Shipping'  ],['MwSt'], [ 'Netto'] ];
+  pieChartDatasets = this.service.storeNettoDataSig;
   pieChartLegend = true;
   pieChartPlugins = [];
   constructor(private readonly service: DashboardService) {}

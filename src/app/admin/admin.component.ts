@@ -32,14 +32,14 @@ export class AdminComponent implements OnInit{
     });
     await lastValueFrom(this.service.getEbayShopData(this.selectedValue));
     await lastValueFrom(this.service.getEbayNettoData(this.selectedValue));
-    await lastValueFrom(this.service.getStoreNettoData());
-    await lastValueFrom(this.service.getMonthData());
+    await lastValueFrom(this.service.getStoreNettoData(this.selectedValue));
+    await lastValueFrom(this.service.getMonthData(this.selectedValue));
   }
   async onSelectedYearChange(year: string) {
    await lastValueFrom(this.service.getEbayShopData(year));
    await lastValueFrom(this.service.getEbayNettoData(year));
-   await lastValueFrom(this.service.getStoreNettoData());
-   await lastValueFrom(this.service.getMonthData());
+   await lastValueFrom(this.service.getStoreNettoData(year));
+   await lastValueFrom(this.service.getMonthData(year));
   }
 //ebay - shop jahr, wie viel verkauft in shop und ebay
 //ebay werdint after costen

@@ -15,8 +15,20 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class EbayShopComponent {
     pieChartOptions: ChartOptions<'pie'> = {
       responsive: true,
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+              size: 12 // Zmniejsz rozmiar czcionki
+            },
+            boxWidth: 10,
+          },
+          position: 'top',
+          align: 'start',
+        }
+      }
     };
-    pieChartLabels = [['Ebay', 'Sales' ], [ 'In', 'Store', 'Sales' ] ];
+    pieChartLabels = [['Ebay sales' ], ['Shop sales' ] ];
     pieChartDatasets =  this.service.ebayshopdataSig;
     pieChartLegend = true;
     pieChartPlugins = [];

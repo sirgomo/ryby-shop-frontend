@@ -27,7 +27,7 @@ export class ShopNettoComponent {
       }
     }
   };
-  pieChartLabels = [['Sales' ], ['Shipping'  ],['MwSt'], [ 'Netto'] ];
+  pieChartLabels = [['Sales' ], ['Shipping'  ],['MwSt'],['Ware'], [ 'Netto'] ];
   pieChartDatasets = this.service.storeNettoDataSig;
   pieChartLegend = true;
   pieChartPlugins = [];

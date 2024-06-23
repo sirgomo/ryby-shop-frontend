@@ -18,7 +18,7 @@ import { ErrorComponent } from '../error/error.component';
 import { ErrorService } from '../error/error.service';
 import { RefundComponent } from './refund/refund.component';
 import { iAktion } from '../model/iAktion';
-import { map, tap } from 'rxjs';
+import { lastValueFrom, map, tap } from 'rxjs';
 import { iRefunds } from '../model/iRefund';
 import { iEbayAllOrders } from '../model/ebay/orders/iEbayAllOrders';
 import { PaginatorComponent } from '../paginator/paginator.component';
@@ -35,11 +35,14 @@ import { PaginatorComponent } from '../paginator/paginator.component';
 })
 export class EbayComponent {
 
-  ebaySoldItems$ = this.serv.itemsSoldByEbay$;
+  
+  items = toSignal(this.serv.ebayItems, { initialValue: [ ] as any});
   ebaycode = '';
   show_input = false;
   displayedColumns: string[] = ['orderNumber', 'buyerUsername', 'totalPrice', 'orderStatus', 'orderDate', 'shippedAm', 'invoice', 'buchen', 'refund'];
-  constructor (private readonly serv: EbayService, public readonly dialog: MatDialog, public readonly errorService: ErrorService) {};
+  constructor (private readonly serv: EbayService, public readonly dialog: MatDialog, public readonly errorService: ErrorService) {
+    lastValueFrom(this.serv.itemsSoldByEbay$);
+  };
 
   getLink() {
    const link = this.serv.getLinkForUserConsent().subscribe((res) => {

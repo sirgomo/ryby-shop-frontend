@@ -1,4 +1,4 @@
-<div class="error" *ngIf="error.message().length > 3">
+<div class="error" *ngIf="error.message() && error.message().length > 3">
 {{error.message()}}
 </div>
 <div class="content" *ngIf="ordersSig() as orders">

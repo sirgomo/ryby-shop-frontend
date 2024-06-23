@@ -16,16 +16,13 @@ import { toObservable } from '@angular/core/rxjs-interop';
 export class EbayService {
   #api = environment.api + 'ebay'
   #apiRefund = environment.api + 'refund';
-  currentPage = 0;
-  ebayItems: BehaviorSubject<iEbayAllOrders | null> = new BehaviorSubject<iEbayAllOrders | null>(null);
-  itemsSoldByEbay$ = combineLatest([ this.ebayItems.asObservable(), toObservable(this.helperService.pageNrSig)]).pipe(switchMap(([curr, page]) => {
- 
-    if(!curr || this.currentPage !== page) {
-      this.currentPage = page;
-      return this.getItemsSoldBeiEbay();
-    }
 
-    return this.ebayItems;
+  ebayItems: BehaviorSubject<iEbayAllOrders | null> = new BehaviorSubject<iEbayAllOrders | null>(null);
+  itemsSoldByEbay$ = combineLatest([ toObservable(this.helperService.pageNrSig)]).pipe(switchMap(() => {
+    
+
+      return this.getItemsSoldBeiEbay();
+    
   }))
 
   constructor(private readonly httpService: HttpClient, private errorService: ErrorService, private helperService: HelperService) { }
@@ -37,12 +34,11 @@ export class EbayService {
 
     return this.httpService.get<iEbayAllOrders>(this.#api+'/50/'+this.helperService.pageNrSig()).pipe(
       switchMap((res) => {
-        
         if(Object(res).status === 404) {
           return of(null);
         }
 
-        if(!res.orders) {
+        if(!res.orders || res.orders.length === 0) {
           res.orders = [];
           this.ebayItems.next(res);
           return of(res);
@@ -85,7 +81,6 @@ export class EbayService {
               } as unknown as iEbayOrder;
             })
             res.orders = items;
-
             this.ebayItems.next(res);
             return res;
           }

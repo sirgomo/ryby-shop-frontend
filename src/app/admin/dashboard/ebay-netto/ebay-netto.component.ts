@@ -27,7 +27,7 @@ export class EbayNettoComponent {
       }
     }
   };
-  pieChartLabels = [['Ebay' ], [ 'Shipping' ],['MwSt'], ['Gewin'] ];
+  pieChartLabels = [['Ebay Kost' ], [ 'Shipping' ],['MwSt'], ['Ware'], ['Gewin'] ];
   pieChartDatasets =  this.service.ebayNettoDataSig;
   pieChartLegend = true;
   pieChartPlugins = [];

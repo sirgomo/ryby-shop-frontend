@@ -28,3 +28,4 @@ Continuous application development
 7. Get items listed on eBay (first import them using listingId)
 8. sitemap on the server site
 9. Shipping or other things refund, refund info in invoice
+10. A dashboard has been added, featuring earnings statistics based on years and months, net earnings from eBay, and earnings from the online store. eBay costs and shipping costs have been calculated based on prices.

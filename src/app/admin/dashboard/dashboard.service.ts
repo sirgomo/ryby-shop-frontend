@@ -59,6 +59,15 @@ export class DashboardService {
     return this.httpClinet.get<{lables: [], datasets: []}>(this.#api+'/months/'+year).pipe(tap(res => {
      this.monthDataSig.set(res);
     }));
-
+  }
+  getMonthDetailEbay(month: number, year: number) {
+    return this.httpClinet.get<{lables: [], datasets: []}>(this.#api+'/ebay-month/'+year+'/'+month).pipe(tap(res => {
+     return res;
+    }));
+  }
+  getMonthDetailShop(month: number, year: number) {
+    return this.httpClinet.get<{lables: [], datasets: []}>(this.#api+'/shop-month/'+year+'/'+month).pipe(tap(res => {
+      return res;
+     }));
   }
 }

@@ -2,12 +2,16 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { DashboardService } from '../dashboard.service';
+import { ActiveElement } from 'chart.js/dist/plugins/plugin.tooltip';
+import { EbayDetailsComponent } from './ebay-details/ebay-details.component';
+import { ShopDetailsComponent } from './shop-details/shop-details.component';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 
 
 @Component({
   selector: 'app-shop-months',
   standalone: true,
-  imports: [BaseChartDirective],
+  imports: [BaseChartDirective, EbayDetailsComponent, ShopDetailsComponent, MatDialogModule],
   templateUrl: './shop-months.component.html',
   styleUrl: './shop-months.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,7 +35,31 @@ export class ShopMonthsComponent {
         position: 'top',
         align: 'center',
       }
-    }
+    },
+    onClick: (event, elements, chart) => {
+     
+      //ebay
+      if(elements[0].datasetIndex === 0) {
+      const conf = new MatDialogConfig();
+      conf.minHeight = '100%';
+      conf.minWidth = '100%';
+      conf.data = [ { 'year': this.service.yearsSig(), 'month': elements[0].index +1 }];
+
+      this.dialog.open(EbayDetailsComponent, conf);
+    
+      } else {
+        const conf = new MatDialogConfig();
+        conf.minHeight = '100%';
+        conf.minWidth = '100%';
+        conf.data = [ { 'year': this.service.yearsSig(), 'month': elements[0].index +1 }];
+  
+        this.dialog.open(ShopDetailsComponent, conf);
+      } 
+    },
   };
-  constructor(private readonly service: DashboardService) {}
+  constructor(private readonly service: DashboardService, private readonly dialog: MatDialog) {}
+
+
+
+
 }

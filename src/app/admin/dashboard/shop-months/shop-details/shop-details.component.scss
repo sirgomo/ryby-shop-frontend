@@ -1,0 +1,23 @@
+.items {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+}
+.item {
+    display: flex;
+    justify-content: space-between;
+    gap: .3rem;
+}
+.title {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  
+}
+.panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: .2rem .2rem;
+}

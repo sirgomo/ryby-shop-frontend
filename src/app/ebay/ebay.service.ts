@@ -37,7 +37,7 @@ export class EbayService {
         if(Object(res).status === 404) {
           return of(null);
         }
-
+        console.log(res.orders);
         if(!res.orders || res.orders.length === 0) {
           res.orders = [];
           this.ebayItems.next(res);

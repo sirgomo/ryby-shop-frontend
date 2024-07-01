@@ -1,1 +1,57 @@
-<p>shop-details works!</p>
+<div class="contentDialog">
+    <div class="headerDialog" matDialogTitle>
+        <div><h1>Shop Transations für {{ monthSig() }} : {{ yearSig() }}</h1></div>
+        <div>
+            <button mat-fab (click)="close()"  aria-label="Icon button with a close icon"><mat-icon>close</mat-icon></button>
+        </div> 
+    </div>
+    <div matDialogContent class="bodyDialog">
+        @for( item of shopData(); track item) {
+            <mat-expansion-panel hideToggle class="panel">
+                <mat-expansion-panel-header class="title">
+                  <mat-panel-title> <div class="item">Id: {{item.id}} </div></mat-panel-title>
+                    <mat-panel-description>
+                        <div class="items">
+                            <div class="item">
+                                <span>Total: </span><span>{{item.total}}</span>
+                            </div>
+
+                            <div class="item">
+                                <span>Versand Kost: </span> <span style="color: coral;">{{ item.shipping }}</span>
+                            </div>
+                            <div class="item">
+                                <span>MwSt: </span> <span>{{item.tax}}</span>
+                            </div>
+                            <div class="item">
+                                <span>Netto: </span><span style="color: green;"> {{ getTotalNetto(item).toFixed(2) }}</span>
+                            </div>
+                        </div>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                @for(prod of item.produkts; track prod) {
+                    <div class="items">
+                        <div class="item">
+                            <span>Name: </span> <span>{{prod.name}}</span>
+                        </div>
+                        <div class="item">
+                            <span>Preis: </span> <span>{{prod.verkauf_price}}</span>
+                        </div>
+                        <div class="item">
+                            <span>Rabat: </span> <span>{{prod.verkauf_rabat}}</span>
+                        </div>
+                        <div class="item">
+                            <span>MwSt: </span> <span>{{prod.verkauf_steuer}}</span>
+                        </div>
+                        <div class="item">
+                            <span>Netto: </span> <span style="color: green;">{{ getNettoPerItem(prod).toFixed(2) }}</span>
+                        </div>
+                  </div> 
+                  @if(!$last) {
+                    <hr>
+                  }
+                  
+                }
+              </mat-expansion-panel>
+        }
+    </div>
+</div>

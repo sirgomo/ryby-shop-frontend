@@ -68,7 +68,7 @@ export class LogsService {
       if(res.affected === 1) {
         const newLogs = this.logsSub.value.filter((item) => item.id !== id);
         this.logsSub.next(newLogs);
-        this.accSub.next({ item: {}, action: 'donothing' });
+        this.accSub.next({ item: {}, action: 'getall' });
         this.snackBar.open('Log eintrag mit id ' + id + ' wurde gelöscht', 'Ok', { duration: 1500 });
       } else {
         this.snackBar.open('Log eintrag mit id ' + id + ' kann nicht gelöscht werden, FEHLER', 'Ok', { duration: 3000 });

@@ -37,13 +37,13 @@ export class ShopMonthsComponent {
       }
     },
     onClick: (event, elements, chart) => {
-     
       //ebay
       if(elements[0].datasetIndex === 0) {
       const conf = new MatDialogConfig();
       conf.minHeight = '100%';
       conf.minWidth = '100%';
-      conf.data = [ { 'year': this.service.yearsSig(), 'month': elements[0].index +1 }];
+      conf.panelClass = 'contentDialog';
+      conf.data = { 'year': this.service.courrentYearSig(), 'month': elements[0].index };
 
       this.dialog.open(EbayDetailsComponent, conf);
     
@@ -51,7 +51,8 @@ export class ShopMonthsComponent {
         const conf = new MatDialogConfig();
         conf.minHeight = '100%';
         conf.minWidth = '100%';
-        conf.data = [ { 'year': this.service.yearsSig(), 'month': elements[0].index +1 }];
+        conf.panelClass = 'contentDialog';
+        conf.data = { 'year': this.service.courrentYearSig(), 'month': elements[0].index };
   
         this.dialog.open(ShopDetailsComponent, conf);
       } 

@@ -222,5 +222,28 @@ a {
   justify-content: space-between;
   width: 98%;
 }
+.headerDialog {
+  display: flex;
+  margin: 0 .5rem;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed; 
+  top: 0;  
+  height: 60px;
+  width: 98%;
+  z-index: 1000; 
+  
+}
+.bodyDialog {
+  margin-top: 62px;
+}
+.contentDialog {
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+}
 //@include mat.color-variants-backwards-compatibility(t.$light-theme);
 //@include mat.typography-hierarchy(t.$light-theme);  

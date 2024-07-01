@@ -1,1 +1,46 @@
-<p>ebay-details works!</p>
+<div class="contentDialog">
+    <div class="headerDialog" matDialogTitle>
+        <div><h1>Ebay Transations für {{ monthSig() }} : {{ yearSig() }}</h1></div>
+        <div>
+            <button mat-fab (click)="close()"  aria-label="Icon button with a close icon"><mat-icon>close</mat-icon></button>
+        </div> 
+    </div>
+    <div matDialogContent class="bodyDialog">
+        @for( item of ebayData(); track item) {
+            <mat-expansion-panel hideToggle class="panel">
+                <mat-expansion-panel-header class="title">
+                  <mat-panel-title> <div class="item">{{item.id}} </div></mat-panel-title>
+                    <mat-panel-description>
+                        <div class="items">
+                            <div class="item">
+                                <span>Total: </span><span>{{item.total}}</span>
+                            </div>
+                            <div class="item">
+                                <span>Ebay Kost: </span><span style="color: crimson;">{{item.ebay_fee}}</span>
+                            </div>
+                            <div class="item">
+                                <span>Versand Kost: </span> <span style="color: coral;">{{ getShipping(item.shipping, item.discon) }}</span>
+                            </div>
+                            <div class="item">
+                                <span>Netto: </span><span style="color: green;"> {{ getNetto(item) }}</span>
+                            </div>
+                        </div>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                @for(prod of item.products; track prod) {
+                    <div class="items">
+                        <div class="item">
+                            <span>Name: </span> <span>{{prod.title}}</span>
+                        </div>
+                        <div class="item">
+                            <span>Preis: </span> <span>{{prod.price}}</span>
+                        </div>
+                        <div class="item">
+                            <span>Netto: </span> <span style="color: green;">{{ getNettoPerItem(prod) }}</span>
+                        </div>
+                  </div> 
+                }
+              </mat-expansion-panel>
+        }
+    </div>
+</div>

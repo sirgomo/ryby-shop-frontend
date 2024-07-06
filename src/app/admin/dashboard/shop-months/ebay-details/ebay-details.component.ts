@@ -50,8 +50,7 @@ export class EbayDetailsComponent {
     return (Number(shipping) + Number(descount)).toFixed(2);
   }
   getNetto(item: iEbayMonthDetails) {
-
-    let netto = Number(item.total) - Number(item.ebay_fee) - Number(item.discon) - Number(item.shipping);
+    let netto = Number(item.total) - Number(item.ebay_fee) - Number(item.discon) - Number(item.shipping) - (item.adv_const ? Number(item.adv_const): 0);
     for (let i = 0; i < item.products.length; i++) {
       netto -= (Number(item.products[i].peuro) * Number(item.products[i].quantity_at_once) * Number(item.products[i].quantity));
     }

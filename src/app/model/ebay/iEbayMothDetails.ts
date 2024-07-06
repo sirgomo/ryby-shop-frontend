@@ -14,4 +14,6 @@ export interface iEbayMonthDetails{
     tax: string;
     title: string;
     total: string;
+    adv_const: string;
+    orderId: string;
 }

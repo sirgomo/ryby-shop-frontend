@@ -9,7 +9,7 @@
         @for( item of ebayData(); track item) {
             <mat-expansion-panel hideToggle class="panel">
                 <mat-expansion-panel-header class="title">
-                  <mat-panel-title> <div class="item">{{item.id}} </div></mat-panel-title>
+                  <mat-panel-title> <div class="item">Id: {{item.id}}  <span>  Order Nr.: </span><span>{{item.orderId}}</span></div></mat-panel-title>
                     <mat-panel-description>
                         <div class="items">
                             <div class="item">

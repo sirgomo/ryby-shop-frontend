@@ -17,7 +17,7 @@
                             </div>
 
                             <div class="item">
-                                <span>Versand Kost: </span> <span style="color: coral;">{{ item.shipping }}</span>
+                                <span>Versandkost: </span> <span style="color: coral;">{{ item.shipping }}</span>
                             </div>
                             <div class="item">
                                 <span>MwSt: </span> <span>{{item.tax}}</span>
@@ -34,7 +34,13 @@
                             <span>Name: </span> <span>{{prod.name}}</span>
                         </div>
                         <div class="item">
-                            <span>Preis: </span> <span>{{prod.verkauf_price}}</span>
+                            <span>Menge: </span> <span>{{prod.squantity}}</span>
+                        </div>
+                        <div class="item">
+                            <span>Preis (Verkauf): </span> <span>{{prod.verkauf_price}}</span>
+                        </div>
+                        <div class="item">
+                            <span>Preis (Einkauf): </span> <span>{{getWholesalePrice(prod).toFixed(2)}}</span>
                         </div>
                         <div class="item">
                             <span>Rabat: </span> <span>{{prod.verkauf_rabat}}</span>

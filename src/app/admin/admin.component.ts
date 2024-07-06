@@ -41,8 +41,4 @@ export class AdminComponent implements OnInit{
    await lastValueFrom(this.service.getStoreNettoData(year));
    await lastValueFrom(this.service.getMonthData(year));
   }
-//ebay - shop jahr, wie viel verkauft in shop und ebay
-//ebay werdint after costen
-//shop verdint after costen
-//na dole current jahr slupki czyli 4 card laczenie, ilosc sprzedazy na miesiac w sklepie i na ebay
 }

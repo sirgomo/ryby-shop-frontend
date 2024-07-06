@@ -57,6 +57,9 @@ export class EbayDetailsComponent {
     return netto.toFixed(2);
   }
   getNettoPerItem(prod: iEbayMonthDetails) {
-    return Number(prod.price) - (Number(prod.quantity_at_once) * Number(prod.peuro) * Number(prod.quantity));
+    return Number(prod.price) - ((Number(prod.quantity_at_once) * Number(prod.peuro)) * Number(prod.quantity));
+  }
+  getWholesalePrice(prod: iEbayMonthDetails) {
+    return (Number(prod.quantity_at_once) * Number(prod.peuro)) * Number(prod.quantity);
   }
 }

@@ -58,4 +58,7 @@ export class ShopDetailsComponent {
       let netto = (Number(item.verkauf_price) - Number(item.verkauf_rabat) - Number(item.verkauf_steuer) - (Number(item.peuro) * Number(item.squantity))) * Number(item.menge);
     return netto;
    }
+   getWholesalePrice(prod: iShopMonthDetails) {
+    return (Number(prod.peuro) * Number(prod.squantity)) * Number(prod.menge);
+  }
 }

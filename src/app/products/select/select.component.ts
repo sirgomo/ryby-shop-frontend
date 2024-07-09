@@ -30,6 +30,7 @@ export class SelectComponent implements OnInit{
     if(isPlatformServer(this.platformId))
     return;
 
+
     const getIndex = this.item.variations.findIndex((tmp) => tmp.sku === index.value);
     this.resetSelector(index);
 

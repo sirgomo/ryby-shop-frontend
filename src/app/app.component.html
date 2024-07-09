@@ -1,7 +1,7 @@
 <title>{{title()}}</title>
 <app-toolbar></app-toolbar>
-<mat-sidenav-container>
-      <mat-sidenav mode="side" align="start" opened #sidenav>
+<mat-sidenav-container #sidenavContainer>
+      <mat-sidenav mode="side" align="start" opened #sidenav role="navigation">
           <div class="menu" *ngIf="menu$ | async as menus">
             <div class="menuItem" *ngFor="let item of menus;let i = index;" >
               <button mat-stroked-button color="accent" routerLink="{{item.link}}" (click)="buttonActive(i)" *ngIf="item.name">{{item.name}}</button>
@@ -12,7 +12,7 @@
             <div class="menuItem" *ngFor="let item of kategories"><button mat-stroked-button color="accent" (click)="changeCategorie(item)"><a [routerLink]="[item.name]" routerLinkActive="router-link-active" style="text-decoration: none;">{{item.name}}</a></button></div>
           </div>
       </mat-sidenav>
-      <mat-sidenav-content>
+      <mat-sidenav-content #sidenavContent role="main">
         <div class="h1Category">
           <a [routerLink]="link()" routerLinkActive="router-link-active"><h1>{{h1sig()}}</h1></a>
         </div>

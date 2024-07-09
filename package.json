@@ -36,7 +36,7 @@
     "compression": "^1.7.4",
     "express": "^4.19.2",
     "html2canvas": "^1.4.1",
-    "inquirer": "^9.3.4",
+    "inquirer": "^10.0.1",
     "inquirer-autocomplete-prompt": "^3.0.1",
     "jspdf": "^2.5.1",
     "localstorage-polyfill": "^1.0.1",
@@ -63,7 +63,7 @@
     "jest-canvas-mock": "^2.5.2",
     "jest-preset-angular": "^14.1.1",
     "rxjs-marbles": "^7.0.1",
-    "ts-jest": "^29.1.5",
+    "ts-jest": "^29.2.0",
     "typescript": "^5.4.5",
     "ws": "^8.18.0",
     "xmlhttprequest": "^1.8.0"

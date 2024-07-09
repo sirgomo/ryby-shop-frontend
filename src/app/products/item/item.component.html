@@ -1,18 +1,17 @@
 <div class="product-item">
-  <div class="product-image" >
+  <div class="product-image" (click)="openDetails()">
     <img [src]="image" alt="Product Image" class="image" *ngIf="act$ | async">
   </div>
   <div class="product-details">
-    <h2 class="head">{{item.name.length < 50 ? item.name : (item.name | slice:0:50) + '...'}}</h2>
-    <div class="besch" [innerHTML]="(item.beschreibung.length < 200 ?  item.beschreibung  : (item.beschreibung  | slice:0:200)) | sanitizeHtml" id="besch"></div>
+    <h2 class="head" (click)="openDetails()">{{item.name.length < 50 ? item.name : (item.name | slice:0:50) + '...'}}</h2>
+    <div class="besch" [innerHTML]="(item.beschreibung.length < 200 ?  item.beschreibung  : (item.beschreibung  | slice:0:200)) | sanitizeHtml" id="besch"(click)="openDetails()" ></div>
     <div class="sel">
       <p *ngIf="item.mehrwehrsteuer < 1">Preis:  {{getPriceBrutto()}} &euro; </p>
       <p *ngIf="item.mehrwehrsteuer > 0">Preis (Brutto): {{getPriceBrutto()}} &euro;</p>
       <app-select [item]="item" (current)="changeSelection($event)"></app-select>
     </div>
     <div class="act">
-      <button mat-stroked-button color="primary" (click)="addItem(item)" > In den Warenkorb</button>
-      <button mat-raised-button color="accent" (click)="openDetails()" id="openD" >Details</button>
+      <button mat-stroked-button (click)="addItem(item)" > In den Warenkorb</button>
     </div>
   </div>
 </div>

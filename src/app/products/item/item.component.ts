@@ -15,6 +15,8 @@ import { SelectComponent } from '../select/select.component';
 import { getSortedVariation, doWeHaveEnough } from '../functions';
 import { Router } from '@angular/router';
 import { SanitizeHtmlPipe } from '../../pipe/sanitizeHtml';
+import { BackNaviagtionService } from 'src/app/helper/back-naviagtion.service';
+import { ScroolServiceService } from 'src/app/helper/scroolService.service';
 
 
 @Component({
@@ -28,6 +30,7 @@ import { SanitizeHtmlPipe } from '../../pipe/sanitizeHtml';
 export class ItemComponent implements OnInit {
   @Input() item!: iProduct;
   @ViewChild('select') select!: ElementRef;
+  @ViewChild('view') view!: ElementRef;
   act$ = new Observable();
   image: SafeResourceUrl | undefined;
 
@@ -35,6 +38,8 @@ export class ItemComponent implements OnInit {
   current!: iProduktVariations;
   sortedVarations: iSordedVariation[] = [];
   constructor( private santizier: DomSanitizer,
+    private naviService: BackNaviagtionService,
+    private scroolService: ScroolServiceService,
     private router: Router,
     private helper: HelperService,
     private snackBar: MatSnackBar, @Inject(PLATFORM_ID) private readonly platformId: any,
@@ -76,9 +81,17 @@ export class ItemComponent implements OnInit {
     if(isPlatformServer(this.platformId))
     return;
 
+    const sidenav = this.scroolService.getSidenavContent();
+    if(sidenav)
+      this.scroolService.setScrollPosition(sidenav.measureScrollOffset('top'));
+
+    const previousUrl = this.naviService.getPreviousUrl();
+    localStorage.setItem('previousUrl', previousUrl || '');
+    this.naviService.setPaginationPage(this.helper.pageNrSig());
+
     this.router.navigate(getProductUrl('products', this.item.id!, this.item.name));
  }
-changeSelection(item: iProduktVariations) {
+changeSelection(item: any) { 
   this.current = item;
   this.getImage(this.current.image);
 }
@@ -90,6 +103,8 @@ changeSelection(item: iProduktVariations) {
     return 0
   }
   addItem(item: iProduct) {
+   
+
       const tmp : iProduct = {} as iProduct;
       const tmpVar: iProduktVariations = {} as iProduktVariations;
       Object.assign(tmp, this.item);

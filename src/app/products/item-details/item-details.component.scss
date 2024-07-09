@@ -26,7 +26,7 @@
 .content-details {
   display: flex;
   flex-direction: column;
- align-items: center;
+  align-items: center;
   width: 98%;
   height: 90%;
   margin: .5rem .5rem;
@@ -55,15 +55,33 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
-  width: 90%;
+  width: 100%;
 }
 
-.left,
+.left {
+  width: 74%;
+
+}
+@media screen and (min-width: 601px) {
+  .right {
+    border-left: 1px solid rgb(128, 77, 30);
+  }
+  
+  .image {
+    min-width: 100%;
+    min-height: 450px;
+  }
+}
+
 .right {
+  width: 25%;
   display: flex;
-  width: 45%;
   flex-direction: column;
   gap: 0.2rem;
+  margin: .5rem .2rem;
+
+  border-radius: .3rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .desc-title {
@@ -80,12 +98,16 @@
 .item {
   display: flex;
   justify-content: space-between;
+  margin: .5rem .5rem;
+  padding-right: .5rem;
 }
 
 .image {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: .5rem;
+  margin-bottom: .4rem;
 }
 
 img {
@@ -93,9 +115,10 @@ img {
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .farbe {
- margin-top: .5rem;
- margin-left: .5rem;
+  margin-top: .5rem;
+  margin-left: .5rem;
 }
 
 .desc {
@@ -105,13 +128,25 @@ img {
 
 .item-input {
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   gap: .4rem;
-
+  margin: 0 .4rem;
   mat-form-field {
     width: 100%;
   }
+  button {
+    width: 95%;
+  }
 }
 
+@media screen and (max-width: 900px) {
+  .itempro {
+    flex-direction: column;
+  }
+
+  .left, .right {
+    width: 100%;
+  }
+}

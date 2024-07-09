@@ -1,4 +1,4 @@
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy,  Component,  OnDestroy, OnInit, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,8 +18,10 @@ import { iProduktVariations } from 'src/app/model/iProduktVariations';
 import { doWeHaveEnough } from '../functions';
 import { SelectComponent } from '../select/select.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ActivatedRoute  } from '@angular/router';
+import { ActivatedRoute, Router  } from '@angular/router';
 import { SanitizeHtmlPipe } from 'src/app/pipe/sanitizeHtml';
+
+
 
 
 @Component({
@@ -50,7 +52,8 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
   private snackBar: MatSnackBar,
   private variationService: VariationsService,
   private route: ActivatedRoute,
-  private location: Location
+  private router: Router,
+
   ) {}
   ngOnDestroy(): void {
     this.titleSig.set(this.title);
@@ -134,7 +137,12 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
   }
 
   close() {
-    this.location.back();
+    const previousUrl = localStorage.getItem('previousUrl');
+    if (previousUrl) {
+      this.router.navigateByUrl(previousUrl);
+    } else {
+      this.router.navigateByUrl('/');
+    }
   }
   getItemQuanity() {
     let quanityInCard = 0;

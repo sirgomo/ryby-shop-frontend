@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, OnChanges, OnDestroy, OnInit, PLATFORM_ID, SimpleChanges, ViewChild, signal } from '@angular/core';
 import { HelperService } from './helper/helper.service';
-import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent, MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { UserLoginComponent } from './user/user-login/user-login.component';
 import { KategorieService } from './admin/kategories/kategorie.service';
@@ -17,6 +17,8 @@ import { environment } from 'src/environments/environment';
 import { CompanyService } from './admin/company/company.service';
 import { ShowUrlopComponent } from './admin/show-urlop/show-urlop.component';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { ScroolServiceService } from './helper/scroolService.service';
+
 
 
 declare const gtag: Function;
@@ -31,9 +33,11 @@ declare const gtag: Function;
   imports: [ FooterComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, 
     MatDialogModule, MatButtonModule, MatProgressSpinnerModule, ShowUrlopComponent]
 })
-export class AppComponent  implements OnInit, OnDestroy {
+export class AppComponent  implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;
+  @ViewChild('sidenavContent', { read: MatSidenavContent }) sidenavContent!: MatSidenavContent;
+ 
   showLoaderSig = this.helper.showLoaderSig;
   h1SigDefault = 'Kunstköder, Ruten, Rollen und vieles mehr...';
   title = this.helper.titelSig;
@@ -47,8 +51,16 @@ export class AppComponent  implements OnInit, OnDestroy {
   link = signal('');
 
   constructor(private readonly helper: HelperService, public readonly dialog: MatDialog, private readonly katService: KategorieService,
-  public readonly router: Router, @Inject(PLATFORM_ID) public readonly platformId: any, public readonly companyService: CompanyService) {
+  public readonly router: Router, @Inject(PLATFORM_ID) public readonly platformId: any, public readonly companyService: CompanyService,
+  private scrollService: ScroolServiceService
+ ) {
     this.helper.setApp(this);
+    
+    
+  }
+
+  ngAfterViewInit(): void {
+    this.scrollService.setSideNavContent(this.sidenavContent);
   }
 
 
@@ -71,18 +83,23 @@ export class AppComponent  implements OnInit, OnDestroy {
   changeCategorie(item: iKategorie) {
     if (!item || item.id === this.currentCategory)
       return;
-
+    this.helper.pageNrSig.set(1);
     this.helper.kategorySig.set(item);
     this.currentCategory = item.id;
     this.router.navigate(['',item.name]);
     this.updateTitleAndH1(item.name);
     this.helper.showLoader.next(true);
+    this.resetScroll();
+    
   }
   showAll() {
-    this.helper.kategorySig.set({} as iKategorie);
-    this.currentCategory = 0;
+    this.helper.pageNrSig.set(1);
+    this.currentCategory = -1;
+    this.resetScroll();
     this.router.navigateByUrl('');
     this.updateTitleAndH1('');
+    this.helper.kategorySig.set({} as iKategorie);
+  
   }
   ngOnInit(): void {
     if(isPlatformServer(this.platformId))
@@ -94,11 +111,7 @@ export class AppComponent  implements OnInit, OnDestroy {
     if(!localStorage.getItem('cookies'))
       this.askCookies();
 
-  this.currentRouterSub = this.router.events.pipe().subscribe((type) => {
-    if (type instanceof NavigationEnd)
-      this.helper.showLoader.next(false);
-  });
-
+  
   }
   askCookies() {
     if(isPlatformServer(this.platformId))
@@ -167,6 +180,15 @@ export class AppComponent  implements OnInit, OnDestroy {
           return val = name.charAt(0).toUpperCase()+name.slice(1)+': '
         }
 
-    })
+    });
+   
+  }
+  resetScroll(top = 0) {
+    if(isPlatformServer(this.platformId))
+      return;
+
+      if(this.sidenavContent)
+        this.sidenavContent.scrollTo({'top' : top, 'behavior': 'smooth'});
+
   }
 }

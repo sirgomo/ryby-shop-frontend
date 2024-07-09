@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule]
 })
-export class PaginatorComponent implements OnInit{
+export class PaginatorComponent {
 
   pagiSig = computed(() => {
     if(this.helper.artikelProSiteSig() === 0)
@@ -22,11 +22,9 @@ export class PaginatorComponent implements OnInit{
 
     return this.helper.paginationCountSig() / this.helper.artikelProSiteSig();
   })
-  constructor(public helper: HelperService, private readonly vps: ViewportScroller) {}
-  ngOnInit(): void {
-    this.helper.artikelProSiteSig.set(10);
-    this.helper.pageNrSig.set(1);
-  }
+  constructor(public helper: HelperService, private readonly vps: ViewportScroller
+  ) {}
+
   goNext() {
     if(this.helper.pageNrSig() + 1 > Math.ceil(this.pagiSig()))
     return;

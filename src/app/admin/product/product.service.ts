@@ -1,7 +1,7 @@
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY, Observable, Subject, catchError, combineLatest, finalize, map, of, switchMap, takeUntil, tap, throwError } from 'rxjs';
+import { EMPTY, Observable,  catchError, combineLatest,  map, of, switchMap,  tap, throwError } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iProduct } from 'src/app/model/iProduct';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'
@@ -13,19 +13,19 @@ import { iKategorie } from 'src/app/model/iKategorie';
 
 
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
   API = environment.api + 'product';
-
+  currentCategory: undefined | Number = undefined;
   item  = signal<iProduct>({} as iProduct);
   items$ = combineLatest([toObservable(this.helper.searchSig), toObservable(this.helper.kategorySig), toObservable(this.helper.artikelProSiteSig), toObservable(this.helper.pageNrSig)]).pipe(
     switchMap(([search, kat, artpro, pagenr]) => this.getAllProducts(search, kat, artpro, pagenr)),
     map((res) => {
       return res;
-    })
-  );
+    }));
 
   productsGetSig = toSignal<iProduct[], iProduct[]>(this.items$, { initialValue:  []});
 
@@ -107,7 +107,6 @@ export class ProductService {
   }
 
   getAllProducts(search: string, kat: iKategorie, itemscount: number, pagenr: number): Observable<iProduct[]> {
-
     let katid = 0;
     if(kat.name && (kat.name === 'logs'))
       return EMPTY;
@@ -120,6 +119,7 @@ export class ProductService {
 
     if(search.length < 1)
     search = 'null';
+  
   if(itemscount === 0)
     return of([]);
 
@@ -133,13 +133,15 @@ export class ProductService {
             return [];
           }),
           map((res) => {
-            console.log('products ' + res[1])
+            console.log('products ' + res[1]);
+            this.currentCategory = kat.id;
             this.helper.paginationCountSig.set(res[1]);
             return res[0];
           })
         );
       }
 
+        
       return this.http.get<[iProduct[], number]>(`${this.API}/kunde/${search}/${katid}/${itemscount}/${pagenr}`).pipe(
         catchError((error) => {
           console.log(error);
@@ -147,6 +149,7 @@ export class ProductService {
           return [];
         }),
         map((res) => {
+          this.currentCategory = kat.id;
           this.helper.paginationCountSig.set(res[1]);
           return res[0];
         })

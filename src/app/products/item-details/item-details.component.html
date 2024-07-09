@@ -1,81 +1,74 @@
 <div class="content">
-<mat-toolbar class="toolbar">
-  <div class="header">
-    <div class="h1">
-      <h1>{{item.name}}</h1>
-    </div>
-    <div class="act">
-      <button mat-raised-button (click)="close()">
+  <mat-toolbar class="toolbar">
+    <div class="header">
+      <div class="h1">
+        <h1>{{item.name}}</h1>
+      </div>
+      <div class="act">
+        <button mat-raised-button (click)="close()">
           <mat-icon>arrow_back</mat-icon>
           Zuruck
-      </button>
-    </div>
-  </div>
-</mat-toolbar>
-<div class="content-details">
-  <div class="con">
-    <div class="itemdesc">
-      <div class="itempro">
-        <div class="left">
-          <div class="item">
-            <div class="desc-title">Item Id:</div>
-            <div class="desc-value">{{item.artid}}</div>
-          </div>
-          <div class="item">
-            <div *ngIf="item.mehrwehrsteuer === 0" class="desc-title">
-              Preis (Netto):
-            </div>
-            <div *ngIf="item.mehrwehrsteuer === 0 && currentVariation" class="desc-value">
-              {{getPriceBrutto()}} &euro;
-            </div>
-            <div *ngIf="item.mehrwehrsteuer !== 0" class="desc-title">
-              Preis (Brutto):
-            </div>
-            <div *ngIf="item.mehrwehrsteuer !== 0 && currentVariation" class="desc-value">
-              {{getPriceBrutto()}} &euro;
-            </div>
-          </div>
-          <div class="item">
-            <div class="desc-title">Gewicht (g):</div>
-            <div class="desc-value" *ngIf="currentVariation" ><span>{{currentVariation.unit}}</span> (g)</div>
-          </div>
-          <div class="item">
-            <div class="desc-title">Verfugbare Menge:</div>
-            <div class="desc-value" *ngIf="currentVariation" ><span [style]="getItemQuanity() === 0 ? 'color: red;' : ''">{{getItemQuanity()}}</span> (st.)</div>
-          </div>
-
-        <div class="item" *ngIf="item.variations">
-          <div class="selector">
-            <app-select [item]="item" (current)="changeImage($event)"></app-select>
-          </div>
-        </div>
-      </div>
-      <div class="right">
-        <div class="item-input">
-
-            <mat-form-field>
-              <mat-label *ngIf="currentVariation">{{currentVariation.value}} {{currentVariation.unit}}</mat-label>
-              <input type="number" matInput [(ngModel)]="currentItemQuanity" autocomplete="off">
-            </mat-form-field>
-
-
-            <button mat-stroked-button color="primary" (click)="addItem()" id="additem">
-            <mat-icon>add_shopping_cart</mat-icon>
-            In den Warenkorb
         </button>
-
-
-        </div>
-        </div>
-      </div>
-      <div class="desc" [innerHTML]="item.beschreibung | sanitizeHtml">
       </div>
     </div>
-    <div class="farbe">
-      <div class="image">
-        <img [src]="currentImage" alt="" *ngIf="act$ | async">
+  </mat-toolbar>
+  <div class="content-details">
+    <div class="con">
+      <div class="itemdesc">
+        <div class="itempro">
+          <div class="left">
+            <div class="farbe">
+              <div class="image">
+                <img [src]="currentImage" alt="" *ngIf="act$ | async">
+              </div>
+            </div>
+          </div>
+          <div class="right">
+            <div class="item">
+              <div class="desc-title">Item Id:</div>
+              <div class="desc-value">{{item.artid}}</div>
+            </div>
+            <div class="item">
+              <div *ngIf="item.mehrwehrsteuer === 0" class="desc-title">
+                Preis (Netto):
+              </div>
+              <div *ngIf="item.mehrwehrsteuer === 0 && currentVariation" class="desc-value">
+                {{getPriceBrutto()}} &euro;
+              </div>
+              <div *ngIf="item.mehrwehrsteuer !== 0" class="desc-title">
+                Preis (Brutto):
+              </div>
+              <div *ngIf="item.mehrwehrsteuer !== 0 && currentVariation" class="desc-value">
+                {{getPriceBrutto()}} &euro;
+              </div>
+            </div>
+            <div class="item">
+              <div class="desc-title">Gewicht (g):</div>
+              <div class="desc-value" *ngIf="currentVariation"><span>{{currentVariation.unit}}</span> (g)</div>
+            </div>
+            <div class="item">
+              <div class="desc-title">Verfugbare Menge:</div>
+              <div class="desc-value" *ngIf="currentVariation"><span [style]="getItemQuanity() === 0 ? 'color: red;' : ''">{{getItemQuanity()}}</span> (st.)</div>
+            </div>
+            <div class="item" *ngIf="item.variations">
+              <div class="selector">
+                <app-select [item]="item" (current)="changeImage($event)"></app-select>
+              </div>
+            </div>
+            <div class="item-input">
+              <mat-form-field>
+                <mat-label *ngIf="currentVariation">{{currentVariation.value}} {{currentVariation.unit}}</mat-label>
+                <input type="number" matInput [(ngModel)]="currentItemQuanity" autocomplete="off">
+              </mat-form-field>
+              <button mat-stroked-button color="primary" (click)="addItem()" id="additem">
+                <mat-icon>add_shopping_cart</mat-icon>
+                In den Warenkorb
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="desc" [innerHTML]="item.beschreibung | sanitizeHtml"></div>
       </div>
     </div>
-  </div>
   </div>
 </div>

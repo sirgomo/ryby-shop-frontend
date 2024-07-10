@@ -21,6 +21,10 @@
       <th mat-header-cell *matHeaderCellDef>Name</th>
       <td mat-cell *matCellDef="let product">{{ product.name }}</td>
     </ng-container>
+    <ng-container matColumnDef="ebay">
+      <th mat-header-cell *matHeaderCellDef>Ebay</th>
+      <td mat-cell *matCellDef="let product">{{ product.ebay == 0 ? 'Nein' : 'Ja' }}</td>
+    </ng-container>
     <ng-container matColumnDef="verfugbar">
       <th mat-header-cell *matHeaderCellDef>Verfügbar</th>
       <td mat-cell *matCellDef="let product">{{ product.verfgbarkeit == 0 ? 'Nein' : 'Ja' }}</td>

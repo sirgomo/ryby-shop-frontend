@@ -8,7 +8,7 @@ import { ErrorService } from 'src/app/error/error.service';
 import { MatIconModule } from '@angular/material/icon';
 import { EbayInventoryService } from '../ebay-inventory/ebay-inventory.service';
 import { firstValueFrom } from 'rxjs';
-import { iEbayGroupItem } from 'src/app/model/ebay/iEbayGroupItem';
+import { iEbayGroupItem } from 'src/app/model/ebay/item/iEbayGroupItem';
 import { iProduct } from 'src/app/model/iProduct';
 import { iProduktVariations } from 'src/app/model/iProduktVariations';
 import { environment } from 'src/environments/environment';

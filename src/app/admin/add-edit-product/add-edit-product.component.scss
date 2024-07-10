@@ -4,9 +4,12 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-
 }
-
+.content {
+  width: 97%;
+  height: 96%;
+  overflow: hidden;
+}
 .product-details {
   display: flex;
   flex-direction: row;
@@ -112,7 +115,6 @@ input[type=file]::file-selector-button:hover {
 }
 .h2 {
   display: flex;
-  width: 100%;
   justify-content: space-between;
 }
 .imageItem {

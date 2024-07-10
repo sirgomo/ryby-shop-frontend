@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { ProductService } from './product.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { iProduct } from 'src/app/model/iProduct';
@@ -23,12 +23,17 @@ import { ProductsQuanitySelectorComponent } from 'src/app/products/products-quan
   standalone: true,
   imports: [MatTableModule, CommonModule, MatButtonModule, ErrorComponent, PaginatorComponent, ProductsQuanitySelectorComponent]
 })
-export class ProductComponent {
-  displayedColumns: string[] = ['prodid','artid', 'name', 'verfugbar', 'edit', 'delete'];
+export class ProductComponent implements OnInit{
+  displayedColumns: string[] = ['prodid','artid', 'name', 'verfugbar','ebay', 'edit', 'delete'];
   productsSig = this.prodService.productsSig;
   del$ = new Observable();
   constructor( private readonly prodService: ProductService, private readonly dialog: MatDialog, private helperService: HelperService, public readonly err: ErrorService) {
     this.helperService.kategorySig.set({id: 0} as iKategorie);
+  }
+  ngOnInit(): void {
+    if(this.helperService.pageNrSig() != 1) {
+      this.helperService.pageNrSig.set(1);
+    }
   }
 
   addEditProduct(item?: iProduct) {

@@ -4,143 +4,156 @@
 <div *ngIf="helperService.showLoaderSig() && helperService.showLoaderSig() === true" class="loader-spinner">
   <mat-spinner></mat-spinner>
 </div>
-<div class="h2">
-  <h2>{{ data ? 'Produkt bearbeiten' : 'Produkt hinzufügen' }}</h2>
-  <div class="close">
-    <button mat-icon-button (click)="cancel()" color="warn">
-        <mat-icon>close</mat-icon>
-    </button>
+<mat-tab-group animationDuration="0ms">
+<mat-tab label="Shop">
+  <ng-template matTabContent>
+    <div class="content">
+  <div mat-dialog-title class="h2">
+    <div><h2>{{ data ? 'Produkt bearbeiten' : 'Produkt hinzufügen' }}</h2></div>
+    <div class="close">
+      <button mat-icon-button (click)="cancel()" color="warn">
+          <mat-icon>close</mat-icon>
+      </button>
+    </div>
   </div>
-</div>
-<div class="add-edit-product">
-    <form [formGroup]="productForm" class="form">
-      <div class="product-details">
-          <div class="product-image">
-            <div class="image" *ngIf="images().length > 0">
-              <img [src]="getSafeImageData()" alt="Product Image" *ngIf="(getFoto$ | async)">
-            </div>
-            <div class="images">
-              <div class="imageItem" *ngFor="let item of images(); let i = index" >
-                <button mat-icon-button color="accent" (click)="getImage(item)">{{i + 1}}</button>
-
+  <div class="add-edit-product" mat-dialog-content>
+      <form [formGroup]="productForm" class="form">
+        <div class="product-details">
+            <div class="product-image">
+              <div class="image" *ngIf="images().length > 0">
+                <img [src]="getSafeImageData()" alt="Product Image" *ngIf="(getFoto$ | async)">
               </div>
-            </div>
-          </div>
-          <div class="image-right">
-            <mat-form-field>
-              <mat-label>Artikel Nr:</mat-label>
-              <input matInput type="number" id="artid" formControlName="artid" required autocomplete="off">
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Lieferant Artikel Nr:</mat-label>
-              <input matInput type="text" id="product_sup_id" formControlName="product_sup_id" autocomplete="off">
-            </mat-form-field>
+              <div class="images">
+                <div class="imageItem" *ngFor="let item of images(); let i = index" >
+                  <button mat-icon-button color="accent" (click)="getImage(item)">{{i + 1}}</button>
 
-            <mat-form-field>
-              <mat-label>Name</mat-label>
-              <input matInput type="text" id="name" formControlName="name" required autocomplete="off">
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Beschreibung</mat-label>
-              <textarea matInput id="beschreibung" formControlName="beschreibung" required autocomplete="off"></textarea>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Kategorie</mat-label>
-              <mat-select id="kategorie" formControlName="kategorie" multiple required [compareWith]="getSelected">
-                <mat-option *ngFor="let item of kategorySignal()" [value]="item">{{item.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <mat-tab-group [disableRipple]="false" animationDuration="0ms">
-          <mat-tab label="Product Details" >
-            <div class="row">
-              <mat-form-field>
-                <mat-label>Datum Hinzugefügt</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="datumHinzugefuegt" required>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Lieferant</mat-label>
-                <mat-select required formControlName="lieferant" [compareWith]="getSelected">
-                  <mat-option *ngFor="let supplier of liferantSignal()" [value]="supplier" >{{supplier.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field *ngIf="actionsSig().length < 1">
-                <mat-label>Keine Angebots verfügbar</mat-label>
-                <mat-select formControlName="promocje" id="promocje">
-                  <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field  *ngIf="actionsSig().length > 1">
-                <mat-label>Aktions</mat-label>
-                <mat-select formControlName="promocje" id="promocje">
-                  <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-
-            <div class="row">
-              <mat-form-field>
-                <mat-label>Produkt Sku</mat-label>
-                <input matInput type="text" id="sku" formControlName="sku"  autocomplete="off" required>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Mehrwertsteuer</mat-label>
-                <input matInput type="number" id="mehrwehrsteuer" formControlName="mehrwehrsteuer" required autocomplete="off">
-              </mat-form-field>
-              <div class="verfug">
-                <mat-checkbox id="verfgbarkeit" formControlName="verfgbarkeit">Verfügbarkeit</mat-checkbox>
-              </div>
-            </div>
-            <div class="row">
-              <div><app-image [element]="data" (send)="emitImage($event)"></app-image></div>
-              <mat-form-field>
-                <mat-label>Versand Service</mat-label>
-                <mat-select required formControlName="shipping_costs" [compareWith]="getSelected" multiple>
-                  <mat-option *ngFor="let shipping of (shippingCost | async ) " [value]="shipping" >{{shipping.shipping_name + ' ' + shipping.shipping_price }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </mat-tab>
-          <mat-tab label="Eans" >
-            <div formArrayName="eans" class="eancon">
-              <div *ngFor="let eanform of ean.controls; let index = index"  >
-                  <div  [formGroupName]="index" class="ean">
-                    <input type="hidden" formControlName="id">
-                    <div>{{index}}</div>
-                      <mat-form-field appearance="fill">
-                          <input matInput
-                                 formControlName="eanCode"
-                                 placeholder="ean">
-                      </mat-form-field>
-
-                      <mat-icon class="delete-btn" (click)="removeEan(index)" color="warn">
-                          delete_forever</mat-icon>
-                  </div>
                 </div>
               </div>
-            <div  class="button" >
-              <button mat-stroked-button (click)="addEan()" color="primary" >
-                <mat-icon >add</mat-icon>
-                Ean Hinzufügen
-            </button>
             </div>
+            <div class="image-right">
+              <mat-form-field>
+                <mat-label>Artikel Nr:</mat-label>
+                <input matInput type="number" id="artid" formControlName="artid" required autocomplete="off">
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Lieferant Artikel Nr:</mat-label>
+                <input matInput type="text" id="product_sup_id" formControlName="product_sup_id" autocomplete="off">
+              </mat-form-field>
 
-          </mat-tab>
-          <mat-tab label="Variations">
-            <ng-template matTabContent>
-              <app-variations [product]="data"></app-variations>
-            </ng-template>
-          </mat-tab>
-      </mat-tab-group>
-      <div class="button" >
-        <button mat-stroked-button (click)="saveProduct()" color="accent" id="saveP">Speichern</button>
+              <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput type="text" id="name" formControlName="name" required autocomplete="off">
+              </mat-form-field>
 
-      </div>
-</form>
+              <mat-form-field>
+                <mat-label>Beschreibung</mat-label>
+                <textarea matInput id="beschreibung" formControlName="beschreibung" required autocomplete="off"></textarea>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Kategorie</mat-label>
+                <mat-select id="kategorie" formControlName="kategorie" multiple required [compareWith]="getSelected">
+                  <mat-option *ngFor="let item of kategorySignal()" [value]="item">{{item.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-tab-group [disableRipple]="false" animationDuration="0ms">
+            <mat-tab label="Product Details" >
+              <div class="row">
+                <mat-form-field>
+                  <mat-label>Datum Hinzugefügt</mat-label>
+                  <input matInput [matDatepicker]="picker" formControlName="datumHinzugefuegt" required>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Lieferant</mat-label>
+                  <mat-select required formControlName="lieferant" [compareWith]="getSelected">
+                    <mat-option *ngFor="let supplier of liferantSignal()" [value]="supplier" >{{supplier.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="actionsSig().length < 1">
+                  <mat-label>Keine Angebots verfügbar</mat-label>
+                  <mat-select formControlName="promocje" id="promocje">
+                    <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field  *ngIf="actionsSig().length > 1">
+                  <mat-label>Aktions</mat-label>
+                  <mat-select formControlName="promocje" id="promocje">
+                    <mat-option *ngFor="let supplier of actionsSig()" [value]="supplier">{{supplier.id}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+                <mat-form-field>
+                  <mat-label>Produkt Sku</mat-label>
+                  <input matInput type="text" id="sku" formControlName="sku"  autocomplete="off" required>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Mehrwertsteuer</mat-label>
+                  <input matInput type="number" id="mehrwehrsteuer" formControlName="mehrwehrsteuer" required autocomplete="off">
+                </mat-form-field>
+                <div class="verfug">
+                  <mat-checkbox id="verfgbarkeit" formControlName="verfgbarkeit">Verfügbarkeit</mat-checkbox>
+                </div>
+              </div>
+              <div class="row">
+                <div><app-image [element]="data" (send)="emitImage($event)"></app-image></div>
+                <mat-form-field>
+                  <mat-label>Versand Service</mat-label>
+                  <mat-select required formControlName="shipping_costs" [compareWith]="getSelected" multiple>
+                    <mat-option *ngFor="let shipping of (shippingCost | async ) " [value]="shipping" >{{shipping.shipping_name + ' ' + shipping.shipping_price }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-tab>
+            <mat-tab label="Eans" >
+              <div formArrayName="eans" class="eancon">
+                <div *ngFor="let eanform of ean.controls; let index = index"  >
+                    <div  [formGroupName]="index" class="ean">
+                      <input type="hidden" formControlName="id">
+                      <div>{{index}}</div>
+                        <mat-form-field appearance="fill">
+                            <input matInput
+                                  formControlName="eanCode"
+                                  placeholder="ean">
+                        </mat-form-field>
+
+                        <mat-icon class="delete-btn" (click)="removeEan(index)" color="warn">
+                            delete_forever</mat-icon>
+                    </div>
+                  </div>
+                </div>
+              <div  class="button" >
+                <button mat-stroked-button (click)="addEan()" color="primary" >
+                  <mat-icon >add</mat-icon>
+                  Ean Hinzufügen
+              </button>
+              </div>
+
+            </mat-tab>
+            <mat-tab label="Variations">
+              <ng-template matTabContent>
+                <app-variations [product]="data"></app-variations>
+              </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+        <div class="button" >
+          <button mat-stroked-button (click)="saveProduct()" color="accent" id="saveP">Speichern</button>
+
+        </div>
+  </form>
+  </div>
+  <span *ngIf="create$ | async" ></span>
 </div>
-<span *ngIf="create$ | async" ></span>
+</ng-template>
+</mat-tab>
+<mat-tab label="ebay">
+  <ng-template matTabContent >
+    <app-ebay-product [product]="data"></app-ebay-product>
+  </ng-template>
+</mat-tab>
+</mat-tab-group>

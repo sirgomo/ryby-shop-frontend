@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, combineLatest, forkJoin, map, mergeMap, of, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
-import { iEbayGroupItem } from 'src/app/model/ebay/iEbayGroupItem';
+import { iEbayGroupItem } from 'src/app/model/ebay/item/iEbayGroupItem';
 import { iEbayImportListingRes } from 'src/app/model/ebay/iEbayImportListingRes';
 import { iEbayInventory } from 'src/app/model/ebay/iEbayInventory';
 import { iEbayInventoryItem } from 'src/app/model/ebay/iEbayInventoryItem';

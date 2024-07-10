@@ -33,6 +33,7 @@ import { ImageComponent } from './image/image.component';
 import { ShippingCostService } from '../shipping-cost/shipping-cost.service';
 import { MomentDateModule, provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { EbayProductComponent } from './ebay-product/ebay-product.component';
 
 
 @Component({
@@ -44,7 +45,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
   standalone: true,
   imports: [CommonModule, ErrorComponent, MatIconModule, MatButtonModule, FormsModule, ReactiveFormsModule,
   MatFormFieldModule, MatSelectModule, MomentDateModule, MatDatepickerModule, MatTabsModule, MatProgressBarModule,
-   MatProgressSpinnerModule, MatInputModule, MatCheckboxModule, VariationsComponent, ImageComponent]
+   MatProgressSpinnerModule, MatInputModule, MatCheckboxModule, VariationsComponent, ImageComponent, EbayProductComponent]
 })
 export class AddEditProductComponent implements OnInit, OnDestroy {
 

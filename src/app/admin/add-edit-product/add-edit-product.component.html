@@ -4,18 +4,18 @@
 <div *ngIf="helperService.showLoaderSig() && helperService.showLoaderSig() === true" class="loader-spinner">
   <mat-spinner></mat-spinner>
 </div>
+<div mat-dialog-title class="h2">
+  <div><h2>{{ data ? 'Produkt bearbeiten' : 'Produkt hinzufügen' }}</h2></div>
+  <div class="close">
+    <button mat-icon-button (click)="cancel()" color="warn">
+        <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
 <mat-tab-group animationDuration="0ms">
 <mat-tab label="Shop">
   <ng-template matTabContent>
     <div class="content">
-  <div mat-dialog-title class="h2">
-    <div><h2>{{ data ? 'Produkt bearbeiten' : 'Produkt hinzufügen' }}</h2></div>
-    <div class="close">
-      <button mat-icon-button (click)="cancel()" color="warn">
-          <mat-icon>close</mat-icon>
-      </button>
-    </div>
-  </div>
   <div class="add-edit-product" mat-dialog-content>
       <form [formGroup]="productForm" class="form">
         <div class="product-details">

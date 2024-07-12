@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, catchError, combineLatest, forkJoin, map, mergeMap, of, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iEbayGroupItem } from 'src/app/model/ebay/item/iEbayGroupItem';
@@ -8,6 +8,7 @@ import { iEbayInventory } from 'src/app/model/ebay/iEbayInventory';
 import { iEbayInventoryItem } from 'src/app/model/ebay/iEbayInventoryItem';
 import { iProduct } from 'src/app/model/iProduct';
 import { environment } from 'src/environments/environment';
+import { iEbayCategorySugestion } from 'src/app/model/ebay/item/iEbayCategorySugestion';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ import { environment } from 'src/environments/environment';
 export class EbayInventoryService {
 
   #api = environment.api + 'ebay-inventory';
+  marktidSig = signal<number | null>(null);
   constructor(private readonly httpClinet: HttpClient, private readonly errorServ: ErrorService) { }
 
   getCurrentInventory(limit: number, offset: number, getall: boolean): Observable<iEbayInventory> {
@@ -148,5 +150,12 @@ export class EbayInventoryService {
         console.log(err)
         return of({} as iEbayInventoryItem);
       }))
+    }
+    getEbayDefaultCategoryId() {
+      return this.httpClinet.get<{categoryTreeId : string, categoryTreeVersion : string}>(`${this.#api}/default-category`);
+    }
+    getEbayCategorySugestion(marktid: number, query: string) {
+      console.log(query);
+      return this.httpClinet.get<iEbayCategorySugestion>(`${this.#api}/category-sugesstions?markt=${marktid}&query=${query}`);
     }
 }

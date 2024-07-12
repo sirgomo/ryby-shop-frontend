@@ -1,1 +1,14 @@
-<p>ebay-product works!</p>
+<div class="content">
+    <div class="title">
+            <mat-form-field>
+                <mat-label>Title (max 80)</mat-label>
+                <input matInput placeholder="label" value="value" [(ngModel)]="itemGroupSig().title">
+                @if (itemGroupSig().title.length > 80) {
+                    <mat-hint class="error">Title is to long..., maximum 80 Characters</mat-hint>
+                }
+            </mat-form-field>
+    </div>
+    <div class="category">
+        <app-ebay-category [item]="itemGroupSig" (categoryChange)="categoryChange($event)"></app-ebay-category>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+<mat-form-field>
+    <mat-label>Category: </mat-label>
+    <mat-select placeholder="Ebay Category" [(ngModel)]="selected" name="item" (selectionChange)="change()">
+        @for (item of categorySig().categorySuggestions; track $index) {
+            <mat-option [value]="item.category">
+                {{item.category.categoryName}}
+            </mat-option>
+        }
+    </mat-select>
+</mat-form-field>

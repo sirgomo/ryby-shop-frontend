@@ -173,6 +173,7 @@ export class EbayOffersComponent implements OnInit{
   openDialog(iProduct: iProduct) {
     const conf: MatDialogConfig = new MatDialogConfig();
     conf.width = '100%';
+    conf.minWidth = '100%';
     conf.height = '100%';
     conf.data = iProduct;
 

@@ -1,0 +1,11 @@
+.aspects {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content:space-between;
+}
+.item {
+    width: 25%;
+    margin: .2rem .2rem;
+}
+

@@ -5,6 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { lastValueFrom } from 'rxjs/internal/lastValueFrom';
 import { EbayInventoryService } from 'src/app/ebay/ebay-inventory/ebay-inventory.service';
 import { Category, iEbayCategorySugestion } from 'src/app/model/ebay/item/iEbayCategorySugestion';
+import { iEbayCreateOffer } from 'src/app/model/ebay/item/iEbayCreateOffer';
 import { iEbayGroupItem } from 'src/app/model/ebay/item/iEbayGroupItem';
 
 @Component({
@@ -17,18 +18,32 @@ import { iEbayGroupItem } from 'src/app/model/ebay/item/iEbayGroupItem';
 })
 export class EbayCategoryComponent  {
   categoryChange = output<Category>();
-  @Input('item') item!: WritableSignal<iEbayGroupItem>;
+  @Input('item') item!: WritableSignal<iEbayCreateOffer>;
   categorySig: WritableSignal<iEbayCategorySugestion> = signal({} as iEbayCategorySugestion);
   selected: Category = {} as Category;
   
   constructor(private readonly invetoryService: EbayInventoryService) {
     effect(() => {
-      if(this.item().inventoryItemGroupKey && this.item().inventoryItemGroupKey.length > 2) {
+        if(this.invetoryService.marktidSig() && this.item() && Object(this.item()).title)
+          lastValueFrom(this.invetoryService.getEbayCategorySugestion(this.invetoryService.marktidSig()!, Object(this.item()).title)).then((res) => {
+          if(res.categorySuggestions) {
+            this.categorySig.set(res);  
+            //select and emit first category
+            this.selected = res.categorySuggestions[0].category;
+            this.categoryChange.emit(res.categorySuggestions[0].category);
+            
+            //item on ebay, if category not null, use it.
+            if(this.item().categoryId)
+              res.categorySuggestions.forEach((item) => {
+                if(item.category.categoryId == this.item().categoryId) 
+                  this.selected = item.category;
+                  this.categoryChange.emit(this.selected);
+                });
+          }
         
-      } else if(this.invetoryService.marktidSig() && this.item.name)
-        lastValueFrom(this.invetoryService.getEbayCategorySugestion(this.invetoryService.marktidSig()!, this.item().title)).then((res) => {
-        this.categorySig.set(res);  
-      });
+
+      
+          });
     }, { allowSignalWrites: true })
   }
   change() {

@@ -1,1 +1,43 @@
-<p>ebay-aspects works!</p>
+<div class="aspects">
+    @for (item of aspects(); track $index; let idx = $index) {
+   
+            <div class="item">
+                <mat-form-field [style]="item.aspectConstraint.aspectRequired || (item.aspectConstraint.aspectUsage === usageEnum.RECOMMENDED)  ? '--mdc-filled-text-field-container-color: primary': ''"> 
+                    <mat-label>{{item.localizedAspectName}}</mat-label>
+                    @if (item.aspectConstraint.aspectMode === aspectModeEnum.FREE_TEXT) {
+                        <input (change)="change()" type="text" placeholder="Pick one or write one" aria-label="Number" matInput [matAutocomplete]="auto" [(ngModel)]="input[$index]" [required]="item.aspectConstraint.aspectRequired || (item.aspectConstraint.aspectUsage === usageEnum.RECOMMENDED)  ? true: false">
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="change()">
+                            @for (value of item.aspectValues; track $index) {
+                                    <mat-option [value]="getValueItem(idx, value.localizedValue)">
+                                        {{value.localizedValue}}
+                                        @if(item.aspectConstraint.itemToAspectCardinality === mode.MULTI) {
+                                            <mat-checkbox (change)="setAspect(idx, value.localizedValue, $event.checked)" [checked]="getCheckbox(idx, $index)"></mat-checkbox>
+                                        }
+                                    </mat-option>
+                            }
+                        </mat-autocomplete>
+                    } @else {
+                        @if(item.aspectConstraint.itemToAspectCardinality === mode.SINGLE) {
+                            <mat-select  name="item" [required]="item.aspectConstraint.aspectRequired ? true: false" [(ngModel)]="input[$index]" (selectionChange)="change()">
+                                @for (value of item.aspectValues; track $index) {
+                                    <mat-option [value]="getValueItem(idx, value.localizedValue)">
+                                        {{value.localizedValue}}
+                                    </mat-option>
+                            }
+                        </mat-select>
+                        } @else {
+                            <mat-select  name="item" [multiple]="true" [required]="item.aspectConstraint.aspectRequired ? true: false" [(ngModel)]="input[$index]" (selectionChange)="change()">
+                                @for (value of item.aspectValues; track $index) {
+                                    <mat-option [value]="getValueItem(idx, value.localizedValue)">
+                                        {{value.localizedValue}}
+                                    </mat-option>
+                            }
+                        </mat-select>
+                        }
+                    }
+                </mat-form-field>
+            </div>
+        
+      
+    }
+</div>

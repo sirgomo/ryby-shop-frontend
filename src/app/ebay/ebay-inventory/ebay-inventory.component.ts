@@ -59,6 +59,7 @@ export class EbayInventoryComponent {
     const conf = new MatDialogConfig();
     conf.height = '100%';
     conf.width = '100%';
+    conf.minWidth = '100%';
     conf.data = item;
 
     this.dialog.open(EbayOffersComponent, conf);

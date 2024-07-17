@@ -7,7 +7,6 @@ import { EbayInventoryService } from '../ebay-inventory.service';
 import { Subscription } from 'rxjs';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { ErrorService } from 'src/app/error/error.service';
-import { iEbayImportListingRes } from 'src/app/model/ebay/iEbayImportListingRes';
 import { ErrorComponent } from 'src/app/error/error.component';
 
 @Component({

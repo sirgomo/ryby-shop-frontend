@@ -9,6 +9,8 @@ import { iEbayInventoryItem } from 'src/app/model/ebay/iEbayInventoryItem';
 import { iProduct } from 'src/app/model/iProduct';
 import { environment } from 'src/environments/environment';
 import { iEbayCategorySugestion } from 'src/app/model/ebay/item/iEbayCategorySugestion';
+import { iEbayAspects } from 'src/app/model/ebay/item/iEbayAspects';
+import { HelperService } from 'src/app/helper/helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,7 @@ export class EbayInventoryService {
 
   #api = environment.api + 'ebay-inventory';
   marktidSig = signal<number | null>(null);
-  constructor(private readonly httpClinet: HttpClient, private readonly errorServ: ErrorService) { }
+  constructor(private readonly httpClinet: HttpClient, private readonly errorServ: ErrorService, private helperService: HelperService) { }
 
   getCurrentInventory(limit: number, offset: number, getall: boolean): Observable<iEbayInventory> {
     return this.httpClinet.get<iEbayInventory>(`${this.#api}/${limit}/${offset}`).pipe(
@@ -113,7 +115,8 @@ export class EbayInventoryService {
   }
   //listing with comma separated
   postListingsString(listing: string): Observable<iEbayImportListingRes[]> {
-    const tmp : { listings: string } = { listings: listing.replace(/(\r\n\s|\n|\r|\s)/gm, '') };
+    const tmp1 : { listings: string } = { listings: listing.replace(/(\r\n\s|\n|\r|\s)/gm, '') };
+    const tmp : { listings: string } = { listings: tmp1.listings.endsWith(',') ? tmp1.listings.slice(0, tmp1.listings.length -2) : tmp1.listings };
     return this.httpClinet.post<iEbayImportListingRes[]>(`${this.#api}/listing`, tmp).pipe(
       catchError((err) => {
         return [];
@@ -155,7 +158,12 @@ export class EbayInventoryService {
       return this.httpClinet.get<{categoryTreeId : string, categoryTreeVersion : string}>(`${this.#api}/default-category`);
     }
     getEbayCategorySugestion(marktid: number, query: string) {
-      console.log(query);
       return this.httpClinet.get<iEbayCategorySugestion>(`${this.#api}/category-sugesstions?markt=${marktid}&query=${query}`);
+    }
+    getAspectsForCategoryId(id: number) {
+        if(!this.marktidSig())
+          throw new Error('Category Tree Id null !');
+      
+      return this.httpClinet.get<iEbayAspects>(`${this.#api}/category-aspects?tree_id=${this.marktidSig()}&category=${id}`);
     }
 }

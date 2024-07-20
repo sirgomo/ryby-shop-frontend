@@ -18,8 +18,17 @@
     }
     margin: .5rem .5rem;
 }
-
+.category {
+    margin-bottom: .5rem;
+}
 .error {
     font-size: medium;
     color: red;
+}
+.variations {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: .5rem .5rem;
 }

@@ -1,14 +1,14 @@
 <div class="aspects">
-    @for (item of aspects(); track $index; let idx = $index) {
+    @for (item of aspectsSig(); track $index; let idx = $index) {
    
             <div class="item">
-                <mat-form-field [style]="item.aspectConstraint.aspectRequired || (item.aspectConstraint.aspectUsage === usageEnum.RECOMMENDED)  ? '--mdc-filled-text-field-container-color: primary': ''"> 
+                <mat-form-field [style]="(item.aspectConstraint.aspectRequired  ? '--mdc-filled-text-field-container-color: #a8d473': '' ) || ((item.aspectConstraint.aspectUsage === usageEnum.RECOMMENDED)  ? '--mdc-filled-text-field-container-color: #a8d441': '')"> 
                     <mat-label>{{item.localizedAspectName}}</mat-label>
                     @if (item.aspectConstraint.aspectMode === aspectModeEnum.FREE_TEXT) {
-                        <input (change)="change()" type="text" placeholder="Pick one or write one" aria-label="Number" matInput [matAutocomplete]="auto" [(ngModel)]="input[$index]" [required]="item.aspectConstraint.aspectRequired || (item.aspectConstraint.aspectUsage === usageEnum.RECOMMENDED)  ? true: false">
-                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="change()">
+                        <input (change)="change()" type="text" placeholder="Pick one or write one" aria-label="Number" matInput [matAutocomplete]="auto" [(ngModel)]="input[$index]" [required]="item.aspectConstraint.aspectRequired ? true: false">
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setAspect(idx, $event.option.value)">
                             @for (value of item.aspectValues; track $index) {
-                                    <mat-option [value]="getValueItem(idx, value.localizedValue)">
+                                    <mat-option [value]="item.aspectConstraint.itemToAspectCardinality === mode.MULTI ? input[idx] : value.localizedValue">
                                         {{value.localizedValue}}
                                         @if(item.aspectConstraint.itemToAspectCardinality === mode.MULTI) {
                                             <mat-checkbox (change)="setAspect(idx, value.localizedValue, $event.checked)" [checked]="getCheckbox(idx, $index)"></mat-checkbox>
@@ -18,17 +18,17 @@
                         </mat-autocomplete>
                     } @else {
                         @if(item.aspectConstraint.itemToAspectCardinality === mode.SINGLE) {
-                            <mat-select  name="item" [required]="item.aspectConstraint.aspectRequired ? true: false" [(ngModel)]="input[$index]" (selectionChange)="change()">
+                            <mat-select [required]="item.aspectConstraint.aspectRequired ? true: false" [(value)]="input[idx]"  (selectionChange)="change()" [compareWith]="compareSelected">
                                 @for (value of item.aspectValues; track $index) {
-                                    <mat-option [value]="getValueItem(idx, value.localizedValue)">
+                                    <mat-option [value]="value.localizedValue">
                                         {{value.localizedValue}}
                                     </mat-option>
                             }
                         </mat-select>
                         } @else {
-                            <mat-select  name="item" [multiple]="true" [required]="item.aspectConstraint.aspectRequired ? true: false" [(ngModel)]="input[$index]" (selectionChange)="change()">
+                            <mat-select [multiple]="true" [required]="item.aspectConstraint.aspectRequired ? true: false" [(value)]="input[idx]"  (selectionChange)="setAspect(idx, $event.value)" [compareWith]="compareSelected">
                                 @for (value of item.aspectValues; track $index) {
-                                    <mat-option [value]="getValueItem(idx, value.localizedValue)">
+                                    <mat-option [value]="value.localizedValue">
                                         {{value.localizedValue}}
                                     </mat-option>
                             }

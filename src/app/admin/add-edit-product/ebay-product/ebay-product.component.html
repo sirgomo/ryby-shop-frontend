@@ -3,7 +3,7 @@
             <mat-form-field>
                 <mat-label>Title (max 80)</mat-label>
                 <input matInput placeholder="label" value="value" [(ngModel)]="itemGroupSig().title" (keyup)="titleChange($event)">
-                @if (itemGroupSig().title.length > 80) {
+                @if (itemGroupSig().title && itemGroupSig().title.length > 80) {
                     <mat-hint class="error">Title is to long..., maximum 80 Characters</mat-hint>
                 }
             </mat-form-field>
@@ -12,6 +12,10 @@
         <app-ebay-category [item]="itemOfferSig" (categoryChange)="categoryChange($event)"></app-ebay-category>
     </div>
     <div class="aspects">
-        <app-ebay-aspects [category]="categorySig" (selected_aspects)="setAspects($event)"></app-ebay-aspects>
+        <app-ebay-aspects [current_aspects]="currentAspectsSig" [category]="categorySig" (selected_aspects)="setAspects($event)"></app-ebay-aspects>
+    </div>
+    <div class="variations">
+        <div>Variations: </div>
+        <div> <button mat-raised-button (click)="openVariations()">Bearbeiten</button></div>
     </div>
 </div>

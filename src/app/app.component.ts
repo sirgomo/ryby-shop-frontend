@@ -5,7 +5,7 @@ import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/d
 import { UserLoginComponent } from './user/user-login/user-login.component';
 import { KategorieService } from './admin/kategories/kategorie.service';
 import { iKategorie } from './model/iKategorie';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { FooterComponent } from './footer/footer/footer.component';
 import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
 import { CommonModule, isPlatformServer } from '@angular/common';
@@ -31,13 +31,13 @@ declare const gtag: Function;
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [ FooterComponent, RouterModule, ToolbarComponent, MatSidenavModule, CommonModule, 
-    MatDialogModule, MatButtonModule, MatProgressSpinnerModule, ShowUrlopComponent]
+    MatDialogModule, MatButtonModule, MatProgressSpinnerModule, ShowUrlopComponent, RouterOutlet]
 })
 export class AppComponent  implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('sidenav', { static: true}) sidenav!: MatSidenav;
   @ViewChild('sidenavContent', { read: MatSidenavContent }) sidenavContent!: MatSidenavContent;
- 
+
   showLoaderSig = this.helper.showLoaderSig;
   h1SigDefault = 'Kunstköder, Ruten, Rollen und vieles mehr...';
   title = this.helper.titelSig;
@@ -111,7 +111,7 @@ export class AppComponent  implements OnInit, OnDestroy, AfterViewInit {
     if(!localStorage.getItem('cookies'))
       this.askCookies();
 
-  
+
   }
   askCookies() {
     if(isPlatformServer(this.platformId))

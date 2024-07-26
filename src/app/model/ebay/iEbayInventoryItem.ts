@@ -57,7 +57,7 @@ export interface iEbayInventoryItem {
   product?: {
     aspects?: string;
     brand?: string;
-    description: string;
+    description?: string;
     ean?: string[];
     epid?: string;
     imageUrls?: string[];

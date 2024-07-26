@@ -8,7 +8,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { lastValueFrom } from 'rxjs';
 import { EbayInventoryService } from 'src/app/ebay/ebay-inventory/ebay-inventory.service';
 import { iEbayInventoryItem } from 'src/app/model/ebay/iEbayInventoryItem';
-import { iEbayAspects } from 'src/app/model/ebay/item/iEbayAspects';
 import { Category } from 'src/app/model/ebay/item/iEbayCategorySugestion';
 import { iEbayCreateOffer } from 'src/app/model/ebay/item/iEbayCreateOffer';
 import { iEbayGroupItem } from 'src/app/model/ebay/item/iEbayGroupItem';
@@ -19,6 +18,7 @@ import { iSelectedAspects } from 'src/app/model/ebay/item/iSelectedAspects';
 import { EbayOffersService } from 'src/app/ebay/ebay-offers/ebay-offers.service';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { EbayVariationsComponent } from './ebay-variations/ebay-variations.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -42,7 +42,8 @@ export class EbayProductComponent implements OnInit {
   categorySig: WritableSignal<Category | null> = signal(null);
   ascpectsSig: WritableSignal<iSelectedAspects | null> = signal(null);
 
-  constructor(private readonly invetoryService: EbayInventoryService, private readonly fb : FormBuilder, private readonly ebayOfferService: EbayOffersService, private readonly dialog: MatDialog) {
+  constructor(private readonly invetoryService: EbayInventoryService, private readonly fb : FormBuilder, 
+    private readonly ebayOfferService: EbayOffersService, private readonly dialog: MatDialog, private readonly snackBar: MatSnackBar) {
   }
   ngOnInit(): void {
     if(!this.invetoryService.marktidSig())
@@ -62,7 +63,8 @@ export class EbayProductComponent implements OnInit {
         });
         this.itemGroupSig.update((item) => { 
           return { ...item, 
-            title: this.product.name 
+            title: this.product.name,
+            inventoryItemGroupKey: this.product.sku,
             }
           });
     }
@@ -111,10 +113,18 @@ export class EbayProductComponent implements OnInit {
 
   }
   openVariations() {
+
+  if(!this.ascpectsSig()) {
+    this.snackBar.open('Du hast noch keine erforderlichen Aspekte ausgewählt. Du musst mindestens mit Sternchen (*) markierten auswählen. Am besten aber alle, die farbig markiert sind.!', 'Ok', { duration: 3000 })
+    return;
+  }
+
     const config = new MatDialogConfig();
+    config.width = '100%';
+    config.height = '100%';
     config.minWidth = '100%';
     config.minHeight = '100%';
-    config.data = this.inventoryItemsSig().length > 0 ? this.inventoryItemsSig() : this.product.variations;
+    config.data = [this.inventoryItemsSig().length > 0 ? this.inventoryItemsSig() : this.product, this.ascpectsSig(), this.itemGroupSig()];
 
     this.dialog.open(EbayVariationsComponent, config).afterClosed().subscribe((res) => {
       console.log(res);

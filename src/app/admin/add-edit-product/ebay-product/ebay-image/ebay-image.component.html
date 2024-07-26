@@ -1,0 +1,11 @@
+<div>
+    <input type="file" class="file-input" (change)="openFileInput($event)" #fileUpload>
+    <div (click)="fileUpload.click()">
+        @if(!currentImageLink()) {
+            <mat-icon class="img_icon" >image_search</mat-icon>
+        } @else {
+            <img [src]="getSafeImageData()" alt="ebay_image">
+        }
+    </div>
+</div>
+

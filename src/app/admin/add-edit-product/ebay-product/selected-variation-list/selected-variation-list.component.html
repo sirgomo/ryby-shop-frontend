@@ -1,0 +1,9 @@
+<div>
+    @for(item of variation(); track $index) {
+        @if($index >= start() && $index < stop() && stop() !== 0) {
+            {{item.sku}}
+        } @else if (stop() === 0) {
+            {{item.sku}}
+        }
+    }
+</div>

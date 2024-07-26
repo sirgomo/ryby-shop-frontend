@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { Observable, catchError, combineLatest, forkJoin, map, mergeMap, of, tap } from 'rxjs';
+import { EMPTY, Observable, catchError, combineLatest, forkJoin, map, mergeMap, of, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iEbayGroupItem } from 'src/app/model/ebay/item/iEbayGroupItem';
 import { iEbayImportListingRes } from 'src/app/model/ebay/iEbayImportListingRes';
@@ -11,12 +11,12 @@ import { environment } from 'src/environments/environment';
 import { iEbayCategorySugestion } from 'src/app/model/ebay/item/iEbayCategorySugestion';
 import { iEbayAspects } from 'src/app/model/ebay/item/iEbayAspects';
 import { HelperService } from 'src/app/helper/helper.service';
+import { iEbayImageResponse } from 'src/app/model/ebay/item/iEbayImageResponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EbayInventoryService {
-
   #api = environment.api + 'ebay-inventory';
   marktidSig = signal<number | null>(null);
   constructor(private readonly httpClinet: HttpClient, private readonly errorServ: ErrorService, private helperService: HelperService) { }
@@ -155,7 +155,9 @@ export class EbayInventoryService {
       }))
     }
     getEbayDefaultCategoryId() {
-      return this.httpClinet.get<{categoryTreeId : string, categoryTreeVersion : string}>(`${this.#api}/default-category`);
+      return this.httpClinet.get<{categoryTreeId : string, categoryTreeVersion : string}>(`${this.#api}/default-category`).pipe(map((res) => {
+        return res;
+      }));
     }
     getEbayCategorySugestion(marktid: number, query: string) {
       return this.httpClinet.get<iEbayCategorySugestion>(`${this.#api}/category-sugesstions?markt=${marktid}&query=${query}`);
@@ -166,4 +168,28 @@ export class EbayInventoryService {
       
       return this.httpClinet.get<iEbayAspects>(`${this.#api}/category-aspects?tree_id=${this.marktidSig()}&category=${id}`);
     }
+    saveImageOnEbayServer(image: File) {
+
+      const formData = new FormData();
+      formData.append('image', image);
+
+      
+      return this.httpClinet.post<iEbayImageResponse>(`${this.#api}/post-image`, formData).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error occurred:', error);
+             // Możesz zwrócić odpowiedni komunikat lub wartość domyślną
+             return of({ message: error.message } as unknown as iEbayImageResponse);
+           })
+    );
+    }
+    //get image
+  getImageFromEbay(url: string) {
+  return this.httpClinet.post(url, { responseType: 'blob' }).pipe(
+    catchError((error: HttpErrorResponse) => {
+      console.error('Error occurred:', error);
+           // Możesz zwrócić odpowiedni komunikat lub wartość domyślną
+           return of({ message: error.message } as unknown as Blob);
+         })
+    );
+}
 }

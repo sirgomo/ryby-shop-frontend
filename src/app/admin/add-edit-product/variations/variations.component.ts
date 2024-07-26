@@ -68,6 +68,8 @@ export class VariationsComponent implements AfterViewInit {
   addNeueVariation() {
     const conf : MatDialogConfig = new MatDialogConfig();
     conf.width = '100%';
+    conf.minWidth = '100%';
+    conf.minHeight = ' 100%';
     conf.height = '100%';
     conf.data = { prod: this.product };
 

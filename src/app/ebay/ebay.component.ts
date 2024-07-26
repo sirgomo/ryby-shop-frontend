@@ -53,7 +53,7 @@ export class EbayComponent {
       this.show_input = true;
     }
 
-   })
+   });
   }
   openInovice(item: iEbayOrder) {
     let itemB: iBestellung = {} as iBestellung;

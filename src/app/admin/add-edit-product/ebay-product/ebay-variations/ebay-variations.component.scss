@@ -24,10 +24,11 @@
     justify-items: center;
     .icon {
         display: flex;
-        width: 60%;
-        height: 55%;
+        width: 90px;
+        height: 48px;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
     }
 }
 .variation_group {

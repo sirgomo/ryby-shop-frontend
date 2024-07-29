@@ -83,7 +83,6 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     this.act$ = this.variationService.getImage(id).pipe(map((res) => {
       if(res instanceof Blob)
         this.setImage(res);
-
       return res;
     }))
   }
@@ -96,10 +95,8 @@ export class ItemDetailsComponent implements OnInit, OnDestroy{
     return (Number(this.currentVariation.price) + mwst).toFixed(2);
   }
   changeImage(item: iProduktVariations) {
-
     this.getImage(item.image);
     this.currentVariation = item;
-
   }
 
 

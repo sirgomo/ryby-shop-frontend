@@ -4,3 +4,18 @@
 .file-input {
     display: none;
   }
+  .ebay_image {
+    display: flex;
+    width: 90px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+        img {
+            max-width: inherit;
+            max-height: inherit;
+            height: inherit;
+            width: inherit;
+          object-fit:contain;
+        }
+     
+  }

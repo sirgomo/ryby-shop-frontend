@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { EMPTY, Observable, catchError, combineLatest, forkJoin, map, mergeMap, of, tap } from 'rxjs';
+import { EMPTY, Observable, Subscription, catchError, combineLatest, finalize, forkJoin, map, mergeMap, of, tap } from 'rxjs';
 import { ErrorService } from 'src/app/error/error.service';
 import { iEbayGroupItem } from 'src/app/model/ebay/item/iEbayGroupItem';
 import { iEbayImportListingRes } from 'src/app/model/ebay/iEbayImportListingRes';
@@ -172,9 +172,11 @@ export class EbayInventoryService {
 
       const formData = new FormData();
       formData.append('image', image);
-
-      
-      return this.httpClinet.post<iEbayImageResponse>(`${this.#api}/post-image`, formData).pipe(
+      return this.httpClinet.post<iEbayImageResponse>(`${this.#api}/post-image`, formData, {
+         reportProgress: true,
+          observe: 'events',
+         responseType: 'json',
+      }).pipe(
       catchError((error: HttpErrorResponse) => {
         console.error('Error occurred:', error);
              // Możesz zwrócić odpowiedni komunikat lub wartość domyślną
@@ -191,5 +193,6 @@ export class EbayInventoryService {
            return of({ message: error.message } as unknown as Blob);
          })
     );
-}
+  }
+
 }

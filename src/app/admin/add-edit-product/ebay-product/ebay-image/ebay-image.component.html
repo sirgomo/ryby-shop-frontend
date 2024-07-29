@@ -1,11 +1,24 @@
+@if(isUploadingImage()) {
+    <div>
+        <mat-spinner></mat-spinner>
+    </div>
+}
 <div>
     <input type="file" class="file-input" (change)="openFileInput($event)" #fileUpload>
-    <div (click)="fileUpload.click()">
+    <div (click)="fileUpload.click()" class="ebay_image">
         @if(!currentImageLink()) {
             <mat-icon class="img_icon" >image_search</mat-icon>
         } @else {
             <img [src]="getSafeImageData()" alt="ebay_image">
         }
     </div>
+    @if (uploadProgress()) {
+    <div class="progress">
+        <mat-progress-bar class="progress-bar" mode="determinate"
+                          [value]="uploadProgress()" >
+        </mat-progress-bar>
+            <mat-icon class="cancel-upload" (click)="cancelUpload()" >delete_forever</mat-icon>
+      </div>
+    }
 </div>
 

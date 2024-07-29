@@ -125,6 +125,9 @@ resetFotoUpload() {
 }
 //get image
 getImage(id: string) {
+  if(!id)
+    return EMPTY;
+  
   return this.httpClient.post(`${this.#api}/uploads/`,{id: id}, { responseType: 'blob' }).pipe(
     catchError((err) => {
       this.errorService.newMessage(err.message);

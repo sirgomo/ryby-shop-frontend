@@ -1,0 +1,13 @@
+<div>
+    <mat-form-field>
+        <mat-label>Select Payment Method</mat-label>
+        <mat-select placeholder="Placeholder" [(ngModel)]="selectedSig" (selectionChange)="changeSelected($event.value)">
+            @for (item of paymentPoliciesSig(); track $index ) {
+                <mat-option  [value]="item.paymentPolicyId">
+                    <div>{{item.name}}</div>
+                    <div>{{item.description}}</div>
+                </mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+</div>

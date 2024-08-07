@@ -154,22 +154,25 @@ export class EbayInventoryService {
         return of({} as iEbayInventoryItem);
       }))
     }
+    //get defualt category id
     getEbayDefaultCategoryId() {
       return this.httpClinet.get<{categoryTreeId : string, categoryTreeVersion : string}>(`${this.#api}/default-category`).pipe(map((res) => {
         return res;
       }));
     }
+    //get category sugestion
     getEbayCategorySugestion(marktid: number, query: string) {
       return this.httpClinet.get<iEbayCategorySugestion>(`${this.#api}/category-sugesstions?markt=${marktid}&query=${query}`);
     }
+    //get aspect for category name
     getAspectsForCategoryId(id: number) {
         if(!this.marktidSig())
           throw new Error('Category Tree Id null !');
       
       return this.httpClinet.get<iEbayAspects>(`${this.#api}/category-aspects?tree_id=${this.marktidSig()}&category=${id}`);
     }
+    // save image on ebay server
     saveImageOnEbayServer(image: File) {
-
       const formData = new FormData();
       formData.append('image', image);
       return this.httpClinet.post<iEbayImageResponse>(`${this.#api}/post-image`, formData, {
@@ -186,10 +189,9 @@ export class EbayInventoryService {
     }
     //get image
   getImageFromEbay(url: string) {
-  return this.httpClinet.post(url, { responseType: 'blob' }).pipe(
+  return this.httpClinet.get(url, { responseType: 'blob' }).pipe(
     catchError((error: HttpErrorResponse) => {
       console.error('Error occurred:', error);
-           // Możesz zwrócić odpowiedni komunikat lub wartość domyślną
            return of({ message: error.message } as unknown as Blob);
          })
     );

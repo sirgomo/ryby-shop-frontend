@@ -21,10 +21,12 @@
     font-size: medium;
     color: red;
 }
-.variations {
+.variations, .shipping-policy, .payment-policy {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 98%;
     margin: .5rem .5rem;
+
 }
+

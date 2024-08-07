@@ -1,5 +1,5 @@
 .img_icon {
-    scale: 1.5;
+    scale: 2;
 }
 .file-input {
     display: none;
@@ -7,7 +7,7 @@
   .ebay_image {
     display: flex;
     width: 90px;
-    height: 48px;
+    height: 50px;
     align-items: center;
     justify-content: center;
         img {
@@ -19,3 +19,42 @@
         }
      
   }
+  .spinner {
+    scale: .3;
+  }
+  .image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 62px;
+    max-height: 62px;
+  }
+  .delete {
+    display: flex;
+    height: 8px;
+    width: inherit;
+}
+button {
+  margin-top: 2px;
+  line-height: .3em;
+  font-size: .4em;
+  height: 8px;
+  width: inherit;
+  max-width: 80px;
+}
+
+.button-content {
+    display: flex;
+    align-items:center; /* Wyrówn pionowe */
+    color: red;
+
+}
+mat-icon {
+    margin-right: 2px; /* Odstęp między ikoną a tekstem */
+    scale: .4;
+}
+
+.button-text { 
+    display: inline-block;
+
+}

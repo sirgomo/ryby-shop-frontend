@@ -19,6 +19,10 @@ import { EbayOffersService } from 'src/app/ebay/ebay-offers/ebay-offers.service'
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { EbayVariationsComponent } from './ebay-variations/ebay-variations.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormatTypeEnum, ListingDurationEnum, MarketplaceEnum } from 'src/app/model/ebay/iEbayOffer';
+import { CurrencyCodeEnum } from 'src/app/model/ebay/transactionsAndRefunds/iEbayRefundItem';
+import { SelectShippingPolicyComponent } from './select-shipping-policy/select-shipping-policy.component';
+import { SelectPaymentPolicyComponent } from './select-payment-policy/select-payment-policy.component';
 
 
 
@@ -26,7 +30,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   selector: 'app-ebay-product',
   standalone: true,
   imports: [FormsModule,ReactiveFormsModule, MatInputModule, MatButtonModule, MatIconModule,
-     MatSelectModule, MatFormFieldModule, MatIconModule, EbayCategoryComponent, EbayAspectsComponent, MatDialogModule],
+     MatSelectModule, MatFormFieldModule, MatIconModule, EbayCategoryComponent, EbayAspectsComponent, MatDialogModule, SelectShippingPolicyComponent, SelectPaymentPolicyComponent],
   templateUrl: './ebay-product.component.html',
   styleUrl: './ebay-product.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -41,6 +45,7 @@ export class EbayProductComponent implements OnInit {
   offersSig: WritableSignal<iEbayCreateOffer[]> = signal<iEbayCreateOffer[]>([]);
   categorySig: WritableSignal<Category | null> = signal(null);
   ascpectsSig: WritableSignal<iSelectedAspects | null> = signal(null);
+  shippingPolicyIdSig = signal<string>('');
 
   constructor(private readonly invetoryService: EbayInventoryService, private readonly fb : FormBuilder, 
     private readonly ebayOfferService: EbayOffersService, private readonly dialog: MatDialog, private readonly snackBar: MatSnackBar) {
@@ -67,7 +72,10 @@ export class EbayProductComponent implements OnInit {
             inventoryItemGroupKey: this.product.sku,
             }
           });
+
+          this.setOfferGroup();
     }
+    
 
     if(this.product && this.product.id && this.product.ebay === 1) 
       this.getGroupAndOffer();    
@@ -124,11 +132,52 @@ export class EbayProductComponent implements OnInit {
     config.height = '100%';
     config.minWidth = '100%';
     config.minHeight = '100%';
-    config.data = [this.inventoryItemsSig().length > 0 ? this.inventoryItemsSig() : this.product, this.ascpectsSig(), this.itemGroupSig()];
+    config.data = [this.inventoryItemsSig().length > 0 ? this.inventoryItemsSig() : this.product, this.ascpectsSig(), this.itemGroupSig(), this.offersSig()];
 
     this.dialog.open(EbayVariationsComponent, config).afterClosed().subscribe((res) => {
+      if(!res)
+        return;
+        
+      // return [groupItem, variationsSig() ,offersSig()]
+      this.itemGroupSig.set(res[0]);
+      this.inventoryItemsSig.set(res[1]);
+      this.offersSig.set(res[2]);
       console.log(res);
     })
+  }
+  setOfferGroup() {
+    const offers: iEbayCreateOffer[] = [];
+    this.product.variations.forEach((item) => {
+      const offer: iEbayCreateOffer = {} as iEbayCreateOffer;
+      offer.format = FormatTypeEnum.FIXED_PRICE;
+      offer.listingDescription = this.itemGroupSig().description;
+      offer.listingDuration = ListingDurationEnum.GTC;
+      offer.marketplaceId = MarketplaceEnum.EBAY_DE;
+      offer.pricingSummary = { 
+        price: {
+          currency : CurrencyCodeEnum.EUR,
+          value: Number(item.price).toFixed(2),
+        }
+      };
+      offer.sku = item.sku;
+      offer.listingPolicies = {
+        fulfillmentPolicyId: this.shippingPolicyIdSig(),
+        paymentPolicyId: '',
+        returnPolicyId: '',
+      };
+      offers.push(offer);
+    });
+    this.offersSig.set(offers);
+  }
+  setFulFillmentPolicyId(id: string) {
+    this.offersSig().forEach((item) => {
+      item.listingPolicies.fulfillmentPolicyId = id;
+    });
+  }
+  setPaymentPolicyId(id: string) {
+    this.offersSig().forEach((item) => {
+      item.listingPolicies.paymentPolicyId = id;
+    });
   }
 
 }

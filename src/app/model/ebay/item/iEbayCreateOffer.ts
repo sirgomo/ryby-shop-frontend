@@ -1,4 +1,5 @@
 import { CountryCodeEnum } from "../CountryCodeEnum";
+import { MarketplaceEnum } from "../iEbayOffer";
 
 export interface iEbayCreateOffer {
     availableQuantity: number;
@@ -71,7 +72,7 @@ export interface iEbayCreateOffer {
     };
     listingStartDate?: string;
     lotSize?: number;
-    marketplaceId: 'EBAY_US' | 'EBAY_MOTORS' | 'EBAY_CA' | 'EBAY_GB' | 'EBAY_AU' | 'EBAY_AT' | 'EBAY_BE' | 'EBAY_FR' | 'EBAY_DE' | 'EBAY_IT' | 'EBAY_NL' | 'EBAY_ES' | 'EBAY_CH' | 'EBAY_TW' | 'EBAY_CZ' | 'EBAY_DK' | 'EBAY_FI' | 'EBAY_GR' | 'EBAY_HK' | 'EBAY_HU' | 'EBAY_IN' | 'EBAY_ID' | 'EBAY_IE' | 'EBAY_IL' | 'EBAY_MY' | 'EBAY_NZ' | 'EBAY_NO' | 'EBAY_PH' | 'EBAY_PL' | 'EBAY_PT' | 'EBAY_PR' | 'EBAY_RU' | 'EBAY_SG' | 'EBAY_ZA' | 'EBAY_SE' | 'EBAY_TH' | 'EBAY_VN' | 'EBAY_CN' | 'EBAY_PE' | 'EBAY_JP';
+    marketplaceId: MarketplaceEnum;
     merchantLocationKey?: string;
     pricingSummary: {
       auctionReservePrice?: {

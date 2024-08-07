@@ -1,9 +1,34 @@
-<div>
-    @for(item of variation(); track $index) {
-        @if($index >= start() && $index < stop() && stop() !== 0) {
-            {{item.sku}}
-        } @else if (stop() === 0) {
-            {{item.sku}}
-        }
-    }
+<div class="list">
+    <table mat-table #table [dataSource]="getItems()">
+        <ng-container matColumnDef="sku">
+            <th mat-header-cell *matHeaderCellDef> Sku: </th>
+            <td mat-cell *matCellDef="let row"> {{row.sku}} </td>
+        </ng-container>
+        <ng-container matColumnDef="ean">
+            <th mat-header-cell *matHeaderCellDef> Ean: </th>
+            <td mat-cell *matCellDef="let row"> {{row.product.ean}} </td>
+        </ng-container>
+        <ng-container matColumnDef="variant_name">
+            <th mat-header-cell *matHeaderCellDef> Selected Variation: </th>
+            <td mat-cell *matCellDef="let row"> {{variation_nameSig()}} </td>
+        </ng-container>
+        <ng-container matColumnDef="count">
+            <th mat-header-cell *matHeaderCellDef> Menge: </th>
+            <td mat-cell *matCellDef="let row">
+                    <mat-form-field>
+                        <input matInput placeholder="quantity" [(ngModel)]="row.availability.shipToLocationAvailability.quantity" type="number" autocomplete="off">
+                    </mat-form-field>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef> Price: </th>
+            <td mat-cell *matCellDef="let row">
+                    <mat-form-field>
+                        <input matInput #curr placeholder="quantity" type="number" [value]="getPrice(row.sku)" (keyup)="setNewPrice(row.sku, curr.value)" autocomplete="off">
+                    </mat-form-field>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="tabeleHead"></tr>
+        <tr mat-row *matRowDef="let row; columns: tabeleHead;"></tr>
+    </table>
 </div>

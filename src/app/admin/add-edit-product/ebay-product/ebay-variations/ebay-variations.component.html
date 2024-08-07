@@ -1,5 +1,11 @@
-<h2 mat-dialog-title>Produkt Variation and foto</h2>
-<mat-dialog-content>
+<div mat-dialog-title class="h2">
+    <div><h2>Produkt Variation and foto</h2></div>
+    <div class="close">
+      <button mat-icon-button mat-dialog-close color="warn">
+          <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
     <div class="content">
         <div class="image_group">
            <div class="left_image">
@@ -10,7 +16,7 @@
            @if(currentVariationsSig() !== 'Group') {
             <div class="buttons">
                 @for(item of variationsSig(); track $index) {
-                    @if($index >= variationStart() && $index < variationStop()) {
+                    @if($index >= variationStartSig() && $index < variationStopSig()) {
                         <div class="butt"><button mat-stroked-button (click)="setImageForVariation(item.sku!)">{{item.sku}}</button></div>
                         
                     }   
@@ -20,7 +26,7 @@
            <div class="right_upload">
             @for (item of group_imageSig(); track $index) {
              
-                    <app-ebay-image class="icon" [image]="item" (imagelink)="setImageLink($event)" ></app-ebay-image>
+                    <app-ebay-image class="icon" [image]="item" (imagelink)="setImageLink($event)" [index]="$index" (deleteAction)="deleteImageOn($event)"></app-ebay-image>
                 
             }
            </div>
@@ -42,12 +48,11 @@
             </div>
         </div>
         <div class="selected_variation">
-            <app-selected-variation-list [stop]="variationStop" [start]="variationStart" [variation]="variationsSig"></app-selected-variation-list>
+            <app-selected-variation-list [stopSig]="variationStopSig" [startSig]="variationStartSig" [variationSig]="variationsSig" [variation_nameSig]="currentVariationsSig" [offersSig]="offersSig"></app-selected-variation-list>
         </div>
     </div>
-</mat-dialog-content>
 <mat-dialog-actions>
   <button mat-stroked-button mat-dialog-close>Abbrechen</button>
   <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
-  <button mat-raised-button [mat-dialog-close]="groupItem">Speichern</button>
+  <button mat-raised-button [mat-dialog-close]="[groupItem, variationsSig() ,offersSig()]">Speichern</button>
 </mat-dialog-actions>

@@ -12,6 +12,7 @@ import { iEbayCategorySugestion } from 'src/app/model/ebay/item/iEbayCategorySug
 import { iEbayAspects } from 'src/app/model/ebay/item/iEbayAspects';
 import { HelperService } from 'src/app/helper/helper.service';
 import { iEbayImageResponse } from 'src/app/model/ebay/item/iEbayImageResponse';
+import { iEbayinventoryLocation } from 'src/app/model/iEbayInventoryLocation';
 
 @Injectable({
   providedIn: 'root'
@@ -196,5 +197,13 @@ export class EbayInventoryService {
          })
     );
   }
-
+  getEbayInventoryLocations(): Observable<{ total: number, locations: iEbayinventoryLocation[]}> {
+    return this.httpClinet.get<{ total: number, locations: iEbayinventoryLocation[]}>(`${this.#api}/inventory-locations`).pipe(tap((res) => {
+      console.log(res)
+    }),
+    catchError((err) => {
+      console.log(err);
+      return of({ total: 0, locations: []});
+    }))
+  }
 }

@@ -1,0 +1,17 @@
+<mat-form-field>
+    <mat-label>Select Shipping Method</mat-label>
+    <mat-select placeholder="Select Shipping method" [(ngModel)]="selectedPolicySig" (selectionChange)="setReturnPolicy($event.value)">
+        @for (item of policiesSig(); track $index) {
+                <mat-option  [value]="item.returnPolicyId">
+                    <div class="option">                        
+                        <div>{{item.name}}</div>
+                    <div>{{item.description}}</div>
+                    </div>
+
+                </mat-option>
+        }
+    </mat-select>
+</mat-form-field>
+
+
+

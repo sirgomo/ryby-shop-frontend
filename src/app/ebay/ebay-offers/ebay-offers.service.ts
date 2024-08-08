@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { iEbayOfferListingRes } from '../../model/ebay/iEbayOfferListingRes';
 import { iEbayFulfillmentPolicy } from 'src/app/model/ebay/iEbayFulfillmentPolicy';
 import { iEbayPaymentPolicies } from 'src/app/model/ebay/iEbayPaymentPolicies';
+import { iEbayReturnPolicy } from 'src/app/model/ebay/iEbayReturnPolicy';
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +38,11 @@ export class EbayOffersService {
       return of({total: 0, paymentPolicies: []});
 
      return this.httpClient.get<{total: number, paymentPolicies: iEbayPaymentPolicies[]}>(`${this.API}/payment-policies/${id}`);
+  }
+  getReturnPoliciesByMarktid(id: string) : Observable<{total: number, returnPolicies: iEbayReturnPolicy[]}> {
+    if(!id)
+      return of({total: 0, returnPolicies: []})
+
+    return this.httpClient.get<{total: number, returnPolicies: iEbayReturnPolicy[]}>(`${this.API}/return-policies/${id}`);
   }
 }

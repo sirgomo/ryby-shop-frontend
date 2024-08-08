@@ -18,13 +18,13 @@ import { environment } from 'src/environments/environment';
 })
 export class SelectShippingPolicyComponent {
   @Input('selectedPolicy') selectedPolicy!: WritableSignal<string | undefined>;
-  policies = signal<iEbayFulfillmentPolicy[]>([])
+  policiesSig = signal<iEbayFulfillmentPolicy[]>([])
   newPolicy = output<string>();
 
   constructor(private readonly offerService: EbayOffersService) {
         lastValueFrom(this.offerService.allgetEbayFulfillmentPolicyById(environment.ebay_marketid)).then((res ) => {
           if(res.fulfillmentPolicies && res.fulfillmentPolicies.length > 0) {
-            this.policies.set(res.fulfillmentPolicies);
+            this.policiesSig.set(res.fulfillmentPolicies);
           }
         });
 

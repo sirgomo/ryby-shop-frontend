@@ -23,6 +23,7 @@ import { FormatTypeEnum, ListingDurationEnum, MarketplaceEnum } from 'src/app/mo
 import { CurrencyCodeEnum } from 'src/app/model/ebay/transactionsAndRefunds/iEbayRefundItem';
 import { SelectShippingPolicyComponent } from './select-shipping-policy/select-shipping-policy.component';
 import { SelectPaymentPolicyComponent } from './select-payment-policy/select-payment-policy.component';
+import { SelectReturnPolicyComponent } from './select-return-policy/select-return-policy.component';
 
 
 
@@ -30,7 +31,8 @@ import { SelectPaymentPolicyComponent } from './select-payment-policy/select-pay
   selector: 'app-ebay-product',
   standalone: true,
   imports: [FormsModule,ReactiveFormsModule, MatInputModule, MatButtonModule, MatIconModule,
-     MatSelectModule, MatFormFieldModule, MatIconModule, EbayCategoryComponent, EbayAspectsComponent, MatDialogModule, SelectShippingPolicyComponent, SelectPaymentPolicyComponent],
+     MatSelectModule, MatFormFieldModule, MatIconModule, EbayCategoryComponent, EbayAspectsComponent,
+     MatDialogModule, SelectShippingPolicyComponent, SelectPaymentPolicyComponent, SelectReturnPolicyComponent],
   templateUrl: './ebay-product.component.html',
   styleUrl: './ebay-product.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -145,7 +147,12 @@ export class EbayProductComponent implements OnInit {
       console.log(res);
     })
   }
-  setOfferGroup() {
+  async setOfferGroup() {
+    const merchantLocKeySig = signal('');
+    await lastValueFrom(this.invetoryService.getEbayInventoryLocations()).then((res) =>{
+      merchantLocKeySig.set(res.locations[0].merchantLocationKey);
+      console.log(res);
+    })
     const offers: iEbayCreateOffer[] = [];
     this.product.variations.forEach((item) => {
       const offer: iEbayCreateOffer = {} as iEbayCreateOffer;
@@ -165,6 +172,7 @@ export class EbayProductComponent implements OnInit {
         paymentPolicyId: '',
         returnPolicyId: '',
       };
+      offer.merchantLocationKey = merchantLocKeySig();
       offers.push(offer);
     });
     this.offersSig.set(offers);
@@ -177,6 +185,11 @@ export class EbayProductComponent implements OnInit {
   setPaymentPolicyId(id: string) {
     this.offersSig().forEach((item) => {
       item.listingPolicies.paymentPolicyId = id;
+    });
+  }
+  setReturnPolicy(id: string) {
+    this.offersSig().forEach((item) => {
+      item.listingPolicies.returnPolicyId = id;
     });
   }
 

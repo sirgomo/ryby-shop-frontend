@@ -1,4 +1,4 @@
-import { Component, output, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -12,7 +12,8 @@ import { environment } from 'src/environments/environment';
   standalone: true,
   imports: [FormsModule, MatSelectModule, MatFormFieldModule],
   templateUrl: './select-payment-policy.component.html',
-  styleUrl: './select-payment-policy.component.scss'
+  styleUrl: './select-payment-policy.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectPaymentPolicyComponent {
   paymentPoliciesSig: WritableSignal<iEbayPaymentPolicies[]> = signal<iEbayPaymentPolicies[]>([]);

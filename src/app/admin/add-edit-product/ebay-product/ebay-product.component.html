@@ -19,11 +19,15 @@
         <div> <button mat-raised-button (click)="openVariations()">Bearbeiten</button></div>
     </div>
     <div class="shipping-policy">
-        <div>Shipping Method</div>
-        <div><app-select-shipping-policy [selectedPolicy]="shippingPolicyIdSig" (newPolicy)="setFulFillmentPolicyId($event)" ></app-select-shipping-policy></div>
+        <div class="item">Shipping Method</div>
+        <div class="item-right"><app-select-shipping-policy [selectedPolicy]="shippingPolicyIdSig" (newPolicy)="setFulFillmentPolicyId($event)" ></app-select-shipping-policy></div>
     </div>
     <div class="payment-policy">
-        <div>Payment Method</div>
-        <div><app-select-payment-policy (selectedPaymentPolicy)="setPaymentPolicyId($event)"></app-select-payment-policy></div>
+        <div class="item">Payment Method</div>
+        <div class="item-right"><app-select-payment-policy (selectedPaymentPolicy)="setPaymentPolicyId($event)"></app-select-payment-policy></div>
+    </div>
+    <div class="return-policy">
+        <div class="item">Return Policy</div>
+        <div class="item-right"><app-select-return-policy (policy)="setReturnPolicy($event)"></app-select-return-policy></div>
     </div>
 </div>

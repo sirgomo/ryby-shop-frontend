@@ -116,6 +116,9 @@ input[type=file]::file-selector-button:hover {
 .h2 {
   display: flex;
   justify-content: space-between;
+  max-width: 98%;
+  margin-left: 1rem;
+  align-items: center;
 }
 .imageItem {
   display: flex;
